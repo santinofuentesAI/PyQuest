@@ -1,10 +1,15 @@
 "use client";
 
 import { useParams } from "next/navigation";
-import { LessonPlayer } from "@/components/lesson-player";
+import dynamic from "next/dynamic";
 import { getLesson } from "@/lib/curriculum";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
+
+const ShuffledLesson = dynamic(() => import("@/components/shuffled-lesson"), {
+  ssr: false,
+  loading: () => <p className="px-6 py-16 text-sm text-muted-foreground">Preparando la lección…</p>,
+});
 
 export default function LessonPage() {
   const params = useParams<{ id: string }>();
@@ -19,5 +24,5 @@ export default function LessonPage() {
       </div>
     );
   }
-  return <LessonPlayer key={lesson.id} lesson={lesson} />;
+  return <ShuffledLesson lesson={lesson} />;
 }

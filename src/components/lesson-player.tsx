@@ -264,10 +264,17 @@ export function LessonPlayer({
                 // eslint-disable-next-line @next/next/no-img-element
                 <img key={k} src={`data:image/png;base64,${img}`} alt="Gráfico generado" className="mt-2 max-h-56 rounded-lg border" />
               ))}
-              {!feedback.correct && (
-                <p className="mt-2 text-xs text-muted-foreground">
-                  Solución de referencia: <code className="rounded bg-background px-1">{exercise.solution}</code>
-                </p>
+              {!feedback.correct && exercise.solution && (
+                <div className="mt-2 text-xs text-muted-foreground">
+                  <p className="font-semibold">Solución de referencia</p>
+                  {exercise.solution.includes("\n") ? (
+                    <pre className="mt-1 overflow-x-auto rounded-lg bg-zinc-950 p-2 font-mono text-xs text-zinc-100">
+                      <code>{exercise.solution}</code>
+                    </pre>
+                  ) : (
+                    <code className="mt-1 inline-block rounded bg-background px-1 py-0.5">{exercise.solution}</code>
+                  )}
+                </div>
               )}
               <Button
                 className="mt-3 h-12 w-full rounded-2xl font-bold"

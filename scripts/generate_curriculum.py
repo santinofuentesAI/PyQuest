@@ -7,7 +7,7 @@ import sys
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from remaining_units import remaining_by_id
+from remaining_units import remaining_by_id, split_prompt_code
 
 OUT = Path(__file__).resolve().parents[1] / "src" / "content" / "curriculum.json"
 
@@ -37,7 +37,7 @@ def predict(eid, prompt, code, accepted, explanation, xp=10, difficulty=1, hint=
     return {
         "id": eid,
         "type": "predict_output",
-        "prompt": prompt + f"\n\n```python\n{code}\n```",
+        "prompt": prompt,
         "difficulty": difficulty,
         "xp": xp,
         "hint": hint,
@@ -138,10 +138,13 @@ def matching(eid, prompt, left, right, pairs, explanation, xp=12, difficulty=2, 
 
 
 def find_err(eid, prompt, choices, correct, explanation, xp=12, difficulty=2, hint=None, starter=None):
-    ex = mc(eid, prompt, choices, correct, explanation, xp, difficulty, hint)
+    text, code = split_prompt_code(prompt, starter)
+    if not text:
+        text = "¿Qué está mal en este código?"
+    ex = mc(eid, text, choices, correct, explanation, xp, difficulty, hint)
     ex["type"] = "find_error"
-    if starter:
-        ex["starterCode"] = starter
+    if code:
+        ex["starterCode"] = code
     return ex
 
 
@@ -1210,7 +1213,7 @@ def s3_u23():
                     ),
                     find_err(
                         "u23-l1-e7",
-                        "```python\ndf.edad vs df['edad']\n``` para una columna llamada `mean`…",
+                        "Una columna se llama `mean`. ¿Por qué `df.mean` es peligroso frente a `df['mean']`?",
                         [
                             ("a", "df.mean chocaría con el método .mean(): prefiere df['mean']"),
                             ("b", "Nunca funciona el corchete"),

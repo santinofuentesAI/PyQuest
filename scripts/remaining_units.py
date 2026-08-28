@@ -2,6 +2,19 @@
 from __future__ import annotations
 
 import json
+import re
+
+FENCE_RE = re.compile(r"```(?:[a-zA-Z0-9_+-]*)[ \t]*\n?(.*?)```", re.S)
+
+
+def split_prompt_code(prompt, starter=None):
+    """Keep the question in the prompt; move fenced snippets into starterCode."""
+    code = starter
+    m = FENCE_RE.search(prompt or "")
+    if m and not code:
+        code = m.group(1).strip("\n")
+    text = FENCE_RE.sub("", prompt or "").strip()
+    return text, code
 
 
 def mc(eid, prompt, choices, correct, explanation, xp=10, difficulty=1, hint=None, solution=None):
@@ -26,7 +39,7 @@ def predict(eid, prompt, code, accepted, explanation, xp=10, difficulty=1, hint=
     d = {
         "id": eid,
         "type": "predict_output",
-        "prompt": prompt + f"\n\n```python\n{code}\n```",
+        "prompt": prompt,
         "difficulty": difficulty,
         "xp": xp,
         "hint": hint,
@@ -96,10 +109,13 @@ def matching(eid, prompt, left, right, pairs, explanation, xp=12, difficulty=2, 
 
 
 def find_err(eid, prompt, choices, correct, explanation, xp=12, difficulty=2, hint=None, starter=None):
-    ex = mc(eid, prompt, choices, correct, explanation, xp, difficulty, hint)
+    text, code = split_prompt_code(prompt, starter)
+    if not text:
+        text = "¿Qué está mal en este código?"
+    ex = mc(eid, text, choices, correct, explanation, xp, difficulty, hint)
     ex["type"] = "find_error"
-    if starter:
-        ex["starterCode"] = starter
+    if code:
+        ex["starterCode"] = code
     return ex
 
 

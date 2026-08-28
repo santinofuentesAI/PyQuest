@@ -51,7 +51,7 @@
                 {
                   "id": "u1-l1-e2",
                   "type": "predict_output",
-                  "prompt": "¿Qué imprime este código?\n\n```python\nprint(\"Hola, PyQuest\")\n```",
+                  "prompt": "¿Qué imprime este código?",
                   "difficulty": 1,
                   "xp": 10,
                   "explanation": "print() muestra exactamente el texto entre comillas (sin las comillas).",
@@ -160,7 +160,7 @@
                 {
                   "id": "u1-l1-e7",
                   "type": "find_error",
-                  "prompt": "Este código falla. ¿Cuál es el error?\n\n```python\nprint(Hola)\n```",
+                  "prompt": "Este código falla. ¿Cuál es el error?",
                   "difficulty": 2,
                   "xp": 12,
                   "explanation": "Sin comillas, Python busca una variable llamada Hola. Un string va entre comillas.",
@@ -252,7 +252,7 @@
                 {
                   "id": "u2-l1-e2",
                   "type": "predict_output",
-                  "prompt": "¿Qué imprime este código?\n\n```python\nn = 3\nn = n + 1\nprint(n)\n```",
+                  "prompt": "¿Qué imprime este código?",
                   "difficulty": 1,
                   "xp": 10,
                   "explanation": "Se lee el valor actual de n (3), se suma 1 y se vuelve a guardar.",
@@ -353,7 +353,7 @@
                 {
                   "id": "u2-l1-e6",
                   "type": "predict_output",
-                  "prompt": "¿Qué imprime `type()`?\n\n```python\nprint(type(3.0).__name__)\n```",
+                  "prompt": "¿Qué imprime `type()`?",
                   "difficulty": 1,
                   "xp": 10,
                   "explanation": "3.0 es float aunque represente un entero. El punto decimal cambia el tipo.",
@@ -366,7 +366,7 @@
                 {
                   "id": "u2-l1-e7",
                   "type": "find_error",
-                  "prompt": "¿Por qué falla este código?\n\n```python\nedad = 30\nprint(\"Tengo \" + edad)\n```",
+                  "prompt": "¿Por qué falla este código?",
                   "difficulty": 2,
                   "xp": 12,
                   "explanation": "Python no mezcla string y número con +. Usa f\"Tengo {edad}\" o str(edad).",
@@ -453,7 +453,7 @@
                 {
                   "id": "u3-l1-e2",
                   "type": "predict_output",
-                  "prompt": "¿Qué imprime este código?\n\n```python\nprint(2 ** 3)\n```",
+                  "prompt": "¿Qué imprime este código?",
                   "difficulty": 1,
                   "xp": 10,
                   "explanation": "`**` es la potencia: 2³ = 8. No confundir con `^` (eso es XOR).",
@@ -534,7 +534,7 @@
                 {
                   "id": "u3-l1-e5",
                   "type": "predict_output",
-                  "prompt": "¿Qué imprime este código?\n\n```python\nprint(True and False)\nprint(True or False)\n```",
+                  "prompt": "¿Qué imprime este código?",
                   "difficulty": 1,
                   "xp": 10,
                   "explanation": "`and` exige las dos; `or` se conforma con una.",
@@ -566,7 +566,7 @@
                 {
                   "id": "u3-l1-e7",
                   "type": "find_error",
-                  "prompt": "¿Qué está mal?\n\n```python\nx = 5\nif x = 5:\n    print(\"sí\")\n```",
+                  "prompt": "¿Qué está mal?",
                   "difficulty": 2,
                   "xp": 12,
                   "explanation": "`=` asigna y no es una expresión válida en if. Compara con `==`.",
@@ -658,7 +658,7 @@
                 {
                   "id": "u4-e2",
                   "type": "predict_output",
-                  "prompt": "¿Qué imprime?\n\n```python\ns = \"datos\"\nprint(s[1:4])\n```",
+                  "prompt": "¿Qué imprime?",
                   "difficulty": 1,
                   "xp": 10,
                   "explanation": "El slice [1:4] incluye 1 y excluye 4: a, t, o.",
@@ -746,7 +746,7 @@
                 {
                   "id": "u4-e6",
                   "type": "find_error",
-                  "prompt": "```python\ns = 'abc'\ns[0] = 'A'\n```",
+                  "prompt": "¿Qué está mal en este código?",
                   "difficulty": 2,
                   "xp": 12,
                   "explanation": "Para 'cambiar' un string construyes otro: 'A' + s[1:].",
@@ -765,12 +765,13 @@
                       "text": "abc no es un string"
                     }
                   ],
-                  "correctChoiceId": "a"
+                  "correctChoiceId": "a",
+                  "starterCode": "s = 'abc'\ns[0] = 'A'"
                 },
                 {
                   "id": "u4-e7",
                   "type": "predict_output",
-                  "prompt": "¿Salida?\n\n```python\nprint(\"ML\" * 3)\n```",
+                  "prompt": "¿Salida?",
                   "difficulty": 1,
                   "xp": 10,
                   "explanation": "* en strings concatena la repetición. Útil para relleno, no para matemáticas.",
@@ -867,7 +868,7 @@
                 {
                   "id": "u5-e3",
                   "type": "predict_output",
-                  "prompt": "¿Salida?\n\n```python\nxs = [10, 20, 30]\nprint(xs[-1])\n```",
+                  "prompt": "¿Salida?",
                   "difficulty": 1,
                   "xp": 10,
                   "explanation": "Índice negativo: el último.",
@@ -941,7 +942,7 @@
                 {
                   "id": "u5-e6",
                   "type": "find_error",
-                  "prompt": "```python\nxs = [1, 2]\nprint(xs[2])\n```",
+                  "prompt": "¿Qué está mal en este código?",
                   "difficulty": 2,
                   "xp": 12,
                   "explanation": "IndexError: len 2 → último índice 1.",
@@ -960,7 +961,8 @@
                       "text": "Falta coma"
                     }
                   ],
-                  "correctChoiceId": "a"
+                  "correctChoiceId": "a",
+                  "starterCode": "xs = [1, 2]\nprint(xs[2])"
                 },
                 {
                   "id": "u5-e7",
@@ -1047,7 +1049,7 @@
                 {
                   "id": "u6-e2",
                   "type": "predict_output",
-                  "prompt": "¿Salida?\n\n```python\nt = (1, 2, 3)\nprint(t[1])\n```",
+                  "prompt": "¿Salida?",
                   "difficulty": 1,
                   "xp": 10,
                   "explanation": "Se indexan igual que las listas.",
@@ -1135,7 +1137,7 @@
                 {
                   "id": "u6-e6",
                   "type": "find_error",
-                  "prompt": "```python\nt = (1)\nprint(type(t).__name__)\n``` da int, no tuple. ¿Por qué?",
+                  "prompt": "da int, no tuple. ¿Por qué?",
                   "difficulty": 2,
                   "xp": 12,
                   "explanation": "La coma hace la tupla, no el paréntesis.",
@@ -1154,12 +1156,13 @@
                       "text": "Hay que usar tuple 1"
                     }
                   ],
-                  "correctChoiceId": "a"
+                  "correctChoiceId": "a",
+                  "starterCode": "t = (1)\nprint(type(t).__name__)"
                 },
                 {
                   "id": "u6-e7",
                   "type": "predict_output",
-                  "prompt": "¿Salida?\n\n```python\nprint(len({1, 2, 2, 2}))\n```",
+                  "prompt": "¿Salida?",
                   "difficulty": 1,
                   "xp": 10,
                   "explanation": "Los duplicados colapsan.",
@@ -1257,7 +1260,7 @@
                 {
                   "id": "u7-e3",
                   "type": "predict_output",
-                  "prompt": "¿Salida?\n\n```python\nd = {\"a\": 1}\nprint(d.get(\"b\", 0))\n```",
+                  "prompt": "¿Salida?",
                   "difficulty": 1,
                   "xp": 10,
                   "explanation": "get con default evita el KeyError. Patrón de contadores.",
@@ -1331,7 +1334,7 @@
                 {
                   "id": "u7-e6",
                   "type": "find_error",
-                  "prompt": "```python\nd = {['a']: 1}\n```",
+                  "prompt": "¿Qué está mal en este código?",
                   "difficulty": 2,
                   "xp": 12,
                   "explanation": "Claves típicas: str, int, tuple de inmutables.",
@@ -1350,7 +1353,8 @@
                       "text": "Falta print"
                     }
                   ],
-                  "correctChoiceId": "a"
+                  "correctChoiceId": "a",
+                  "starterCode": "d = {['a']: 1}"
                 },
                 {
                   "id": "u7-e7",
@@ -1456,7 +1460,7 @@
                 {
                   "id": "u8-e3",
                   "type": "predict_output",
-                  "prompt": "¿Salida?\n\n```python\nn = 0\nprint('pos' if n > 0 else 'no')\n```",
+                  "prompt": "¿Salida?",
                   "difficulty": 1,
                   "xp": 10,
                   "explanation": "Expresión ternaria: valor_si_true if cond else valor_si_false.",
@@ -1527,7 +1531,7 @@
                 {
                   "id": "u8-e6",
                   "type": "find_error",
-                  "prompt": "```python\nif x = 3:\n    print('sí')\n```",
+                  "prompt": "¿Qué está mal en este código?",
                   "difficulty": 2,
                   "xp": 12,
                   "explanation": "SyntaxError clásico. = asigna.",
@@ -1546,12 +1550,13 @@
                       "text": "print está mal"
                     }
                   ],
-                  "correctChoiceId": "a"
+                  "correctChoiceId": "a",
+                  "starterCode": "if x = 3:\n    print('sí')"
                 },
                 {
                   "id": "u8-e7",
                   "type": "predict_output",
-                  "prompt": "¿Salida?\n\n```python\nx = 5\nif x > 10:\n    print('A')\nelif x > 3:\n    print('B')\nelse:\n    print('C')\n```",
+                  "prompt": "¿Salida?",
                   "difficulty": 1,
                   "xp": 10,
                   "explanation": "5 no es > 10, sí es > 3. El else no llega.",
@@ -1607,7 +1612,7 @@
                 {
                   "id": "u9-e1",
                   "type": "predict_output",
-                  "prompt": "¿Salida?\n\n```python\nprint(list(range(3)))\n```",
+                  "prompt": "¿Salida?",
                   "difficulty": 1,
                   "xp": 10,
                   "explanation": "range(n) es 0..n-1. range(1, 4) sería 1,2,3.",
@@ -1736,7 +1741,7 @@
                 {
                   "id": "u9-e7",
                   "type": "predict_output",
-                  "prompt": "¿Cuántas líneas imprime?\n\n```python\nfor i in range(5):\n    if i == 2:\n        continue\n    if i == 4:\n        break\n    print(i)\n```",
+                  "prompt": "¿Cuántas líneas imprime?",
                   "difficulty": 1,
                   "xp": 10,
                   "explanation": "0 y 1 se imprimen, 2 se salta, 3 se imprime, 4 rompe.",
@@ -1891,7 +1896,7 @@
                 {
                   "id": "u10-e5",
                   "type": "find_error",
-                  "prompt": "```python\ndef f(a, b=1, c):\n    return a+b+c\n```",
+                  "prompt": "¿Qué está mal en este código?",
                   "difficulty": 2,
                   "xp": 12,
                   "explanation": "SyntaxError. Orden: posicionales, defaults, *args, kwargs.",
@@ -1910,12 +1915,13 @@
                       "text": "c no existe"
                     }
                   ],
-                  "correctChoiceId": "a"
+                  "correctChoiceId": "a",
+                  "starterCode": "def f(a, b=1, c):\n    return a+b+c"
                 },
                 {
                   "id": "u10-e6",
                   "type": "predict_output",
-                  "prompt": "¿Salida?\n\n```python\ndef f(x, y=2):\n    return x * y\nprint(f(3))\n```",
+                  "prompt": "¿Salida?",
                   "difficulty": 1,
                   "xp": 10,
                   "explanation": "y toma el default 2. f(3, 4) sería 12.",
@@ -2027,7 +2033,7 @@
                 {
                   "id": "u11-e3",
                   "type": "predict_output",
-                  "prompt": "¿Salida?\n\n```python\ntry:\n    int('x')\nexcept ValueError:\n    print('no')\nelse:\n    print('sí')\n```",
+                  "prompt": "¿Salida?",
                   "difficulty": 1,
                   "xp": 10,
                   "explanation": "else del try corre solo si no hubo excepción. Aquí int('x') falla.",
@@ -2118,7 +2124,7 @@
                 {
                   "id": "u11-e7",
                   "type": "predict_output",
-                  "prompt": "¿Se imprime finally?\n\n```python\ntry:\n    1/0\nexcept ZeroDivisionError:\n    print('e')\nfinally:\n    print('f')\n```",
+                  "prompt": "¿Se imprime finally?",
                   "difficulty": 1,
                   "xp": 10,
                   "explanation": "finally corre siempre: cerrar archivos, soltar locks.",
@@ -2276,7 +2282,7 @@
                 {
                   "id": "u12-e5",
                   "type": "find_error",
-                  "prompt": "```python\nclass A:\n    def f():\n        return 1\nA().f()\n```",
+                  "prompt": "¿Qué está mal en este código?",
                   "difficulty": 2,
                   "xp": 12,
                   "explanation": "TypeError: f() takes 0 positional arguments but 1 was given — ese 1 es self.",
@@ -2295,12 +2301,13 @@
                       "text": "Hay que usar new A"
                     }
                   ],
-                  "correctChoiceId": "a"
+                  "correctChoiceId": "a",
+                  "starterCode": "class A:\n    def f():\n        return 1\nA().f()"
                 },
                 {
                   "id": "u12-e6",
                   "type": "predict_output",
-                  "prompt": "¿Salida?\n\n```python\nclass A:\n    x = 1\nprint(A().x)\n```",
+                  "prompt": "¿Salida?",
                   "difficulty": 1,
                   "xp": 10,
                   "explanation": "x es atributo de clase, compartido si no lo pisa la instancia.",
@@ -2415,7 +2422,7 @@
                 {
                   "id": "u13-e3",
                   "type": "predict_output",
-                  "prompt": "¿Salida (aprox. enteros)?\n\n```python\nimport math\nprint(int(math.sqrt(9)))\n```",
+                  "prompt": "¿Salida (aprox. enteros)?",
                   "difficulty": 1,
                   "xp": 10,
                   "explanation": "sqrt está en math. En arrays usarás np.sqrt, vectorizado.",
@@ -2534,7 +2541,7 @@
                 {
                   "id": "u13-e8",
                   "type": "predict_output",
-                  "prompt": "Tras `import numpy as np`, `np.__name__` es…\n\n```python\nimport numpy as np\nprint(np.__name__)\n```",
+                  "prompt": "Tras `import numpy as np`, `np.__name__` es…",
                   "difficulty": 1,
                   "xp": 10,
                   "explanation": "El alias es local. El módulo sigue llamándose numpy.",
@@ -2739,7 +2746,7 @@
                 {
                   "id": "u14-l1-e4",
                   "type": "predict_output",
-                  "prompt": "¿Qué imprime este código?\n\n```python\nimport numpy as np\na = np.array([1, 2, 3])\nprint(a.dtype)\n```",
+                  "prompt": "¿Qué imprime este código?",
                   "difficulty": 1,
                   "xp": 10,
                   "hint": "Enteros sin punto decimal.",
@@ -2823,7 +2830,7 @@
                 {
                   "id": "u14-l1-e7",
                   "type": "find_error",
-                  "prompt": "¿Qué falla?\n\n```python\nimport numpy as np\na = np.array([1, 2, 'tres'])\nprint(a.dtype)\n```",
+                  "prompt": "¿Qué falla?",
                   "difficulty": 2,
                   "xp": 12,
                   "explanation": "Un ndarray es homogéneo. Si mezclas int y str, todo se convierte a texto. Limpia tipos antes.",
@@ -2842,7 +2849,8 @@
                       "text": "Hay que importar array en vez de numpy"
                     }
                   ],
-                  "correctChoiceId": "a"
+                  "correctChoiceId": "a",
+                  "starterCode": "import numpy as np\na = np.array([1, 2, 'tres'])\nprint(a.dtype)"
                 },
                 {
                   "id": "u14-l1-e8",
@@ -2885,7 +2893,7 @@
                 {
                   "id": "u15-l1-e1",
                   "type": "predict_output",
-                  "prompt": "¿Qué imprime este código?\n\n```python\nimport numpy as np\na = np.array([10, 20, 30, 40])\nprint(a[1:3])\n```",
+                  "prompt": "¿Qué imprime este código?",
                   "difficulty": 1,
                   "xp": 10,
                   "explanation": "El slice [1:3] incluye el índice 1 y excluye el 3. Igual que en las listas.",
@@ -2997,7 +3005,7 @@
                 {
                   "id": "u15-l1-e6",
                   "type": "find_error",
-                  "prompt": "```python\nimport numpy as np\na = np.array([1, 2, 3])\nprint(a[3])\n```",
+                  "prompt": "¿Qué está mal en este código?",
                   "difficulty": 2,
                   "xp": 12,
                   "explanation": "IndexError: siempre cuenta desde 0. len(a) es 3, el último índice es 2.",
@@ -3016,7 +3024,8 @@
                       "text": "NumPy no admite indexado"
                     }
                   ],
-                  "correctChoiceId": "a"
+                  "correctChoiceId": "a",
+                  "starterCode": "import numpy as np\na = np.array([1, 2, 3])\nprint(a[3])"
                 },
                 {
                   "id": "u15-l1-e7",
@@ -3103,7 +3112,7 @@
                 {
                   "id": "u16-l1-e2",
                   "type": "predict_output",
-                  "prompt": "¿Qué imprime este código?\n\n```python\nimport numpy as np\nprint(np.array([1, 2, 3]) * 10)\n```",
+                  "prompt": "¿Qué imprime este código?",
                   "difficulty": 1,
                   "xp": 10,
                   "explanation": "El escalar 10 se 'estira' a cada elemento: broadcasting básico.",
@@ -3200,7 +3209,7 @@
                 {
                   "id": "u16-l1-e7",
                   "type": "find_error",
-                  "prompt": "```python\nimport numpy as np\nnp.array([1, 2, 3]) + np.array([1, 2])\n```",
+                  "prompt": "¿Qué está mal en este código?",
                   "difficulty": 2,
                   "xp": 12,
                   "explanation": "Alinea las formas o recorta. No es como zip que se detiene en el más corto.",
@@ -3219,7 +3228,8 @@
                       "text": "NumPy no suma arrays"
                     }
                   ],
-                  "correctChoiceId": "a"
+                  "correctChoiceId": "a",
+                  "starterCode": "import numpy as np\nnp.array([1, 2, 3]) + np.array([1, 2])"
                 },
                 {
                   "id": "u16-l1-e8",
@@ -3284,7 +3294,7 @@
                 {
                   "id": "u17-e2",
                   "type": "predict_output",
-                  "prompt": "¿Salida?\n\n```python\nimport numpy as np\nprint(int(np.array([1, 8, 3]).argmax()))\n```",
+                  "prompt": "¿Salida?",
                   "difficulty": 1,
                   "xp": 10,
                   "explanation": "argmax es el ÍNDICE del máximo (8 está en 1), no el valor 8. argmin al revés.",
@@ -3422,7 +3432,7 @@
                 {
                   "id": "u17-e8",
                   "type": "predict_output",
-                  "prompt": "np.min de [3, -1, 5] es…\n\n```python\nimport numpy as np\nprint(np.min([3, -1, 5]))\n```",
+                  "prompt": "np.min de [3, -1, 5] es…",
                   "difficulty": 1,
                   "xp": 10,
                   "explanation": "min/max son los extremos. Útiles para detectar sensores rotos (-999).",
@@ -3471,7 +3481,7 @@
                 {
                   "id": "u18-e2",
                   "type": "predict_output",
-                  "prompt": "¿shape de concatenate de dos (2,) en axis 0?\n\n```python\nimport numpy as np\nprint(np.concatenate([np.ones(2), np.zeros(2)]).shape)\n```",
+                  "prompt": "¿shape de concatenate de dos (2,) en axis 0?",
                   "difficulty": 1,
                   "xp": 10,
                   "explanation": "concatenate pega por un eje. vstack/hstack son atajos.",
@@ -3605,7 +3615,7 @@
                 {
                   "id": "u18-e8",
                   "type": "predict_output",
-                  "prompt": "hstack de [1,2] y [3] longitud…\n\n```python\nimport numpy as np\nprint(len(np.hstack([np.array([1, 2]), np.array([3])])))\n```",
+                  "prompt": "hstack de [1,2] y [3] longitud…",
                   "difficulty": 1,
                   "xp": 10,
                   "explanation": "hstack pega en horizontal en 1D: concatena.",
@@ -3858,7 +3868,7 @@
                 {
                   "id": "u19-l1-e5",
                   "type": "predict_output",
-                  "prompt": "Si ejecutas `plt.bar(['A','B'], [10, 3])`, ¿qué barra será más alta?\n\n```python\nprint('A')\n```",
+                  "prompt": "Si ejecutas `plt.bar(['A','B'], [10, 3])`, ¿qué barra será más alta?",
                   "difficulty": 1,
                   "xp": 10,
                   "explanation": "La categoría A tiene valor 10 frente a 3. El código de abajo solo documenta la respuesta.",
@@ -4053,7 +4063,7 @@
                 {
                   "id": "u20-l1-e5",
                   "type": "predict_output",
-                  "prompt": "Si `fig, axes = plt.subplots(2, 1)`, ¿qué tipo de índice usas para el segundo panel?\n\n```python\nprint('axes[1]')\n```",
+                  "prompt": "Si `fig, axes = plt.subplots(2, 1)`, ¿qué tipo de índice usas para el segundo panel?",
                   "difficulty": 1,
                   "xp": 10,
                   "explanation": "Con 2 filas y 1 columna, axes es un array 1D de 2 ejes. El segundo es axes[1].",
@@ -4272,7 +4282,7 @@
                 {
                   "id": "u21-l1-e6",
                   "type": "predict_output",
-                  "prompt": "Si dos variables tienen correlación 0 en el heatmap, ¿significa que no hay ninguna relación?\n\n```python\nprint('no necesariamente')\n```",
+                  "prompt": "Si dos variables tienen correlación 0 en el heatmap, ¿significa que no hay ninguna relación?",
                   "difficulty": 1,
                   "xp": 10,
                   "explanation": "La correlación de Pearson captura relaciones lineales. Un U-shape puede tener r≈0 y ser importantísimo.",
@@ -4494,7 +4504,7 @@
                 {
                   "id": "u22-e7",
                   "type": "predict_output",
-                  "prompt": "Si recortas el eje Y de 95 a 100 en una barra de 96 vs 99, el efecto visual…\n\n```python\nprint('exagera la diferencia')\n```",
+                  "prompt": "Si recortas el eje Y de 95 a 100 en una barra de 96 vs 99, el efecto visual…",
                   "difficulty": 1,
                   "xp": 10,
                   "explanation": "Empezar Y en 0 en barras. En líneas, recortar puede ser honesto si lo declaras.",
@@ -4741,7 +4751,7 @@
                 {
                   "id": "u23-l1-e4",
                   "type": "predict_output",
-                  "prompt": "¿Qué imprime `df.shape` para 3 filas y 3 columnas?\n\n```python\nprint((3, 3))\n```",
+                  "prompt": "¿Qué imprime `df.shape` para 3 filas y 3 columnas?",
                   "difficulty": 1,
                   "xp": 10,
                   "explanation": "shape siempre es (filas, columnas). No lo confundas con size (filas*columnas).",
@@ -4815,7 +4825,7 @@
                 {
                   "id": "u23-l1-e7",
                   "type": "find_error",
-                  "prompt": "```python\ndf.edad vs df['edad']\n``` para una columna llamada `mean`…",
+                  "prompt": "Una columna se llama `mean`. ¿Por qué `df.mean` es peligroso frente a `df['mean']`?",
                   "difficulty": 2,
                   "xp": 12,
                   "explanation": "El acceso por atributo es azúcar. Con columnas raras o espacios, usa corchetes.",
@@ -4935,7 +4945,7 @@
                 {
                   "id": "u24-l1-e4",
                   "type": "predict_output",
-                  "prompt": "Para `df.iloc[:2]`, ¿cuántas filas obtienes?\n\n```python\nprint(2)\n```",
+                  "prompt": "Para `df.iloc[:2]`, ¿cuántas filas obtienes?",
                   "difficulty": 1,
                   "xp": 10,
                   "explanation": "El final en iloc se excluye, igual que en las listas: [:2] → filas 0 y 1.",
@@ -4990,7 +5000,7 @@
                 {
                   "id": "u24-l1-e6",
                   "type": "find_error",
-                  "prompt": "```python\ndf[df.precio > 0.4 and df.stock > 0]\n```",
+                  "prompt": "¿Qué está mal en este código?",
                   "difficulty": 2,
                   "xp": 12,
                   "explanation": "and/or de Python no saben alinear Series. En pandas: &, |, ~ con paréntesis.",
@@ -5009,7 +5019,8 @@
                       "text": "precio debería ser un string"
                     }
                   ],
-                  "correctChoiceId": "a"
+                  "correctChoiceId": "a",
+                  "starterCode": "df[df.precio > 0.4 and df.stock > 0]"
                 },
                 {
                   "id": "u24-l1-e7",
@@ -5222,7 +5233,7 @@
                 {
                   "id": "u25-l1-e7",
                   "type": "predict_output",
-                  "prompt": "Si conviertes una columna de IDs `'001'` con `astype(int)`, ¿qué riesgo hay?\n\n```python\nprint('pierdes ceros a la izquierda')\n```",
+                  "prompt": "Si conviertes una columna de IDs `'001'` con `astype(int)`, ¿qué riesgo hay?",
                   "difficulty": 1,
                   "xp": 10,
                   "explanation": "001 se vuelve 1. Los identificadores suelen ser strings, no enteros.",
@@ -5420,7 +5431,7 @@
                 {
                   "id": "u26-e7",
                   "type": "predict_output",
-                  "prompt": "pivot_table index=ciudad, columns=mes, values=ventas, aggfunc=sum: Madrid-mes1 es…\n\n```python\nprint(10)\n```",
+                  "prompt": "pivot_table index=ciudad, columns=mes, values=ventas, aggfunc=sum: Madrid-mes1 es…",
                   "difficulty": 1,
                   "xp": 10,
                   "explanation": "Cada celda es un grupo (ciudad, mes). Madrid enero = 10.",
@@ -5517,7 +5528,7 @@
                 {
                   "id": "u27-e3",
                   "type": "predict_output",
-                  "prompt": "¿Qué imprime el mes?\n\n```python\nimport pandas as pd\nprint(pd.Timestamp('2024-03-15').month)\n```",
+                  "prompt": "¿Qué imprime el mes?",
                   "difficulty": 1,
                   "xp": 10,
                   "explanation": "Atributos: year, month, day, dayofweek. También .dt en una Series.",
@@ -5883,7 +5894,7 @@
                 {
                   "id": "u28-l1-e5",
                   "type": "predict_output",
-                  "prompt": "¿Qué imprime `np.median([1, 2, 100])`?\n\n```python\nimport numpy as np\nprint(np.median([1, 2, 100]))\n```",
+                  "prompt": "¿Qué imprime `np.median([1, 2, 100])`?",
                   "difficulty": 1,
                   "xp": 10,
                   "explanation": "El valor central tras ordenar 1,2,100 es 2. La media sería ~34.",
@@ -6081,7 +6092,7 @@
                 {
                   "id": "u29-l1-e5",
                   "type": "predict_output",
-                  "prompt": "En una binomial(n=1, p=0.3), los valores posibles son…\n\n```python\nprint('0 o 1')\n```",
+                  "prompt": "En una binomial(n=1, p=0.3), los valores posibles son…",
                   "difficulty": 1,
                   "xp": 10,
                   "explanation": "n=1 es un ensayo de Bernoulli: fracaso o éxito.",
@@ -6275,7 +6286,7 @@
                 {
                   "id": "u30-l1-e5",
                   "type": "predict_output",
-                  "prompt": "Si y = -x, r es…\n\n```python\nprint(-1.0)\n```",
+                  "prompt": "Si y = -x, r es…",
                   "difficulty": 1,
                   "xp": 10,
                   "explanation": "Relación lineal perfecta inversa.",
@@ -6493,7 +6504,7 @@
                 {
                   "id": "u31-e6",
                   "type": "predict_output",
-                  "prompt": "n=3 vs n=3000, misma diferencia de medias: el p del grande suele ser…\n\n```python\nprint('más pequeño')\n```",
+                  "prompt": "n=3 vs n=3000, misma diferencia de medias: el p del grande suele ser…",
                   "difficulty": 1,
                   "xp": 10,
                   "explanation": "Más datos → más potencia. Una diferencia irrelevante de negocio puede ser 'significativa'.",
@@ -6787,7 +6798,7 @@
                 {
                   "id": "u32-l1-e4",
                   "type": "predict_output",
-                  "prompt": "Si un modelo acierta el 99% en train y el 55% en test, sospechas…\n\n```python\nprint('overfitting')\n```",
+                  "prompt": "Si un modelo acierta el 99% en train y el 55% en test, sospechas…",
                   "difficulty": 1,
                   "xp": 10,
                   "explanation": "Memorizó el ruido del entrenamiento y no generaliza.",
@@ -6994,7 +7005,7 @@
                 {
                   "id": "u33-l1-e5",
                   "type": "predict_output",
-                  "prompt": "Ciudad = Madrid/Sevilla/Valencia en one-hot produce…\n\n```python\nprint('3 columnas binarias')\n```",
+                  "prompt": "Ciudad = Madrid/Sevilla/Valencia en one-hot produce…",
                   "difficulty": 1,
                   "xp": 10,
                   "explanation": "Cada categoría una columna 0/1. drop_first=True evita colinealidad en regresiones.",
@@ -7194,7 +7205,7 @@
                 {
                   "id": "u34-l1-e5",
                   "type": "predict_output",
-                  "prompt": "sigmoide(0) vale…\n\n```python\nimport math\nprint(round(1 / (1 + math.exp(0)), 1))\n```",
+                  "prompt": "sigmoide(0) vale…",
                   "difficulty": 1,
                   "xp": 10,
                   "explanation": "e^0=1 → 1/(1+1)=0.5. El umbral 0.5 corresponde a score lineal 0.",
@@ -7415,7 +7426,7 @@
                 {
                   "id": "u35-e6",
                   "type": "predict_output",
-                  "prompt": "En RF, cada árbol ve un bootstrap del train y un subset de features. Eso busca…\n\n```python\nprint('diversidad')\n```",
+                  "prompt": "En RF, cada árbol ve un bootstrap del train y un subset de features. Eso busca…",
                   "difficulty": 1,
                   "xp": 10,
                   "explanation": "Si todos los árboles fueran iguales, votar no ayudaría. Bagging + random features diversifica.",
@@ -7634,7 +7645,7 @@
                 {
                   "id": "u36-e6",
                   "type": "predict_output",
-                  "prompt": "SVM lineal: los puntos que tocan el margen se llaman…\n\n```python\nprint('vectores de soporte')\n```",
+                  "prompt": "SVM lineal: los puntos que tocan el margen se llaman…",
                   "difficulty": 1,
                   "xp": 10,
                   "explanation": "Solo ellos definen el hiperplano. De ahí el nombre.",
@@ -7858,7 +7869,7 @@
                 {
                   "id": "u37-e6",
                   "type": "predict_output",
-                  "prompt": "Tras asignar [0,1] al cluster 0, el nuevo centroide 1D es…\n\n```python\nprint(0.5)\n```",
+                  "prompt": "Tras asignar [0,1] al cluster 0, el nuevo centroide 1D es…",
                   "difficulty": 1,
                   "xp": 10,
                   "explanation": "La media de los puntos del cluster. M-step.",
@@ -8079,7 +8090,7 @@
                 {
                   "id": "u38-e6",
                   "type": "predict_output",
-                  "prompt": "Train 99%, val 70%, test 68% sugiere…\n\n```python\nprint('overfitting')\n```",
+                  "prompt": "Train 99%, val 70%, test 68% sugiere…",
                   "difficulty": 1,
                   "xp": 10,
                   "explanation": "La brecha train vs val es la pista. Regulariza, simplifica, más datos.",
@@ -8387,7 +8398,7 @@
                 {
                   "id": "u39-l1-e5",
                   "type": "predict_output",
-                  "prompt": "Una red con solo capas lineales apiladas (sin activación) es equivalente a…\n\n```python\nprint('una sola capa lineal')\n```",
+                  "prompt": "Una red con solo capas lineales apiladas (sin activación) es equivalente a…",
                   "difficulty": 1,
                   "xp": 10,
                   "explanation": "Componer funciones lineales sigue siendo lineal. La magia está en las no linealidades.",
@@ -8583,7 +8594,7 @@
                 {
                   "id": "u40-l1-e5",
                   "type": "predict_output",
-                  "prompt": "Si el batch_size es 32, la primera dimensión de X en el forward suele ser…\n\n```python\nprint(32)\n```",
+                  "prompt": "Si el batch_size es 32, la primera dimensión de X en el forward suele ser…",
                   "difficulty": 1,
                   "xp": 10,
                   "explanation": "Se procesan 32 ejemplos a la vez: más estable y más rápido en GPU/CPU vectorizada.",
@@ -8781,7 +8792,7 @@
                 {
                   "id": "u41-l1-e5",
                   "type": "predict_output",
-                  "prompt": "Si la loss de train baja y la de validación sube, es señal de…\n\n```python\nprint('overfitting')\n```",
+                  "prompt": "Si la loss de train baja y la de validación sube, es señal de…",
                   "difficulty": 1,
                   "xp": 10,
                   "explanation": "El modelo se especializa en train. Early stopping corta en el mejor val.",
@@ -9002,7 +9013,7 @@
                 {
                   "id": "u42-e6",
                   "type": "predict_output",
-                  "prompt": "10 clases (dígitos 0-9): la capa final tiene… neuronas.\n\n```python\nprint(10)\n```",
+                  "prompt": "10 clases (dígitos 0-9): la capa final tiene… neuronas.",
                   "difficulty": 1,
                   "xp": 10,
                   "explanation": "Una logit por clase. Argmax de softmax = dígito predicho.",
@@ -9223,7 +9234,7 @@
                 {
                   "id": "u43-e6",
                   "type": "predict_output",
-                  "prompt": "Un embedding de dimensión 3 para 2 palabras es una matriz de forma…\n\n```python\nprint('(2, 3)')\n```",
+                  "prompt": "Un embedding de dimensión 3 para 2 palabras es una matriz de forma…",
                   "difficulty": 1,
                   "xp": 10,
                   "explanation": "Filas = tokens del vocabulario (o de la secuencia). Columnas = features latentes.",
@@ -9876,7 +9887,7 @@
           {
             "id": "pl-2",
             "type": "predict_output",
-            "prompt": "¿Salida?\n\n```python\nprint('py' * 2)\n```",
+            "prompt": "¿Salida?",
             "difficulty": 1,
             "xp": 8,
             "explanation": "El operador * en strings repite.",
@@ -9954,7 +9965,7 @@
           {
             "id": "pl-6",
             "type": "predict_output",
-            "prompt": "¿Salida?\n\n```python\nprint(sum([1, 2, 3]))\n```",
+            "prompt": "¿Salida?",
             "difficulty": 1,
             "xp": 8,
             "explanation": "sum recorre e incorpora.",
@@ -10032,7 +10043,7 @@
           {
             "id": "pl-10",
             "type": "predict_output",
-            "prompt": "¿Salida?\n\n```python\nprint(list(range(3)))\n```",
+            "prompt": "¿Salida?",
             "difficulty": 1,
             "xp": 8,
             "explanation": "range(3) es 0,1,2.",

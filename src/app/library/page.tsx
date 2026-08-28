@@ -18,12 +18,22 @@ export default function LibraryPage() {
     return sections
       .map((s) => ({
         ...s,
-        articles: s.articles.filter(
-          (a) =>
-            a.title.toLowerCase().includes(query) ||
-            a.kicker.toLowerCase().includes(query) ||
-            a.blocks.some((b) => "text" in b && String(b.text).toLowerCase().includes(query))
-        ),
+        articles: s.articles.filter((a) => {
+          const blob = [
+            a.title,
+            a.kicker,
+            ...a.blocks.flatMap((b) => {
+              if ("text" in b) return [b.text];
+              if (b.type === "code") return [b.code, b.caption ?? ""];
+              if (b.type === "list") return b.items;
+              if (b.type === "glossary") return b.items.flatMap((x) => [x.term, x.def]);
+              return [];
+            }),
+          ]
+            .join(" ")
+            .toLowerCase();
+          return blob.includes(query);
+        }),
       }))
       .filter((s) => s.articles.length > 0);
   }, [sections, query]);
@@ -38,8 +48,8 @@ export default function LibraryPage() {
         Librería
       </h1>
       <p className="mt-2 text-sm text-muted-foreground">
-        Lecturas cortas de los {total} temas del camino: variables, operadores, NumPy, Pandas, modelos y más. Para
-        profundizar cuando un ejercicio no alcanza.
+        Guías desde cero de los {total} temas del camino. No hace falta haber programado: cada ficha explica las
+        palabras raras y luego enseña el truco.
       </p>
       <Link
         href="/playground"

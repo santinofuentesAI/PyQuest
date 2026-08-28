@@ -1,9 +1,12 @@
+import { FROM_ZERO } from "./library-from-zero";
+
 export type LibraryBlock =
   | { type: "p"; text: string }
   | { type: "h"; text: string }
   | { type: "code"; code: string; caption?: string }
-  | { type: "callout"; tone: "tip" | "warn" | "idea"; text: string }
-  | { type: "list"; items: string[] };
+  | { type: "callout"; tone: "tip" | "warn" | "idea" | "zero"; text: string }
+  | { type: "list"; items: string[] }
+  | { type: "glossary"; items: { term: string; def: string }[] };
 
 export type LibraryArticle = {
   id: string;
@@ -314,5 +317,13 @@ export const LIBRARY: LibraryArticle[] = [
 export const LIBRARY_BY_ID = new Map(LIBRARY.map((x) => [x.id, x]));
 
 export function getLibraryArticle(id: string) {
-  return LIBRARY_BY_ID.get(id);
+  const article = LIBRARY_BY_ID.get(id);
+  if (!article) return undefined;
+  const extra = FROM_ZERO[id];
+  if (!extra?.length) return article;
+  return {
+    ...article,
+    minutes: Math.min(18, article.minutes + 6),
+    blocks: [...extra, { type: "h" as const, text: "Un poco más de detalle" }, ...article.blocks],
+  };
 }

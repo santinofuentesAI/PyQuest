@@ -40,6 +40,19 @@ export function LibraryBlocks({ blocks }: { blocks: LibraryBlock[] }) {
             </ul>
           );
         }
+        if (b.type === "glossary") {
+          return (
+            <dl key={i} className="space-y-3 rounded-2xl border bg-muted/40 px-4 py-3">
+              <p className="text-xs font-bold tracking-widest text-muted-foreground uppercase">Palabras nuevas</p>
+              {b.items.map((item) => (
+                <div key={item.term}>
+                  <dt className="font-mono text-sm font-bold">{item.term}</dt>
+                  <dd className="text-[15px] leading-relaxed text-foreground/90">{item.def}</dd>
+                </div>
+              ))}
+            </dl>
+          );
+        }
         return (
           <p
             key={i}
@@ -47,11 +60,18 @@ export function LibraryBlocks({ blocks }: { blocks: LibraryBlock[] }) {
               "rounded-2xl border px-4 py-3 text-sm leading-relaxed",
               b.tone === "tip" && "border-emerald-200 bg-emerald-50 text-emerald-950 dark:border-emerald-900 dark:bg-emerald-950/40 dark:text-emerald-100",
               b.tone === "warn" && "border-amber-200 bg-amber-50 text-amber-950 dark:border-amber-900 dark:bg-amber-950/40 dark:text-amber-100",
-              b.tone === "idea" && "border-violet-200 bg-violet-50 text-violet-950 dark:border-violet-900 dark:bg-violet-950/40 dark:text-violet-100"
+              b.tone === "idea" && "border-violet-200 bg-violet-50 text-violet-950 dark:border-violet-900 dark:bg-violet-950/40 dark:text-violet-100",
+              b.tone === "zero" && "border-sky-200 bg-sky-50 text-sky-950 dark:border-sky-900 dark:bg-sky-950/40 dark:text-sky-100"
             )}
           >
             <span className="mr-1 font-bold">
-              {b.tone === "tip" ? "Consejo." : b.tone === "warn" ? "Cuidado." : "Idea."}
+              {b.tone === "tip"
+                ? "Consejo."
+                : b.tone === "warn"
+                  ? "Cuidado."
+                  : b.tone === "zero"
+                    ? "Si no sabes nada de esto."
+                    : "Idea."}
             </span>
             {b.text}
           </p>

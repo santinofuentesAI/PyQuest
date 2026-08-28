@@ -23,6 +23,25 @@ export function shuffle<T>(arr: T[]): T[] {
   return a;
 }
 
+/** Shuffle option order without mutating the curriculum objects. */
+export function shuffleExercise(ex: Exercise): Exercise {
+  return {
+    ...ex,
+    choices: ex.choices ? shuffle(ex.choices) : undefined,
+    blocks: ex.blocks ? shuffle(ex.blocks) : undefined,
+    left: ex.left ? shuffle(ex.left) : undefined,
+    right: ex.right ? shuffle(ex.right) : undefined,
+  };
+}
+
+/** Learn-path only: new exercise order + shuffled choices so you cannot memorize the map. */
+export function shuffleLearnLesson(lesson: Lesson): Lesson {
+  return {
+    ...lesson,
+    exercises: shuffle(lesson.exercises.map(shuffleExercise)),
+  };
+}
+
 /** Lessons the learner has actually finished or that placement marked as known. */
 export function practicedLessonIds(progress: UserProgress): string[] {
   const ids = new Set(Object.keys(progress.completedLessons));
@@ -97,7 +116,7 @@ export function buildPracticeLesson(
   if (exercises.length === 0) return null;
   const picked = shuffle(exercises).slice(0, Math.min(count, exercises.length));
   const scaled = picked.map((e, i) => ({
-    ...e,
+    ...shuffleExercise(e),
     id: `${e.id}-prac-${run}-${i}`,
     xp: Math.max(8, Math.round(e.xp * 1.25)),
   }));

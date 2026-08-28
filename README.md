@@ -4,7 +4,8 @@ Plataforma web de aprendizaje gamificado de **Python para análisis de datos e I
 
 ## Qué incluye este slice
 
-- Motor de ejercicios genérico: opción múltiple, huecos, código, reordenar, detectar error, predecir salida, datos reales (CSV) y emparejar.
+- Motor de ejercicios genérico: opción múltiple, huecos, código, reordenar, detectar error, predecir salida, datos reales (CSV) y emparejar. En **Aprender**, el orden de los ejercicios y de las opciones cambia en cada intento (para no memorizar el mapa).
+- **Librería**: fichas desde cero de cada unidad (glosario, analogías, y luego más detalle).
 - Runtime Python en un **Web Worker** (timeout 8 s, `stdout`/`stderr`, figuras Matplotlib a PNG).
 - Currículo completo en el mapa (secciones 0–7): **53 unidades** con lecciones originales (enunciado, pista, solución y tests). Hub por unidad, repaso espaciado y tienda de gemas.
 - Test de nivel inicial (si vienes de DataCamp, te coloca cerca de NumPy / Pandas).

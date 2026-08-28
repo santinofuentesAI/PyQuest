@@ -8,6 +8,8 @@ import { Input } from "@/components/ui/input";
 import { CodeEditor } from "@/components/code-editor";
 import { cn } from "@/lib/utils";
 import { Lightbulb } from "lucide-react";
+import { PromptText, promptAlreadyShowsCode } from "@/lib/prompt-text";
+import { shuffle } from "@/lib/practice";
 
 export function ExerciseView({
   exercise,
@@ -16,17 +18,19 @@ export function ExerciseView({
   exercise: Exercise;
   onSubmit: (answer: UserAnswer) => void;
 }) {
+  const showStarter =
+    Boolean(exercise.starterCode) &&
+    (exercise.type === "find_error" || exercise.type === "predict_output") &&
+    !promptAlreadyShowsCode(exercise.prompt, exercise.starterCode);
+
   return (
     <div className="space-y-4">
-      <div className="prose-prompt text-[17px] leading-relaxed font-medium whitespace-pre-wrap">
-        {exercise.prompt}
-      </div>
-      {exercise.starterCode &&
-        (exercise.type === "find_error" || exercise.type === "predict_output") && (
-          <pre className="overflow-x-auto rounded-xl bg-zinc-950 p-3 text-sm text-zinc-100">
-            <code>{exercise.starterCode}</code>
-          </pre>
-        )}
+      <PromptText exercise={exercise} />
+      {showStarter && (
+        <pre className="overflow-x-auto rounded-2xl bg-zinc-950 p-3 text-sm leading-6 text-zinc-100">
+          <code>{exercise.starterCode}</code>
+        </pre>
+      )}
       {exercise.type === "multiple_choice" || exercise.type === "find_error" ? (
         <ChoiceForm exercise={exercise} onSubmit={onSubmit} />
       ) : exercise.type === "fill_blank" ? (
@@ -46,6 +50,7 @@ export function ExerciseView({
 
 function ChoiceForm({ exercise, onSubmit }: { exercise: Exercise; onSubmit: (a: UserAnswer) => void }) {
   const [id, setId] = useState<string | null>(null);
+  const [choices] = useState(() => shuffle(exercise.choices ?? []));
   return (
     <form
       className="space-y-3"
@@ -55,7 +60,7 @@ function ChoiceForm({ exercise, onSubmit }: { exercise: Exercise; onSubmit: (a: 
       }}
     >
       <div className="grid gap-2" role="radiogroup" aria-label="Opciones">
-        {exercise.choices?.map((c) => (
+        {choices.map((c) => (
           <button
             key={c.id}
             type="button"
@@ -115,8 +120,8 @@ function BlankForm({ exercise, onSubmit }: { exercise: Exercise; onSubmit: (a: U
 }
 
 function ReorderForm({ exercise, onSubmit }: { exercise: Exercise; onSubmit: (a: UserAnswer) => void }) {
-  const [pool, setPool] = useState(() => [...(exercise.blocks ?? [])]);
-  const [picked, setPicked] = useState<typeof pool>([]);
+  const [picked, setPicked] = useState<NonNullable<Exercise["blocks"]>>([]);
+  const [pool, setPool] = useState(() => shuffle(exercise.blocks ?? []));
   return (
     <form
       className="space-y-3"
@@ -169,6 +174,8 @@ function ReorderForm({ exercise, onSubmit }: { exercise: Exercise; onSubmit: (a:
 function MatchForm({ exercise, onSubmit }: { exercise: Exercise; onSubmit: (a: UserAnswer) => void }) {
   const [sel, setSel] = useState<string | null>(null);
   const [pairs, setPairs] = useState<Record<string, string>>({});
+  const [left] = useState(() => shuffle(exercise.left ?? []));
+  const [right] = useState(() => shuffle(exercise.right ?? []));
   const usedRight = new Set(Object.values(pairs));
   const complete = (exercise.left?.length ?? 0) === Object.keys(pairs).length;
 
@@ -196,7 +203,7 @@ function MatchForm({ exercise, onSubmit }: { exercise: Exercise; onSubmit: (a: U
     >
       <div className="grid grid-cols-2 gap-3">
         <div className="space-y-2">
-          {exercise.left?.map((item) => (
+          {left.map((item) => (
             <button
               key={item.id}
               type="button"
@@ -215,7 +222,7 @@ function MatchForm({ exercise, onSubmit }: { exercise: Exercise; onSubmit: (a: U
           ))}
         </div>
         <div className="space-y-2">
-          {exercise.right?.map((item) => (
+          {right.map((item) => (
             <button
               key={item.id}
               type="button"
