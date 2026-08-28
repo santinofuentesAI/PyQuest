@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Dumbbell, Map, Sparkles, Trophy, User } from "lucide-react";
+import { isImmersivePath } from "@/lib/chrome";
 import { cn } from "@/lib/utils";
 
 const items = [
@@ -15,12 +16,7 @@ const items = [
 
 export function BottomNav() {
   const pathname = usePathname();
-  const hide =
-    pathname === "/" ||
-    pathname.startsWith("/onboarding") ||
-    pathname.startsWith("/placement") ||
-    pathname.startsWith("/lesson");
-  if (hide) return null;
+  if (isImmersivePath(pathname)) return null;
 
   return (
     <nav className="sticky bottom-0 z-40 border-t border-border/70 bg-background/95 backdrop-blur-md pb-[env(safe-area-inset-bottom)]">

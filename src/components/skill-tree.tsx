@@ -1,15 +1,19 @@
 "use client";
 
 import Link from "next/link";
-import { Lock, Check, Sparkles, Crown, RotateCcw } from "lucide-react";
-import { SECTIONS } from "@/lib/curriculum";
-import { isUnitUnlocked, useProgress } from "@/lib/progress-store";
+import { Lock, Check, Sparkles, Crown, RotateCcw, Play } from "lucide-react";
+import { SECTIONS, UNITS } from "@/lib/curriculum";
+import { continueLessonId, continueUnitId, isUnitUnlocked, useProgress } from "@/lib/progress-store";
 import { decayStrength } from "@/lib/gamification";
 import { cn } from "@/lib/utils";
 import { PythonStatus } from "@/components/python-status";
+import { buttonVariants } from "@/components/ui/button";
 
 export function SkillTree({ highlight }: { highlight?: string }) {
   const progress = useProgress();
+  const nextLesson = continueLessonId(progress);
+  const nextUnit = continueUnitId(progress);
+  const nextUnitTitle = nextUnit ? UNITS.find((u) => u.id === nextUnit)?.title : undefined;
 
   return (
     <div className="mx-auto max-w-lg px-4 pb-24 pt-6">
@@ -20,6 +24,15 @@ export function SkillTree({ highlight }: { highlight?: string }) {
           Lecciones de 5–10 minutos. Python corre en este navegador: NumPy, Pandas y Matplotlib incluidos.
         </p>
         <PythonStatus className="mt-3" />
+        {nextLesson && (
+          <Link
+            href={`/lesson/${nextLesson}`}
+            className={cn(buttonVariants({ size: "lg" }), "mt-4 h-12 w-full rounded-2xl text-base font-bold")}
+          >
+            <Play className="size-4" />
+            Continuar{nextUnitTitle ? `: ${nextUnitTitle}` : ""}
+          </Link>
+        )}
       </div>
 
       {SECTIONS.map((section) => (
@@ -42,7 +55,6 @@ export function SkillTree({ highlight }: { highlight?: string }) {
                 !!up && unit.lessons.every((l) => up.completedLessonIds.includes(l.id));
               const strength = decayStrength(up?.strength ?? (complete ? 0.7 : 0), up?.lastPracticedAt ?? null);
               const weak = complete && strength < 0.45;
-              const lessonId = unit.lessons[0]?.id;
               const offset = idx % 2 === 0 ? "ml-0" : "ml-10 sm:ml-16";
               return (
                 <li key={unit.id} className={cn("relative flex items-center gap-3", offset)}>
@@ -69,13 +81,18 @@ export function SkillTree({ highlight }: { highlight?: string }) {
                     )}
                   </div>
                   <div className="min-w-0 flex-1">
-                    {unlocked && lessonId ? (
-                      <Link href={`/lesson/${lessonId}`} className="block rounded-2xl border bg-card p-3 shadow-sm hover:border-primary/40">
-                        <UnitCopy unit={unit} complete={complete} weak={weak} template={!!unit.isTemplate} />
+                    {unlocked ? (
+                      <Link href={`/unit/${unit.id}`} className="block rounded-2xl border bg-card p-3 shadow-sm hover:border-primary/40">
+                        <UnitCopy
+                          unit={unit}
+                          complete={complete}
+                          weak={weak}
+                          doneCount={up?.completedLessonIds.length ?? 0}
+                        />
                       </Link>
                     ) : (
                       <div className="rounded-2xl border bg-muted/40 p-3 opacity-70">
-                        <UnitCopy unit={unit} complete={false} weak={false} template={!!unit.isTemplate} locked />
+                        <UnitCopy unit={unit} complete={false} weak={false} doneCount={0} locked />
                       </div>
                     )}
                   </div>
@@ -93,13 +110,13 @@ function UnitCopy({
   unit,
   complete,
   weak,
-  template,
+  doneCount,
   locked,
 }: {
-  unit: { title: string; description: string; isProject?: boolean };
+  unit: { title: string; description: string; isProject?: boolean; lessons: { id: string }[] };
   complete: boolean;
   weak: boolean;
-  template: boolean;
+  doneCount: number;
   locked?: boolean;
 }) {
   return (
@@ -110,14 +127,12 @@ function UnitCopy({
         {locked
           ? "Completa la unidad anterior"
           : weak
-            ? "Se está debilitando · repasa"
+            ? "Se está debilitando · toca para repasarla"
             : complete
               ? "Dominada"
               : unit.isProject
                 ? "Proyecto"
-                : template
-                  ? "Plantilla jugable · contenido extra en camino"
-                  : "5–10 min"}
+                : `${doneCount}/${unit.lessons.length} lecciones · 5–10 min`}
       </p>
     </>
   );

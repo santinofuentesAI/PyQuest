@@ -147,6 +147,7 @@ export type UserProgress = {
   badges: string[];
   legendaryHighScore: number;
   theme: "light" | "dark" | "system";
+  soundEnabled: boolean;
 };
 
 export type PythonRunResult = {

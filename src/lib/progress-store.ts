@@ -35,6 +35,7 @@ const defaultProgress = (): UserProgress => ({
   badges: [],
   legendaryHighScore: 0,
   theme: "system",
+  soundEnabled: true,
 });
 
 type ProgressState = UserProgress & {
@@ -51,6 +52,10 @@ type ProgressState = UserProgress & {
   applyPlacement: (score: number, total: number) => string;
   unlockPracticeHearts: () => void;
   addLegendaryScore: (xp: number) => void;
+  setSound: (on: boolean) => void;
+  restoreHeart: () => void;
+  boostUnit: (unitId: string) => void;
+  resetProgress: () => void;
 };
 
 function awardBadges(p: UserProgress): string[] {
@@ -205,6 +210,37 @@ export const useProgress = create<ProgressState>()(
         awardBadges(p);
         set(p);
       },
+      setSound: (on) => set({ soundEnabled: on }),
+      restoreHeart: () => {
+        const current = regenerateHearts(get());
+        set({
+          ...current,
+          hearts: Math.min(MAX_HEARTS, current.hearts + 1),
+          heartsUpdatedAt: Date.now(),
+        });
+      },
+      boostUnit: (unitId) => {
+        const p = get();
+        const current = p.units[unitId] ?? {
+          strength: 0.4,
+          lastPracticedAt: null,
+          completedLessonIds: [],
+        };
+        set({
+          units: {
+            ...p.units,
+            [unitId]: {
+              ...current,
+              strength: 1,
+              lastPracticedAt: new Date().toISOString(),
+            },
+          },
+        });
+      },
+      resetProgress: () => {
+        const name = get().displayName;
+        set({ ...defaultProgress(), displayName: name, hydrated: true, onboarded: false });
+      },
     }),
     {
       name: "pyquest-progress-v1",
@@ -223,6 +259,10 @@ export const useProgress = create<ProgressState>()(
           "applyPlacement",
           "unlockPracticeHearts",
           "addLegendaryScore",
+          "setSound",
+          "restoreHeart",
+          "boostUnit",
+          "resetProgress",
         ]);
         return Object.fromEntries(
           Object.entries(state).filter(([key]) => !skip.has(key))
@@ -235,6 +275,22 @@ export const useProgress = create<ProgressState>()(
     }
   )
 );
+
+export function continueLessonId(progress: UserProgress): string | null {
+  for (const unit of UNITS) {
+    if (!isUnitUnlocked(unit.id, progress)) continue;
+    const done = progress.units[unit.id]?.completedLessonIds ?? [];
+    const next = unit.lessons.find((l) => !done.includes(l.id));
+    if (next) return next.id;
+  }
+  return null;
+}
+
+export function continueUnitId(progress: UserProgress): string | null {
+  const lessonId = continueLessonId(progress);
+  if (!lessonId) return null;
+  return getUnitByLessonId(lessonId)?.id ?? null;
+}
 
 export function isUnitUnlocked(unitId: string, progress: UserProgress): boolean {
   const unit = UNITS.find((u) => u.id === unitId);

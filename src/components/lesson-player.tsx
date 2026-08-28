@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import confetti from "canvas-confetti";
 import { motion, AnimatePresence } from "framer-motion";
@@ -11,7 +11,8 @@ import { ExerciseView, Hint } from "@/components/exercise-view";
 import { Button } from "@/components/ui/button";
 import { useProgress } from "@/lib/progress-store";
 import { PythonStatus } from "@/components/python-status";
-import { getLessonContext, nextLessonId } from "@/lib/curriculum";
+import { playTone } from "@/lib/sound";
+import { BADGES, getLessonContext, nextLessonId, UNITS } from "@/lib/curriculum";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
 
@@ -19,10 +20,14 @@ export function LessonPlayer({
   lesson,
   practice,
   legendary,
+  review,
+  onFinish,
 }: {
   lesson: Lesson;
   practice?: boolean;
   legendary?: boolean;
+  review?: boolean;
+  onFinish?: () => void;
 }) {
   const router = useRouter();
   const progress = useProgress();
@@ -42,6 +47,17 @@ export function LessonPlayer({
   const total = lesson.exercises.length;
   const ctx = getLessonContext(lesson.id);
 
+  useEffect(() => {
+    function onKey(e: KeyboardEvent) {
+      if (e.key !== "Enter" || busy) return;
+      if (feedback) advance();
+    }
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+    // advance/finish close over the latest step; rebind when feedback or index change
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [busy, feedback, i, total]);
+
   async function submit(answer: UserAnswer) {
     if (!exercise || busy || feedback) return;
     setBusy(true);
@@ -53,6 +69,7 @@ export function LessonPlayer({
         stdout: result.stdout,
         images: result.images,
       });
+      if (progress.soundEnabled !== false) playTone(result.correct ? "ok" : "bad");
       if (result.correct) {
         setCorrectCount((c) => c + 1);
       } else if (!practice) {
@@ -89,6 +106,10 @@ export function LessonPlayer({
     if (legendary) {
       progress.addLegendaryScore(finalXp);
       setNewBadges([]);
+    } else if (review) {
+      progress.addLegendaryScore(Math.round(finalXp * 0.5));
+      onFinish?.();
+      setNewBadges([]);
     } else {
       const badges = progress.completeLesson({
         lessonId: lesson.id,
@@ -101,6 +122,7 @@ export function LessonPlayer({
       setNewBadges(badges);
     }
     setDone(true);
+    if (progress.soundEnabled !== false) playTone("done");
     confetti({ particleCount: 120, spread: 70, origin: { y: 0.7 } });
   }
 
@@ -114,20 +136,30 @@ export function LessonPlayer({
           <div className="mx-auto flex size-20 items-center justify-center rounded-full bg-amber-400 text-amber-950 shadow-lg">
             <Star className="size-10 fill-current" />
           </div>
-          <h1 className="font-heading text-3xl font-extrabold">¡Lección completada!</h1>
+          <h1 className="font-heading text-3xl font-extrabold">
+            {review ? "¡Unidad reforzada!" : legendary ? "¡Práctica legendaria!" : "¡Lección completada!"}
+          </h1>
           <p className="text-muted-foreground">
-            {correctCount}/{total} correctas · +
-            {lesson.exercises.slice(0, correctCount).reduce((s, e) => s + e.xp, 0)} XP
+            {correctCount}/{total} correctas
+            {review ? " · +1 corazón · fuerza restaurada" : ""}
           </p>
           {newBadges.length > 0 && (
             <p className="rounded-2xl bg-violet-100 px-4 py-2 text-sm font-semibold text-violet-900 dark:bg-violet-950 dark:text-violet-100">
-              Nueva insignia: {newBadges.join(", ")}
+              Nueva insignia: {newBadges.map((id) => BADGES.find((b) => b.id === id)?.title ?? id).join(", ")}
             </p>
           )}
           <div className="flex flex-col gap-2 pt-4">
-            {next && (
+            {next && !review && !legendary && (
               <Button className="h-12 rounded-2xl font-bold" render={<Link href={`/lesson/${next}`} />}>
                 Siguiente lección
+              </Button>
+            )}
+            {review && (
+              <Button
+                className="h-12 rounded-2xl font-bold"
+                render={<Link href={`/unit/${lesson.id.replace(/^review-/, "")}`} />}
+              >
+                Volver a la unidad
               </Button>
             )}
             <Button variant="outline" className="h-12 rounded-2xl font-bold" render={<Link href="/learn" />}>
@@ -164,7 +196,8 @@ export function LessonPlayer({
             {progress.hearts}
           </div>
         )}
-        {practice && <span className="text-xs font-bold text-emerald-600">PRÁCTICA</span>}
+        {practice && !review && <span className="text-xs font-bold text-emerald-600">PRÁCTICA</span>}
+        {review && <span className="text-xs font-bold text-amber-600">REPASO</span>}
       </header>
 
       {heartsEmpty && (
@@ -177,6 +210,9 @@ export function LessonPlayer({
             <Button variant="outline" render={<Link href="/learn" />}>
               Mapa
             </Button>
+            <Button variant="outline" render={<Link href="/shop" />}>
+              Tienda
+            </Button>
             <Button render={<Link href="/practice" />}>Práctica legendaria</Button>
           </div>
         </div>
@@ -184,7 +220,7 @@ export function LessonPlayer({
 
       <div className={cn("flex-1 px-4 pb-4", heartsEmpty && "pointer-events-none opacity-40")}>
         <p className="mb-2 text-xs font-bold tracking-wider text-muted-foreground uppercase">
-          {ctx?.unit.title} · {i + 1}/{total} · {exercise.xp} XP
+          {ctx?.unit.title ?? lesson.title} · {i + 1}/{total} · {exercise.xp} XP
         </p>
         <PythonStatus className="mb-3" />
         <ExerciseView exercise={exercise} onSubmit={submit} />
@@ -235,12 +271,13 @@ export function LessonPlayer({
 }
 
 export function PlacementPlayer({ lesson }: { lesson: Lesson }) {
-  const router = useRouter();
   const apply = useProgress((s) => s.applyPlacement);
+  const getUnitTitle = (id: string) => UNITS.find((u) => u.id === id)?.title ?? id;
   const [i, setI] = useState(0);
   const [correct, setCorrect] = useState(0);
   const [busy, setBusy] = useState(false);
   const [feedback, setFeedback] = useState<{ correct: boolean; text: string } | null>(null);
+  const [placed, setPlaced] = useState<string | null>(null);
   const exercise = lesson.exercises[i];
 
   async function submit(answer: UserAnswer) {
@@ -256,11 +293,32 @@ export function PlacementPlayer({ lesson }: { lesson: Lesson }) {
     const nextCorrect = correct;
     if (i + 1 >= lesson.exercises.length) {
       const unitId = apply(nextCorrect, lesson.exercises.length);
-      router.push(`/learn?placed=${unitId}`);
+      setPlaced(unitId);
       return;
     }
     setI(i + 1);
     setFeedback(null);
+  }
+
+  if (placed) {
+    return (
+      <div className="mx-auto flex min-h-[100dvh] max-w-lg flex-col items-center justify-center px-6 py-12 text-center">
+        <p className="text-xs font-bold tracking-widest text-primary uppercase">Colocación lista</p>
+        <h1 className="font-heading mt-2 text-3xl font-extrabold">Empiezas en {getUnitTitle(placed)}</h1>
+        <p className="mt-3 text-muted-foreground">
+          {correct}/{lesson.exercises.length} aciertos. Las unidades anteriores quedan abiertas por si quieres
+          repasarlas.
+        </p>
+        <div className="mt-6 flex w-full flex-col gap-2">
+          <Button className="h-12 rounded-2xl font-bold" render={<Link href={`/unit/${placed}`} />}>
+            Ir a mi unidad
+          </Button>
+          <Button variant="outline" className="h-12 rounded-2xl font-bold" render={<Link href="/learn" />}>
+            Ver el mapa completo
+          </Button>
+        </div>
+      </div>
+    );
   }
 
   if (!exercise) return null;

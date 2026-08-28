@@ -3,7 +3,11 @@
 from __future__ import annotations
 
 import json
+import sys
 from pathlib import Path
+
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from remaining_units import remaining_by_id
 
 OUT = Path(__file__).resolve().parents[1] / "src" / "content" / "curriculum.json"
 
@@ -2511,6 +2515,7 @@ def placement_unit():
 
 
 def build():
+    R = remaining_by_id()
     temps = "dia,temp\n1,12.0\n2,15.5\n3,14.0\n4,18.2\n5,17.0\n"
     titanic_mini = "survived,pclass,sex,age\n1,1,female,38\n0,3,male,22\n1,3,female,26\n0,1,male,54\n"
     sections = [
@@ -2525,16 +2530,8 @@ def build():
                 s0_u1(),
                 s0_u2(),
                 s0_u3(),
-                template_unit("u4", 4, "Strings", "Indexado, slicing, métodos y f-strings.", "type", "s = 'PyQuest'\nprint(s[___])", "0",),
-                template_unit("u5", 5, "Listas", "Creación, métodos y comprensiones básicas.", "list", "xs = [1, 2]\nxs.___(3)", "append"),
-                template_unit("u6", 6, "Tuplas y sets", "Inmutabilidad y conjuntos únicos.", "hash", "t = (1, 2)\nprint(type(t).__name__)\n# ___", "tuple"),
-                template_unit("u7", 7, "Diccionarios", "Claves, valores e iteración.", "book-key", "d = {'a': 1}\nprint(d[___])", "'a'"),
-                template_unit("u8", 8, "if / elif / else", "Decisiones y operadores combinados.", "git-branch", "x = 3\nif x ___ 0:\n    print('pos')", ">"),
-                template_unit("u9", 9, "Bucles", "for, while, break, continue y range.", "repeat", "for i in range(___):\n    print(i)", "3"),
-                template_unit("u10", 10, "Funciones", "def, return, defaults y *args.", "square-function", "def doble(n):\n    return n ___ 2", "*"),
-                template_unit("u11", 11, "Errores", "try / except / finally y tipos.", "shield-alert", "try:\n    1/0\nexcept ___:\n    print('boom')", "ZeroDivisionError"),
-                template_unit("u12", 12, "OOP", "Clases, __init__ y herencia básica.", "boxes", "class P:\n    def __init__(self, n):\n        self.n = n\n# ___", "n"),
-                template_unit("u13", 13, "Módulos y pip", "import, venv y librerías.", "package", "import math\nprint(math.___(4))", "sqrt"),
+                R["u4"], R["u5"], R["u6"], R["u7"], R["u8"], R["u9"],
+                R["u10"], R["u11"], R["u12"], R["u13"],
                 project_unit(
                     "p0",
                     13.5,
@@ -2558,8 +2555,7 @@ def build():
                 s1_u14(),
                 s1_u15(),
                 s1_u16(),
-                template_unit("u17", 17, "Funciones estadísticas", "mean, std, sum, argmax y amigos.", "sigma", "import numpy as np\nnp.___([1, 2, 3])", "mean"),
-                template_unit("u18", 18, "Reshape y filtros", "concatenar, booleanos y reshape.", "layers", "import numpy as np\na = np.arange(6).reshape(2, ___)", "3"),
+                R["u17"], R["u18"],
                 project_unit(
                     "p1",
                     18.5,
@@ -2584,7 +2580,7 @@ def build():
                 s2_u19(),
                 s2_u20(),
                 s2_u21(),
-                template_unit("u22", 22, "Storytelling visual", "Claridad, color y el mensaje primero.", "message-square", "ax.___('Ventas 2024')", "set_title"),
+                R["u22"],
                 project_unit(
                     "p2",
                     22.5,
@@ -2608,8 +2604,7 @@ def build():
                 s3_u23(),
                 s3_u24(),
                 s3_u25(),
-                template_unit("u26", 26, "Transformación", "apply, groupby, merge y pivot.", "combine", "df.group___('ciudad')['edad'].mean()", "by"),
-                template_unit("u27", 27, "Series temporales", "Fechas, resample e índices datetime.", "calendar", "pd.___(['2024-01-01'])", "to_datetime"),
+                R["u26"], R["u27"],
                 project_unit(
                     "p3",
                     27.5,
@@ -2634,7 +2629,7 @@ def build():
                 s4_u28(),
                 s4_u29(),
                 s4_u30(),
-                template_unit("u31", 31, "Pruebas de hipótesis", "t-test, chi-cuadrado y p-valores con cabeza.", "flask-conical", "print('p-valor ___ 0.05')", "<"),
+                R["u31"],
                 project_unit(
                     "p4",
                     31.5,
@@ -2658,10 +2653,7 @@ def build():
                 s5_u32(),
                 s5_u33(),
                 s5_u34(),
-                template_unit("u35", 35, "Árboles y Random Forest", "Particiones y ensambles.", "tree-pine", "print('max_depth = ___')", "3"),
-                template_unit("u36", 36, "KNN y SVM", "Vecinos y márgenes.", "waypoints", "print('k = ___')", "5"),
-                template_unit("u37", 37, "K-Means", "Clustering e inercia.", "circles", "print('k clusters = ___')", "3"),
-                template_unit("u38", 38, "Evaluación", "accuracy, F1, overfitting y CV.", "target", "print('f1 = 2*p*r/(p+___ )')", "r"),
+                R["u35"], R["u36"], R["u37"], R["u38"],
                 project_unit(
                     "p5",
                     38.5,
@@ -2685,8 +2677,7 @@ def build():
                 s6_u39(),
                 s6_u40(),
                 s6_u41(),
-                template_unit("u42", 42, "Imágenes y MNIST", "Clasificar dígitos: convoluciones en idea.", "image", "print('28 x ___ píxeles')", "28"),
-                template_unit("u43", 43, "NLP básico", "Tokens, embeddings y un modelo preentrenado.", "languages", "print('token = ___ de texto')", "pieza"),
+                R["u42"], R["u43"],
                 project_unit(
                     "p6",
                     43.5,

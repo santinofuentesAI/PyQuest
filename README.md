@@ -6,7 +6,7 @@ Plataforma web de aprendizaje gamificado de **Python para análisis de datos e I
 
 - Motor de ejercicios genérico: opción múltiple, huecos, código, reordenar, detectar error, predecir salida, datos reales (CSV) y emparejar.
 - Runtime Python en un **Web Worker** (timeout 8 s, `stdout`/`stderr`, figuras Matplotlib a PNG).
-- Currículo completo en el mapa (secciones 0–7). Las **primeras 3 unidades de cada sección** tienen lecciones detalladas (enunciado, pista, solución, tests). El resto usa una plantilla jugable con el mismo JSON.
+- Currículo completo en el mapa (secciones 0–7): **53 unidades** con lecciones originales (enunciado, pista, solución y tests). Hub por unidad, repaso espaciado y tienda de gemas.
 - Test de nivel inicial (si vienes de DataCamp, te coloca cerca de NumPy / Pandas).
 - Progreso en `localStorage` (modo invitado). FastAPI + PostgreSQL opcionales para persistir cuentas.
 - Modo **Práctica legendaria**, liga semanal, insignias, tienda (corazones y congelador de racha).
@@ -124,4 +124,4 @@ Tablas SQLAlchemy: `users`, `lesson_completions`, `unit_progress`, `user_badges`
 
 - El usuario que ya conoce listas/strings entra con el **test de nivel** (~70 % → unidad NumPy).
 - TensorFlow/PyTorch no caben bien en Pyodide: las unidades de deep learning enseñan el álgebra con NumPy (el mismo forward/loss que usarás en Keras). El sandbox Docker es la vía para TF más adelante.
-- Plantillas (`isTemplate: true`) cubren unidades 4–13, 17–18, etc., para que el árbol sea navegable mientras se autoría el resto con el mismo formato.
+- Las 53 unidades tienen lecciones originales (sin plantillas). Amplía o edita `scripts/generate_curriculum.py` y `scripts/remaining_units.py`, luego regenera con `python3 scripts/generate_curriculum.py`.

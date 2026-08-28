@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -10,8 +10,17 @@ export default function OnboardingPage() {
   const router = useRouter();
   const setName = useProgress((s) => s.setName);
   const complete = useProgress((s) => s.completeOnboarding);
+  const onboarded = useProgress((s) => s.onboarded);
+  const placementDone = useProgress((s) => s.placementDone);
+  const hydrated = useProgress((s) => s.hydrated);
   const [name, setLocal] = useState("");
   const [step, setStep] = useState(0);
+
+  useEffect(() => {
+    if (!hydrated) return;
+    if (onboarded && placementDone) router.replace("/learn");
+    else if (onboarded && !placementDone) router.replace("/placement");
+  }, [hydrated, onboarded, placementDone, router]);
 
   const slides = [
     {
