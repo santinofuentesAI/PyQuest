@@ -1,0 +1,61 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "PyQuest lesson",
+  "type": "object",
+  "required": ["id", "title", "description", "xp", "exercises"],
+  "properties": {
+    "id": { "type": "string", "description": "Unique lesson id, e.g. u14-l1" },
+    "title": { "type": "string" },
+    "description": { "type": "string" },
+    "xp": { "type": "integer" },
+    "exercises": {
+      "type": "array",
+      "minItems": 5,
+      "maxItems": 10,
+      "items": { "$ref": "#/$defs/exercise" }
+    }
+  },
+  "$defs": {
+    "exercise": {
+      "type": "object",
+      "required": ["id", "type", "prompt", "difficulty", "xp", "explanation", "solution"],
+      "properties": {
+        "id": { "type": "string" },
+        "type": {
+          "enum": [
+            "multiple_choice",
+            "fill_blank",
+            "code",
+            "reorder",
+            "find_error",
+            "predict_output",
+            "data",
+            "matching"
+          ]
+        },
+        "prompt": { "type": "string" },
+        "difficulty": { "type": "integer", "minimum": 1, "maximum": 5 },
+        "xp": { "type": "integer" },
+        "hint": { "type": "string" },
+        "explanation": { "type": "string" },
+        "solution": { "type": "string" },
+        "choices": { "type": "array" },
+        "correctChoiceId": { "type": "string" },
+        "template": { "type": "string" },
+        "blanks": { "type": "array" },
+        "starterCode": { "type": "string" },
+        "tests": { "type": "array" },
+        "expectedStdout": { "type": "string" },
+        "files": { "type": "object" },
+        "blocks": { "type": "array" },
+        "correctOrder": { "type": "array" },
+        "left": { "type": "array" },
+        "right": { "type": "array" },
+        "pairs": { "type": "object" },
+        "acceptedOutputs": { "type": "array" },
+        "packages": { "type": "array" },
+        "capturePlots": { "type": "boolean" }
+      }
+    }
+  }
+}

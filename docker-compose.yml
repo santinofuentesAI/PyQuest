@@ -1,0 +1,74 @@
+services:
+  db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: pyquest
+      POSTGRES_PASSWORD: pyquest
+      POSTGRES_DB: pyquest
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U pyquest"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    networks: [backend]
+
+  redis:
+    image: redis:7-alpine
+    networks: [backend]
+
+  sandbox:
+    build:
+      context: .
+      dockerfile: sandbox/Dockerfile
+    environment:
+      RUN_TIMEOUT: "8"
+      RUN_MEMORY_MB: "256"
+    expose:
+      - "8001"
+    networks: [compute]
+    mem_limit: 512m
+    pids_limit: 128
+
+  backend:
+    build:
+      context: .
+      dockerfile: backend/Dockerfile
+    environment:
+      DATABASE_URL: postgresql+psycopg2://pyquest:pyquest@db:5432/pyquest
+      REDIS_URL: redis://redis:6379/0
+      EXECUTION_MODE: ${EXECUTION_MODE:-pyodide}
+      SANDBOX_URL: http://sandbox:8001
+      JWT_SECRET: ${JWT_SECRET:-pyquest-dev-secret-change-me}
+      CORS_ORIGINS: ${CORS_ORIGINS:-http://localhost:43180,http://127.0.0.1:43180}
+    depends_on:
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_started
+    ports:
+      - "43181:8000"
+    networks: [frontend, backend, compute]
+
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      NEXT_PUBLIC_API_URL: http://localhost:43181
+      NEXT_PUBLIC_EXECUTION_MODE: ${EXECUTION_MODE:-pyodide}
+    ports:
+      - "43180:43180"
+    depends_on:
+      - backend
+    networks: [frontend]
+
+networks:
+  frontend:
+  backend:
+  compute:
+    internal: true
+
+volumes:
+  pgdata:
