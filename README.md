@@ -83,6 +83,16 @@ npm run dev
 
 Abre [http://127.0.0.1:43180](http://127.0.0.1:43180). La primera ejecución de código descarga Pyodide (~20–40 s) y luego queda en caché del navegador.
 
+## Deploy en Vercel
+
+El frontend es un Next.js estándar. No hace falta backend:
+
+```bash
+npx vercel --prod --yes
+```
+
+O conecta el repo de GitHub en [vercel.com/new](https://vercel.com/new). Framework: Next.js. Pyodide se descarga en el navegador desde jsDelivr la primera vez que alguien ejecuta código.
+
 ## Python local (backend / check_env)
 
 ```bash

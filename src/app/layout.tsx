@@ -16,10 +16,24 @@ const mono = JetBrains_Mono({
   subsets: ["latin"],
 });
 
+const siteUrl = process.env.VERCEL_PROJECT_PRODUCTION_URL
+  ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`
+  : process.env.VERCEL_URL
+    ? `https://${process.env.VERCEL_URL}`
+    : "http://127.0.0.1:43180";
+
 export const metadata: Metadata = {
+  metadataBase: new URL(siteUrl),
   title: "PyQuest — Python para datos e IA",
   description:
     "Aprende Python para análisis de datos e inteligencia artificial con lecciones cortas, corazones, rachas y un laboratorio real en el navegador.",
+  applicationName: "PyQuest",
+  openGraph: {
+    title: "PyQuest — Python para datos e IA",
+    description: "De print('hola') a tu primer modelo. En el navegador, sin instalar Anaconda.",
+    locale: "es_ES",
+    type: "website",
+  },
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
