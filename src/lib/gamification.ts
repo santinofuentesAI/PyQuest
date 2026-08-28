@@ -45,6 +45,10 @@ export function yesterdayKey(date = new Date()): string {
   return todayKey(d);
 }
 
+export function heartSlotLabel(hearts: number) {
+  return hearts > MAX_HEARTS ? String(hearts) : `${hearts}/${MAX_HEARTS}`;
+}
+
 export function regenerateHearts(progress: UserProgress, now = Date.now()): UserProgress {
   if (progress.hearts >= MAX_HEARTS) {
     return { ...progress, heartsUpdatedAt: now };

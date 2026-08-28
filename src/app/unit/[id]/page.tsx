@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useParams } from "next/navigation";
-import { Check, Lock, RotateCcw, Sparkles } from "lucide-react";
+import { BookOpen, Check, Lock, RotateCcw, Sparkles } from "lucide-react";
 import { getUnit, getSectionForUnit } from "@/lib/curriculum";
 import { isUnitUnlocked, useProgress } from "@/lib/progress-store";
 import { decayStrength } from "@/lib/gamification";
@@ -98,6 +98,10 @@ export default function UnitPage() {
             {up?.completedLessonIds.length ? "Continuar unidad" : "Empezar unidad"}
           </Button>
         )}
+        <Button variant="outline" className="h-12 rounded-2xl font-bold" render={<Link href={`/library/${unit.id}`} />}>
+          <BookOpen className="size-4" />
+          Leer la guía de este tema
+        </Button>
         {(complete || weak) && (
           <Button
             variant="outline"

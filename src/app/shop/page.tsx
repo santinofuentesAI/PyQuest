@@ -24,7 +24,8 @@ export default function ShopPage() {
             className="mt-3 h-11 w-full justify-between rounded-xl"
             variant="outline"
             onClick={() => {
-              if (p.refillHearts()) toast.success("Corazones recargados");
+              if (p.hearts >= MAX_HEARTS) toast.message("Ya tienes los corazones al máximo");
+              else if (p.refillHearts()) toast.success("Corazones recargados");
               else toast.error(`Necesitas ${HEART_REFILL_COST} gemas`);
             }}
           >

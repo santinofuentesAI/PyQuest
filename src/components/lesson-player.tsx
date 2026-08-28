@@ -115,7 +115,7 @@ export function LessonPlayer({
       const badges = progress.completeLesson({
         lessonId: lesson.id,
         completedAt: new Date().toISOString(),
-        correct: correctCount,
+        correct: correctRef.current,
         total,
         xp: finalXp,
         perfect,

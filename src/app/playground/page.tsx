@@ -1,12 +1,11 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import Link from "next/link";
 import { CodeEditor } from "@/components/code-editor";
 import { Button } from "@/components/ui/button";
 import { PythonStatus } from "@/components/python-status";
-import { runPython } from "@/lib/python-runtime";
-import { preloadPython } from "@/lib/python-runtime";
-import { useEffect } from "react";
+import { runPython, preloadPython } from "@/lib/python-runtime";
 
 const SAMPLE = `import numpy as np
 import pandas as pd
@@ -52,7 +51,10 @@ export default function PlaygroundPage() {
     <div className="mx-auto max-w-3xl px-4 py-8 pb-24">
       <h1 className="font-heading text-3xl font-extrabold">Laboratorio</h1>
       <p className="mt-1 text-sm text-muted-foreground">
-        Ejecuta Python real aquí. Primera carga: descarga Pyodide y los paquetes (puede tardar ~20 s).
+        Ejecuta Python real aquí. Primera carga: descarga Pyodide y los paquetes (puede tardar ~20 s).{" "}
+        <Link href="/library" className="font-semibold text-primary">
+          Volver a la librería
+        </Link>
       </p>
       <PythonStatus className="mt-2" />
       <div className="mt-4">

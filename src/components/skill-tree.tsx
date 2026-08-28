@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { Lock, Check, Sparkles, Crown, RotateCcw, Play } from "lucide-react";
+import { BookOpen, Check, Lock, Sparkles, Crown, RotateCcw, Play } from "lucide-react";
 import { SECTIONS, UNITS } from "@/lib/curriculum";
 import { continueLessonId, continueUnitId, isUnitUnlocked, useProgress } from "@/lib/progress-store";
 import { decayStrength } from "@/lib/gamification";
@@ -37,6 +37,13 @@ export function SkillTree({ highlight }: { highlight?: string }) {
             Continuar{nextUnitTitle ? `: ${nextUnitTitle}` : ""}
           </Link>
         )}
+        <Link
+          href="/library"
+          className={cn(buttonVariants({ variant: "outline" }), "mt-2 h-11 w-full rounded-2xl font-bold")}
+        >
+          <BookOpen className="size-4" />
+          Abrir la librería
+        </Link>
       </div>
 
       {SECTIONS.map((section) => (

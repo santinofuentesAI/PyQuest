@@ -148,6 +148,7 @@ export type UserProgress = {
   legendaryHighScore: number;
   theme: "light" | "dark" | "system";
   soundEnabled: boolean;
+  redeemedCodes: string[];
 };
 
 export type PythonRunResult = {

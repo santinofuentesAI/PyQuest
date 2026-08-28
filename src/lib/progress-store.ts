@@ -14,6 +14,7 @@ import {
   weekId,
 } from "./gamification";
 import { getUnitByLessonId, UNITS } from "./curriculum";
+import { lookupCode } from "./redeem-codes";
 
 const defaultProgress = (): UserProgress => ({
   displayName: "Explorador",
@@ -38,6 +39,7 @@ const defaultProgress = (): UserProgress => ({
   legendaryHighScore: 0,
   theme: "system",
   soundEnabled: true,
+  redeemedCodes: [],
 });
 
 type ProgressState = UserProgress & {
@@ -58,6 +60,7 @@ type ProgressState = UserProgress & {
   restoreHeart: () => void;
   boostUnit: (unitId: string) => void;
   resetProgress: () => void;
+  redeemCode: (raw: string) => { ok: boolean; message: string };
 };
 
 function awardBadges(p: UserProgress): string[] {
@@ -121,6 +124,7 @@ export const useProgress = create<ProgressState>()(
       },
       refillHearts: () => {
         const p = get();
+        if (p.hearts >= MAX_HEARTS) return false;
         if (p.gems < HEART_REFILL_COST) return false;
         set({ gems: p.gems - HEART_REFILL_COST, hearts: MAX_HEARTS, heartsUpdatedAt: Date.now() });
         return true;
@@ -228,11 +232,29 @@ export const useProgress = create<ProgressState>()(
       setSound: (on) => set({ soundEnabled: on }),
       restoreHeart: () => {
         const current = regenerateHearts(get());
+        const hearts =
+          current.hearts >= MAX_HEARTS ? current.hearts : Math.min(MAX_HEARTS, current.hearts + 1);
         set({
           ...current,
-          hearts: Math.min(MAX_HEARTS, current.hearts + 1),
+          hearts,
           heartsUpdatedAt: Date.now(),
         });
+      },
+      redeemCode: (raw) => {
+        const { code, def } = lookupCode(raw);
+        if (!code) return { ok: false, message: "Escribe un código." };
+        const current = regenerateHearts(get());
+        if ((current.redeemedCodes ?? []).includes(code)) {
+          return { ok: false, message: "Ese código ya lo canjeaste en este dispositivo." };
+        }
+        if (!def) return { ok: false, message: "Ese código no existe." };
+        set({
+          ...current,
+          hearts: def.hearts,
+          heartsUpdatedAt: Date.now(),
+          redeemedCodes: [...(current.redeemedCodes ?? []), code],
+        });
+        return { ok: true, message: `Código ${code}: tienes ${def.label}.` };
       },
       boostUnit: (unitId) => {
         const p = get();
@@ -278,12 +300,14 @@ export const useProgress = create<ProgressState>()(
           "restoreHeart",
           "boostUnit",
           "resetProgress",
+          "redeemCode",
         ]);
         return Object.fromEntries(
           Object.entries(state).filter(([key]) => !skip.has(key))
         ) as UserProgress;
       },
       onRehydrateStorage: () => (state) => {
+        if (state && !Array.isArray(state.redeemedCodes)) state.redeemedCodes = [];
         state?.setHydrated();
         state?.refresh();
       },

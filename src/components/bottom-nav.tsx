@@ -2,15 +2,15 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Dumbbell, Map, Sparkles, Trophy, User } from "lucide-react";
+import { BookOpen, Dumbbell, Map, Trophy, User } from "lucide-react";
 import { isImmersivePath } from "@/lib/chrome";
 import { cn } from "@/lib/utils";
 
 const items = [
   { href: "/learn", label: "Aprender", icon: Map },
   { href: "/practice", label: "Práctica", icon: Dumbbell },
+  { href: "/library", label: "Librería", icon: BookOpen },
   { href: "/league", label: "Liga", icon: Trophy },
-  { href: "/playground", label: "Lab", icon: Sparkles },
   { href: "/profile", label: "Perfil", icon: User },
 ];
 

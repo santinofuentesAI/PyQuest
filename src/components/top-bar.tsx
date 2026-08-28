@@ -4,7 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Flame, Gem, Heart, Star, Zap } from "lucide-react";
 import { useProgress } from "@/lib/progress-store";
-import { HEART_REGEN_MS, MAX_HEARTS, levelFromXp, msUntilNextHeart } from "@/lib/gamification";
+import { HEART_REGEN_MS, MAX_HEARTS, heartSlotLabel, levelFromXp, msUntilNextHeart } from "@/lib/gamification";
 import { isImmersivePath } from "@/lib/chrome";
 import { useEffect, useState } from "react";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
@@ -44,7 +44,7 @@ export function TopBar() {
           <Meter
             href="/shop"
             icon={<Heart className="size-4 fill-rose-500 text-rose-500" />}
-            value={`${progress.hearts}/${MAX_HEARTS}`}
+            value={heartSlotLabel(progress.hearts)}
             label={
               progress.hearts < MAX_HEARTS
                 ? `Siguiente corazón en ${Math.max(1, Math.ceil(until / 60000))} min · recarga en la tienda`
