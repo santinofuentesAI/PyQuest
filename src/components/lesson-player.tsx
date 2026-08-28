@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
 import confetti from "canvas-confetti";
 import { motion, AnimatePresence } from "framer-motion";
@@ -22,12 +22,14 @@ export function LessonPlayer({
   legendary,
   review,
   onFinish,
+  onClose,
 }: {
   lesson: Lesson;
   practice?: boolean;
   legendary?: boolean;
   review?: boolean;
   onFinish?: () => void;
+  onClose?: () => void;
 }) {
   const router = useRouter();
   const progress = useProgress();
@@ -40,23 +42,24 @@ export function LessonPlayer({
     images?: string[];
   } | null>(null);
   const [correctCount, setCorrectCount] = useState(0);
-  const [wrong, setWrong] = useState(0);
   const [done, setDone] = useState(false);
   const [newBadges, setNewBadges] = useState<string[]>([]);
+  const correctRef = useRef(0);
+  const wrongRef = useRef(0);
   const exercise: Exercise | undefined = lesson.exercises[i];
   const total = lesson.exercises.length;
   const ctx = getLessonContext(lesson.id);
 
   useEffect(() => {
     function onKey(e: KeyboardEvent) {
-      if (e.key !== "Enter" || busy) return;
+      if (e.key !== "Enter" || busy || heartsEmpty) return;
       if (feedback) advance();
     }
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
     // advance/finish close over the latest step; rebind when feedback or index change
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [busy, feedback, i, total]);
+  }, [busy, feedback, i, total, practice]);
 
   async function submit(answer: UserAnswer) {
     if (!exercise || busy || feedback) return;
@@ -71,15 +74,13 @@ export function LessonPlayer({
       });
       if (progress.soundEnabled !== false) playTone(result.correct ? "ok" : "bad");
       if (result.correct) {
-        setCorrectCount((c) => c + 1);
+        correctRef.current += 1;
+        setCorrectCount(correctRef.current);
       } else if (!practice) {
-        const ok = progress.loseHeart();
-        setWrong((w) => w + 1);
-        if (!ok && progress.hearts <= 1) {
-          /* overlay handled by hearts === 0 */
-        }
+        progress.loseHeart();
+        wrongRef.current += 1;
       } else {
-        setWrong((w) => w + 1);
+        wrongRef.current += 1;
       }
     } finally {
       setBusy(false);
@@ -99,10 +100,10 @@ export function LessonPlayer({
   function finish() {
     const earnedXp = Math.max(
       5,
-      Math.round((correctCount / Math.max(1, total)) * lesson.xp)
+      Math.round((correctRef.current / Math.max(1, total)) * lesson.xp)
     );
     const finalXp = legendary ? Math.round(earnedXp * 1.5) : earnedXp;
-    const perfect = wrong === 0 && correctCount === total;
+    const perfect = wrongRef.current === 0 && correctRef.current === total;
     if (legendary) {
       progress.addLegendaryScore(finalXp);
       setNewBadges([]);
@@ -162,7 +163,16 @@ export function LessonPlayer({
                 Volver a la unidad
               </Button>
             )}
-            <Button variant="outline" className="h-12 rounded-2xl font-bold" render={<Link href="/learn" />}>
+            {legendary && onClose && (
+              <Button className="h-12 rounded-2xl font-bold" onClick={() => onClose()}>
+                Elegir otra práctica
+              </Button>
+            )}
+            <Button
+              variant="outline"
+              className="h-12 rounded-2xl font-bold"
+              render={<Link href="/learn" />}
+            >
               Volver al mapa
             </Button>
           </div>
@@ -178,7 +188,7 @@ export function LessonPlayer({
       <header className="flex items-center gap-3 px-3 py-3">
         <button
           type="button"
-          onClick={() => router.push("/learn")}
+          onClick={() => (onClose ? onClose() : router.push("/learn"))}
           className="flex size-9 items-center justify-center rounded-full hover:bg-muted"
           aria-label="Cerrar"
         >
@@ -223,9 +233,9 @@ export function LessonPlayer({
           {ctx?.unit.title ?? lesson.title} · {i + 1}/{total} · {exercise.xp} XP
         </p>
         <PythonStatus className="mb-3" />
-        <ExerciseView exercise={exercise} onSubmit={submit} />
+        <ExerciseView key={exercise.id} exercise={exercise} onSubmit={submit} />
         <div className="mt-3">
-          <Hint text={exercise.hint} />
+          <Hint key={`${exercise.id}-hint`} text={exercise.hint} />
         </div>
         {busy && <p className="mt-3 text-sm text-muted-foreground">Ejecutando en el navegador…</p>}
       </div>
@@ -259,7 +269,11 @@ export function LessonPlayer({
                   Solución de referencia: <code className="rounded bg-background px-1">{exercise.solution}</code>
                 </p>
               )}
-              <Button className="mt-3 h-12 w-full rounded-2xl font-bold" onClick={advance}>
+              <Button
+                className="mt-3 h-12 w-full rounded-2xl font-bold"
+                onClick={advance}
+                disabled={heartsEmpty}
+              >
                 Continuar
               </Button>
             </div>
@@ -279,20 +293,23 @@ export function PlacementPlayer({ lesson }: { lesson: Lesson }) {
   const [feedback, setFeedback] = useState<{ correct: boolean; text: string } | null>(null);
   const [placed, setPlaced] = useState<string | null>(null);
   const exercise = lesson.exercises[i];
+  const scoreRef = useRef(0);
 
   async function submit(answer: UserAnswer) {
     if (!exercise || busy || feedback) return;
     setBusy(true);
     const result = await checkExercise(exercise, answer);
     setFeedback({ correct: result.correct, text: result.feedback });
-    if (result.correct) setCorrect((c) => c + 1);
+    if (result.correct) {
+      scoreRef.current += 1;
+      setCorrect(scoreRef.current);
+    }
     setBusy(false);
   }
 
   function advance() {
-    const nextCorrect = correct;
     if (i + 1 >= lesson.exercises.length) {
-      const unitId = apply(nextCorrect, lesson.exercises.length);
+      const unitId = apply(scoreRef.current, lesson.exercises.length);
       setPlaced(unitId);
       return;
     }
@@ -335,7 +352,7 @@ export function PlacementPlayer({ lesson }: { lesson: Lesson }) {
         </p>
       </header>
       <div className="flex-1 px-4">
-        <ExerciseView exercise={exercise} onSubmit={submit} />
+        <ExerciseView key={exercise.id} exercise={exercise} onSubmit={submit} />
       </div>
       {feedback && (
         <div className={cn("border-t px-4 py-4", feedback.correct ? "bg-emerald-50 dark:bg-emerald-950/40" : "bg-amber-50 dark:bg-amber-950/30")}>

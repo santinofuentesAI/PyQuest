@@ -6,6 +6,8 @@ import type { LeagueId, LessonResult, UserProgress } from "./types";
 import {
   applyDailyStreak,
   applyWeeklyXp,
+  HEART_REFILL_COST,
+  STREAK_FREEZE_COST,
   MAX_HEARTS,
   regenerateHearts,
   todayKey,
@@ -119,14 +121,14 @@ export const useProgress = create<ProgressState>()(
       },
       refillHearts: () => {
         const p = get();
-        if (p.gems < 80) return false;
-        set({ gems: p.gems - 80, hearts: MAX_HEARTS, heartsUpdatedAt: Date.now() });
+        if (p.gems < HEART_REFILL_COST) return false;
+        set({ gems: p.gems - HEART_REFILL_COST, hearts: MAX_HEARTS, heartsUpdatedAt: Date.now() });
         return true;
       },
       buyFreeze: () => {
         const p = get();
-        if (p.gems < 40) return false;
-        set({ gems: p.gems - 40, streakFreezes: p.streakFreezes + 1 });
+        if (p.gems < STREAK_FREEZE_COST) return false;
+        set({ gems: p.gems - STREAK_FREEZE_COST, streakFreezes: p.streakFreezes + 1 });
         return true;
       },
       completeLesson: (result) => {
@@ -176,21 +178,34 @@ export const useProgress = create<ProgressState>()(
         else if (ratio >= 0.7) startingUnitId = "u14";
         else if (ratio >= 0.5) startingUnitId = "u8";
         else if (ratio >= 0.3) startingUnitId = "u4";
+        const nowIso = new Date().toISOString();
         const p: UserProgress = {
           ...get(),
           placementDone: true,
           placementScore: score,
           startingUnitId,
           onboarded: true,
+          completedLessons: { ...get().completedLessons },
           units: { ...get().units },
         };
         const unitIndex = UNITS.find((u) => u.id === startingUnitId)?.index ?? 1;
         UNITS.filter((u) => u.index < unitIndex).forEach((u) => {
           p.units[u.id] = {
             strength: 0.7,
-            lastPracticedAt: new Date().toISOString(),
+            lastPracticedAt: nowIso,
             completedLessonIds: u.lessons.map((l) => l.id),
           };
+          for (const lesson of u.lessons) {
+            if (p.completedLessons[lesson.id]) continue;
+            p.completedLessons[lesson.id] = {
+              lessonId: lesson.id,
+              completedAt: nowIso,
+              correct: lesson.exercises.length,
+              total: lesson.exercises.length,
+              xp: 0,
+              perfect: false,
+            };
+          }
         });
         awardBadges(p);
         set(p);

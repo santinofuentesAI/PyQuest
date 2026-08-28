@@ -15,6 +15,10 @@ export function SkillTree({ highlight }: { highlight?: string }) {
   const nextUnit = continueUnitId(progress);
   const nextUnitTitle = nextUnit ? UNITS.find((u) => u.id === nextUnit)?.title : undefined;
 
+  if (!progress.hydrated) {
+    return <p className="px-6 py-16 text-sm text-muted-foreground">Cargando mapa…</p>;
+  }
+
   return (
     <div className="mx-auto max-w-lg px-4 pb-24 pt-6">
       <div className="mb-6">
