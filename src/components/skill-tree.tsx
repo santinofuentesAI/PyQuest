@@ -49,8 +49,8 @@ export function SkillTree({ highlight }: { highlight?: string }) {
       {SECTIONS.map((section) => (
         <section key={section.id} className="mb-10">
           <div
-            className="sticky top-14 z-10 -mx-4 mb-4 border-y px-4 py-3 backdrop-blur-md"
-            style={{ background: `color-mix(in oklab, ${section.color} 14%, var(--background))` }}
+            className="sticky top-[3.75rem] z-20 -mx-4 mb-4 border-b px-4 py-3 shadow-[0_10px_18px_-12px_rgba(0,0,0,0.28)]"
+            style={{ background: `color-mix(in oklab, ${section.color} 22%, var(--background))` }}
           >
             <p className="text-xs font-bold tracking-widest uppercase" style={{ color: section.color }}>
               Sección {section.index}
@@ -58,7 +58,7 @@ export function SkillTree({ highlight }: { highlight?: string }) {
             <h2 className="font-heading text-xl font-bold">{section.title}</h2>
             <p className="text-sm text-muted-foreground">{section.subtitle}</p>
           </div>
-          <ol className="relative space-y-4 before:absolute before:top-4 before:bottom-4 before:left-7 before:w-1 before:rounded-full before:bg-border">
+          <ol className="relative z-0 space-y-4 before:absolute before:top-4 before:bottom-4 before:left-7 before:z-0 before:w-1 before:rounded-full before:bg-border">
             {section.units.map((unit, idx) => {
               const unlocked = isUnitUnlocked(unit.id, progress);
               const up = progress.units[unit.id];
@@ -68,10 +68,10 @@ export function SkillTree({ highlight }: { highlight?: string }) {
               const weak = complete && strength < 0.45;
               const offset = idx % 2 === 0 ? "ml-0" : "ml-10 sm:ml-16";
               return (
-                <li key={unit.id} className={cn("relative flex items-center gap-3", offset)}>
+                <li key={unit.id} className={cn("relative z-0 flex items-center gap-3", offset)}>
                   <div
                     className={cn(
-                      "relative z-10 flex size-14 shrink-0 items-center justify-center rounded-full border-4 text-lg font-black shadow-md transition",
+                      "relative z-0 flex size-14 shrink-0 items-center justify-center rounded-full border-4 text-lg font-black shadow-md transition",
                       !unlocked && "border-muted bg-muted text-muted-foreground",
                       unlocked && !complete && "border-primary bg-primary text-primary-foreground",
                       complete && !weak && "border-emerald-500 bg-emerald-500 text-white",
