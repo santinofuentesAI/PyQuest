@@ -46,14 +46,18 @@ export function LessonPlayer({
   const [newBadges, setNewBadges] = useState<string[]>([]);
   const correctRef = useRef(0);
   const wrongRef = useRef(0);
+  const stepLock = useRef(false);
   const exercise: Exercise | undefined = lesson.exercises[i];
   const total = lesson.exercises.length;
   const ctx = getLessonContext(lesson.id);
 
   useEffect(() => {
     function onKey(e: KeyboardEvent) {
-      if (e.key !== "Enter" || busy || heartsEmpty) return;
-      if (feedback) advance();
+      if (e.key !== "Enter" || busy || heartsEmpty || !feedback) return;
+      const tag = (e.target as HTMLElement | null)?.tagName;
+      if (tag === "BUTTON" || tag === "A") return;
+      e.preventDefault();
+      advance();
     }
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
@@ -62,10 +66,13 @@ export function LessonPlayer({
   }, [busy, feedback, i, total, practice]);
 
   async function submit(answer: UserAnswer) {
-    if (!exercise || busy || feedback) return;
+    if (!exercise || busy || feedback || stepLock.current) return;
     setBusy(true);
     try {
       const result = await checkExercise(exercise, answer);
+      if (document.activeElement instanceof HTMLElement) {
+        document.activeElement.blur();
+      }
       setFeedback({
         correct: result.correct,
         text: result.feedback,
@@ -88,13 +95,15 @@ export function LessonPlayer({
   }
 
   function advance() {
-    if (!exercise) return;
+    if (!exercise || !feedback || stepLock.current) return;
+    stepLock.current = true;
     if (i + 1 >= total) {
       finish();
       return;
     }
     setI(i + 1);
     setFeedback(null);
+    stepLock.current = false;
   }
 
   function finish() {
@@ -184,8 +193,8 @@ export function LessonPlayer({
   if (!exercise) return null;
 
   return (
-    <div className="mx-auto flex min-h-[100dvh] max-w-2xl flex-col">
-      <header className="flex items-center gap-3 px-3 py-3">
+    <div className="mx-auto flex h-[100dvh] max-h-[100dvh] w-full max-w-2xl flex-col overflow-hidden">
+      <header className="flex shrink-0 items-center gap-3 px-3 py-3">
         <button
           type="button"
           onClick={() => (onClose ? onClose() : router.push("/learn"))}
@@ -211,7 +220,7 @@ export function LessonPlayer({
       </header>
 
       {heartsEmpty && (
-        <div className="mx-4 rounded-2xl border border-rose-200 bg-rose-50 p-4 text-center dark:border-rose-900 dark:bg-rose-950/50">
+        <div className="mx-4 shrink-0 rounded-2xl border border-rose-200 bg-rose-50 p-4 text-center dark:border-rose-900 dark:bg-rose-950/50">
           <p className="font-bold">Te quedaste sin corazones</p>
           <p className="mt-1 text-sm text-muted-foreground">
             Espera a que se recarguen, recarga con gemas o entra en modo práctica (sin vidas).
@@ -228,7 +237,13 @@ export function LessonPlayer({
         </div>
       )}
 
-      <div className={cn("flex-1 px-4 pb-4", heartsEmpty && "pointer-events-none opacity-40")}>
+      <div
+        className={cn(
+          "min-h-0 flex-1 overflow-y-auto overscroll-contain px-4 pb-4",
+          (heartsEmpty || feedback) && "pointer-events-none",
+          heartsEmpty && "opacity-40"
+        )}
+      >
         <p className="mb-2 text-xs font-bold tracking-wider text-muted-foreground uppercase">
           {ctx?.unit.title ?? lesson.title} · {i + 1}/{total} · {exercise.xp} XP
         </p>
@@ -243,15 +258,16 @@ export function LessonPlayer({
       <AnimatePresence>
         {feedback && (
           <motion.div
-            initial={{ y: 40, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            exit={{ y: 40, opacity: 0 }}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.15 }}
             className={cn(
-              "border-t px-4 py-4",
+              "shrink-0 border-t px-4 py-4",
               feedback.correct ? "border-emerald-200 bg-emerald-50 dark:bg-emerald-950/50" : "border-rose-200 bg-rose-50 dark:bg-rose-950/40"
             )}
           >
-            <div className="mx-auto max-w-2xl">
+            <div className="mx-auto max-h-[40dvh] max-w-2xl overflow-y-auto">
               <p className={cn("flex items-center gap-2 font-extrabold", feedback.correct ? "text-emerald-700 dark:text-emerald-300" : "text-rose-700 dark:text-rose-300")}>
                 {feedback.correct ? <Check className="size-5" /> : <X className="size-5" />}
                 {feedback.correct ? "¡Correcto!" : "Casi…"}

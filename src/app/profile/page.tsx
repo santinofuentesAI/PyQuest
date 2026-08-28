@@ -4,16 +4,19 @@ import { useState } from "react";
 import { useProgress } from "@/lib/progress-store";
 import { levelFromXp, leagueTitle } from "@/lib/gamification";
 import { BADGES } from "@/lib/curriculum";
+import { PALETTES, DEFAULT_PALETTE } from "@/lib/palettes";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Switch } from "@/components/ui/switch";
 import { toast } from "sonner";
 import Link from "next/link";
+import { cn } from "@/lib/utils";
 
 export default function ProfilePage() {
   const p = useProgress();
   const lvl = levelFromXp(p.xp);
   const [code, setCode] = useState("");
+  const currentPalette = p.palette ?? DEFAULT_PALETTE;
 
   return (
     <div className="mx-auto max-w-lg px-4 py-8 pb-24">
@@ -69,12 +72,40 @@ export default function ProfilePage() {
       </section>
 
       <section className="mt-6 rounded-2xl border bg-card p-4">
-        <h2 className="font-bold">Apariencia y sonido</h2>
-        <div className="mt-3 flex items-center justify-between">
-          <span className="text-sm">Modo oscuro forzado</span>
-          <Switch checked={p.theme === "dark"} onCheckedChange={(c) => p.setTheme(c ? "dark" : "system")} />
+        <h2 className="font-bold">Ajustes</h2>
+        <p className="text-sm text-muted-foreground">Color de toda la app. Negro es OLED, casi sin grises.</p>
+        <div className="mt-3 grid grid-cols-2 gap-2 sm:grid-cols-3">
+          {PALETTES.map((pal) => {
+            const selected = currentPalette === pal.id;
+            return (
+              <button
+                key={pal.id}
+                type="button"
+                onClick={() => p.setPalette(pal.id)}
+                aria-pressed={selected}
+                className={cn(
+                  "rounded-2xl border-2 p-3 text-left transition",
+                  selected
+                    ? "border-primary ring-2 ring-primary/25"
+                    : "border-border hover:border-primary/40"
+                )}
+              >
+                <span className="flex gap-1" aria-hidden>
+                  {pal.swatches.map((c) => (
+                    <span
+                      key={c}
+                      className="size-5 rounded-full border border-black/10 dark:border-white/15"
+                      style={{ background: c }}
+                    />
+                  ))}
+                </span>
+                <p className="mt-2 text-sm font-bold">{pal.name}</p>
+                <p className="text-xs text-muted-foreground">{pal.hint}</p>
+              </button>
+            );
+          })}
         </div>
-        <div className="mt-3 flex items-center justify-between">
+        <div className="mt-4 flex items-center justify-between border-t pt-3">
           <span className="text-sm">Sonidos de acierto</span>
           <Switch checked={p.soundEnabled !== false} onCheckedChange={(c) => p.setSound(c)} />
         </div>

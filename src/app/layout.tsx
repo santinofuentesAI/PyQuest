@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Script from "next/script";
 import { Plus_Jakarta_Sans, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 import { Providers } from "@/components/providers";
@@ -36,13 +37,18 @@ export const metadata: Metadata = {
   },
 };
 
+const paletteBoot = `(function(){try{var r=localStorage.getItem("pyquest-progress-v1");if(!r){document.documentElement.setAttribute("data-palette","violet");return;}var j=JSON.parse(r);var s=j.state||j;var pal=s.palette||(s.theme==="dark"?"night":"violet");document.documentElement.setAttribute("data-palette",pal);if(pal==="night"||pal==="forest"||pal==="black")document.documentElement.classList.add("dark");}catch(e){}})();`;
+
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
-    <html lang="es" className={`${sans.variable} ${mono.variable} h-full antialiased`} suppressHydrationWarning>
-      <body className="min-h-full flex flex-col bg-background text-foreground">
+    <html lang="es" className={`${sans.variable} ${mono.variable} h-full antialiased`} data-palette="violet" suppressHydrationWarning>
+      <body className="flex min-h-full flex-col overflow-x-clip bg-background text-foreground">
+        <Script id="palette-boot" strategy="beforeInteractive">
+          {paletteBoot}
+        </Script>
         <Providers>
           <TopBar />
-          <main className="flex-1">{children}</main>
+          <main className="min-h-0 flex-1">{children}</main>
           <BottomNav />
         </Providers>
       </body>

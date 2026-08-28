@@ -4,16 +4,9 @@ import Link from "next/link";
 import { motion } from "framer-motion";
 import { ArrowRight, Flame, Heart, Sparkles, Terminal } from "lucide-react";
 import { buttonVariants } from "@/components/ui/button";
-import { useProgress } from "@/lib/progress-store";
 import { cn } from "@/lib/utils";
 
 export default function HomePage() {
-  const onboarded = useProgress((s) => s.onboarded);
-  const placementDone = useProgress((s) => s.placementDone);
-
-  const ctaHref = !onboarded ? "/onboarding" : !placementDone ? "/placement" : "/learn";
-  const ctaLabel = !onboarded ? "Empezar PyQuest" : !placementDone ? "Hacer el test de nivel" : "Continuar el camino";
-
   return (
     <div className="relative overflow-hidden">
       <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_20%_20%,rgba(124,58,237,0.18),transparent_40%),radial-gradient(circle_at_80%_0%,rgba(6,182,212,0.18),transparent_35%),radial-gradient(circle_at_50%_80%,rgba(244,63,94,0.12),transparent_40%)]" />
@@ -31,8 +24,8 @@ export default function HomePage() {
             Matplotlib corren aquí mismo, con corazones, rachas y un árbol de habilidades.
           </p>
           <div className="flex flex-col gap-3 sm:flex-row">
-            <Link href={ctaHref} className={cn(buttonVariants({ size: "lg" }), "h-14 rounded-2xl px-8 text-base font-bold")}>
-              {ctaLabel}
+            <Link href="/learn" className={cn(buttonVariants({ size: "lg" }), "h-14 rounded-2xl px-8 text-base font-bold")}>
+              Ir al mapa
               <ArrowRight className="size-4" />
             </Link>
             <Link

@@ -1,7 +1,8 @@
 "use client";
 
 import dynamic from "next/dynamic";
-import { useTheme } from "next-themes";
+import { useProgress } from "@/lib/progress-store";
+import { paletteById } from "@/lib/palettes";
 
 const Monaco = dynamic(() => import("@monaco-editor/react"), {
   ssr: false,
@@ -21,14 +22,15 @@ export function CodeEditor({
   onChange: (v: string) => void;
   height?: number;
 }) {
-  const { resolvedTheme } = useTheme();
+  const palette = useProgress((s) => s.palette);
+  const dark = paletteById(palette).dark;
   return (
     <div className="overflow-hidden rounded-xl border border-border ring-1 ring-foreground/5">
       <Monaco
         height={height}
         defaultLanguage="python"
         language="python"
-        theme={resolvedTheme === "dark" ? "vs-dark" : "light"}
+        theme={dark ? "vs-dark" : "light"}
         value={value}
         onChange={(v) => onChange(v ?? "")}
         options={{

@@ -15,11 +15,12 @@ import {
 } from "./gamification";
 import { getUnitByLessonId, UNITS } from "./curriculum";
 import { lookupCode } from "./redeem-codes";
+import { DEFAULT_PALETTE, type PaletteId } from "./palettes";
 
 const defaultProgress = (): UserProgress => ({
   displayName: "Explorador",
-  onboarded: false,
-  placementDone: false,
+  onboarded: true,
+  placementDone: true,
   placementScore: null,
   startingUnitId: "u1",
   xp: 0,
@@ -38,6 +39,7 @@ const defaultProgress = (): UserProgress => ({
   badges: [],
   legendaryHighScore: 0,
   theme: "system",
+  palette: DEFAULT_PALETTE,
   soundEnabled: true,
   redeemedCodes: [],
 });
@@ -49,6 +51,7 @@ type ProgressState = UserProgress & {
   setName: (name: string) => void;
   completeOnboarding: () => void;
   setTheme: (theme: UserProgress["theme"]) => void;
+  setPalette: (palette: PaletteId) => void;
   loseHeart: () => boolean;
   refillHearts: () => boolean;
   buyFreeze: () => boolean;
@@ -107,8 +110,9 @@ export const useProgress = create<ProgressState>()(
       setHydrated: () => set({ hydrated: true }),
       refresh: () => set(regenerateHearts(get())),
       setName: (displayName) => set({ displayName }),
-      completeOnboarding: () => set({ onboarded: true }),
+      completeOnboarding: () => set({ onboarded: true, placementDone: true }),
       setTheme: (theme) => set({ theme }),
+      setPalette: (palette) => set({ palette }),
       loseHeart: () => {
         const current = regenerateHearts(get());
         if (current.hearts <= 0) {
@@ -276,7 +280,7 @@ export const useProgress = create<ProgressState>()(
       },
       resetProgress: () => {
         const name = get().displayName;
-        set({ ...defaultProgress(), displayName: name, hydrated: true, onboarded: false });
+        set({ ...defaultProgress(), displayName: name, hydrated: true });
       },
     }),
     {
@@ -289,6 +293,7 @@ export const useProgress = create<ProgressState>()(
           "setName",
           "completeOnboarding",
           "setTheme",
+          "setPalette",
           "loseHeart",
           "refillHearts",
           "buyFreeze",
@@ -306,8 +311,29 @@ export const useProgress = create<ProgressState>()(
           Object.entries(state).filter(([key]) => !skip.has(key))
         ) as UserProgress;
       },
+      version: 2,
+      migrate: (persisted, version) => {
+        const p = (persisted ?? {}) as UserProgress;
+        if (version < 2) {
+          return {
+            ...p,
+            onboarded: true,
+            placementDone: true,
+            palette: p.palette ?? (p.theme === "dark" ? "night" : DEFAULT_PALETTE),
+          };
+        }
+        return {
+          ...p,
+          palette: p.palette ?? DEFAULT_PALETTE,
+        };
+      },
       onRehydrateStorage: () => (state) => {
         if (state && !Array.isArray(state.redeemedCodes)) state.redeemedCodes = [];
+        if (state && !state.palette) state.palette = DEFAULT_PALETTE;
+        if (state) {
+          state.onboarded = true;
+          state.placementDone = true;
+        }
         state?.setHydrated();
         state?.refresh();
       },

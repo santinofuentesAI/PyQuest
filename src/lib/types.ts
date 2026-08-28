@@ -147,6 +147,8 @@ export type UserProgress = {
   badges: string[];
   legendaryHighScore: number;
   theme: "light" | "dark" | "system";
+  /** Full-app color pack. Independent of OS light/dark. */
+  palette: import("./palettes").PaletteId;
   soundEnabled: boolean;
   redeemedCodes: string[];
 };
