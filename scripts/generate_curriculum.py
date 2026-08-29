@@ -148,13 +148,14 @@ def find_err(eid, prompt, choices, correct, explanation, xp=12, difficulty=2, hi
     return ex
 
 
-def lesson(lid, title, description, exercises):
+def lesson(lid, title, description, exercises, level=1):
     return {
         "id": lid,
         "title": title,
         "description": description,
         "xp": sum(e["xp"] for e in exercises),
         "exercises": exercises,
+        "level": level,
     }
 
 
@@ -2758,6 +2759,20 @@ def build():
     ]
 
     # Reindex units 1..n skipping placement
+    from extra_levels import attach_extra_levels
+
+    attach_extra_levels(
+        sections,
+        lesson=lesson,
+        mc=mc,
+        fill=fill,
+        predict=predict,
+        code=code,
+        matching=matching,
+        find_err=find_err,
+        reorder=reorder,
+    )
+
     n = 1
     for sec in sections:
         for u in sec["units"]:

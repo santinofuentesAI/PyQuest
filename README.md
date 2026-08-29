@@ -9,6 +9,7 @@ Plataforma web de aprendizaje gamificado de **Python para análisis de datos e I
 - Runtime Python en un **Web Worker** (timeout 8 s, `stdout`/`stderr`, figuras Matplotlib a PNG).
 - Currículo completo en el mapa (secciones 0–7): **53 unidades** con lecciones originales (enunciado, pista, solución y tests). Hub por unidad, repaso espaciado y tienda de gemas.
 - Entras directo al mapa de **Aprender** (sin slides ni test de colocación).
+- Cada unidad tiene **4 niveles** (esencial + 3 extra) para afianzar el tema.
 - Seis paletas de color en **Perfil → Ajustes** (Lila, Océano, Atardecer, Noche, Bosque, Negro OLED).
 - Progreso en `localStorage` (modo invitado). FastAPI + PostgreSQL opcionales para persistir cuentas.
 - Modo **Práctica legendaria**, liga semanal, insignias, tienda (corazones y congelador de racha).

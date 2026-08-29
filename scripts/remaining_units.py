@@ -119,8 +119,15 @@ def find_err(eid, prompt, choices, correct, explanation, xp=12, difficulty=2, hi
     return ex
 
 
-def lesson(lid, title, description, exercises):
-    return {"id": lid, "title": title, "description": description, "xp": sum(e["xp"] for e in exercises), "exercises": exercises}
+def lesson(lid, title, description, exercises, level=1):
+    return {
+        "id": lid,
+        "title": title,
+        "description": description,
+        "xp": sum(e["xp"] for e in exercises),
+        "exercises": exercises,
+        "level": level,
+    }
 
 
 def unit(uid, index, title, description, icon, lessons, is_project=False):

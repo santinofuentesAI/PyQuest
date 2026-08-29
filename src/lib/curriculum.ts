@@ -52,6 +52,21 @@ export function reviewPool(completedLessonIds: string[]): Exercise[] {
   );
 }
 
+export function lessonLevel(lesson: Lesson): 1 | 2 | 3 | 4 {
+  return lesson.level ?? 1;
+}
+
+export function coreLessons(unit: Unit): Lesson[] {
+  return unit.lessons.filter((l) => lessonLevel(l) === 1);
+}
+
+export const LEVEL_LABELS: Record<1 | 2 | 3 | 4, string> = {
+  1: "Lo esencial",
+  2: "Afianza",
+  3: "Practica",
+  4: "Demuestra",
+};
+
 export function nextLessonId(currentLessonId: string): string | null {
   const ctx = lessonMap.get(currentLessonId);
   if (!ctx) return null;

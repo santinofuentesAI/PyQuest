@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useParams } from "next/navigation";
 import { BookOpen, Check, Lock, RotateCcw, Sparkles } from "lucide-react";
-import { getUnit, getSectionForUnit } from "@/lib/curriculum";
+import { getUnit, getSectionForUnit, LEVEL_LABELS, lessonLevel } from "@/lib/curriculum";
 import { isUnitUnlocked, useProgress } from "@/lib/progress-store";
 import { decayStrength } from "@/lib/gamification";
 import { Button } from "@/components/ui/button";
@@ -40,6 +40,10 @@ export default function UnitPage() {
       </p>
       <h1 className="font-heading mt-1 text-3xl font-extrabold">{unit.title}</h1>
       <p className="mt-2 text-muted-foreground">{unit.description}</p>
+      <p className="mt-3 rounded-2xl border bg-card/80 px-3 py-2 text-sm text-muted-foreground">
+        Cada tema tiene 4 niveles: esencial, afianza, practica y demuestra. El mapa se abre al terminar el primero;
+        los otros tres existen para que el concepto se quede.
+      </p>
       {complete && (
         <p className="mt-2 text-sm font-semibold text-emerald-600">
           Dominada · fuerza {Math.round(strength * 100)}%
@@ -69,6 +73,9 @@ export default function UnitPage() {
                     {done ? <Check className="size-4" /> : i + 1}
                   </span>
                   <span>
+                    <span className="text-[11px] font-bold tracking-wider text-primary uppercase">
+                      Nivel {lessonLevel(lesson)} · {LEVEL_LABELS[lessonLevel(lesson)]}
+                    </span>
                     <span className="block font-bold">{lesson.title}</span>
                     <span className="text-sm text-muted-foreground">{lesson.description}</span>
                     <span className="mt-1 block text-xs font-semibold">
@@ -82,6 +89,9 @@ export default function UnitPage() {
                     <Lock className="size-4" />
                   </span>
                   <span>
+                    <span className="text-[11px] font-bold tracking-wider uppercase text-muted-foreground">
+                      Nivel {lessonLevel(lesson)} · {LEVEL_LABELS[lessonLevel(lesson)]}
+                    </span>
                     <span className="block font-bold">{lesson.title}</span>
                     <span className="text-sm text-muted-foreground">Completa la lección anterior</span>
                   </span>

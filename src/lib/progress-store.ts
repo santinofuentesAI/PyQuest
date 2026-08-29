@@ -13,7 +13,7 @@ import {
   todayKey,
   weekId,
 } from "./gamification";
-import { getUnitByLessonId, UNITS } from "./curriculum";
+import { coreLessons, getUnitByLessonId, UNITS } from "./curriculum";
 import { lookupCode } from "./redeem-codes";
 import { DEFAULT_PALETTE, type PaletteId } from "./palettes";
 
@@ -342,7 +342,16 @@ export const useProgress = create<ProgressState>()(
 );
 
 export function continueLessonId(progress: UserProgress): string | null {
-  for (const unit of UNITS) {
+  let startIdx = 0;
+  for (let i = UNITS.length - 1; i >= 0; i--) {
+    const done = progress.units[UNITS[i].id]?.completedLessonIds ?? [];
+    if (done.length > 0) {
+      startIdx = i;
+      break;
+    }
+  }
+  for (let i = startIdx; i < UNITS.length; i++) {
+    const unit = UNITS[i];
     if (!isUnitUnlocked(unit.id, progress)) continue;
     const done = progress.units[unit.id]?.completedLessonIds ?? [];
     const next = unit.lessons.find((l) => !done.includes(l.id));
@@ -366,7 +375,7 @@ export function isUnitUnlocked(unitId: string, progress: UserProgress): boolean 
   if (!prev) return true;
   const prevProg = progress.units[prev.id];
   if (!prevProg) return false;
-  return prev.lessons.every((l) => prevProg.completedLessonIds.includes(l.id));
+  return coreLessons(prev).every((l) => prevProg.completedLessonIds.includes(l.id));
 }
 
 export function nextHeartLabel(ms: number) {

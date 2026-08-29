@@ -143,7 +143,7 @@ function UnitCopy({
               ? "Dominada"
               : unit.isProject
                 ? "Proyecto"
-                : `${doneCount}/${unit.lessons.length} lecciones · 5–10 min`}
+                : `${doneCount}/${unit.lessons.length} niveles · 5–10 min cada uno`}
       </p>
     </>
   );
