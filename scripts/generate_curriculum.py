@@ -579,10 +579,10 @@ def s1_u14():
                     predict(
                         "u14-l1-e4",
                         "¿Qué imprime este código?",
-                        "import numpy as np\na = np.array([1, 2, 3])\nprint(a.dtype)",
+                        "import numpy as np\na = np.array([1, 2, 3], dtype=np.int64)\nprint(a.dtype)",
                         "int64",
-                        "NumPy infiere int64 (o int32 según plataforma). Puedes forzar dtype=float64.",
-                        hint="Enteros sin punto decimal.",
+                        "dtype=np.int64 fija enteros de 64 bits en cualquier plataforma. Sin dtype explícito, el tipo por defecto puede variar.",
+                        hint="Mira el dtype que se indica al crear el array.",
                     ),
                     matching(
                         "u14-l1-e5",

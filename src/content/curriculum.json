@@ -7989,13 +7989,13 @@
                   "prompt": "¿Qué imprime este código?",
                   "difficulty": 1,
                   "xp": 10,
-                  "hint": "Enteros sin punto decimal.",
-                  "explanation": "NumPy infiere int64 (o int32 según plataforma). Puedes forzar dtype=float64.",
+                  "hint": "Mira el dtype que se indica al crear el array.",
+                  "explanation": "dtype=np.int64 fija enteros de 64 bits en cualquier plataforma. Sin dtype explícito, el tipo por defecto puede variar.",
                   "solution": "int64",
                   "acceptedOutputs": [
                     "int64"
                   ],
-                  "starterCode": "import numpy as np\na = np.array([1, 2, 3])\nprint(a.dtype)"
+                  "starterCode": "import numpy as np\na = np.array([1, 2, 3], dtype=np.int64)\nprint(a.dtype)"
                 },
                 {
                   "id": "u14-l1-e5",
