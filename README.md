@@ -95,6 +95,10 @@ npx vercel --prod --yes
 
 O conecta el repo de GitHub en [vercel.com/new](https://vercel.com/new). Framework: Next.js. Pyodide se descarga en el navegador desde jsDelivr la primera vez que alguien ejecuta código.
 
+En Project Settings, deja **Root Directory vacío**: `package.json`, `next.config.ts` y `vercel.json` están en la raíz del repositorio. No selecciones `backend`; esa carpeta contiene el servidor FastAPI opcional y no la aplicación Next.js. El archivo `vercel.json` fija Next.js, instala las dependencias con `npm ci --include=dev` y ejecuta `npm run build`.
+
+Si aparece `No Next.js version detected` o Vercel busca `backend/.next`, corrige Root Directory, guarda los ajustes y crea un nuevo despliegue de `main`; repetir el despliegue antiguo con su configuración anterior no aplica la corrección.
+
 ## Python local (backend / check_env)
 
 ```bash
