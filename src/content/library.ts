@@ -1,4 +1,5 @@
 import { FROM_ZERO } from "./library-from-zero";
+import { REASONING_GUIDES } from "./library-guides";
 
 export type LibraryBlock =
   | { type: "p"; text: string }
@@ -44,7 +45,7 @@ export const LIBRARY: LibraryArticle[] = [
     { type: "h", text: "Tipos que verás todo el rato" },
     { type: "list", items: ["int: enteros (3, -1)", "float: decimales (3.0 también es float)", "str: texto entre comillas", "bool: True o False", "None: 'no hay valor'"] },
     { type: "p", text: "type(x) te dice el tipo. En datos, mezclar int y str ('3' + 1) explota: conviertes con int(), float() o str()." },
-    { type: "callout", tone: "warn", text: "nombres descriptivos: temp_celsius, no t. Evita palabras reservadas (list, class, for)." },
+    { type: "callout", tone: "warn", text: "Usa nombres descriptivos, como temp_celsius. class y for son palabras reservadas y no pueden ser variables. list es una función incorporada: puedes sobrescribirla, pero perderías acceso a list() con ese nombre." },
     { type: "code", code: 'n = int("42")\nprint(n + 1)  # 43' },
   ]),
   a("u3", "Operadores", "Fundamentos", 6, [
@@ -320,10 +321,9 @@ export function getLibraryArticle(id: string) {
   const article = LIBRARY_BY_ID.get(id);
   if (!article) return undefined;
   const extra = FROM_ZERO[id];
-  if (!extra?.length) return article;
   return {
     ...article,
     minutes: Math.min(18, article.minutes + 6),
-    blocks: [...extra, { type: "h" as const, text: "Un poco más de detalle" }, ...article.blocks],
+    blocks: [...(extra ?? []), { type: "h" as const, text: "Un poco más de detalle" }, ...article.blocks, ...(REASONING_GUIDES[id] ?? [])],
   };
 }

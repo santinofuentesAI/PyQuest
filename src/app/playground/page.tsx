@@ -35,6 +35,7 @@ export default function PlaygroundPage() {
   }, []);
 
   async function run() {
+    if (busy) return;
     setBusy(true);
     setErr(null);
     try {
@@ -42,6 +43,8 @@ export default function PlaygroundPage() {
       setOut(res.stdout);
       setErr(res.error);
       setImages(res.images);
+    } catch {
+      setErr("Python no pudo cargar. Revisa la conexión y vuelve a ejecutar.");
     } finally {
       setBusy(false);
     }

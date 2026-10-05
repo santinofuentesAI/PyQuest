@@ -8,6 +8,8 @@ type Pending = {
   resolve: (value: PythonRunResult) => void;
   reject: (reason: Error) => void;
   timer: ReturnType<typeof setTimeout>;
+  timeoutMs: number;
+  onTimeout: () => void;
 };
 
 let worker: Worker | null = null;
@@ -16,6 +18,7 @@ const readyWaiters: Array<() => void> = [];
 let initError: string | null = null;
 const pending = new Map<string, Pending>();
 let requestId = 0;
+let runQueue: Promise<unknown> = Promise.resolve();
 const statusListeners = new Set<(s: RuntimeStatus) => void>();
 
 export type RuntimeStatus =
@@ -44,6 +47,11 @@ export function subscribeRuntimeStatus(fn: (s: RuntimeStatus) => void) {
 }
 
 function recreateWorker() {
+  for (const p of pending.values()) {
+    clearTimeout(p.timer);
+    p.reject(new Error("Python se reinició. Vuelve a ejecutar tu código."));
+  }
+  pending.clear();
   if (worker) {
     worker.terminate();
     worker = null;
@@ -78,9 +86,24 @@ function recreateWorker() {
         images: Array.isArray(msg.images) ? msg.images : [],
       });
     }
+    if (msg.type === "run_started") {
+      const p = pending.get(msg.id);
+      if (p) {
+        clearTimeout(p.timer);
+        p.timer = setTimeout(p.onTimeout, p.timeoutMs);
+      }
+    }
   };
   worker.onerror = (err) => {
-    setStatus({ state: "error", message: err.message || "Worker error" });
+    ready = false;
+    initError = err.message || "Python perdió la conexión.";
+    setStatus({ state: "error", message: initError });
+    readyWaiters.splice(0).forEach((fn) => fn());
+    for (const p of pending.values()) {
+      clearTimeout(p.timer);
+      p.reject(new Error(initError));
+    }
+    pending.clear();
   };
   setStatus({ state: "loading" });
   worker.postMessage({ type: "init" });
@@ -88,7 +111,7 @@ function recreateWorker() {
 
 export function preloadPython() {
   if (typeof window === "undefined") return;
-  if (!worker) recreateWorker();
+  if (!worker || initError) recreateWorker();
 }
 
 function waitReady(): Promise<void> {
@@ -96,30 +119,46 @@ function waitReady(): Promise<void> {
   if (initError) return Promise.reject(new Error(initError));
   if (!worker) recreateWorker();
   return new Promise((resolve, reject) => {
-    const t = setTimeout(() => reject(new Error("Python tardó demasiado en cargar.")), 120000);
-    readyWaiters.push(() => {
+    const onReady = () => {
       clearTimeout(t);
       if (initError) reject(new Error(initError));
       else resolve();
-    });
+    };
+    const t = setTimeout(() => {
+      const i = readyWaiters.indexOf(onReady);
+      if (i >= 0) readyWaiters.splice(i, 1);
+      initError = "Python tardó demasiado en cargar.";
+      setStatus({ state: "error", message: initError });
+      reject(new Error(initError));
+    }, 120000);
+    readyWaiters.push(onReady);
   });
 }
 
-export async function runPython(options: {
+type RunOptions = {
   code: string;
   tests?: string;
   files?: Record<string, string>;
   packages?: string[];
   capturePlots?: boolean;
   timeoutMs?: number;
-}): Promise<PythonRunResult> {
+};
+
+/** One active run: Pyodide cannot safely execute two Python jobs concurrently. */
+export function runPython(options: RunOptions): Promise<PythonRunResult> {
+  const next = runQueue.then(() => performRun(options));
+  runQueue = next.catch(() => undefined);
+  return next;
+}
+
+async function performRun(options: RunOptions): Promise<PythonRunResult> {
   preloadPython();
   await waitReady();
   const id = `r${++requestId}`;
   const timeoutMs = options.timeoutMs ?? TIMEOUT_MS;
 
   return new Promise((resolve, reject) => {
-    const timer = setTimeout(() => {
+    const onTimeout = () => {
       pending.delete(id);
       recreateWorker();
       resolve({
@@ -130,9 +169,15 @@ export async function runPython(options: {
         images: [],
         timedOut: true,
       });
-    }, timeoutMs);
+    };
+    // Package downloads get a separate budget; execution starts after run_started.
+    const timer = setTimeout(() => {
+      pending.delete(id);
+      recreateWorker();
+      reject(new Error("La descarga de los paquetes tardó demasiado. Revisa la conexión."));
+    }, 120000);
 
-    pending.set(id, { resolve, reject, timer });
+    pending.set(id, { resolve, reject, timer, timeoutMs, onTimeout });
     worker?.postMessage({
       type: "run",
       id,

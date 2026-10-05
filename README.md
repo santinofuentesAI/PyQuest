@@ -4,8 +4,8 @@ Plataforma web de aprendizaje gamificado de **Python para análisis de datos e I
 
 ## Qué incluye este slice
 
-- Motor de ejercicios genérico: opción múltiple, huecos, código, reordenar, detectar error, predecir salida, datos reales (CSV) y emparejar. En **Aprender**, el orden de los ejercicios y de las opciones cambia en cada intento (para no memorizar el mapa).
-- **Librería**: fichas desde cero de cada unidad (glosario, analogías, y luego más detalle).
+- Motor de ejercicios: opción múltiple, huecos con banco de palabras, código, reordenar, detectar error, predecir salida multilínea, datos reales (CSV), emparejar, construir expresiones por piezas y seguir la ejecución. En **Aprender** se conserva el orden pedagógico y se mezclan las opciones; los repasos sí mezclan ejercicios.
+- **Librería**: 53 guías, ejemplos ejecutables, razonamiento paso a paso y práctica libre de los cuatro niveles.
 - Runtime Python en un **Web Worker** (timeout 8 s, `stdout`/`stderr`, figuras Matplotlib a PNG).
 - Currículo completo en el mapa (secciones 0–7): **53 unidades** con lecciones originales (enunciado, pista, solución y tests). Hub por unidad, repaso espaciado y tienda de gemas.
 - Entras directo al mapa de **Aprender** (sin slides ni test de colocación).
@@ -138,3 +138,53 @@ Tablas SQLAlchemy: `users`, `lesson_completions`, `unit_progress`, `user_badges`
 - El color de la app se elige en Perfil (incluye Negro OLED). El progreso vive en este dispositivo.
 - TensorFlow/PyTorch no caben bien en Pyodide: las unidades de deep learning enseñan el álgebra con NumPy (el mismo forward/loss que usarás en Keras). El sandbox Docker es la vía para TF más adelante.
 - Las 53 unidades tienen lecciones originales (sin plantillas). Amplía o edita `scripts/generate_curriculum.py` y `scripts/remaining_units.py`, luego regenera con `python3 scripts/generate_curriculum.py`.
+
+## Interacción y aprendizaje
+
+- Editor táctil con símbolos, inserción en el cursor, pares de comillas/paréntesis,
+  indentación automática y sugerencias de nombres. Tab completa o indenta;
+  Shift+Tab permite salir del editor. Mantener el dedo quieto 650 ms completa
+  la primera sugerencia. Monaco sigue disponible como editor avanzado.
+- Piezas movibles con arrastre, teclado y botones; reiniciar y retirar piezas.
+- 28 retos de construir expresiones y 18 recorridos con 38 puntos de control.
+- Tras un error debes corregir la respuesta antes de avanzar. Una misma pregunta
+  consume como máximo un corazón. Puedes corregirla incluso con cero corazones.
+  La puntuación conserva los aciertos al primer intento y no premia reintentos como
+  aciertos perfectos. Fallos de carga de Python no consumen vidas.
+- Comparación numérica explícita en ejercicios que admiten diferencias de
+  representación. El texto sigue siendo exacto, incluidos los espacios internos.
+- Ejemplos de la biblioteca con datos visibles, código editable, gráficos y
+  restauración; práctica independiente que no desbloquea unidades ni escribe XP.
+
+## Ciclo de calidad
+
+```bash
+npm run curriculum
+npm run check
+python3 scripts/audit_curriculum.py --runtime
+```
+
+La auditoría estructural revisa IDs, huecos, opciones, emparejamientos, piezas y
+puntos de control. `--runtime` comprueba los programas de referencia y las salidas
+con Python local; necesita numpy, pandas, matplotlib, scipy, scikit-learn y seaborn.
+Las pruebas de componentes cubren interacción y reintentos; usan un DOM simulado,
+no una revisión visual del navegador. Las pruebas del Worker simulan carga,
+concurrencia, fallos y recuperación. Las IDs existentes se conservan para mantener
+el progreso guardado. Las definiciones originales viven en `scripts/`; los retos
+interactivos se añaden en `scripts/interactive_exercises.py`.
+
+## Pruebas en navegador
+
+```bash
+npx playwright install chromium
+npm run build
+npm run test:browser
+```
+
+La suite abre la biblioteca en 390×844, 1280×800 y 1440×900, verifica inserción
+por cursor y piezas, comprueba desbordamiento horizontal y guarda capturas.
+También ejecuta los 330 programas de referencia en el Worker real de Pyodide.
+Requiere acceso a jsDelivr y PyPI para los paquetes WASM. GitHub Actions ejecuta
+este ciclo en cada pull request y en cambios a main. Un fallo deja trazas y
+capturas en el artefacto browser-review. Una prueba pendiente no equivale a una
+revisión visual aprobada.

@@ -26,7 +26,7 @@ export function PythonStatus({ className }: { className?: string }) {
   }
   return (
     <p className={cn("inline-flex items-center gap-1.5 text-xs text-muted-foreground", className)}>
-      <Loader2 className="size-3.5 animate-spin" />
+      {status.state === "loading" ? <Loader2 className="size-3.5 animate-spin" /> : <FlaskConical className="size-3.5" />}
       {status.state === "loading" ? "Cargando Pyodide (NumPy, Pandas, Matplotlib)…" : "Laboratorio en espera"}
     </p>
   );

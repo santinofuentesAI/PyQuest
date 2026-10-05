@@ -1,10 +1,11 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 import type { Exercise } from "@/lib/types";
 import type { UserAnswer } from "@/lib/validators";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
+import { BlockBuilder } from "@/components/block-builder";
+import { TraceExercise } from "@/components/trace-exercise";
 import { CodeEditor } from "@/components/code-editor";
 import { cn } from "@/lib/utils";
 import { Lightbulb } from "lucide-react";
@@ -35,8 +36,10 @@ export function ExerciseView({
         <ChoiceForm exercise={exercise} onSubmit={onSubmit} />
       ) : exercise.type === "fill_blank" ? (
         <BlankForm exercise={exercise} onSubmit={onSubmit} />
-      ) : exercise.type === "reorder" ? (
-        <ReorderForm exercise={exercise} onSubmit={onSubmit} />
+      ) : exercise.type === "reorder" || exercise.type === "token_order" ? (
+        <BlockBuilder exercise={exercise} onSubmit={onSubmit} />
+      ) : exercise.type === "trace" ? (
+        <TraceExercise exercise={exercise} onSubmit={onSubmit} />
       ) : exercise.type === "matching" ? (
         <MatchForm exercise={exercise} onSubmit={onSubmit} />
       ) : exercise.type === "predict_output" ? (
@@ -87,6 +90,15 @@ function BlankForm({ exercise, onSubmit }: { exercise: Exercise; onSubmit: (a: U
   const parts = useMemo(() => (exercise.template ?? "").split("___"), [exercise.template]);
   const n = Math.max(0, parts.length - 1);
   const [values, setValues] = useState<string[]>(() => Array.from({ length: n }, () => ""));
+  const [typing, setTyping] = useState(false);
+  const [active, setActive] = useState(0);
+  const inputs = useRef<Array<HTMLInputElement | null>>([]);
+  const [bank] = useState(() => shuffle([...new Set([...(exercise.blanks ?? []).map((b) => b.accepted[0]), ...(exercise.wordBank ?? [])])]));
+  function setBlank(value: string) {
+    setValues((old) => old.map((v, i) => i === active ? value : v));
+    const next = values.findIndex((v, i) => i > active && !v);
+    if (next >= 0) setActive(next);
+  }
   return (
     <form
       className="space-y-3"
@@ -101,6 +113,9 @@ function BlankForm({ exercise, onSubmit }: { exercise: Exercise; onSubmit: (a: U
             {p}
             {i < n && (
               <input
+                ref={(el) => { inputs.current[i] = el; }}
+                readOnly={!typing}
+                onFocus={() => setActive(i)}
                 value={values[i] ?? ""}
                 onChange={(e) => {
                   const next = [...values];
@@ -108,65 +123,27 @@ function BlankForm({ exercise, onSubmit }: { exercise: Exercise; onSubmit: (a: U
                   setValues(next);
                 }}
                 aria-label={`Hueco ${i + 1}`}
-                className="mx-1 inline-block min-w-[5rem] rounded-md border border-cyan-400/60 bg-zinc-900 px-2 py-0.5 text-cyan-200 outline-none focus:ring-2 focus:ring-cyan-400"
+                style={{ width: `${Math.max(7, Math.min(22, (values[i]?.length ?? 0) + 2))}ch` }}
+                className={cn("mx-1 inline-block min-h-11 rounded-md border bg-zinc-900 px-2 py-0.5 text-base text-cyan-200 outline-none focus:ring-2 focus:ring-cyan-400", active === i ? "border-cyan-300 ring-1 ring-cyan-300" : "border-cyan-400/40")}
               />
             )}
           </span>
         ))}
       </pre>
+      <div className="flex flex-wrap items-center gap-2 text-xs">
+        <span className="text-muted-foreground">Completar hueco {active + 1}</span>
+        <button type="button" onClick={() => setTyping(!typing)} className="min-h-10 rounded-lg border px-3 font-semibold">{typing ? "Usar piezas" : "Escribir yo"}</button>
+        <button type="button" onClick={() => setValues((old) => old.map((v, i) => i === active ? "" : v))} className="min-h-10 px-3 font-semibold text-primary">Borrar hueco</button>
+      </div>
+      {!typing && <div className="flex flex-wrap gap-2" aria-label="Banco de palabras">{bank.map((word) => <button key={word} type="button" onClick={() => setBlank(word)} className="min-h-12 rounded-xl border bg-card px-4 py-2 font-mono text-sm hover:border-primary">{word}</button>)}</div>}
+      {typing && <div className="flex flex-wrap gap-1" aria-label="Símbolos para el hueco">{[":", '"', "'", "(", ")", "[", "]", "=", ">", "<", "_", "."].map((symbol) => <button key={symbol} type="button" onPointerDown={(e) => e.preventDefault()} onClick={() => {
+        const input = inputs.current[active];
+        const start = input?.selectionStart ?? values[active].length, end = input?.selectionEnd ?? start;
+        const value = values[active].slice(0, start) + symbol + values[active].slice(end);
+        setValues((old) => old.map((v, i) => i === active ? value : v));
+        requestAnimationFrame(() => { input?.focus(); input?.setSelectionRange(start + symbol.length, start + symbol.length); });
+      }} className="min-h-10 min-w-10 rounded-lg border px-2 font-mono">{symbol}</button>)}</div>}
       <CheckButton disabled={values.some((v) => !v.trim())} />
-    </form>
-  );
-}
-
-function ReorderForm({ exercise, onSubmit }: { exercise: Exercise; onSubmit: (a: UserAnswer) => void }) {
-  const [picked, setPicked] = useState<NonNullable<Exercise["blocks"]>>([]);
-  const [pool, setPool] = useState(() => shuffle(exercise.blocks ?? []));
-  return (
-    <form
-      className="space-y-3"
-      onSubmit={(e) => {
-        e.preventDefault();
-        onSubmit({ type: "order", ids: picked.map((b) => b.id) });
-      }}
-    >
-      <p className="text-xs font-semibold tracking-wide text-muted-foreground uppercase">
-        Toca para armar el orden
-      </p>
-      <div className="min-h-16 space-y-2 rounded-2xl border-2 border-dashed border-primary/30 bg-primary/5 p-2">
-        {picked.length === 0 && (
-          <p className="px-2 py-3 text-center text-sm text-muted-foreground">Tu script irá aquí</p>
-        )}
-        {picked.map((b, i) => (
-          <button
-            key={b.id + i}
-            type="button"
-            onClick={() => {
-              setPicked(picked.filter((_, j) => j !== i));
-              setPool([...pool, b]);
-            }}
-            className="block w-full rounded-xl bg-zinc-950 px-3 py-2 text-left font-mono text-sm text-cyan-100"
-          >
-            {b.code}
-          </button>
-        ))}
-      </div>
-      <div className="space-y-2">
-        {pool.map((b) => (
-          <button
-            key={b.id}
-            type="button"
-            onClick={() => {
-              setPool(pool.filter((x) => x.id !== b.id));
-              setPicked([...picked, b]);
-            }}
-            className="block w-full rounded-xl border bg-card px-3 py-2 text-left font-mono text-sm hover:border-primary/50"
-          >
-            {b.code}
-          </button>
-        ))}
-      </div>
-      <CheckButton disabled={picked.length !== (exercise.blocks?.length ?? 0)} />
     </form>
   );
 }
@@ -227,7 +204,7 @@ function MatchForm({ exercise, onSubmit }: { exercise: Exercise; onSubmit: (a: U
               key={item.id}
               type="button"
               onClick={() => pickRight(item.id)}
-              disabled={usedRight.has(item.id) && !Object.values(pairs).includes(item.id)}
+              aria-pressed={usedRight.has(item.id)}
               className={cn(
                 "w-full rounded-xl border-2 px-3 py-2 text-left text-sm",
                 usedRight.has(item.id)
@@ -246,6 +223,7 @@ function MatchForm({ exercise, onSubmit }: { exercise: Exercise; onSubmit: (a: U
 }
 
 function TextForm({
+  exercise,
   onSubmit,
   label,
 }: {
@@ -264,11 +242,15 @@ function TextForm({
     >
       <label className="block text-sm font-medium">
         {label}
-        <Input
+        <textarea
+          aria-label="Salida del programa"
+          rows={Math.max(2, (exercise.acceptedOutputs?.[0] ?? exercise.expectedStdout ?? "").split("\n").length)}
+          spellCheck={false}
+          autoCapitalize="off"
           value={value}
           onChange={(e) => setValue(e.target.value)}
-          className="mt-1 h-11 font-mono"
-          placeholder="Escribe la salida exacta"
+          className="mt-2 block min-h-24 w-full rounded-xl border bg-background p-3 font-mono text-base leading-7"
+          placeholder="Escribe la salida. Usa Enter para separar líneas."
         />
       </label>
       <CheckButton disabled={!value.trim()} />
@@ -286,7 +268,8 @@ function CodeForm({ exercise, onSubmit }: { exercise: Exercise; onSubmit: (a: Us
         onSubmit({ type: "code", code });
       }}
     >
-      <CodeEditor value={code} onChange={setCode} />
+      {exercise.files && <details className="rounded-xl border bg-muted/30 p-3 text-sm"><summary className="cursor-pointer font-semibold">Ver los datos del ejercicio</summary>{Object.entries(exercise.files).map(([name, content]) => <div key={name} className="mt-3"><p className="font-mono font-bold">{name}</p><pre className="mt-1 overflow-x-auto rounded-lg bg-zinc-950 p-3 text-xs text-zinc-100">{content}</pre></div>)}</details>}
+      <CodeEditor value={code} onChange={setCode} words={exercise.prompt.match(/\b[A-Za-z_][A-Za-z_0-9]*\b/g) ?? []} />
       <CheckButton label="Ejecutar y comprobar" disabled={!code.trim()} />
     </form>
   );

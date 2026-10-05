@@ -6,7 +6,9 @@ export type ExerciseType =
   | "find_error"
   | "predict_output"
   | "data"
-  | "matching";
+  | "matching"
+  | "token_order"
+  | "trace";
 
 export type Difficulty = 1 | 2 | 3 | 4 | 5;
 
@@ -56,6 +58,20 @@ export type Exercise = {
   packages?: string[];
   /** If true, matplotlib figures are captured. */
   capturePlots?: boolean;
+  /** Numeric comparison is opt-in; text output remains exact. */
+  outputComparison?: "exact" | "numeric";
+  /** Distractors for the optional word bank; accepted answers are included by the UI. */
+  wordBank?: string[];
+  /** Trace a program through authored, independently checked checkpoints. */
+  traceSteps?: {
+    line: number;
+    question: string;
+    choices: Choice[];
+    correctChoiceId: string;
+    explanation: string;
+    /** Assertion used to verify this checkpoint against starterCode. */
+    assert: string;
+  }[];
 };
 
 export type Lesson = {
@@ -171,4 +187,6 @@ export type CheckResult = {
   stderr?: string;
   images?: string[];
   error?: string | null;
+  /** Runtime/network failure: retry without spending hearts or affecting the score. */
+  retryable?: boolean;
 };

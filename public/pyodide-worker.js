@@ -5,6 +5,7 @@ const INDEX_URL = `https://cdn.jsdelivr.net/pyodide/v${PYODIDE_VERSION}/full/`;
 let pyodide = null;
 let loading = null;
 const installed = new Set();
+const mountedFiles = new Set();
 
 function post(msg) {
   self.postMessage(msg);
@@ -75,6 +76,12 @@ self.onmessage = async (event) => {
       const runtime = await ensurePyodide();
       await maybeInstall(msg.packages);
 
+      for (const path of mountedFiles) {
+        try { runtime.FS.unlink(path); } catch { /* Already removed by the program. */ }
+      }
+      mountedFiles.clear();
+      await runtime.runPythonAsync("plt.close('all')");
+
       if (msg.files && typeof msg.files === "object") {
         for (const [path, content] of Object.entries(msg.files)) {
           const clean = path.startsWith("/") ? path : `/home/pyodide/${path}`;
@@ -83,6 +90,7 @@ self.onmessage = async (event) => {
           const dir = parts.join("/") || "/home/pyodide";
           runtime.FS.mkdirTree(dir);
           runtime.FS.writeFile(clean, content);
+          mountedFiles.add(clean);
         }
       }
 
@@ -100,6 +108,7 @@ self.onmessage = async (event) => {
       runtime.globals.set("TEST_CODE", tests);
 
       let error = null;
+      post({ type: "run_started", id: msg.id });
       try {
         await runtime.runPythonAsync(`
 ns = {"__name__": "__main__"}

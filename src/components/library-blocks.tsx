@@ -42,15 +42,17 @@ export function LibraryBlocks({ blocks }: { blocks: LibraryBlock[] }) {
         }
         if (b.type === "glossary") {
           return (
-            <dl key={i} className="space-y-3 rounded-2xl border bg-muted/40 px-4 py-3">
+            <div key={i} className="space-y-3 rounded-2xl border bg-muted/40 px-4 py-3">
               <p className="text-xs font-bold tracking-widest text-muted-foreground uppercase">Palabras nuevas</p>
+              <dl className="space-y-3">
               {b.items.map((item) => (
                 <div key={item.term}>
                   <dt className="font-mono text-sm font-bold">{item.term}</dt>
                   <dd className="text-[15px] leading-relaxed text-foreground/90">{item.def}</dd>
                 </div>
               ))}
-            </dl>
+              </dl>
+            </div>
           );
         }
         return (

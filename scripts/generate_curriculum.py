@@ -1435,7 +1435,7 @@ def s3_u25():
                         "u25-l1-e8",
                         "Lee `sucio.csv`. Rellena edad nula con la mediana de edad y guarda el resultado en `df2`. `ok = df2['edad'].isna().sum() == 0`.",
                         "import pandas as pd\n",
-                        ["ok is True", "df2['edad'].isna().sum() == 0"],
+                        ["bool(ok) is True", "df2['edad'].isna().sum() == 0"],
                         "import pandas as pd\ndf = pd.read_csv('sucio.csv')\nmed = df['edad'].median()\ndf2 = df.copy()\ndf2['edad'] = df2['edad'].fillna(med)\nok = df2['edad'].isna().sum() == 0",
                         "La mediana es robusta a outliers. No uses la media a ciegas en salarios o precios.",
                         files={"sucio.csv": csv},
@@ -2772,6 +2772,10 @@ def build():
         find_err=find_err,
         reorder=reorder,
     )
+
+    from interactive_exercises import enrich_curriculum
+
+    enrich_curriculum(sections)
 
     n = 1
     for sec in sections:
