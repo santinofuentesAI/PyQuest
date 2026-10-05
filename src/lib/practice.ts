@@ -8,9 +8,10 @@ const QUIZ_TYPES = new Set<ExerciseType>([
   "fill_blank",
   "matching",
   "predict_output",
+  "trace",
 ]);
 
-const CODE_TYPES = new Set<ExerciseType>(["code", "data", "reorder"]);
+const CODE_TYPES = new Set<ExerciseType>(["code", "data", "reorder", "token_order"]);
 
 export type PracticeKind = "all" | "quiz" | "code";
 
@@ -34,11 +35,11 @@ export function shuffleExercise(ex: Exercise): Exercise {
   };
 }
 
-/** Learn-path only: new exercise order + shuffled choices so you cannot memorize the map. */
+/** Preserve teaching dependencies; only shuffle answer choices on the learn path. */
 export function shuffleLearnLesson(lesson: Lesson): Lesson {
   return {
     ...lesson,
-    exercises: shuffle(lesson.exercises.map(shuffleExercise)),
+    exercises: lesson.exercises.map(shuffleExercise),
   };
 }
 

@@ -6,6 +6,7 @@ import { ArrowLeft, ArrowRight, Dumbbell, Play } from "lucide-react";
 import { getLibraryArticle, LIBRARY } from "@/lib/library";
 import { getUnit } from "@/lib/curriculum";
 import { LibraryBlocks } from "@/components/library-blocks";
+import { LibraryWorkshop } from "@/components/library-workshop";
 import { Button } from "@/components/ui/button";
 
 export default function LibraryArticlePage() {
@@ -30,18 +31,19 @@ export default function LibraryArticlePage() {
   const lessonId = unit?.lessons[0]?.id;
 
   return (
-    <div className="mx-auto max-w-lg px-4 py-8 pb-24">
+    <div className="mx-auto max-w-5xl px-4 py-8 pb-24">
       <Link href="/library" className="inline-flex items-center gap-1 text-sm font-semibold text-primary">
         <ArrowLeft className="size-4" />
         Librería
       </Link>
       <p className="mt-4 text-xs font-bold tracking-widest text-primary uppercase">{article.kicker}</p>
       <h1 className="font-heading mt-1 text-3xl font-extrabold">{article.title}</h1>
-      <p className="mt-1 text-sm text-muted-foreground">{article.minutes} min · guía de lectura, no un quiz</p>
+      <p className="mt-1 text-sm text-muted-foreground">{article.minutes} min de lectura · ejemplos ejecutables · práctica libre</p>
 
-      <div className="mt-6">
+      <div className="mt-6 max-w-3xl">
         <LibraryBlocks blocks={article.blocks} />
       </div>
+      {unit && <LibraryWorkshop key={unit.id} unit={unit} />}
 
       <div className="mt-8 grid gap-2">
         {lessonId && (

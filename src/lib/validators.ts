@@ -1,13 +1,6 @@
 import type { CheckResult, Exercise } from "./types";
 import { runPython } from "./python-runtime";
-
-function norm(s: string) {
-  return s.replace(/\r\n/g, "\n").replace(/\t/g, " ").trim();
-}
-
-function compact(s: string) {
-  return norm(s).replace(/\s+/g, " ").replace(/['"]/g, '"');
-}
+import { normalizeOutput as norm, normalizeFragment as compact, outputMatches } from "./answer-utils";
 
 function testsToCode(exercise: Exercise) {
   if (!exercise.tests?.length) return "";
@@ -48,7 +41,7 @@ export async function checkExercise(
         correct,
         feedback: correct
           ? exercise.explanation
-          : "No es esa. Revisa el enunciado y vuelve a intentarlo.",
+          : `Revisa la idea: ${exercise.explanation}`,
       };
     }
     case "matching": {
@@ -59,19 +52,24 @@ export async function checkExercise(
       const correct = keys.every((k) => answer.pairs[k] === exercise.pairs![k]);
       return {
         correct,
-        feedback: correct ? exercise.explanation : "Hay al menos un empareje incorrecto.",
+        feedback: correct ? exercise.explanation : `Revisa “${exercise.left?.find((x) => answer.pairs[x.id] !== exercise.pairs![x.id])?.text ?? "los conceptos"}”. ${exercise.explanation}`,
       };
     }
+    case "token_order":
     case "reorder": {
       if (answer.type !== "order" || !exercise.correctOrder) {
         return { correct: false, feedback: "Ordena todos los bloques." };
       }
       const correct =
         answer.ids.length === exercise.correctOrder.length &&
-        answer.ids.every((id, i) => id === exercise.correctOrder![i]);
+        (exercise.type === "token_order"
+          ? new Set(answer.ids).size === answer.ids.length &&
+            answer.ids.every((id) => exercise.blocks?.some((b) => b.id === id)) &&
+            answer.ids.map((id) => exercise.blocks!.find((b) => b.id === id)!.code).join("") === exercise.solution
+          : answer.ids.every((id, i) => id === exercise.correctOrder![i]));
       return {
         correct,
-        feedback: correct ? exercise.explanation : "El orden todavía no es el correcto.",
+        feedback: correct ? exercise.explanation : `El orden todavía no es el correcto. ${exercise.hint ?? exercise.explanation}`,
       };
     }
     case "fill_blank": {
@@ -83,7 +81,15 @@ export async function checkExercise(
         return blank.accepted.some((a) => compact(a) === value);
       });
       if (ok) return { correct: true, feedback: exercise.explanation };
-      return { correct: false, feedback: "Ese hueco no coincide con la solución esperada." };
+      const i = exercise.blanks.findIndex((blank, i) => !blank.accepted.some((a) => compact(a) === compact(answer.values[i] ?? "")));
+      return { correct: false, feedback: `Revisa el hueco ${i + 1}. ${exercise.hint ?? "Piensa qué función o valor necesita esa parte de la instrucción."}` };
+    }
+    case "trace": {
+      if (answer.type !== "match" || !exercise.traceSteps?.length) return { correct: false, feedback: "Responde cada paso del programa." };
+      const i = exercise.traceSteps.findIndex((step, i) => answer.pairs[String(i)] !== step.correctChoiceId);
+      return i < 0
+        ? { correct: true, feedback: exercise.explanation }
+        : { correct: false, feedback: `Revisa el paso ${i + 1} (línea ${exercise.traceSteps[i].line}). ${exercise.traceSteps[i].explanation}` };
     }
     case "predict_output": {
       if (answer.type !== "text") {
@@ -91,10 +97,10 @@ export async function checkExercise(
       }
       const value = norm(answer.value);
       const accepted = (exercise.acceptedOutputs ?? [exercise.expectedStdout ?? ""]).map(norm);
-      const correct = accepted.some((a) => a === value);
+      const correct = accepted.some((a) => outputMatches(value, a, exercise.outputComparison));
       return {
         correct,
-        feedback: correct ? exercise.explanation : `La salida no coincide. Esperábamos algo como: ${accepted[0]}`,
+        feedback: correct ? exercise.explanation : "La salida no coincide. Sigue las instrucciones de arriba abajo y comprueba los espacios y los saltos de línea.",
       };
     }
     case "code":
@@ -102,13 +108,16 @@ export async function checkExercise(
       if (answer.type !== "code") {
         return { correct: false, feedback: "Escribe código." };
       }
-      const result = await runPython({
+      let result;
+      try { result = await runPython({
         code: answer.code,
         tests: testsToCode(exercise),
         files: exercise.files,
         packages: exercise.packages,
         capturePlots: exercise.capturePlots,
-      });
+      }); } catch {
+        return { correct: false, retryable: true, feedback: "Python no pudo cargar o perdió la conexión. Reintenta; este fallo no consume corazones." };
+      }
       if (result.timedOut) {
         return {
           correct: false,
@@ -120,7 +129,7 @@ export async function checkExercise(
       if (exercise.expectedStdout != null && !result.error) {
         const got = norm(result.stdout);
         const expected = norm(exercise.expectedStdout);
-        const stdoutOk = got === expected;
+        const stdoutOk = outputMatches(got, expected, exercise.outputComparison);
         if (!stdoutOk) {
           return {
             correct: false,
@@ -133,9 +142,15 @@ export async function checkExercise(
       }
       if (result.error) {
         const friendly = result.error.replace(/PythonError:\s*/g, "").split("\n").filter(Boolean).slice(-4).join("\n");
+        const guidance = /IndentationError|TabError/.test(friendly) ? "Revisa la indentación: usa cuatro espacios para cada nivel del bloque."
+          : /SyntaxError/.test(friendly) ? "Revisa paréntesis, comillas y los dos puntos al abrir un bloque."
+          : /NameError/.test(friendly) ? "Comprueba que el nombre esté bien escrito y definido antes de usarlo."
+          : /TypeError/.test(friendly) ? "Comprueba los tipos de los valores que estás combinando."
+          : /AssertionError/.test(friendly) ? "El programa ejecutó, pero el resultado no cumple el objetivo. Revisa las variables que pide el enunciado."
+          : "Lee la última línea del error y vuelve al cálculo que la provocó.";
         return {
           correct: false,
-          feedback: `Tu código lanzó un error:\n${friendly}`,
+          feedback: `${guidance}\n\n${friendly}`,
           stdout: result.stdout,
           stderr: result.stderr,
           error: result.error,

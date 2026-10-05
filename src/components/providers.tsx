@@ -5,7 +5,6 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { Toaster } from "@/components/ui/sonner";
 import { useEffect } from "react";
 import { useProgress } from "@/lib/progress-store";
-import { preloadPython } from "@/lib/python-runtime";
 import { applyPalette, DEFAULT_PALETTE, paletteById } from "@/lib/palettes";
 
 function PaletteShell({ children }: { children: React.ReactNode }) {
@@ -30,10 +29,6 @@ function PaletteShell({ children }: { children: React.ReactNode }) {
 }
 
 export function Providers({ children }: { children: React.ReactNode }) {
-  useEffect(() => {
-    preloadPython();
-  }, []);
-
   return (
     <PaletteShell>
       <TooltipProvider delay={200}>

@@ -21,7 +21,7 @@
               "id": "u1-l1",
               "title": "Tu primer print",
               "description": "Habla con Python y mira cómo responde.",
-              "xp": 98,
+              "xp": 112,
               "exercises": [
                 {
                   "id": "u1-l1-e1",
@@ -62,6 +62,40 @@
                   "starterCode": "print(\"Hola, PyQuest\")"
                 },
                 {
+                  "id": "u1-l1-touch",
+                  "type": "token_order",
+                  "prompt": "Construye la instrucción que imprime el texto Hola. Usa todas las piezas.",
+                  "difficulty": 1,
+                  "xp": 14,
+                  "hint": "Identifica primero el nombre principal; después coloca sus argumentos o su condición.",
+                  "explanation": "Las comillas indican texto; los paréntesis contienen el argumento de print.",
+                  "solution": "print(\"Hola\")",
+                  "blocks": [
+                    {
+                      "id": "t0",
+                      "code": "print"
+                    },
+                    {
+                      "id": "t1",
+                      "code": "("
+                    },
+                    {
+                      "id": "t2",
+                      "code": "\"Hola\""
+                    },
+                    {
+                      "id": "t3",
+                      "code": ")"
+                    }
+                  ],
+                  "correctOrder": [
+                    "t0",
+                    "t1",
+                    "t2",
+                    "t3"
+                  ]
+                },
+                {
                   "id": "u1-l1-e3",
                   "type": "fill_blank",
                   "prompt": "Completa el código para saludar.",
@@ -77,6 +111,10 @@
                         "print"
                       ]
                     }
+                  ],
+                  "wordBank": [
+                    "len",
+                    "type"
                   ]
                 },
                 {
@@ -213,7 +251,7 @@
               "id": "u1-l2",
               "title": "Afianza: recetas precisas",
               "description": "Relaciona un programa con una receta y evita errores al mostrar texto.",
-              "xp": 44,
+              "xp": 62,
               "exercises": [
                 {
                   "id": "u1-l2-e1",
@@ -267,6 +305,10 @@
                         "print"
                       ]
                     }
+                  ],
+                  "wordBank": [
+                    "len",
+                    "type"
                   ]
                 },
                 {
@@ -292,6 +334,61 @@
                     }
                   ],
                   "correctChoiceId": "a"
+                },
+                {
+                  "id": "u1-l2-trace",
+                  "type": "trace",
+                  "prompt": "Sigue el programa paso a paso y observa cómo cambian sus valores.",
+                  "difficulty": 2,
+                  "xp": 18,
+                  "hint": "Lee solo las líneas ejecutadas hasta el punto marcado. No adelantes el resultado final.",
+                  "explanation": "Cada instrucción usa el estado que dejó la anterior. Distingue asignar, transformar y mostrar.",
+                  "solution": "Paso 1: mensaje = 'Listo' — Asignar crea el nombre; no imprime nada.\nPaso 2: Listo — print muestra el contenido de la variable sin comillas.",
+                  "starterCode": "mensaje = 'Listo'\nprint(mensaje)",
+                  "traceSteps": [
+                    {
+                      "line": 1,
+                      "question": "¿Qué valor tiene mensaje?",
+                      "choices": [
+                        {
+                          "id": "a",
+                          "text": "mensaje = 'Listo'"
+                        },
+                        {
+                          "id": "b",
+                          "text": "mensaje = 'mensaje'"
+                        },
+                        {
+                          "id": "c",
+                          "text": "mensaje = None"
+                        }
+                      ],
+                      "correctChoiceId": "a",
+                      "explanation": "Asignar crea el nombre; no imprime nada.",
+                      "assert": "mensaje == 'Listo'"
+                    },
+                    {
+                      "line": 2,
+                      "question": "¿Qué aparece en la consola?",
+                      "choices": [
+                        {
+                          "id": "b",
+                          "text": "mensaje"
+                        },
+                        {
+                          "id": "c",
+                          "text": "'Listo'"
+                        },
+                        {
+                          "id": "a",
+                          "text": "Listo"
+                        }
+                      ],
+                      "correctChoiceId": "a",
+                      "explanation": "print muestra el contenido de la variable sin comillas.",
+                      "assert": "__stdout__.strip() == 'Listo'"
+                    }
+                  ]
                 }
               ],
               "level": 2
@@ -505,7 +602,7 @@
               "id": "u2-l1",
               "title": "Cajas con nombre",
               "description": "Guarda valores y pregunta su tipo.",
-              "xp": 102,
+              "xp": 116,
               "exercises": [
                 {
                   "id": "u2-l1-e1",
@@ -543,6 +640,35 @@
                     "4"
                   ],
                   "starterCode": "n = 3\nn = n + 1\nprint(n)"
+                },
+                {
+                  "id": "u2-l1-touch",
+                  "type": "token_order",
+                  "prompt": "Asigna el entero 12 a ventas. Usa todas las piezas.",
+                  "difficulty": 1,
+                  "xp": 14,
+                  "hint": "Identifica primero el nombre principal; después coloca sus argumentos o su condición.",
+                  "explanation": "= asigna el valor de la derecha al nombre de la izquierda.",
+                  "solution": "ventas = 12",
+                  "blocks": [
+                    {
+                      "id": "t0",
+                      "code": "ventas"
+                    },
+                    {
+                      "id": "t1",
+                      "code": " = "
+                    },
+                    {
+                      "id": "t2",
+                      "code": "12"
+                    }
+                  ],
+                  "correctOrder": [
+                    "t0",
+                    "t1",
+                    "t2"
+                  ]
                 },
                 {
                   "id": "u2-l1-e3",
@@ -696,7 +822,7 @@
               "id": "u2-l2",
               "title": "Afianza: cajas y etiquetas",
               "description": "Usa la analogía de cajas con nombre para distinguir valores y tipos.",
-              "xp": 44,
+              "xp": 62,
               "exercises": [
                 {
                   "id": "u2-l2-e1",
@@ -750,6 +876,10 @@
                         "True"
                       ]
                     }
+                  ],
+                  "wordBank": [
+                    "False",
+                    "None"
                   ]
                 },
                 {
@@ -775,6 +905,82 @@
                     }
                   ],
                   "correctChoiceId": "a"
+                },
+                {
+                  "id": "u2-l2-trace",
+                  "type": "trace",
+                  "prompt": "Sigue el programa paso a paso y observa cómo cambian sus valores.",
+                  "difficulty": 2,
+                  "xp": 18,
+                  "hint": "Lee solo las líneas ejecutadas hasta el punto marcado. No adelantes el resultado final.",
+                  "explanation": "Cada instrucción usa el estado que dejó la anterior. Distingue asignar, transformar y mostrar.",
+                  "solution": "Paso 1: 10 — La primera asignación da el valor 10.\nPaso 2: 13 — Se calcula 10 + 3 antes de guardar el nuevo valor.\nPaso 3: 13 — print usa el valor actualizado.",
+                  "starterCode": "ventas = 10\nventas = ventas + 3\nprint(ventas)",
+                  "traceSteps": [
+                    {
+                      "line": 1,
+                      "question": "¿Cuánto vale ventas?",
+                      "choices": [
+                        {
+                          "id": "a",
+                          "text": "10"
+                        },
+                        {
+                          "id": "b",
+                          "text": "3"
+                        },
+                        {
+                          "id": "c",
+                          "text": "13"
+                        }
+                      ],
+                      "correctChoiceId": "a",
+                      "explanation": "La primera asignación da el valor 10.",
+                      "assert": "ventas == 10"
+                    },
+                    {
+                      "line": 2,
+                      "question": "¿Cuánto vale ventas ahora?",
+                      "choices": [
+                        {
+                          "id": "b",
+                          "text": "10"
+                        },
+                        {
+                          "id": "c",
+                          "text": "3"
+                        },
+                        {
+                          "id": "a",
+                          "text": "13"
+                        }
+                      ],
+                      "correctChoiceId": "a",
+                      "explanation": "Se calcula 10 + 3 antes de guardar el nuevo valor.",
+                      "assert": "ventas == 13"
+                    },
+                    {
+                      "line": 3,
+                      "question": "¿Qué imprime?",
+                      "choices": [
+                        {
+                          "id": "c",
+                          "text": "10"
+                        },
+                        {
+                          "id": "a",
+                          "text": "13"
+                        },
+                        {
+                          "id": "b",
+                          "text": "ventas"
+                        }
+                      ],
+                      "correctChoiceId": "a",
+                      "explanation": "print usa el valor actualizado.",
+                      "assert": "__stdout__.strip() == '13'"
+                    }
+                  ]
                 }
               ],
               "level": 2
@@ -999,7 +1205,7 @@
               "id": "u3-l1",
               "title": "Cálculos y comparaciones",
               "description": "De % a and/or/not, con ejemplos de datos.",
-              "xp": 94,
+              "xp": 108,
               "exercises": [
                 {
                   "id": "u3-l1-e1",
@@ -1037,6 +1243,35 @@
                     "8"
                   ],
                   "starterCode": "print(2 ** 3)"
+                },
+                {
+                  "id": "u3-l1-touch",
+                  "type": "token_order",
+                  "prompt": "Construye la comparación edad mayor o igual que 18.",
+                  "difficulty": 1,
+                  "xp": 14,
+                  "hint": "Identifica primero el nombre principal; después coloca sus argumentos o su condición.",
+                  "explanation": ">= incluye el límite de 18; > lo excluiría.",
+                  "solution": "edad >= 18",
+                  "blocks": [
+                    {
+                      "id": "t0",
+                      "code": "edad"
+                    },
+                    {
+                      "id": "t1",
+                      "code": " >= "
+                    },
+                    {
+                      "id": "t2",
+                      "code": "18"
+                    }
+                  ],
+                  "correctOrder": [
+                    "t0",
+                    "t1",
+                    "t2"
+                  ]
                 },
                 {
                   "id": "u3-l1-e3",
@@ -1194,7 +1429,7 @@
               "id": "u3-l2",
               "title": "Afianza: reglas de cálculo",
               "description": "Compara los operadores con reglas de una calculadora y detecta precedencias engañosas.",
-              "xp": 44,
+              "xp": 62,
               "exercises": [
                 {
                   "id": "u3-l2-e1",
@@ -1273,6 +1508,61 @@
                     }
                   ],
                   "correctChoiceId": "a"
+                },
+                {
+                  "id": "u3-l2-trace",
+                  "type": "trace",
+                  "prompt": "Sigue el programa paso a paso y observa cómo cambian sus valores.",
+                  "difficulty": 2,
+                  "xp": 18,
+                  "hint": "Lee solo las líneas ejecutadas hasta el punto marcado. No adelantes el resultado final.",
+                  "explanation": "Cada instrucción usa el estado que dejó la anterior. Distingue asignar, transformar y mostrar.",
+                  "solution": "Paso 1: True — Mayor o igual incluye exactamente 18.\nPaso 2: True — La comparación produjo un booleano.",
+                  "starterCode": "edad = 18\npuede = edad >= 18\nprint(puede)",
+                  "traceSteps": [
+                    {
+                      "line": 2,
+                      "question": "¿Qué valor tiene puede?",
+                      "choices": [
+                        {
+                          "id": "a",
+                          "text": "True"
+                        },
+                        {
+                          "id": "b",
+                          "text": "False"
+                        },
+                        {
+                          "id": "c",
+                          "text": "18"
+                        }
+                      ],
+                      "correctChoiceId": "a",
+                      "explanation": "Mayor o igual incluye exactamente 18.",
+                      "assert": "puede is True"
+                    },
+                    {
+                      "line": 3,
+                      "question": "¿Qué imprime?",
+                      "choices": [
+                        {
+                          "id": "b",
+                          "text": "puede"
+                        },
+                        {
+                          "id": "c",
+                          "text": "18"
+                        },
+                        {
+                          "id": "a",
+                          "text": "True"
+                        }
+                      ],
+                      "correctChoiceId": "a",
+                      "explanation": "La comparación produjo un booleano.",
+                      "assert": "__stdout__.strip() == 'True'"
+                    }
+                  ]
                 }
               ],
               "level": 2
@@ -1503,7 +1793,7 @@
               "id": "u4-l1",
               "title": "Texto que se puede cortar",
               "description": "Los strings son secuencias: cada letra tiene un índice.",
-              "xp": 94,
+              "xp": 108,
               "exercises": [
                 {
                   "id": "u4-e1",
@@ -1541,6 +1831,45 @@
                     "ato"
                   ],
                   "starterCode": "s = \"datos\"\nprint(s[1:4])"
+                },
+                {
+                  "id": "u4-l1-touch",
+                  "type": "token_order",
+                  "prompt": "Construye la llamada que convierte nombre a minúsculas.",
+                  "difficulty": 1,
+                  "xp": 14,
+                  "hint": "Identifica primero el nombre principal; después coloca sus argumentos o su condición.",
+                  "explanation": "El punto accede al método y los paréntesis lo ejecutan.",
+                  "solution": "nombre.lower()",
+                  "blocks": [
+                    {
+                      "id": "t0",
+                      "code": "nombre"
+                    },
+                    {
+                      "id": "t1",
+                      "code": "."
+                    },
+                    {
+                      "id": "t2",
+                      "code": "lower"
+                    },
+                    {
+                      "id": "t3",
+                      "code": "("
+                    },
+                    {
+                      "id": "t4",
+                      "code": ")"
+                    }
+                  ],
+                  "correctOrder": [
+                    "t0",
+                    "t1",
+                    "t2",
+                    "t3",
+                    "t4"
+                  ]
                 },
                 {
                   "id": "u4-e3",
@@ -1686,7 +2015,7 @@
               "id": "u4-l2",
               "title": "Afianza: texto inmutable",
               "description": "Piensa en los strings como tiras selladas y evita confundir métodos con cambios directos.",
-              "xp": 44,
+              "xp": 62,
               "exercises": [
                 {
                   "id": "u4-l2-e1",
@@ -1765,6 +2094,61 @@
                     }
                   ],
                   "correctChoiceId": "a"
+                },
+                {
+                  "id": "u4-l2-trace",
+                  "type": "trace",
+                  "prompt": "Sigue el programa paso a paso y observa cómo cambian sus valores.",
+                  "difficulty": 2,
+                  "xp": 18,
+                  "hint": "Lee solo las líneas ejecutadas hasta el punto marcado. No adelantes el resultado final.",
+                  "explanation": "Cada instrucción usa el estado que dejó la anterior. Distingue asignar, transformar y mostrar.",
+                  "solution": "Paso 1: texto='IA', nuevo='ia' — lower devuelve otro string; no modifica el original.\nPaso 2: IA ia — print separa sus argumentos con un espacio por defecto.",
+                  "starterCode": "texto = 'IA'\nnuevo = texto.lower()\nprint(texto, nuevo)",
+                  "traceSteps": [
+                    {
+                      "line": 2,
+                      "question": "¿Qué valores tienen texto y nuevo?",
+                      "choices": [
+                        {
+                          "id": "a",
+                          "text": "texto='IA', nuevo='ia'"
+                        },
+                        {
+                          "id": "b",
+                          "text": "texto='ia', nuevo='ia'"
+                        },
+                        {
+                          "id": "c",
+                          "text": "texto='IA', nuevo='IA'"
+                        }
+                      ],
+                      "correctChoiceId": "a",
+                      "explanation": "lower devuelve otro string; no modifica el original.",
+                      "assert": "texto == 'IA' and nuevo == 'ia'"
+                    },
+                    {
+                      "line": 3,
+                      "question": "¿Qué imprime?",
+                      "choices": [
+                        {
+                          "id": "b",
+                          "text": "ia ia"
+                        },
+                        {
+                          "id": "c",
+                          "text": "IA IA"
+                        },
+                        {
+                          "id": "a",
+                          "text": "IA ia"
+                        }
+                      ],
+                      "correctChoiceId": "a",
+                      "explanation": "print separa sus argumentos con un espacio por defecto.",
+                      "assert": "__stdout__.strip() == 'IA ia'"
+                    }
+                  ]
                 }
               ],
               "level": 2
@@ -1983,7 +2367,7 @@
               "id": "u5-l1",
               "title": "Colecciones ordenadas",
               "description": "La estructura #1 para datos en crudo.",
-              "xp": 102,
+              "xp": 116,
               "exercises": [
                 {
                   "id": "u5-e1",
@@ -2024,6 +2408,50 @@
                         "sort"
                       ]
                     }
+                  ]
+                },
+                {
+                  "id": "u5-l1-touch",
+                  "type": "token_order",
+                  "prompt": "Construye la llamada que añade 8 al final de notas.",
+                  "difficulty": 1,
+                  "xp": 14,
+                  "hint": "Identifica primero el nombre principal; después coloca sus argumentos o su condición.",
+                  "explanation": "append modifica la lista existente y no devuelve la lista nueva.",
+                  "solution": "notas.append(8)",
+                  "blocks": [
+                    {
+                      "id": "t0",
+                      "code": "notas"
+                    },
+                    {
+                      "id": "t1",
+                      "code": "."
+                    },
+                    {
+                      "id": "t2",
+                      "code": "append"
+                    },
+                    {
+                      "id": "t3",
+                      "code": "("
+                    },
+                    {
+                      "id": "t4",
+                      "code": "8"
+                    },
+                    {
+                      "id": "t5",
+                      "code": ")"
+                    }
+                  ],
+                  "correctOrder": [
+                    "t0",
+                    "t1",
+                    "t2",
+                    "t3",
+                    "t4",
+                    "t5"
                   ]
                 },
                 {
@@ -2171,7 +2599,7 @@
               "id": "u5-l2",
               "title": "Afianza: listas compartidas",
               "description": "Compara las listas con pizarras editables y reconoce alias y copias.",
-              "xp": 44,
+              "xp": 62,
               "exercises": [
                 {
                   "id": "u5-l2-e1",
@@ -2250,6 +2678,61 @@
                     }
                   ],
                   "correctChoiceId": "a"
+                },
+                {
+                  "id": "u5-l2-trace",
+                  "type": "trace",
+                  "prompt": "Sigue el programa paso a paso y observa cómo cambian sus valores.",
+                  "difficulty": 2,
+                  "xp": 18,
+                  "hint": "Lee solo las líneas ejecutadas hasta el punto marcado. No adelantes el resultado final.",
+                  "explanation": "Cada instrucción usa el estado que dejó la anterior. Distingue asignar, transformar y mostrar.",
+                  "solution": "Paso 1: [5, 7, 9] — append agrega al final, no al principio.\nPaso 2: 5 — El índice 0 selecciona el primer elemento.",
+                  "starterCode": "notas = [5, 7]\nnotas.append(9)\nprimera = notas[0]",
+                  "traceSteps": [
+                    {
+                      "line": 2,
+                      "question": "¿Cómo queda notas?",
+                      "choices": [
+                        {
+                          "id": "a",
+                          "text": "[5, 7, 9]"
+                        },
+                        {
+                          "id": "b",
+                          "text": "[9, 5, 7]"
+                        },
+                        {
+                          "id": "c",
+                          "text": "[5, 7]"
+                        }
+                      ],
+                      "correctChoiceId": "a",
+                      "explanation": "append agrega al final, no al principio.",
+                      "assert": "notas == [5, 7, 9]"
+                    },
+                    {
+                      "line": 3,
+                      "question": "¿Qué valor tiene primera?",
+                      "choices": [
+                        {
+                          "id": "b",
+                          "text": "7"
+                        },
+                        {
+                          "id": "c",
+                          "text": "9"
+                        },
+                        {
+                          "id": "a",
+                          "text": "5"
+                        }
+                      ],
+                      "correctChoiceId": "a",
+                      "explanation": "El índice 0 selecciona el primer elemento.",
+                      "assert": "primera == 5"
+                    }
+                  ]
                 }
               ],
               "level": 2
@@ -2471,7 +2954,7 @@
               "id": "u6-l1",
               "title": "Fijas y únicas",
               "description": "Tupla = registro; set = conjunto.",
-              "xp": 94,
+              "xp": 108,
               "exercises": [
                 {
                   "id": "u6-e1",
@@ -2509,6 +2992,40 @@
                     "2"
                   ],
                   "starterCode": "t = (1, 2, 3)\nprint(t[1])"
+                },
+                {
+                  "id": "u6-l1-touch",
+                  "type": "token_order",
+                  "prompt": "Construye la llamada que elimina los duplicados de etiquetas.",
+                  "difficulty": 1,
+                  "xp": 14,
+                  "hint": "Identifica primero el nombre principal; después coloca sus argumentos o su condición.",
+                  "explanation": "set conserva valores únicos; no promete el orden de una lista.",
+                  "solution": "set(etiquetas)",
+                  "blocks": [
+                    {
+                      "id": "t0",
+                      "code": "set"
+                    },
+                    {
+                      "id": "t1",
+                      "code": "("
+                    },
+                    {
+                      "id": "t2",
+                      "code": "etiquetas"
+                    },
+                    {
+                      "id": "t3",
+                      "code": ")"
+                    }
+                  ],
+                  "correctOrder": [
+                    "t0",
+                    "t1",
+                    "t2",
+                    "t3"
+                  ]
                 },
                 {
                   "id": "u6-e3",
@@ -2654,7 +3171,7 @@
               "id": "u6-l2",
               "title": "Afianza: fijo vs único",
               "description": "Separa tupla (no cambia) y set (sin duplicados).",
-              "xp": 44,
+              "xp": 62,
               "exercises": [
                 {
                   "id": "u6-l2-e1",
@@ -2751,6 +3268,61 @@
                     "l2": "r2",
                     "l3": "r3"
                   }
+                },
+                {
+                  "id": "u6-l2-trace",
+                  "type": "trace",
+                  "prompt": "Sigue el programa paso a paso y observa cómo cambian sus valores.",
+                  "difficulty": 2,
+                  "xp": 18,
+                  "hint": "Lee solo las líneas ejecutadas hasta el punto marcado. No adelantes el resultado final.",
+                  "explanation": "Cada instrucción usa el estado que dejó la anterior. Distingue asignar, transformar y mostrar.",
+                  "solution": "Paso 1: 2 — La repetición del 1 no agrega otro valor al set.\nPaso 2: 2 — len cuenta los elementos del set resultante.",
+                  "starterCode": "etiquetas = [1, 1, 2]\nunicas = set(etiquetas)\nn = len(unicas)",
+                  "traceSteps": [
+                    {
+                      "line": 2,
+                      "question": "¿Cuántos valores únicos hay?",
+                      "choices": [
+                        {
+                          "id": "a",
+                          "text": "2"
+                        },
+                        {
+                          "id": "b",
+                          "text": "3"
+                        },
+                        {
+                          "id": "c",
+                          "text": "1"
+                        }
+                      ],
+                      "correctChoiceId": "a",
+                      "explanation": "La repetición del 1 no agrega otro valor al set.",
+                      "assert": "len(unicas) == 2"
+                    },
+                    {
+                      "line": 3,
+                      "question": "¿Qué vale n?",
+                      "choices": [
+                        {
+                          "id": "b",
+                          "text": "3"
+                        },
+                        {
+                          "id": "c",
+                          "text": "0"
+                        },
+                        {
+                          "id": "a",
+                          "text": "2"
+                        }
+                      ],
+                      "correctChoiceId": "a",
+                      "explanation": "len cuenta los elementos del set resultante.",
+                      "assert": "n == 2"
+                    }
+                  ]
                 }
               ],
               "level": 2
@@ -2980,7 +3552,7 @@
               "id": "u7-l1",
               "title": "Mapas mentales",
               "description": "Nombre → valor. Así viajan casi todos los datos de APIs.",
-              "xp": 102,
+              "xp": 116,
               "exercises": [
                 {
                   "id": "u7-e1",
@@ -3022,6 +3594,40 @@
                         "\"m\""
                       ]
                     }
+                  ]
+                },
+                {
+                  "id": "u7-l1-touch",
+                  "type": "token_order",
+                  "prompt": "Accede al valor de la clave ciudad en cliente.",
+                  "difficulty": 1,
+                  "xp": 14,
+                  "hint": "Identifica primero el nombre principal; después coloca sus argumentos o su condición.",
+                  "explanation": "Una clave de texto lleva comillas; el diccionario busca ese valor.",
+                  "solution": "cliente[\"ciudad\"]",
+                  "blocks": [
+                    {
+                      "id": "t0",
+                      "code": "cliente"
+                    },
+                    {
+                      "id": "t1",
+                      "code": "["
+                    },
+                    {
+                      "id": "t2",
+                      "code": "\"ciudad\""
+                    },
+                    {
+                      "id": "t3",
+                      "code": "]"
+                    }
+                  ],
+                  "correctOrder": [
+                    "t0",
+                    "t1",
+                    "t2",
+                    "t3"
                   ]
                 },
                 {
@@ -3170,7 +3776,7 @@
               "id": "u7-l2",
               "title": "Afianza: clave y valor",
               "description": "Un dict se pregunta por nombre, no por puesto.",
-              "xp": 44,
+              "xp": 62,
               "exercises": [
                 {
                   "id": "u7-l2-e1",
@@ -3250,6 +3856,61 @@
                     }
                   ],
                   "correctChoiceId": "a"
+                },
+                {
+                  "id": "u7-l2-trace",
+                  "type": "trace",
+                  "prompt": "Sigue el programa paso a paso y observa cómo cambian sus valores.",
+                  "difficulty": 2,
+                  "xp": 18,
+                  "hint": "Lee solo las líneas ejecutadas hasta el punto marcado. No adelantes el resultado final.",
+                  "explanation": "Cada instrucción usa el estado que dejó la anterior. Distingue asignar, transformar y mostrar.",
+                  "solution": "Paso 1: ciudad — La clave es ciudad; San José es su valor.\nPaso 2: San José — El acceso por clave devuelve el valor asociado.",
+                  "starterCode": "cliente = {'ciudad': 'San José'}\nciudad = cliente['ciudad']",
+                  "traceSteps": [
+                    {
+                      "line": 1,
+                      "question": "¿Qué clave tiene el diccionario?",
+                      "choices": [
+                        {
+                          "id": "a",
+                          "text": "ciudad"
+                        },
+                        {
+                          "id": "b",
+                          "text": "San José"
+                        },
+                        {
+                          "id": "c",
+                          "text": "cliente"
+                        }
+                      ],
+                      "correctChoiceId": "a",
+                      "explanation": "La clave es ciudad; San José es su valor.",
+                      "assert": "list(cliente) == ['ciudad']"
+                    },
+                    {
+                      "line": 2,
+                      "question": "¿Qué vale la variable ciudad?",
+                      "choices": [
+                        {
+                          "id": "b",
+                          "text": "ciudad"
+                        },
+                        {
+                          "id": "c",
+                          "text": "None"
+                        },
+                        {
+                          "id": "a",
+                          "text": "San José"
+                        }
+                      ],
+                      "correctChoiceId": "a",
+                      "explanation": "El acceso por clave devuelve el valor asociado.",
+                      "assert": "ciudad == 'San José'"
+                    }
+                  ]
                 }
               ],
               "level": 2
@@ -3488,7 +4149,7 @@
               "id": "u8-l1",
               "title": "Ramificar el flujo",
               "description": "Una condición, un camino.",
-              "xp": 94,
+              "xp": 108,
               "exercises": [
                 {
                   "id": "u8-e1",
@@ -3530,6 +4191,45 @@
                         ">"
                       ]
                     }
+                  ]
+                },
+                {
+                  "id": "u8-l1-touch",
+                  "type": "token_order",
+                  "prompt": "Construye la cabecera if que compara total > 100. Incluye los dos puntos.",
+                  "difficulty": 1,
+                  "xp": 14,
+                  "hint": "Identifica primero el nombre principal; después coloca sus argumentos o su condición.",
+                  "explanation": "Los dos puntos abren un bloque que debe ir indentado.",
+                  "solution": "if total > 100:",
+                  "blocks": [
+                    {
+                      "id": "t0",
+                      "code": "if "
+                    },
+                    {
+                      "id": "t1",
+                      "code": "total"
+                    },
+                    {
+                      "id": "t2",
+                      "code": " > "
+                    },
+                    {
+                      "id": "t3",
+                      "code": "100"
+                    },
+                    {
+                      "id": "t4",
+                      "code": ":"
+                    }
+                  ],
+                  "correctOrder": [
+                    "t0",
+                    "t1",
+                    "t2",
+                    "t3",
+                    "t4"
                   ]
                 },
                 {
@@ -3672,7 +4372,7 @@
               "id": "u8-l2",
               "title": "Afianza: la pregunta del if",
               "description": "Una condición es sí o no; la indentación marca el bloque.",
-              "xp": 44,
+              "xp": 62,
               "exercises": [
                 {
                   "id": "u8-l2-e1",
@@ -3752,6 +4452,61 @@
                     }
                   ],
                   "correctChoiceId": "a"
+                },
+                {
+                  "id": "u8-l2-trace",
+                  "type": "trace",
+                  "prompt": "Sigue el programa paso a paso y observa cómo cambian sus valores.",
+                  "difficulty": 2,
+                  "xp": 18,
+                  "hint": "Lee solo las líneas ejecutadas hasta el punto marcado. No adelantes el resultado final.",
+                  "explanation": "Cada instrucción usa el estado que dejó la anterior. Distingue asignar, transformar y mostrar.",
+                  "solution": "Paso 1: normal — 80 > 100 es falso, por lo que se elige else.\nPaso 2: normal — Solo se imprime el resultado elegido.",
+                  "starterCode": "total = 80\netiqueta = 'alto' if total > 100 else 'normal'\nprint(etiqueta)",
+                  "traceSteps": [
+                    {
+                      "line": 2,
+                      "question": "¿Qué rama se elige?",
+                      "choices": [
+                        {
+                          "id": "a",
+                          "text": "normal"
+                        },
+                        {
+                          "id": "b",
+                          "text": "alto"
+                        },
+                        {
+                          "id": "c",
+                          "text": "80"
+                        }
+                      ],
+                      "correctChoiceId": "a",
+                      "explanation": "80 > 100 es falso, por lo que se elige else.",
+                      "assert": "etiqueta == 'normal'"
+                    },
+                    {
+                      "line": 3,
+                      "question": "¿Qué imprime?",
+                      "choices": [
+                        {
+                          "id": "b",
+                          "text": "alto"
+                        },
+                        {
+                          "id": "c",
+                          "text": "etiqueta"
+                        },
+                        {
+                          "id": "a",
+                          "text": "normal"
+                        }
+                      ],
+                      "correctChoiceId": "a",
+                      "explanation": "Solo se imprime el resultado elegido.",
+                      "assert": "__stdout__.strip() == 'normal'"
+                    }
+                  ]
                 }
               ],
               "level": 2
@@ -3981,7 +4736,7 @@
               "id": "u9-l1",
               "title": "Repetir sin copiar",
               "description": "El for recorre; el while espera una condición.",
-              "xp": 102,
+              "xp": 116,
               "exercises": [
                 {
                   "id": "u9-e1",
@@ -4013,6 +4768,45 @@
                         "[1, 2]"
                       ]
                     }
+                  ]
+                },
+                {
+                  "id": "u9-l1-touch",
+                  "type": "token_order",
+                  "prompt": "Construye la cabecera for que recorre ventas con la variable venta.",
+                  "difficulty": 1,
+                  "xp": 14,
+                  "hint": "Identifica primero el nombre principal; después coloca sus argumentos o su condición.",
+                  "explanation": "En cada iteración venta toma el siguiente elemento de ventas.",
+                  "solution": "for venta in ventas:",
+                  "blocks": [
+                    {
+                      "id": "t0",
+                      "code": "for "
+                    },
+                    {
+                      "id": "t1",
+                      "code": "venta"
+                    },
+                    {
+                      "id": "t2",
+                      "code": " in "
+                    },
+                    {
+                      "id": "t3",
+                      "code": "ventas"
+                    },
+                    {
+                      "id": "t4",
+                      "code": ":"
+                    }
+                  ],
+                  "correctOrder": [
+                    "t0",
+                    "t1",
+                    "t2",
+                    "t3",
+                    "t4"
                   ]
                 },
                 {
@@ -4156,7 +4950,7 @@
               "id": "u9-l2",
               "title": "Afianza: repetir sin copiar",
               "description": "for recorre; range cuenta desde cero.",
-              "xp": 44,
+              "xp": 62,
               "exercises": [
                 {
                   "id": "u9-l2-e1",
@@ -4253,6 +5047,82 @@
                     "l2": "r2",
                     "l3": "r3"
                   }
+                },
+                {
+                  "id": "u9-l2-trace",
+                  "type": "trace",
+                  "prompt": "Sigue el programa paso a paso y observa cómo cambian sus valores.",
+                  "difficulty": 2,
+                  "xp": 18,
+                  "hint": "Lee solo las líneas ejecutadas hasta el punto marcado. No adelantes el resultado final.",
+                  "explanation": "Cada instrucción usa el estado que dejó la anterior. Distingue asignar, transformar y mostrar.",
+                  "solution": "Paso 1: 0 — El acumulador empieza en cero.\nPaso 2: 5 — Primero 0 + 2, luego 2 + 3.\nPaso 3: 5 — La línea sin indentación se ejecuta después de terminar el bucle.",
+                  "starterCode": "total = 0\nfor venta in [2, 3]:\n    total = total + venta\nprint(total)",
+                  "traceSteps": [
+                    {
+                      "line": 1,
+                      "question": "¿Cuánto vale total antes del bucle?",
+                      "choices": [
+                        {
+                          "id": "a",
+                          "text": "0"
+                        },
+                        {
+                          "id": "b",
+                          "text": "2"
+                        },
+                        {
+                          "id": "c",
+                          "text": "5"
+                        }
+                      ],
+                      "correctChoiceId": "a",
+                      "explanation": "El acumulador empieza en cero.",
+                      "assert": "total == 0"
+                    },
+                    {
+                      "line": 3,
+                      "question": "Tras completar las dos iteraciones, ¿cuánto vale total?",
+                      "choices": [
+                        {
+                          "id": "b",
+                          "text": "3"
+                        },
+                        {
+                          "id": "c",
+                          "text": "2"
+                        },
+                        {
+                          "id": "a",
+                          "text": "5"
+                        }
+                      ],
+                      "correctChoiceId": "a",
+                      "explanation": "Primero 0 + 2, luego 2 + 3.",
+                      "assert": "total == 5"
+                    },
+                    {
+                      "line": 4,
+                      "question": "¿Qué imprime al salir del bucle?",
+                      "choices": [
+                        {
+                          "id": "c",
+                          "text": "0"
+                        },
+                        {
+                          "id": "a",
+                          "text": "5"
+                        },
+                        {
+                          "id": "b",
+                          "text": "2 3"
+                        }
+                      ],
+                      "correctChoiceId": "a",
+                      "explanation": "La línea sin indentación se ejecuta después de terminar el bucle.",
+                      "assert": "__stdout__.strip() == '5'"
+                    }
+                  ]
                 }
               ],
               "level": 2
@@ -4466,7 +5336,7 @@
               "id": "u10-l1",
               "title": "Empaquetar lógica",
               "description": "Un nombre, unos parámetros, un resultado.",
-              "xp": 102,
+              "xp": 116,
               "exercises": [
                 {
                   "id": "u10-e1",
@@ -4507,6 +5377,50 @@
                         "return"
                       ]
                     }
+                  ]
+                },
+                {
+                  "id": "u10-l1-touch",
+                  "type": "token_order",
+                  "prompt": "Define la cabecera de una función llamada doble con el parámetro x.",
+                  "difficulty": 1,
+                  "xp": 14,
+                  "hint": "Identifica primero el nombre principal; después coloca sus argumentos o su condición.",
+                  "explanation": "def define la función; el parámetro recibirá un valor al llamarla.",
+                  "solution": "def doble(x):",
+                  "blocks": [
+                    {
+                      "id": "t0",
+                      "code": "def "
+                    },
+                    {
+                      "id": "t1",
+                      "code": "doble"
+                    },
+                    {
+                      "id": "t2",
+                      "code": "("
+                    },
+                    {
+                      "id": "t3",
+                      "code": "x"
+                    },
+                    {
+                      "id": "t4",
+                      "code": ")"
+                    },
+                    {
+                      "id": "t5",
+                      "code": ":"
+                    }
+                  ],
+                  "correctOrder": [
+                    "t0",
+                    "t1",
+                    "t2",
+                    "t3",
+                    "t4",
+                    "t5"
                   ]
                 },
                 {
@@ -4651,7 +5565,7 @@
               "id": "u10-l2",
               "title": "Afianza: receta con nombre",
               "description": "def define; return entrega; llamar usa paréntesis.",
-              "xp": 44,
+              "xp": 62,
               "exercises": [
                 {
                   "id": "u10-l2-e1",
@@ -4748,6 +5662,61 @@
                     "l2": "r2",
                     "l3": "r3"
                   }
+                },
+                {
+                  "id": "u10-l2-trace",
+                  "type": "trace",
+                  "prompt": "Sigue el programa paso a paso y observa cómo cambian sus valores.",
+                  "difficulty": 2,
+                  "xp": 18,
+                  "hint": "Lee solo las líneas ejecutadas hasta el punto marcado. No adelantes el resultado final.",
+                  "explanation": "Cada instrucción usa el estado que dejó la anterior. Distingue asignar, transformar y mostrar.",
+                  "solution": "Paso 1: Todavía no — Definir guarda la función; no la llama.\nPaso 2: 8 — return entrega 4 * 2 a quien llamó la función.",
+                  "starterCode": "def doble(x):\n    return x * 2\nresultado = doble(4)",
+                  "traceSteps": [
+                    {
+                      "line": 2,
+                      "question": "Tras definir la función, ¿ya existe resultado?",
+                      "choices": [
+                        {
+                          "id": "a",
+                          "text": "Todavía no"
+                        },
+                        {
+                          "id": "b",
+                          "text": "Vale 8"
+                        },
+                        {
+                          "id": "c",
+                          "text": "Vale 4"
+                        }
+                      ],
+                      "correctChoiceId": "a",
+                      "explanation": "Definir guarda la función; no la llama.",
+                      "assert": "'resultado' not in globals()"
+                    },
+                    {
+                      "line": 3,
+                      "question": "Después de llamar doble(4), ¿qué vale resultado?",
+                      "choices": [
+                        {
+                          "id": "b",
+                          "text": "4"
+                        },
+                        {
+                          "id": "c",
+                          "text": "None"
+                        },
+                        {
+                          "id": "a",
+                          "text": "8"
+                        }
+                      ],
+                      "correctChoiceId": "a",
+                      "explanation": "return entrega 4 * 2 a quien llamó la función.",
+                      "assert": "resultado == 8"
+                    }
+                  ]
                 }
               ],
               "level": 2
@@ -6626,12 +7595,12 @@
                 {
                   "id": "p0-l2-e3",
                   "type": "fill_blank",
-                  "prompt": "El resultado vive en una variable, no solo en la pantalla.",
+                  "prompt": "Completa print para mostrar `media`, el resultado del proyecto de stats de bolsillo.",
                   "difficulty": 1,
                   "xp": 12,
                   "explanation": "Así un test puede leerla. print es para ti.",
                   "solution": "print(media)",
-                  "template": "print(media)",
+                  "template": "print(___)",
                   "blanks": [
                     {
                       "accepted": [
@@ -6908,7 +7877,7 @@
               "id": "u14-l1",
               "title": "De lista a array",
               "description": "Crea arrays y mira su forma y tipo.",
-              "xp": 110,
+              "xp": 124,
               "exercises": [
                 {
                   "id": "u14-l1-e1",
@@ -6952,6 +7921,50 @@
                   ]
                 },
                 {
+                  "id": "u14-l1-touch",
+                  "type": "token_order",
+                  "prompt": "Construye la expresión que crea un array NumPy con 2 y 4.",
+                  "difficulty": 1,
+                  "xp": 14,
+                  "hint": "Identifica primero el nombre principal; después coloca sus argumentos o su condición.",
+                  "explanation": "np.array convierte la secuencia en un array numérico.",
+                  "solution": "np.array([2, 4])",
+                  "blocks": [
+                    {
+                      "id": "t0",
+                      "code": "np"
+                    },
+                    {
+                      "id": "t1",
+                      "code": "."
+                    },
+                    {
+                      "id": "t2",
+                      "code": "array"
+                    },
+                    {
+                      "id": "t3",
+                      "code": "("
+                    },
+                    {
+                      "id": "t4",
+                      "code": "[2, 4]"
+                    },
+                    {
+                      "id": "t5",
+                      "code": ")"
+                    }
+                  ],
+                  "correctOrder": [
+                    "t0",
+                    "t1",
+                    "t2",
+                    "t3",
+                    "t4",
+                    "t5"
+                  ]
+                },
+                {
                   "id": "u14-l1-e3",
                   "type": "code",
                   "prompt": "Importa numpy como np. Crea `temps` con los valores 18, 21, 19, 23. Guarda `n` = número de elementos (usa `.size` o `len`) e imprime `n`.",
@@ -6976,13 +7989,13 @@
                   "prompt": "¿Qué imprime este código?",
                   "difficulty": 1,
                   "xp": 10,
-                  "hint": "Enteros sin punto decimal.",
-                  "explanation": "NumPy infiere int64 (o int32 según plataforma). Puedes forzar dtype=float64.",
+                  "hint": "Mira el dtype que se indica al crear el array.",
+                  "explanation": "dtype=np.int64 fija enteros de 64 bits en cualquier plataforma. Sin dtype explícito, el tipo por defecto puede variar.",
                   "solution": "int64",
                   "acceptedOutputs": [
                     "int64"
                   ],
-                  "starterCode": "import numpy as np\na = np.array([1, 2, 3])\nprint(a.dtype)"
+                  "starterCode": "import numpy as np\na = np.array([1, 2, 3], dtype=np.int64)\nprint(a.dtype)"
                 },
                 {
                   "id": "u14-l1-e5",
@@ -7105,7 +8118,7 @@
               "id": "u14-l2",
               "title": "Afianza: muchos números, un bloque",
               "description": "El array es homogéneo y tiene shape.",
-              "xp": 44,
+              "xp": 62,
               "exercises": [
                 {
                   "id": "u14-l2-e1",
@@ -7202,6 +8215,61 @@
                     "l2": "r2",
                     "l3": "r3"
                   }
+                },
+                {
+                  "id": "u14-l2-trace",
+                  "type": "trace",
+                  "prompt": "Sigue el programa paso a paso y observa cómo cambian sus valores.",
+                  "difficulty": 2,
+                  "xp": 18,
+                  "hint": "Lee solo las líneas ejecutadas hasta el punto marcado. No adelantes el resultado final.",
+                  "explanation": "Cada instrucción usa el estado que dejó la anterior. Distingue asignar, transformar y mostrar.",
+                  "solution": "Paso 1: 2 — El array contiene dos elementos.\nPaso 2: [4, 8] — En un array, * 2 multiplica cada valor; no repite la secuencia como una lista.",
+                  "starterCode": "import numpy as np\na = np.array([2, 4])\nb = a * 2",
+                  "traceSteps": [
+                    {
+                      "line": 2,
+                      "question": "¿Cuál es el tamaño de a?",
+                      "choices": [
+                        {
+                          "id": "a",
+                          "text": "2"
+                        },
+                        {
+                          "id": "b",
+                          "text": "4"
+                        },
+                        {
+                          "id": "c",
+                          "text": "1"
+                        }
+                      ],
+                      "correctChoiceId": "a",
+                      "explanation": "El array contiene dos elementos.",
+                      "assert": "a.size == 2"
+                    },
+                    {
+                      "line": 3,
+                      "question": "¿Cómo queda b?",
+                      "choices": [
+                        {
+                          "id": "b",
+                          "text": "[2, 4, 2, 4]"
+                        },
+                        {
+                          "id": "c",
+                          "text": "[2, 4]"
+                        },
+                        {
+                          "id": "a",
+                          "text": "[4, 8]"
+                        }
+                      ],
+                      "correctChoiceId": "a",
+                      "explanation": "En un array, * 2 multiplica cada valor; no repite la secuencia como una lista.",
+                      "assert": "np.array_equal(b, [4, 8])"
+                    }
+                  ]
                 }
               ],
               "level": 2
@@ -7414,7 +8482,7 @@
               "id": "u15-l1",
               "title": "Seleccionar celdas",
               "description": "Índices, slices y arrays 2D.",
-              "xp": 102,
+              "xp": 116,
               "exercises": [
                 {
                   "id": "u15-l1-e1",
@@ -7444,6 +8512,50 @@
                         "-1"
                       ]
                     }
+                  ]
+                },
+                {
+                  "id": "u15-l1-touch",
+                  "type": "token_order",
+                  "prompt": "Construye el slice de a que selecciona índices 1 y 2.",
+                  "difficulty": 1,
+                  "xp": 14,
+                  "hint": "Identifica primero el nombre principal; después coloca sus argumentos o su condición.",
+                  "explanation": "El extremo final 3 no se incluye.",
+                  "solution": "a[1:3]",
+                  "blocks": [
+                    {
+                      "id": "t0",
+                      "code": "a"
+                    },
+                    {
+                      "id": "t1",
+                      "code": "["
+                    },
+                    {
+                      "id": "t2",
+                      "code": "1"
+                    },
+                    {
+                      "id": "t3",
+                      "code": ":"
+                    },
+                    {
+                      "id": "t4",
+                      "code": "3"
+                    },
+                    {
+                      "id": "t5",
+                      "code": "]"
+                    }
+                  ],
+                  "correctOrder": [
+                    "t0",
+                    "t1",
+                    "t2",
+                    "t3",
+                    "t4",
+                    "t5"
                   ]
                 },
                 {
@@ -7905,7 +9017,7 @@
               "id": "u16-l1",
               "title": "Operar sin bucles",
               "description": "Suma, producto y broadcasting.",
-              "xp": 102,
+              "xp": 116,
               "exercises": [
                 {
                   "id": "u16-l1-e1",
@@ -7943,6 +9055,35 @@
                     "[10 20 30]"
                   ],
                   "starterCode": "import numpy as np\nprint(np.array([1, 2, 3]) * 10)"
+                },
+                {
+                  "id": "u16-l1-touch",
+                  "type": "token_order",
+                  "prompt": "Multiplica todas las celdas de a por 2; escribe a primero.",
+                  "difficulty": 1,
+                  "xp": 14,
+                  "hint": "Identifica primero el nombre principal; después coloca sus argumentos o su condición.",
+                  "explanation": "NumPy aplica la multiplicación elemento a elemento sin un for escrito a mano.",
+                  "solution": "a * 2",
+                  "blocks": [
+                    {
+                      "id": "t0",
+                      "code": "a"
+                    },
+                    {
+                      "id": "t1",
+                      "code": " * "
+                    },
+                    {
+                      "id": "t2",
+                      "code": "2"
+                    }
+                  ],
+                  "correctOrder": [
+                    "t0",
+                    "t1",
+                    "t2"
+                  ]
                 },
                 {
                   "id": "u16-l1-e3",
@@ -8391,7 +9532,7 @@
               "id": "u17-l1",
               "title": "Un número por eje",
               "description": "axis=0 baja por filas; axis=1 recorre columnas.",
-              "xp": 102,
+              "xp": 116,
               "exercises": [
                 {
                   "id": "u17-e1",
@@ -8408,6 +9549,10 @@
                         "mean"
                       ]
                     }
+                  ],
+                  "wordBank": [
+                    "sum",
+                    "max"
                   ]
                 },
                 {
@@ -8422,6 +9567,50 @@
                     "1"
                   ],
                   "starterCode": "import numpy as np\nprint(int(np.array([1, 8, 3]).argmax()))"
+                },
+                {
+                  "id": "u17-l1-touch",
+                  "type": "token_order",
+                  "prompt": "Calcula la mediana del array temperaturas con NumPy.",
+                  "difficulty": 1,
+                  "xp": 14,
+                  "hint": "Identifica primero el nombre principal; después coloca sus argumentos o su condición.",
+                  "explanation": "La mediana es el valor central después de ordenar.",
+                  "solution": "np.median(temperaturas)",
+                  "blocks": [
+                    {
+                      "id": "t0",
+                      "code": "np"
+                    },
+                    {
+                      "id": "t1",
+                      "code": "."
+                    },
+                    {
+                      "id": "t2",
+                      "code": "median"
+                    },
+                    {
+                      "id": "t3",
+                      "code": "("
+                    },
+                    {
+                      "id": "t4",
+                      "code": "temperaturas"
+                    },
+                    {
+                      "id": "t5",
+                      "code": ")"
+                    }
+                  ],
+                  "correctOrder": [
+                    "t0",
+                    "t1",
+                    "t2",
+                    "t3",
+                    "t4",
+                    "t5"
+                  ]
                 },
                 {
                   "id": "u17-e3",
@@ -8622,6 +9811,10 @@
                         "mean"
                       ]
                     }
+                  ],
+                  "wordBank": [
+                    "sum",
+                    "max"
                   ]
                 },
                 {
@@ -8874,7 +10067,7 @@
               "id": "u18-l1",
               "title": "Reorganizar sin bucles",
               "description": "Misma memoria, otra vista — o una copia.",
-              "xp": 102,
+              "xp": 116,
               "exercises": [
                 {
                   "id": "u18-e1",
@@ -8905,6 +10098,50 @@
                     "(4,)"
                   ],
                   "starterCode": "import numpy as np\nprint(np.concatenate([np.ones(2), np.zeros(2)]).shape)"
+                },
+                {
+                  "id": "u18-l1-touch",
+                  "type": "token_order",
+                  "prompt": "Construye la selección de los valores de a mayores que 0.",
+                  "difficulty": 1,
+                  "xp": 14,
+                  "hint": "Identifica primero el nombre principal; después coloca sus argumentos o su condición.",
+                  "explanation": "La comparación crea una máscara booleana y el array usa esa máscara para filtrar.",
+                  "solution": "a[a > 0]",
+                  "blocks": [
+                    {
+                      "id": "t0",
+                      "code": "a"
+                    },
+                    {
+                      "id": "t1",
+                      "code": "["
+                    },
+                    {
+                      "id": "t2",
+                      "code": "a"
+                    },
+                    {
+                      "id": "t3",
+                      "code": " > "
+                    },
+                    {
+                      "id": "t4",
+                      "code": "0"
+                    },
+                    {
+                      "id": "t5",
+                      "code": "]"
+                    }
+                  ],
+                  "correctOrder": [
+                    "t0",
+                    "t1",
+                    "t2",
+                    "t3",
+                    "t4",
+                    "t5"
+                  ]
                 },
                 {
                   "id": "u18-e3",
@@ -9047,7 +10284,7 @@
               "id": "u18-l2",
               "title": "Afianza: misma plastilina, otro molde",
               "description": "reshape no inventa celdas; el producto debe cuadrar.",
-              "xp": 44,
+              "xp": 62,
               "exercises": [
                 {
                   "id": "u18-l2-e1",
@@ -9144,6 +10381,61 @@
                     "l2": "r2",
                     "l3": "r3"
                   }
+                },
+                {
+                  "id": "u18-l2-trace",
+                  "type": "trace",
+                  "prompt": "Sigue el programa paso a paso y observa cómo cambian sus valores.",
+                  "difficulty": 2,
+                  "xp": 18,
+                  "hint": "Lee solo las líneas ejecutadas hasta el punto marcado. No adelantes el resultado final.",
+                  "explanation": "Cada instrucción usa el estado que dejó la anterior. Distingue asignar, transformar y mostrar.",
+                  "solution": "Paso 1: [False, False, True] — 0 > 0 es falso; solo 3 pasa la condición.\nPaso 2: [3] — El filtro conserva posiciones marcadas True.",
+                  "starterCode": "import numpy as np\na = np.array([-1, 0, 3])\nmascara = a > 0\npositivos = a[mascara]",
+                  "traceSteps": [
+                    {
+                      "line": 3,
+                      "question": "¿Cuál es la máscara?",
+                      "choices": [
+                        {
+                          "id": "a",
+                          "text": "[False, False, True]"
+                        },
+                        {
+                          "id": "b",
+                          "text": "[True, False, True]"
+                        },
+                        {
+                          "id": "c",
+                          "text": "[False, True, True]"
+                        }
+                      ],
+                      "correctChoiceId": "a",
+                      "explanation": "0 > 0 es falso; solo 3 pasa la condición.",
+                      "assert": "np.array_equal(mascara, [False, False, True])"
+                    },
+                    {
+                      "line": 4,
+                      "question": "¿Qué valores se conservan?",
+                      "choices": [
+                        {
+                          "id": "b",
+                          "text": "[0, 3]"
+                        },
+                        {
+                          "id": "c",
+                          "text": "[-1, 0, 3]"
+                        },
+                        {
+                          "id": "a",
+                          "text": "[3]"
+                        }
+                      ],
+                      "correctChoiceId": "a",
+                      "explanation": "El filtro conserva posiciones marcadas True.",
+                      "assert": "np.array_equal(positivos, [3])"
+                    }
+                  ]
                 }
               ],
               "level": 2
@@ -9517,12 +10809,12 @@
                 {
                   "id": "p1-l2-e3",
                   "type": "fill_blank",
-                  "prompt": "El resultado vive en una variable, no solo en la pantalla.",
+                  "prompt": "Completa print para mostrar `media`, el resultado del proyecto de temperaturas.",
                   "difficulty": 1,
                   "xp": 12,
                   "explanation": "Así un test puede leerla. print es para ti.",
                   "solution": "print(media)",
-                  "template": "print(media)",
+                  "template": "print(___)",
                   "blanks": [
                     {
                       "accepted": [
@@ -9799,7 +11091,7 @@
               "id": "u19-l1",
               "title": "Cuatro gráficos esenciales",
               "description": "Elige el gráfico según la pregunta.",
-              "xp": 102,
+              "xp": 116,
               "exercises": [
                 {
                   "id": "u19-l1-e1",
@@ -9867,6 +11159,60 @@
                         "plot"
                       ]
                     }
+                  ]
+                },
+                {
+                  "id": "u19-l1-touch",
+                  "type": "token_order",
+                  "prompt": "Construye la llamada a plt.bar con etiquetas y ventas, en ese orden.",
+                  "difficulty": 1,
+                  "xp": 14,
+                  "hint": "Identifica primero el nombre principal; después coloca sus argumentos o su condición.",
+                  "explanation": "Las etiquetas nombran categorías y ventas da la altura de cada barra.",
+                  "solution": "plt.bar(etiquetas, ventas)",
+                  "blocks": [
+                    {
+                      "id": "t0",
+                      "code": "plt"
+                    },
+                    {
+                      "id": "t1",
+                      "code": "."
+                    },
+                    {
+                      "id": "t2",
+                      "code": "bar"
+                    },
+                    {
+                      "id": "t3",
+                      "code": "("
+                    },
+                    {
+                      "id": "t4",
+                      "code": "etiquetas"
+                    },
+                    {
+                      "id": "t5",
+                      "code": ", "
+                    },
+                    {
+                      "id": "t6",
+                      "code": "ventas"
+                    },
+                    {
+                      "id": "t7",
+                      "code": ")"
+                    }
+                  ],
+                  "correctOrder": [
+                    "t0",
+                    "t1",
+                    "t2",
+                    "t3",
+                    "t4",
+                    "t5",
+                    "t6",
+                    "t7"
                   ]
                 },
                 {
@@ -10340,7 +11686,7 @@
               "id": "u20-l1",
               "title": "Que el gráfico hable",
               "description": "Etiquetas y varios ejes.",
-              "xp": 102,
+              "xp": 116,
               "exercises": [
                 {
                   "id": "u20-l1-e1",
@@ -10381,6 +11727,50 @@
                         "set_xlabel"
                       ]
                     }
+                  ]
+                },
+                {
+                  "id": "u20-l1-touch",
+                  "type": "token_order",
+                  "prompt": "Pon el título Ventas al gráfico actual.",
+                  "difficulty": 1,
+                  "xp": 14,
+                  "hint": "Identifica primero el nombre principal; después coloca sus argumentos o su condición.",
+                  "explanation": "El título comunica la pregunta o el hallazgo del gráfico.",
+                  "solution": "plt.title(\"Ventas\")",
+                  "blocks": [
+                    {
+                      "id": "t0",
+                      "code": "plt"
+                    },
+                    {
+                      "id": "t1",
+                      "code": "."
+                    },
+                    {
+                      "id": "t2",
+                      "code": "title"
+                    },
+                    {
+                      "id": "t3",
+                      "code": "("
+                    },
+                    {
+                      "id": "t4",
+                      "code": "\"Ventas\""
+                    },
+                    {
+                      "id": "t5",
+                      "code": ")"
+                    }
+                  ],
+                  "correctOrder": [
+                    "t0",
+                    "t1",
+                    "t2",
+                    "t3",
+                    "t4",
+                    "t5"
                   ]
                 },
                 {
@@ -12127,12 +13517,12 @@
                 {
                   "id": "p2-l2-e3",
                   "type": "fill_blank",
-                  "prompt": "El resultado vive en una variable, no solo en la pantalla.",
+                  "prompt": "Completa print para mostrar `n_vistas`, el resultado del proyecto de dashboard estático.",
                   "difficulty": 1,
                   "xp": 12,
                   "explanation": "Así un test puede leerla. print es para ti.",
                   "solution": "print(n_vistas)",
-                  "template": "print(n_vistas)",
+                  "template": "print(___)",
                   "blanks": [
                     {
                       "accepted": [
@@ -12409,7 +13799,7 @@
               "id": "u23-l1",
               "title": "Tu primera tabla",
               "description": "Series, DataFrame y read_csv.",
-              "xp": 110,
+              "xp": 124,
               "exercises": [
                 {
                   "id": "u23-l1-e1",
@@ -12450,6 +13840,50 @@
                         "read_csv"
                       ]
                     }
+                  ]
+                },
+                {
+                  "id": "u23-l1-touch",
+                  "type": "token_order",
+                  "prompt": "Lee ventas.csv con Pandas.",
+                  "difficulty": 1,
+                  "xp": 14,
+                  "hint": "Identifica primero el nombre principal; después coloca sus argumentos o su condición.",
+                  "explanation": "read_csv devuelve un DataFrame. El nombre del archivo es texto.",
+                  "solution": "pd.read_csv(\"ventas.csv\")",
+                  "blocks": [
+                    {
+                      "id": "t0",
+                      "code": "pd"
+                    },
+                    {
+                      "id": "t1",
+                      "code": "."
+                    },
+                    {
+                      "id": "t2",
+                      "code": "read_csv"
+                    },
+                    {
+                      "id": "t3",
+                      "code": "("
+                    },
+                    {
+                      "id": "t4",
+                      "code": "\"ventas.csv\""
+                    },
+                    {
+                      "id": "t5",
+                      "code": ")"
+                    }
+                  ],
+                  "correctOrder": [
+                    "t0",
+                    "t1",
+                    "t2",
+                    "t3",
+                    "t4",
+                    "t5"
                   ]
                 },
                 {
@@ -12595,7 +14029,7 @@
               "id": "u23-l2",
               "title": "Afianza: Series y tablas",
               "description": "Una Series es una columna; un DataFrame, varias alineadas.",
-              "xp": 44,
+              "xp": 62,
               "exercises": [
                 {
                   "id": "u23-l2-e1",
@@ -12692,6 +14126,61 @@
                     "l2": "r2",
                     "l3": "r3"
                   }
+                },
+                {
+                  "id": "u23-l2-trace",
+                  "type": "trace",
+                  "prompt": "Sigue el programa paso a paso y observa cómo cambian sus valores.",
+                  "difficulty": 2,
+                  "xp": 18,
+                  "hint": "Lee solo las líneas ejecutadas hasta el punto marcado. No adelantes el resultado final.",
+                  "explanation": "Cada instrucción usa el estado que dejó la anterior. Distingue asignar, transformar y mostrar.",
+                  "solution": "Paso 1: 3 — Cada elemento de la lista aporta una fila.\nPaso 2: 20.0 — La suma 60 dividida entre tres filas es 20.",
+                  "starterCode": "import pandas as pd\ndf = pd.DataFrame({'ventas': [10, 20, 30]})\nmedia = df['ventas'].mean()",
+                  "traceSteps": [
+                    {
+                      "line": 2,
+                      "question": "¿Cuántas filas tiene df?",
+                      "choices": [
+                        {
+                          "id": "a",
+                          "text": "3"
+                        },
+                        {
+                          "id": "b",
+                          "text": "1"
+                        },
+                        {
+                          "id": "c",
+                          "text": "2"
+                        }
+                      ],
+                      "correctChoiceId": "a",
+                      "explanation": "Cada elemento de la lista aporta una fila.",
+                      "assert": "len(df) == 3"
+                    },
+                    {
+                      "line": 3,
+                      "question": "¿Cuánto vale media?",
+                      "choices": [
+                        {
+                          "id": "b",
+                          "text": "60.0"
+                        },
+                        {
+                          "id": "c",
+                          "text": "30.0"
+                        },
+                        {
+                          "id": "a",
+                          "text": "20.0"
+                        }
+                      ],
+                      "correctChoiceId": "a",
+                      "explanation": "La suma 60 dividida entre tres filas es 20.",
+                      "assert": "float(media) == 20"
+                    }
+                  ]
                 }
               ],
               "level": 2
@@ -12901,7 +14390,7 @@
               "id": "u24-l1",
               "title": "Filtrar filas",
               "description": "El corazón de cualquier EDA.",
-              "xp": 102,
+              "xp": 116,
               "exercises": [
                 {
                   "id": "u24-l1-e1",
@@ -12943,6 +14432,50 @@
                         "<="
                       ]
                     }
+                  ]
+                },
+                {
+                  "id": "u24-l1-touch",
+                  "type": "token_order",
+                  "prompt": "Selecciona las filas de df donde ventas > 100.",
+                  "difficulty": 1,
+                  "xp": 14,
+                  "hint": "Identifica primero el nombre principal; después coloca sus argumentos o su condición.",
+                  "explanation": "El filtro es una Series booleana con una condición por fila.",
+                  "solution": "df[df[\"ventas\"] > 100]",
+                  "blocks": [
+                    {
+                      "id": "t0",
+                      "code": "df"
+                    },
+                    {
+                      "id": "t1",
+                      "code": "["
+                    },
+                    {
+                      "id": "t2",
+                      "code": "df[\"ventas\"]"
+                    },
+                    {
+                      "id": "t3",
+                      "code": " > "
+                    },
+                    {
+                      "id": "t4",
+                      "code": "100"
+                    },
+                    {
+                      "id": "t5",
+                      "code": "]"
+                    }
+                  ],
+                  "correctOrder": [
+                    "t0",
+                    "t1",
+                    "t2",
+                    "t3",
+                    "t4",
+                    "t5"
                   ]
                 },
                 {
@@ -13411,7 +14944,7 @@
               "id": "u25-l1",
               "title": "Datos sucios, decisiones claras",
               "description": "Detecta, no borres a ciegas.",
-              "xp": 110,
+              "xp": 124,
               "exercises": [
                 {
                   "id": "u25-l1-e1",
@@ -13453,6 +14986,50 @@
                         "isnull"
                       ]
                     }
+                  ]
+                },
+                {
+                  "id": "u25-l1-touch",
+                  "type": "token_order",
+                  "prompt": "Sustituye los nulos de la columna edad por 0, usando fillna.",
+                  "difficulty": 1,
+                  "xp": 14,
+                  "hint": "Identifica primero el nombre principal; después coloca sus argumentos o su condición.",
+                  "explanation": "fillna devuelve la columna rellenada; decide si 0 es adecuado antes de usarlo.",
+                  "solution": "df[\"edad\"].fillna(0)",
+                  "blocks": [
+                    {
+                      "id": "t0",
+                      "code": "df[\"edad\"]"
+                    },
+                    {
+                      "id": "t1",
+                      "code": "."
+                    },
+                    {
+                      "id": "t2",
+                      "code": "fillna"
+                    },
+                    {
+                      "id": "t3",
+                      "code": "("
+                    },
+                    {
+                      "id": "t4",
+                      "code": "0"
+                    },
+                    {
+                      "id": "t5",
+                      "code": ")"
+                    }
+                  ],
+                  "correctOrder": [
+                    "t0",
+                    "t1",
+                    "t2",
+                    "t3",
+                    "t4",
+                    "t5"
                   ]
                 },
                 {
@@ -13583,7 +15160,7 @@
                   "starterCode": "import pandas as pd\n",
                   "tests": [
                     {
-                      "assert": "ok is True"
+                      "assert": "bool(ok) is True"
                     },
                     {
                       "assert": "df2['edad'].isna().sum() == 0"
@@ -13600,7 +15177,7 @@
               "id": "u25-l2",
               "title": "Afianza: sucio vs nulo vs imposible",
               "description": "Limpiar es una hipótesis, no un ritual.",
-              "xp": 46,
+              "xp": 64,
               "exercises": [
                 {
                   "id": "u25-l2-e1",
@@ -13709,6 +15286,61 @@
                     }
                   ],
                   "correctChoiceId": "a"
+                },
+                {
+                  "id": "u25-l2-trace",
+                  "type": "trace",
+                  "prompt": "Sigue el programa paso a paso y observa cómo cambian sus valores.",
+                  "difficulty": 2,
+                  "xp": 18,
+                  "hint": "Lee solo las líneas ejecutadas hasta el punto marcado. No adelantes el resultado final.",
+                  "explanation": "Cada instrucción usa el estado que dejó la anterior. Distingue asignar, transformar y mostrar.",
+                  "solution": "Paso 1: 4.0 — Pandas omite el nulo; el centro de 2 y 6 es 4.\nPaso 2: [2.0, 4.0, 6.0] — fillna reemplaza solo el valor ausente.",
+                  "starterCode": "import pandas as pd\ns = pd.Series([2.0, None, 6.0])\nmediana = s.median()\nlimpia = s.fillna(mediana)",
+                  "traceSteps": [
+                    {
+                      "line": 3,
+                      "question": "¿Cuánto vale mediana?",
+                      "choices": [
+                        {
+                          "id": "a",
+                          "text": "4.0"
+                        },
+                        {
+                          "id": "b",
+                          "text": "2.0"
+                        },
+                        {
+                          "id": "c",
+                          "text": "0.0"
+                        }
+                      ],
+                      "correctChoiceId": "a",
+                      "explanation": "Pandas omite el nulo; el centro de 2 y 6 es 4.",
+                      "assert": "mediana == 4"
+                    },
+                    {
+                      "line": 4,
+                      "question": "¿Qué valores quedan en limpia?",
+                      "choices": [
+                        {
+                          "id": "b",
+                          "text": "[2.0, 0.0, 6.0]"
+                        },
+                        {
+                          "id": "c",
+                          "text": "[2.0, None, 6.0]"
+                        },
+                        {
+                          "id": "a",
+                          "text": "[2.0, 4.0, 6.0]"
+                        }
+                      ],
+                      "correctChoiceId": "a",
+                      "explanation": "fillna reemplaza solo el valor ausente.",
+                      "assert": "limpia.tolist() == [2, 4, 6]"
+                    }
+                  ]
                 }
               ],
               "level": 2
@@ -13918,7 +15550,7 @@
               "id": "u26-l1",
               "title": "De filas a resúmenes",
               "description": "groupby es el SQL GROUP BY de pandas.",
-              "xp": 102,
+              "xp": 116,
               "exercises": [
                 {
                   "id": "u26-e1",
@@ -13960,6 +15592,75 @@
                     }
                   ],
                   "correctChoiceId": "a"
+                },
+                {
+                  "id": "u26-l1-touch",
+                  "type": "token_order",
+                  "prompt": "Agrupa df por ciudad y suma la columna ventas.",
+                  "difficulty": 1,
+                  "xp": 14,
+                  "hint": "Identifica primero el nombre principal; después coloca sus argumentos o su condición.",
+                  "explanation": "Primero se forman los grupos; después se resume una columna por grupo.",
+                  "solution": "df.groupby(\"ciudad\")[\"ventas\"].sum()",
+                  "blocks": [
+                    {
+                      "id": "t0",
+                      "code": "df"
+                    },
+                    {
+                      "id": "t1",
+                      "code": "."
+                    },
+                    {
+                      "id": "t2",
+                      "code": "groupby"
+                    },
+                    {
+                      "id": "t3",
+                      "code": "("
+                    },
+                    {
+                      "id": "t4",
+                      "code": "\"ciudad\""
+                    },
+                    {
+                      "id": "t5",
+                      "code": ")"
+                    },
+                    {
+                      "id": "t6",
+                      "code": "[\"ventas\"]"
+                    },
+                    {
+                      "id": "t7",
+                      "code": "."
+                    },
+                    {
+                      "id": "t8",
+                      "code": "sum"
+                    },
+                    {
+                      "id": "t9",
+                      "code": "("
+                    },
+                    {
+                      "id": "t10",
+                      "code": ")"
+                    }
+                  ],
+                  "correctOrder": [
+                    "t0",
+                    "t1",
+                    "t2",
+                    "t3",
+                    "t4",
+                    "t5",
+                    "t6",
+                    "t7",
+                    "t8",
+                    "t9",
+                    "t10"
+                  ]
                 },
                 {
                   "id": "u26-e3",
@@ -14428,7 +16129,7 @@
               "id": "u27-l1",
               "title": "El tiempo es un eje",
               "description": "parsear, ordenar, diferenciar.",
-              "xp": 102,
+              "xp": 116,
               "exercises": [
                 {
                   "id": "u27-e1",
@@ -14470,6 +16171,50 @@
                     }
                   ],
                   "correctChoiceId": "a"
+                },
+                {
+                  "id": "u27-l1-touch",
+                  "type": "token_order",
+                  "prompt": "Convierte la columna fecha a fechas reales usando pd.to_datetime.",
+                  "difficulty": 1,
+                  "xp": 14,
+                  "hint": "Identifica primero el nombre principal; después coloca sus argumentos o su condición.",
+                  "explanation": "Una fecha como texto no tiene las operaciones temporales de una fecha real.",
+                  "solution": "pd.to_datetime(df[\"fecha\"])",
+                  "blocks": [
+                    {
+                      "id": "t0",
+                      "code": "pd"
+                    },
+                    {
+                      "id": "t1",
+                      "code": "."
+                    },
+                    {
+                      "id": "t2",
+                      "code": "to_datetime"
+                    },
+                    {
+                      "id": "t3",
+                      "code": "("
+                    },
+                    {
+                      "id": "t4",
+                      "code": "df[\"fecha\"]"
+                    },
+                    {
+                      "id": "t5",
+                      "code": ")"
+                    }
+                  ],
+                  "correctOrder": [
+                    "t0",
+                    "t1",
+                    "t2",
+                    "t3",
+                    "t4",
+                    "t5"
+                  ]
                 },
                 {
                   "id": "u27-e3",
@@ -15123,12 +16868,12 @@
                 {
                   "id": "p3-l2-e3",
                   "type": "fill_blank",
-                  "prompt": "El resultado vive en una variable.",
+                  "prompt": "Completa print para mostrar `tasa`, el resultado del proyecto de EDA mini-Titanic.",
                   "difficulty": 1,
                   "xp": 12,
                   "explanation": "Así un test puede leerla.",
                   "solution": "print(tasa)",
-                  "template": "print(tasa)",
+                  "template": "print(___)",
                   "blanks": [
                     {
                       "accepted": [
@@ -15405,7 +17150,7 @@
               "id": "u28-l1",
               "title": "Resumir una columna",
               "description": "Un número nunca cuenta toda la historia.",
-              "xp": 102,
+              "xp": 116,
               "exercises": [
                 {
                   "id": "u28-l1-e1",
@@ -15446,6 +17191,65 @@
                         "median"
                       ]
                     }
+                  ]
+                },
+                {
+                  "id": "u28-l1-touch",
+                  "type": "token_order",
+                  "prompt": "Calcula el rango: máximo de xs menos mínimo de xs.",
+                  "difficulty": 1,
+                  "xp": 14,
+                  "hint": "Identifica primero el nombre principal; después coloca sus argumentos o su condición.",
+                  "explanation": "El rango mide la distancia entre los extremos, no el centro.",
+                  "solution": "max(xs) - min(xs)",
+                  "blocks": [
+                    {
+                      "id": "t0",
+                      "code": "max"
+                    },
+                    {
+                      "id": "t1",
+                      "code": "("
+                    },
+                    {
+                      "id": "t2",
+                      "code": "xs"
+                    },
+                    {
+                      "id": "t3",
+                      "code": ")"
+                    },
+                    {
+                      "id": "t4",
+                      "code": " - "
+                    },
+                    {
+                      "id": "t5",
+                      "code": "min"
+                    },
+                    {
+                      "id": "t6",
+                      "code": "("
+                    },
+                    {
+                      "id": "t7",
+                      "code": "xs"
+                    },
+                    {
+                      "id": "t8",
+                      "code": ")"
+                    }
+                  ],
+                  "correctOrder": [
+                    "t0",
+                    "t1",
+                    "t2",
+                    "t3",
+                    "t4",
+                    "t5",
+                    "t6",
+                    "t7",
+                    "t8"
                   ]
                 },
                 {
@@ -17282,15 +19086,13 @@
                   "difficulty": 1,
                   "xp": 12,
                   "explanation": "Si pre-declaraste 0.05. Si no, no cambies α después de ver p.",
-                  "solution": "0.05",
-                  "template": "0.05",
+                  "solution": "p < 0.05",
+                  "template": "p < ___",
                   "blanks": [
                     {
                       "accepted": [
                         "0.05",
-                        ".05",
-                        "alfa",
-                        "α"
+                        ".05"
                       ]
                     }
                   ]
@@ -17720,12 +19522,12 @@
                 {
                   "id": "p4-l2-e3",
                   "type": "fill_blank",
-                  "prompt": "El resultado vive en una variable.",
+                  "prompt": "Completa print para mostrar `mediana`, el resultado del proyecto de informe estadístico.",
                   "difficulty": 1,
                   "xp": 12,
                   "explanation": "Así un test puede leerla.",
                   "solution": "print(mediana)",
-                  "template": "print(mediana)",
+                  "template": "print(___)",
                   "blanks": [
                     {
                       "accepted": [
@@ -18533,7 +20335,7 @@
               "id": "u33-l1",
               "title": "Preparar X",
               "description": "Lo que el modelo ve es lo que el modelo aprende.",
-              "xp": 102,
+              "xp": 116,
               "exercises": [
                 {
                   "id": "u33-l1-e1",
@@ -18600,6 +20402,50 @@
                     "l2": "r2",
                     "l3": "r3"
                   }
+                },
+                {
+                  "id": "u33-l1-touch",
+                  "type": "token_order",
+                  "prompt": "Aplica scaler.transform a X_test, sin volver a hacer fit.",
+                  "difficulty": 1,
+                  "xp": 14,
+                  "hint": "Identifica primero el nombre principal; después coloca sus argumentos o su condición.",
+                  "explanation": "El preprocesamiento aprende de train y solo transforma el test.",
+                  "solution": "scaler.transform(X_test)",
+                  "blocks": [
+                    {
+                      "id": "t0",
+                      "code": "scaler"
+                    },
+                    {
+                      "id": "t1",
+                      "code": "."
+                    },
+                    {
+                      "id": "t2",
+                      "code": "transform"
+                    },
+                    {
+                      "id": "t3",
+                      "code": "("
+                    },
+                    {
+                      "id": "t4",
+                      "code": "X_test"
+                    },
+                    {
+                      "id": "t5",
+                      "code": ")"
+                    }
+                  ],
+                  "correctOrder": [
+                    "t0",
+                    "t1",
+                    "t2",
+                    "t3",
+                    "t4",
+                    "t5"
+                  ]
                 },
                 {
                   "id": "u33-l1-e3",
@@ -19541,7 +21387,8 @@
                       "assert": "abs(odds - 4) < 1e-9"
                     }
                   ],
-                  "expectedStdout": "4.0"
+                  "expectedStdout": "4.0",
+                  "outputComparison": "numeric"
                 },
                 {
                   "id": "u34-l4-e4",
@@ -21281,7 +23128,7 @@
               "id": "u38-l1",
               "title": "Medir sin autoengañarte",
               "description": "La métrica correcta depende del coste del error.",
-              "xp": 96,
+              "xp": 110,
               "exercises": [
                 {
                   "id": "u38-e1",
@@ -21322,6 +23169,35 @@
                         "r"
                       ]
                     }
+                  ]
+                },
+                {
+                  "id": "u38-l1-touch",
+                  "type": "token_order",
+                  "prompt": "Construye la fracción de aciertos: correctos dividido entre total.",
+                  "difficulty": 1,
+                  "xp": 14,
+                  "hint": "Identifica primero el nombre principal; después coloca sus argumentos o su condición.",
+                  "explanation": "Accuracy es una proporción; compárala con un baseline antes de interpretarla.",
+                  "solution": "correctos / total",
+                  "blocks": [
+                    {
+                      "id": "t0",
+                      "code": "correctos"
+                    },
+                    {
+                      "id": "t1",
+                      "code": " / "
+                    },
+                    {
+                      "id": "t2",
+                      "code": "total"
+                    }
+                  ],
+                  "correctOrder": [
+                    "t0",
+                    "t1",
+                    "t2"
                   ]
                 },
                 {
@@ -21492,7 +23368,7 @@
               "id": "u38-l2",
               "title": "Afianza: la métrica es la pregunta",
               "description": "Accuracy, precision, recall, RMSE no se intercambian.",
-              "xp": 46,
+              "xp": 64,
               "exercises": [
                 {
                   "id": "u38-l2-e1",
@@ -21567,8 +23443,8 @@
                   "difficulty": 1,
                   "xp": 12,
                   "explanation": "TN FP / FN TP. Dibuja los 4 números siempre.",
-                  "solution": "predichas",
-                  "template": "predichas",
+                  "solution": "filas reales, columnas predichas",
+                  "template": "filas reales, columnas ___",
                   "blanks": [
                     {
                       "accepted": [
@@ -21603,6 +23479,61 @@
                     }
                   ],
                   "correctChoiceId": "a"
+                },
+                {
+                  "id": "u38-l2-trace",
+                  "type": "trace",
+                  "prompt": "Sigue el programa paso a paso y observa cómo cambian sus valores.",
+                  "difficulty": 2,
+                  "xp": 18,
+                  "hint": "Lee solo las líneas ejecutadas hasta el punto marcado. No adelantes el resultado final.",
+                  "explanation": "Cada instrucción usa el estado que dejó la anterior. Distingue asignar, transformar y mostrar.",
+                  "solution": "Paso 1: 3 — Solo la tercera predicción no coincide.\nPaso 2: 0.75 — Tres aciertos divididos entre cuatro observaciones.",
+                  "starterCode": "reales = [1, 0, 1, 0]\npredichos = [1, 0, 0, 0]\ncorrectos = sum(a == b for a, b in zip(reales, predichos))\naccuracy = correctos / len(reales)",
+                  "traceSteps": [
+                    {
+                      "line": 3,
+                      "question": "¿Cuántas predicciones son correctas?",
+                      "choices": [
+                        {
+                          "id": "a",
+                          "text": "3"
+                        },
+                        {
+                          "id": "b",
+                          "text": "4"
+                        },
+                        {
+                          "id": "c",
+                          "text": "2"
+                        }
+                      ],
+                      "correctChoiceId": "a",
+                      "explanation": "Solo la tercera predicción no coincide.",
+                      "assert": "correctos == 3"
+                    },
+                    {
+                      "line": 4,
+                      "question": "¿Cuál es la accuracy?",
+                      "choices": [
+                        {
+                          "id": "b",
+                          "text": "3.0"
+                        },
+                        {
+                          "id": "c",
+                          "text": "0.25"
+                        },
+                        {
+                          "id": "a",
+                          "text": "0.75"
+                        }
+                      ],
+                      "correctChoiceId": "a",
+                      "explanation": "Tres aciertos divididos entre cuatro observaciones.",
+                      "assert": "accuracy == 0.75"
+                    }
+                  ]
                 }
               ],
               "level": 2
@@ -22002,12 +23933,12 @@
                 {
                   "id": "p5-l2-e3",
                   "type": "fill_blank",
-                  "prompt": "El resultado vive en una variable.",
+                  "prompt": "Completa print para mostrar `acc`, el resultado del proyecto de modelo predictivo.",
                   "difficulty": 1,
                   "xp": 12,
                   "explanation": "Así un test puede leerla.",
                   "solution": "print(acc)",
-                  "template": "print(acc)",
+                  "template": "print(___)",
                   "blanks": [
                     {
                       "accepted": [
@@ -22284,7 +24215,7 @@
               "id": "u39-l1",
               "title": "Neuronas de juguete",
               "description": "Suma ponderada + no linealidad.",
-              "xp": 102,
+              "xp": 116,
               "exercises": [
                 {
                   "id": "u39-l1-e1",
@@ -22353,6 +24284,60 @@
                   }
                 },
                 {
+                  "id": "u39-l1-touch",
+                  "type": "token_order",
+                  "prompt": "Construye la ReLU de z con NumPy: np.maximum con 0 primero.",
+                  "difficulty": 1,
+                  "xp": 14,
+                  "hint": "Identifica primero el nombre principal; después coloca sus argumentos o su condición.",
+                  "explanation": "ReLU deja los positivos y transforma los negativos en cero.",
+                  "solution": "np.maximum(0, z)",
+                  "blocks": [
+                    {
+                      "id": "t0",
+                      "code": "np"
+                    },
+                    {
+                      "id": "t1",
+                      "code": "."
+                    },
+                    {
+                      "id": "t2",
+                      "code": "maximum"
+                    },
+                    {
+                      "id": "t3",
+                      "code": "("
+                    },
+                    {
+                      "id": "t4",
+                      "code": "0"
+                    },
+                    {
+                      "id": "t5",
+                      "code": ", "
+                    },
+                    {
+                      "id": "t6",
+                      "code": "z"
+                    },
+                    {
+                      "id": "t7",
+                      "code": ")"
+                    }
+                  ],
+                  "correctOrder": [
+                    "t0",
+                    "t1",
+                    "t2",
+                    "t3",
+                    "t4",
+                    "t5",
+                    "t6",
+                    "t7"
+                  ]
+                },
+                {
                   "id": "u39-l1-e3",
                   "type": "fill_blank",
                   "prompt": "ReLU a mano.",
@@ -22384,7 +24369,8 @@
                       "assert": "float(y) == 2.0"
                     }
                   ],
-                  "expectedStdout": "2"
+                  "expectedStdout": "2",
+                  "outputComparison": "numeric"
                 },
                 {
                   "id": "u39-l1-e5",
@@ -22470,7 +24456,7 @@
               "id": "u39-l2",
               "title": "Afianza: neurona = lineal + no lineal",
               "description": "w·x + b y luego relu/sigmoide.",
-              "xp": 46,
+              "xp": 64,
               "exercises": [
                 {
                   "id": "u39-l2-e1",
@@ -22579,6 +24565,61 @@
                     }
                   ],
                   "correctChoiceId": "a"
+                },
+                {
+                  "id": "u39-l2-trace",
+                  "type": "trace",
+                  "prompt": "Sigue el programa paso a paso y observa cómo cambian sus valores.",
+                  "difficulty": 2,
+                  "xp": 18,
+                  "hint": "Lee solo las líneas ejecutadas hasta el punto marcado. No adelantes el resultado final.",
+                  "explanation": "Cada instrucción usa el estado que dejó la anterior. Distingue asignar, transformar y mostrar.",
+                  "solution": "Paso 1: 0 — ReLU corta los valores negativos en cero.\nPaso 2: 0 — print muestra la activación, no la entrada z.",
+                  "starterCode": "z = -2\ny = max(0, z)\nprint(y)",
+                  "traceSteps": [
+                    {
+                      "line": 2,
+                      "question": "¿Qué vale y tras ReLU?",
+                      "choices": [
+                        {
+                          "id": "a",
+                          "text": "0"
+                        },
+                        {
+                          "id": "b",
+                          "text": "-2"
+                        },
+                        {
+                          "id": "c",
+                          "text": "2"
+                        }
+                      ],
+                      "correctChoiceId": "a",
+                      "explanation": "ReLU corta los valores negativos en cero.",
+                      "assert": "y == 0"
+                    },
+                    {
+                      "line": 3,
+                      "question": "¿Qué imprime?",
+                      "choices": [
+                        {
+                          "id": "b",
+                          "text": "-2"
+                        },
+                        {
+                          "id": "c",
+                          "text": "y"
+                        },
+                        {
+                          "id": "a",
+                          "text": "0"
+                        }
+                      ],
+                      "correctChoiceId": "a",
+                      "explanation": "print muestra la activación, no la entrada z.",
+                      "assert": "__stdout__.strip() == '0'"
+                    }
+                  ]
                 }
               ],
               "level": 2
@@ -23366,7 +25407,7 @@
               "id": "u41-l1",
               "title": "Bajar la loss",
               "description": "Un paso de gradiente que sí puedes ver.",
-              "xp": 102,
+              "xp": 116,
               "exercises": [
                 {
                   "id": "u41-l1-e1",
@@ -23433,6 +25474,55 @@
                     "l2": "r2",
                     "l3": "r3"
                   }
+                },
+                {
+                  "id": "u41-l1-touch",
+                  "type": "token_order",
+                  "prompt": "Actualiza w por descenso de gradiente: resta lr * grad a w.",
+                  "difficulty": 1,
+                  "xp": 14,
+                  "hint": "Identifica primero el nombre principal; después coloca sus argumentos o su condición.",
+                  "explanation": "La dirección negativa del gradiente reduce la pérdida para un paso suficientemente pequeño.",
+                  "solution": "w = w - lr * grad",
+                  "blocks": [
+                    {
+                      "id": "t0",
+                      "code": "w"
+                    },
+                    {
+                      "id": "t1",
+                      "code": " = "
+                    },
+                    {
+                      "id": "t2",
+                      "code": "w"
+                    },
+                    {
+                      "id": "t3",
+                      "code": " - "
+                    },
+                    {
+                      "id": "t4",
+                      "code": "lr"
+                    },
+                    {
+                      "id": "t5",
+                      "code": " * "
+                    },
+                    {
+                      "id": "t6",
+                      "code": "grad"
+                    }
+                  ],
+                  "correctOrder": [
+                    "t0",
+                    "t1",
+                    "t2",
+                    "t3",
+                    "t4",
+                    "t5",
+                    "t6"
+                  ]
                 },
                 {
                   "id": "u41-l1-e3",
@@ -23553,7 +25643,7 @@
               "id": "u41-l2",
               "title": "Afianza: bajar la montaña",
               "description": "SGD da pasos hacia -gradiente de la pérdida.",
-              "xp": 46,
+              "xp": 64,
               "exercises": [
                 {
                   "id": "u41-l2-e1",
@@ -23664,6 +25754,61 @@
                     }
                   ],
                   "correctChoiceId": "a"
+                },
+                {
+                  "id": "u41-l2-trace",
+                  "type": "trace",
+                  "prompt": "Sigue el programa paso a paso y observa cómo cambian sus valores.",
+                  "difficulty": 2,
+                  "xp": 18,
+                  "hint": "Lee solo las líneas ejecutadas hasta el punto marcado. No adelantes el resultado final.",
+                  "explanation": "Cada instrucción usa el estado que dejó la anterior. Distingue asignar, transformar y mostrar.",
+                  "solution": "Paso 1: 1.0 — Asignar lr y grad aún no cambia w.\nPaso 2: 0.8 — Se resta 0.1 * 2 = 0.2 al peso inicial.",
+                  "starterCode": "w = 1.0\nlr = 0.1\ngrad = 2.0\nw = w - lr * grad",
+                  "traceSteps": [
+                    {
+                      "line": 3,
+                      "question": "Antes de actualizar, ¿cuánto vale w?",
+                      "choices": [
+                        {
+                          "id": "a",
+                          "text": "1.0"
+                        },
+                        {
+                          "id": "b",
+                          "text": "0.8"
+                        },
+                        {
+                          "id": "c",
+                          "text": "2.0"
+                        }
+                      ],
+                      "correctChoiceId": "a",
+                      "explanation": "Asignar lr y grad aún no cambia w.",
+                      "assert": "w == 1"
+                    },
+                    {
+                      "line": 4,
+                      "question": "Después de actualizar, ¿cuánto vale w?",
+                      "choices": [
+                        {
+                          "id": "b",
+                          "text": "1.2"
+                        },
+                        {
+                          "id": "c",
+                          "text": "0.2"
+                        },
+                        {
+                          "id": "a",
+                          "text": "0.8"
+                        }
+                      ],
+                      "correctChoiceId": "a",
+                      "explanation": "Se resta 0.1 * 2 = 0.2 al peso inicial.",
+                      "assert": "abs(w - 0.8) < 1e-9"
+                    }
+                  ]
                 }
               ],
               "level": 2
@@ -24462,7 +26607,7 @@
               "id": "u43-l1",
               "title": "El texto también es números",
               "description": "Primero partes, luego representas.",
-              "xp": 96,
+              "xp": 110,
               "exercises": [
                 {
                   "id": "u43-e1",
@@ -24503,6 +26648,45 @@
                         "split"
                       ]
                     }
+                  ]
+                },
+                {
+                  "id": "u43-l1-touch",
+                  "type": "token_order",
+                  "prompt": "Separa texto por espacios llamando a split sin argumentos.",
+                  "difficulty": 1,
+                  "xp": 14,
+                  "hint": "Identifica primero el nombre principal; después coloca sus argumentos o su condición.",
+                  "explanation": "split produce una lista de palabras; no es la tokenización de todos los modelos de lenguaje.",
+                  "solution": "texto.split()",
+                  "blocks": [
+                    {
+                      "id": "t0",
+                      "code": "texto"
+                    },
+                    {
+                      "id": "t1",
+                      "code": "."
+                    },
+                    {
+                      "id": "t2",
+                      "code": "split"
+                    },
+                    {
+                      "id": "t3",
+                      "code": "("
+                    },
+                    {
+                      "id": "t4",
+                      "code": ")"
+                    }
+                  ],
+                  "correctOrder": [
+                    "t0",
+                    "t1",
+                    "t2",
+                    "t3",
+                    "t4"
                   ]
                 },
                 {
@@ -24673,7 +26857,7 @@
               "id": "u43-l2",
               "title": "Afianza: el texto también es números",
               "description": "Tokenizar, vectorizar, luego clasificar.",
-              "xp": 46,
+              "xp": 64,
               "exercises": [
                 {
                   "id": "u43-l2-e1",
@@ -24781,6 +26965,61 @@
                     }
                   ],
                   "correctChoiceId": "a"
+                },
+                {
+                  "id": "u43-l2-trace",
+                  "type": "trace",
+                  "prompt": "Sigue el programa paso a paso y observa cómo cambian sus valores.",
+                  "difficulty": 2,
+                  "xp": 18,
+                  "hint": "Lee solo las líneas ejecutadas hasta el punto marcado. No adelantes el resultado final.",
+                  "explanation": "Cada instrucción usa el estado que dejó la anterior. Distingue asignar, transformar y mostrar.",
+                  "solution": "Paso 1: 3 — split conserva las dos apariciones de ia.\nPaso 2: 2 — El set elimina la repetición; tokens y vocabulario miden cosas distintas.",
+                  "starterCode": "texto = 'ia ia datos'\ntokens = texto.split()\nvocabulario = set(tokens)",
+                  "traceSteps": [
+                    {
+                      "line": 2,
+                      "question": "¿Cuántos tokens hay?",
+                      "choices": [
+                        {
+                          "id": "a",
+                          "text": "3"
+                        },
+                        {
+                          "id": "b",
+                          "text": "2"
+                        },
+                        {
+                          "id": "c",
+                          "text": "1"
+                        }
+                      ],
+                      "correctChoiceId": "a",
+                      "explanation": "split conserva las dos apariciones de ia.",
+                      "assert": "len(tokens) == 3"
+                    },
+                    {
+                      "line": 3,
+                      "question": "¿Cuántas palabras diferentes hay?",
+                      "choices": [
+                        {
+                          "id": "b",
+                          "text": "3"
+                        },
+                        {
+                          "id": "c",
+                          "text": "1"
+                        },
+                        {
+                          "id": "a",
+                          "text": "2"
+                        }
+                      ],
+                      "correctChoiceId": "a",
+                      "explanation": "El set elimina la repetición; tokens y vocabulario miden cosas distintas.",
+                      "assert": "len(vocabulario) == 2"
+                    }
+                  ]
                 }
               ],
               "level": 2
@@ -25180,12 +27419,12 @@
                 {
                   "id": "p6-l2-e3",
                   "type": "fill_blank",
-                  "prompt": "El resultado vive en una variable.",
+                  "prompt": "Completa print para mostrar `aciertos`, el resultado del proyecto de clasificador toy.",
                   "difficulty": 1,
                   "xp": 12,
                   "explanation": "Así un test puede leerla.",
                   "solution": "print(aciertos)",
-                  "template": "print(aciertos)",
+                  "template": "print(___)",
                   "blanks": [
                     {
                       "accepted": [
@@ -25626,12 +27865,12 @@
                 {
                   "id": "boss1-l2-e3",
                   "type": "fill_blank",
-                  "prompt": "El resultado vive en una variable.",
+                  "prompt": "Completa print para mostrar `total`, el resultado del proyecto de EDA + insight.",
                   "difficulty": 1,
                   "xp": 12,
                   "explanation": "Así un test puede leerla.",
                   "solution": "print(total)",
-                  "template": "print(total)",
+                  "template": "print(___)",
                   "blanks": [
                     {
                       "accepted": [
@@ -26059,12 +28298,12 @@
                 {
                   "id": "boss2-l2-e3",
                   "type": "fill_blank",
-                  "prompt": "El resultado vive en una variable.",
+                  "prompt": "Completa print para mostrar `acc`, el resultado del proyecto de visualiza y modela.",
                   "difficulty": 1,
                   "xp": 12,
                   "explanation": "Así un test puede leerla.",
                   "solution": "print(acc)",
-                  "template": "print(acc)",
+                  "template": "print(___)",
                   "blanks": [
                     {
                       "accepted": [
@@ -26492,12 +28731,12 @@
                 {
                   "id": "boss3-l2-e3",
                   "type": "fill_blank",
-                  "prompt": "El resultado vive en una variable.",
+                  "prompt": "Completa print para mostrar `n_pasos`, el resultado del proyecto de portafolio.",
                   "difficulty": 1,
                   "xp": 12,
                   "explanation": "Así un test puede leerla.",
                   "solution": "print(n_pasos)",
-                  "template": "print(n_pasos)",
+                  "template": "print(___)",
                   "blanks": [
                     {
                       "accepted": [

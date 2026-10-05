@@ -41,7 +41,7 @@ export default function LibraryPage() {
   const total = sections.reduce((n, s) => n + s.articles.length, 0);
 
   return (
-    <div className="mx-auto max-w-lg px-4 py-8 pb-24">
+    <div className="mx-auto max-w-5xl px-4 py-8 pb-24">
       <p className="text-xs font-bold tracking-widest text-primary uppercase">Guía visual</p>
       <h1 className="font-heading mt-1 flex items-center gap-2 text-3xl font-extrabold">
         <BookOpen className="size-8 text-primary" />
@@ -49,7 +49,7 @@ export default function LibraryPage() {
       </h1>
       <p className="mt-2 text-sm text-muted-foreground">
         Guías desde cero de los {total} temas del camino. No hace falta haber programado: cada ficha explica las
-        palabras raras y luego enseña el truco.
+        conceptos y te permite ejecutar ejemplos y resolver ejercicios sin gastar corazones.
       </p>
       <Link
         href="/playground"
@@ -65,6 +65,7 @@ export default function LibraryPage() {
           value={q}
           onChange={(e) => setQ(e.target.value)}
           placeholder="Buscar: listas, media, overfitting…"
+          aria-label="Buscar en la biblioteca"
           className="h-11 rounded-2xl pl-9"
         />
       </label>
@@ -79,7 +80,7 @@ export default function LibraryPage() {
             {section.title}
           </p>
           <p className="text-sm text-muted-foreground">{section.subtitle}</p>
-          <ul className="mt-3 space-y-2">
+          <ul className="mt-3 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
             {section.articles.map((article) => (
               <li key={article.id}>
                 <Link

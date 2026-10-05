@@ -1,0 +1,22 @@
+import assert from 'node:assert/strict';
+import { normalizeFragment, outputMatches } from '../src/lib/answer-utils.ts';
+import { insertText, completeWord, completions } from '../src/lib/editor-tools.ts';
+
+assert.equal(outputMatches('4.000000000000001', '4.0', 'numeric'), true);
+assert.equal(outputMatches('2.0', '2', 'numeric'), true);
+assert.equal(outputMatches('2.0', '2'), false, 'Text exercises must remain exact');
+assert.equal(outputMatches('0', '', 'numeric'), false);
+assert.equal(outputMatches('Infinity', 'Infinityx', 'numeric'), false);
+assert.equal(outputMatches('1\n2', '1\n3', 'numeric'), false);
+assert.equal(outputMatches('a\r\nb', 'a\nb'), true);
+assert.equal(normalizeFragment("'Madrid'"), normalizeFragment('"Madrid"'));
+assert.notEqual(normalizeFragment("'a  b'"), normalizeFragment("'a b'"), 'Keep spaces inside strings');
+assert.notEqual(normalizeFragment('"a\'b"'), normalizeFragment('"a\"b"'));
+assert.deepEqual(insertText('print x', 5, 7, '(', true), { value: 'print( x)', caret: 8 });
+assert.deepEqual(insertText('ab', 1, 1, ':'), { value: 'a:b', caret: 2 });
+assert.deepEqual(completeWord('pri', 3, 3, 'print'), { value: 'print', caret: 5 });
+assert.deepEqual(completeWord('print(ventas)', 8, 8, 'ventas'), { value: 'print(ventas)', caret: 12 });
+assert(completions('ventas_total = 3\nven', 20).includes('ventas_total'));
+assert(completions('pri', 3).includes('print'));
+assert.equal(completions('', 0).length, 0);
+console.log('18 editor and answer regression checks passed.');

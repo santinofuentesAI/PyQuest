@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useSyncExternalStore } from "react";
 import { useRouter } from "next/navigation";
 import confetti from "canvas-confetti";
 import { motion, AnimatePresence } from "framer-motion";
@@ -12,9 +12,14 @@ import { Button } from "@/components/ui/button";
 import { useProgress } from "@/lib/progress-store";
 import { PythonStatus } from "@/components/python-status";
 import { playTone } from "@/lib/sound";
+import { preloadPython } from "@/lib/python-runtime";
 import { BADGES, getLessonContext, nextLessonId, UNITS } from "@/lib/curriculum";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
+
+const subscribeMounted = () => () => {};
+const clientMounted = () => true;
+const serverMounted = () => false;
 
 export function LessonPlayer({
   lesson,
@@ -32,6 +37,7 @@ export function LessonPlayer({
   onClose?: () => void;
 }) {
   const router = useRouter();
+  const mounted = useSyncExternalStore(subscribeMounted, clientMounted, serverMounted);
   const progress = useProgress();
   const [i, setI] = useState(0);
   const [busy, setBusy] = useState(false);
@@ -40,6 +46,7 @@ export function LessonPlayer({
     text: string;
     stdout?: string;
     images?: string[];
+    retryable?: boolean;
   } | null>(null);
   const [correctCount, setCorrectCount] = useState(0);
   const [done, setDone] = useState(false);
@@ -47,17 +54,23 @@ export function LessonPlayer({
   const correctRef = useRef(0);
   const wrongRef = useRef(0);
   const stepLock = useRef(false);
+  const submitting = useRef(false);
+  const attempted = useRef(new Set<string>());
   const exercise: Exercise | undefined = lesson.exercises[i];
   const total = lesson.exercises.length;
   const ctx = getLessonContext(lesson.id);
+  useEffect(() => {
+    if (exercise?.type === "code" || exercise?.type === "data") preloadPython();
+  }, [exercise?.type]);
 
   useEffect(() => {
     function onKey(e: KeyboardEvent) {
       if (e.key !== "Enter" || busy || heartsEmpty || !feedback) return;
       const tag = (e.target as HTMLElement | null)?.tagName;
-      if (tag === "BUTTON" || tag === "A") return;
+      if (tag === "BUTTON" || tag === "A" || tag === "TEXTAREA" || tag === "INPUT") return;
       e.preventDefault();
-      advance();
+      if (feedback.correct) advance();
+      else setFeedback(null);
     }
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
@@ -66,7 +79,8 @@ export function LessonPlayer({
   }, [busy, feedback, i, total, practice]);
 
   async function submit(answer: UserAnswer) {
-    if (!exercise || busy || feedback || stepLock.current) return;
+    if (!exercise || submitting.current || feedback || stepLock.current) return;
+    submitting.current = true;
     setBusy(true);
     try {
       const result = await checkExercise(exercise, answer);
@@ -78,24 +92,29 @@ export function LessonPlayer({
         text: result.feedback,
         stdout: result.stdout,
         images: result.images,
+        retryable: result.retryable,
       });
       if (progress.soundEnabled !== false) playTone(result.correct ? "ok" : "bad");
-      if (result.correct) {
+      if (result.correct && !attempted.current.has(exercise.id)) {
         correctRef.current += 1;
         setCorrectCount(correctRef.current);
-      } else if (!practice) {
+      } else if (!result.correct && !result.retryable && !attempted.current.has(exercise.id) && !practice) {
         progress.loseHeart();
         wrongRef.current += 1;
-      } else {
+      } else if (!result.correct && !result.retryable && !attempted.current.has(exercise.id)) {
         wrongRef.current += 1;
       }
+      if (!result.retryable) attempted.current.add(exercise.id);
+    } catch {
+      setFeedback({ correct: false, retryable: true, text: "No pudimos comprobar la respuesta. Reintenta; este fallo no consume corazones." });
     } finally {
       setBusy(false);
+      submitting.current = false;
     }
   }
 
   function advance() {
-    if (!exercise || !feedback || stepLock.current) return;
+    if (!exercise || !feedback?.correct || stepLock.current) return;
     stepLock.current = true;
     if (i + 1 >= total) {
       finish();
@@ -136,7 +155,11 @@ export function LessonPlayer({
     confetti({ particleCount: 120, spread: 70, origin: { y: 0.7 } });
   }
 
-  const heartsEmpty = !practice && progress.hearts <= 0 && !done;
+  const heartsEmpty = !practice && progress.hearts <= 0 && !done && !attempted.current.has(exercise?.id ?? "");
+
+  // Randomized answer banks render only after hydration, so SSR and client
+  // cannot disagree about which option occupies a button.
+  if (!mounted) return <div role="status" className="mx-auto max-w-2xl p-8 text-center text-sm text-muted-foreground">Preparando tu lección…</div>;
 
   if (done) {
     const next = nextLessonId(lesson.id);
@@ -150,7 +173,7 @@ export function LessonPlayer({
             {review ? "¡Unidad reforzada!" : legendary ? "¡Práctica legendaria!" : "¡Lección completada!"}
           </h1>
           <p className="text-muted-foreground">
-            {correctCount}/{total} correctas
+            {correctCount}/{total} correctas al primer intento
             {review ? " · +1 corazón · fuerza restaurada" : ""}
           </p>
           {newBadges.length > 0 && (
@@ -172,7 +195,7 @@ export function LessonPlayer({
                 Volver a la unidad
               </Button>
             )}
-            {legendary && onClose && (
+            {onClose && (
               <Button className="h-12 rounded-2xl font-bold" onClick={() => onClose()}>
                 Elegir otra práctica
               </Button>
@@ -248,9 +271,12 @@ export function LessonPlayer({
           {ctx?.unit.title ?? lesson.title} · {i + 1}/{total} · {exercise.xp} XP
         </p>
         <PythonStatus className="mb-3" />
-        <ExerciseView key={exercise.id} exercise={exercise} onSubmit={submit} />
-        <div className="mt-3">
+        <fieldset disabled={busy || Boolean(feedback) || heartsEmpty} className="min-w-0">
+          <ExerciseView key={exercise.id} exercise={exercise} onSubmit={submit} />
+        </fieldset>
+        <div className="mt-3 flex flex-wrap items-center justify-between gap-3">
           <Hint key={`${exercise.id}-hint`} text={exercise.hint} />
+          {ctx && <Link href={`/library/${ctx.unit.id}`} target="_blank" rel="noopener noreferrer" className="min-h-10 py-2 text-sm font-semibold text-primary">Entender este tema ↗</Link>}
         </div>
         {busy && <p className="mt-3 text-sm text-muted-foreground">Ejecutando en el navegador…</p>}
       </div>
@@ -272,7 +298,7 @@ export function LessonPlayer({
                 {feedback.correct ? <Check className="size-5" /> : <X className="size-5" />}
                 {feedback.correct ? "¡Correcto!" : "Casi…"}
               </p>
-              <p className="mt-1 text-sm leading-relaxed">{feedback.text}</p>
+              <p role="status" className="mt-1 whitespace-pre-wrap text-sm leading-relaxed">{feedback.text}</p>
               {feedback.stdout ? (
                 <pre className="mt-2 overflow-x-auto rounded-lg bg-zinc-950 p-2 text-xs text-zinc-100">{feedback.stdout}</pre>
               ) : null}
@@ -280,9 +306,10 @@ export function LessonPlayer({
                 // eslint-disable-next-line @next/next/no-img-element
                 <img key={k} src={`data:image/png;base64,${img}`} alt="Gráfico generado" className="mt-2 max-h-56 rounded-lg border" />
               ))}
-              {!feedback.correct && exercise.solution && (
-                <div className="mt-2 text-xs text-muted-foreground">
-                  <p className="font-semibold">Solución de referencia</p>
+              {!feedback.correct && !feedback.retryable && exercise.solution && (
+                <details className="mt-2 text-xs text-muted-foreground">
+                  <summary className="min-h-10 cursor-pointer py-2 font-semibold">Ver solución explicada</summary>
+                  <p className="mb-2 leading-relaxed">{exercise.explanation}</p>
                   {exercise.solution.includes("\n") ? (
                     <pre className="mt-1 overflow-x-auto rounded-lg bg-zinc-950 p-2 font-mono text-xs text-zinc-100">
                       <code>{exercise.solution}</code>
@@ -290,14 +317,14 @@ export function LessonPlayer({
                   ) : (
                     <code className="mt-1 inline-block rounded bg-background px-1 py-0.5">{exercise.solution}</code>
                   )}
-                </div>
+                </details>
               )}
               <Button
                 className="mt-3 h-12 w-full rounded-2xl font-bold"
-                onClick={advance}
+                onClick={() => { if (feedback.correct) advance(); else setFeedback(null); }}
                 disabled={heartsEmpty}
               >
-                Continuar
+                {feedback.correct ? "Continuar" : "Corregir y reintentar"}
               </Button>
             </div>
           </motion.div>

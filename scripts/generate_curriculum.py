@@ -579,10 +579,10 @@ def s1_u14():
                     predict(
                         "u14-l1-e4",
                         "¿Qué imprime este código?",
-                        "import numpy as np\na = np.array([1, 2, 3])\nprint(a.dtype)",
+                        "import numpy as np\na = np.array([1, 2, 3], dtype=np.int64)\nprint(a.dtype)",
                         "int64",
-                        "NumPy infiere int64 (o int32 según plataforma). Puedes forzar dtype=float64.",
-                        hint="Enteros sin punto decimal.",
+                        "dtype=np.int64 fija enteros de 64 bits en cualquier plataforma. Sin dtype explícito, el tipo por defecto puede variar.",
+                        hint="Mira el dtype que se indica al crear el array.",
                     ),
                     matching(
                         "u14-l1-e5",
@@ -1435,7 +1435,7 @@ def s3_u25():
                         "u25-l1-e8",
                         "Lee `sucio.csv`. Rellena edad nula con la mediana de edad y guarda el resultado en `df2`. `ok = df2['edad'].isna().sum() == 0`.",
                         "import pandas as pd\n",
-                        ["ok is True", "df2['edad'].isna().sum() == 0"],
+                        ["bool(ok) is True", "df2['edad'].isna().sum() == 0"],
                         "import pandas as pd\ndf = pd.read_csv('sucio.csv')\nmed = df['edad'].median()\ndf2 = df.copy()\ndf2['edad'] = df2['edad'].fillna(med)\nok = df2['edad'].isna().sum() == 0",
                         "La mediana es robusta a outliers. No uses la media a ciegas en salarios o precios.",
                         files={"sucio.csv": csv},
@@ -2772,6 +2772,10 @@ def build():
         find_err=find_err,
         reorder=reorder,
     )
+
+    from interactive_exercises import enrich_curriculum
+
+    enrich_curriculum(sections)
 
     n = 1
     for sec in sections:
