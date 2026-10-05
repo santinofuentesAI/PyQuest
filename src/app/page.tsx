@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { ArrowRight, Flame, Heart, Sparkles, Terminal } from "lucide-react";
+import { ArrowRight, BriefcaseBusiness, Flame, Heart, Sparkles, Terminal } from "lucide-react";
 import { buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
@@ -33,6 +33,13 @@ export default function HomePage() {
               className={cn(buttonVariants({ variant: "outline", size: "lg" }), "h-14 rounded-2xl px-8 text-base font-bold")}
             >
               Probar el laboratorio
+            </Link>
+            <Link
+              href="/projects"
+              className={cn(buttonVariants({ variant: "ghost", size: "lg" }), "h-14 rounded-2xl px-5 text-base font-bold")}
+            >
+              <BriefcaseBusiness className="size-4" />
+              Crear un proyecto
             </Link>
           </div>
           <ul className="grid gap-3 pt-6 sm:grid-cols-3">
