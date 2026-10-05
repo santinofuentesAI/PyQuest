@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useSyncExternalStore } from "react";
 import { useRouter } from "next/navigation";
 import confetti from "canvas-confetti";
 import { motion, AnimatePresence } from "framer-motion";
@@ -16,6 +16,10 @@ import { preloadPython } from "@/lib/python-runtime";
 import { BADGES, getLessonContext, nextLessonId, UNITS } from "@/lib/curriculum";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
+
+const subscribeMounted = () => () => {};
+const clientMounted = () => true;
+const serverMounted = () => false;
 
 export function LessonPlayer({
   lesson,
@@ -33,6 +37,7 @@ export function LessonPlayer({
   onClose?: () => void;
 }) {
   const router = useRouter();
+  const mounted = useSyncExternalStore(subscribeMounted, clientMounted, serverMounted);
   const progress = useProgress();
   const [i, setI] = useState(0);
   const [busy, setBusy] = useState(false);
@@ -151,6 +156,10 @@ export function LessonPlayer({
   }
 
   const heartsEmpty = !practice && progress.hearts <= 0 && !done && !attempted.current.has(exercise?.id ?? "");
+
+  // Randomized answer banks render only after hydration, so SSR and client
+  // cannot disagree about which option occupies a button.
+  if (!mounted) return <div role="status" className="mx-auto max-w-2xl p-8 text-center text-sm text-muted-foreground">Preparando tu lección…</div>;
 
   if (done) {
     const next = nextLessonId(lesson.id);
