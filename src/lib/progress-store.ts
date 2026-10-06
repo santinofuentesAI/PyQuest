@@ -79,7 +79,12 @@ type ProgressState = UserProgress & {
   resetProgress: () => void;
   redeemCode: (raw: string) => { ok: boolean; message: string; openMap?: boolean };
   saveJobDraft: (projectId: string, code: string) => void;
-  useJobHint: (projectId: string) => { ok: boolean; hint: string | null; charged: number };
+  useJobHint: (projectId: string) => {
+    ok: boolean;
+    hint: string | null;
+    charged: number;
+    reason: "job" | "wallet" | "free" | "money" | "empty" | "missing";
+  };
   completeJobProject: (
     projectId: string,
     artifact?: { code: string; stdout?: string; image?: string }
@@ -364,37 +369,46 @@ export const useProgress = create<ProgressState>()(
       },
       useJobHint: (projectId) => {
         const project = getJobProject(projectId);
-        if (!project) return { ok: false, hint: null, charged: 0 };
+        if (!project) return { ok: false, hint: null, charged: 0, reason: "missing" };
         const hints = hintsFor(project);
         const current = get().jobProjects ?? {};
         const prev = current[projectId] ?? emptyJobProgress();
         if (prev.hintsUsed >= hints.length) {
-          return { ok: false, hint: hints[hints.length - 1] ?? null, charged: 0 };
+          return { ok: false, hint: hints[hints.length - 1] ?? null, charged: 0, reason: "empty" };
         }
-        const remaining = projectPayout(project, prev.hintsUsed);
-        if (!prev.completed && remaining < project.hintCostUsd) {
-          return { ok: false, hint: null, charged: 0 };
-        }
+        const wallet = get().jobUsd ?? 0;
+        const fromJob = projectPayout(project, prev.hintsUsed, prev.walletHints ?? 0);
+        const cost = project.hintCostUsd;
+        const payFrom: "job" | "wallet" | "free" | null = prev.completed
+          ? "free"
+          : fromJob >= cost
+            ? "job"
+            : wallet >= cost
+              ? "wallet"
+              : null;
+        if (!payFrom) return { ok: false, hint: null, charged: 0, reason: "money" };
         const hint = hints[prev.hintsUsed] ?? null;
-        const charged = prev.completed ? 0 : project.hintCostUsd;
+        const charged = payFrom === "free" ? 0 : cost;
         set({
+          jobUsd: payFrom === "wallet" ? wallet - cost : wallet,
           jobProjects: {
             ...current,
             [projectId]: {
               ...prev,
               hintsUsed: prev.hintsUsed + 1,
+              walletHints: (prev.walletHints ?? 0) + (payFrom === "wallet" ? 1 : 0),
               introSeen: true,
             },
           },
         });
-        return { ok: true, hint, charged };
+        return { ok: true, hint, charged, reason: payFrom };
       },
       completeJobProject: (projectId, artifact) => {
         const project = getJobProject(projectId);
         if (!project) return { ok: false, paid: 0 };
         const current = get().jobProjects ?? {};
         const prev = current[projectId] ?? emptyJobProgress();
-        const paid = prev.completed ? prev.paidUsd : projectPayout(project, prev.hintsUsed);
+        const paid = prev.completed ? prev.paidUsd : projectPayout(project, prev.hintsUsed, prev.walletHints ?? 0);
         const code = artifact?.code || prev.draftCode || project.starterCode;
         if (!prev.completed && looksIncomplete(code, project.starterCode)) {
           return { ok: false, paid: 0 };

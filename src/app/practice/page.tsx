@@ -2,9 +2,10 @@
 
 import { useMemo, useState } from "react";
 import Link from "next/link";
-import { Dumbbell, RotateCcw, Sparkles } from "lucide-react";
+import { Code2, Dumbbell, ListChecks, RotateCcw, Sparkles, Zap } from "lucide-react";
 import { LessonPlayer } from "@/components/lesson-player";
 import { Button } from "@/components/ui/button";
+import { UnitIcon } from "@/components/unit-icon";
 import { useProgress } from "@/lib/progress-store";
 import {
   buildPracticeLesson,
@@ -16,10 +17,16 @@ import { cn } from "@/lib/utils";
 import type { Lesson } from "@/lib/types";
 
 const COUNTS = [8, 12, 20] as const;
-const KINDS: { id: PracticeKind; label: string; hint: string }[] = [
-  { id: "all", label: "De todo", hint: "Quiz y código mezclados" },
-  { id: "quiz", label: "Quiz", hint: "Opciones, huecos, emparejar" },
-  { id: "code", label: "Código", hint: "Escribir y ejecutar Python" },
+const KINDS: {
+  id: PracticeKind;
+  label: string;
+  hint: string;
+  icon: typeof Sparkles;
+  color: string;
+}[] = [
+  { id: "all", label: "De todo", hint: "Quiz y código mezclados", icon: Sparkles, color: "#7c3aed" },
+  { id: "quiz", label: "Quiz", hint: "Opciones, huecos, emparejar", icon: ListChecks, color: "#0891b2" },
+  { id: "code", label: "Código", hint: "Escribir y ejecutar Python", icon: Code2, color: "#059669" },
 ];
 
 export default function PracticePage() {
@@ -95,8 +102,11 @@ export default function PracticePage() {
 
   if (units.length === 0) {
     return (
-      <div className="mx-auto max-w-md px-6 py-16 pb-24">
-        <h1 className="font-heading text-3xl font-extrabold">Práctica</h1>
+      <div className="mx-auto max-w-md px-6 py-16 pb-24 text-center">
+        <span className="mx-auto flex size-16 items-center justify-center rounded-3xl bg-emerald-500 text-white shadow-md">
+          <Dumbbell className="size-8" />
+        </span>
+        <h1 className="font-heading mt-4 text-3xl font-extrabold">Práctica</h1>
         <p className="mt-3 text-muted-foreground">
           Completa una lección (o el test de nivel) para desbloquear repasos a la carta: sin corazones, eligiendo
           unidades y tipo de ejercicio.
@@ -108,18 +118,40 @@ export default function PracticePage() {
     );
   }
 
-  return (
-    <div className="mx-auto max-w-lg px-4 py-8 pb-28">
-      <p className="text-xs font-bold tracking-widest text-primary uppercase">Sin corazones</p>
-      <h1 className="font-heading mt-1 text-3xl font-extrabold">¿Qué quieres practicar?</h1>
-      <p className="mt-2 text-sm text-muted-foreground">
-        Solo aparece lo que ya completaste o lo que el test de nivel dio por visto. Mezcla unidades, elige quiz o
-        código, y lanza tantas rondas como quieras.
-      </p>
+  const activeKind = KINDS.find((k) => k.id === kind) ?? KINDS[0];
 
-      <div className="mt-5 grid grid-cols-2 gap-2">
+  return (
+    <div className="mx-auto max-w-5xl px-4 py-8 pb-36">
+      <section
+        className="overflow-hidden rounded-3xl border p-5 shadow-sm sm:p-7"
+        style={{
+          background:
+            "linear-gradient(135deg, color-mix(in oklab, #059669 20%, var(--card)) 0%, color-mix(in oklab, #7c3aed 14%, var(--card)) 60%, var(--card) 100%)",
+        }}
+      >
+        <p className="text-xs font-bold tracking-widest text-emerald-700 uppercase dark:text-emerald-300">Sin corazones</p>
+        <h1 className="font-heading mt-1 flex items-center gap-3 text-3xl font-extrabold">
+          <span className="flex size-12 items-center justify-center rounded-2xl bg-emerald-500 text-white shadow-md">
+            <Dumbbell className="size-6" />
+          </span>
+          ¿Qué quieres practicar?
+        </h1>
+        <p className="mt-3 max-w-2xl text-sm leading-relaxed text-muted-foreground">
+          Solo aparece lo que ya completaste o lo que el test de nivel dio por visto. Mezcla unidades, elige quiz o
+          código, y lanza tantas rondas como quieras.
+        </p>
+        <div className="mt-4 flex flex-wrap gap-2 text-xs font-bold">
+          <span className="rounded-full bg-emerald-600 px-3 py-1 text-white">{units.length} unidades</span>
+          <span className="rounded-full bg-violet-600 px-3 py-1 text-white">{pool.length} ejercicios en el filtro</span>
+          {weakIds.length > 0 && (
+            <span className="rounded-full bg-amber-400 px-3 py-1 text-amber-950">{weakIds.length} se debilitan</span>
+          )}
+        </div>
+      </section>
+
+      <div className="mt-5 grid gap-2 sm:grid-cols-2">
         <Button
-          className="h-12 rounded-2xl font-bold"
+          className="h-12 rounded-2xl bg-violet-600 font-bold text-white hover:bg-violet-500"
           onClick={() => {
             const ids = units.map((u) => u.id);
             setSelected(ids);
@@ -133,7 +165,7 @@ export default function PracticePage() {
         </Button>
         <Button
           variant="outline"
-          className="h-12 rounded-2xl font-bold"
+          className="h-12 rounded-2xl border-amber-400 font-bold text-amber-800 hover:bg-amber-50 dark:text-amber-200 dark:hover:bg-amber-950"
           disabled={weakIds.length === 0}
           onClick={() => {
             setSelected(weakIds);
@@ -150,21 +182,40 @@ export default function PracticePage() {
 
       <section className="mt-8">
         <h2 className="font-bold">Tipo</h2>
-        <div className="mt-2 grid grid-cols-3 gap-2">
-          {KINDS.map((k) => (
-            <button
-              key={k.id}
-              type="button"
-              onClick={() => setKind(k.id)}
-              className={cn(
-                "rounded-2xl border px-2 py-3 text-center",
-                kind === k.id ? "border-primary bg-primary/10" : "border-border bg-card"
-              )}
-            >
-              <span className="block text-sm font-bold">{k.label}</span>
-              <span className="mt-0.5 block text-[11px] leading-tight text-muted-foreground">{k.hint}</span>
-            </button>
-          ))}
+        <div className="mt-2 grid gap-2 sm:grid-cols-3">
+          {KINDS.map((k) => {
+            const Icon = k.icon;
+            const on = kind === k.id;
+            return (
+              <button
+                key={k.id}
+                type="button"
+                onClick={() => setKind(k.id)}
+                className={cn("rounded-2xl border px-3 py-3 text-left transition", on ? "shadow-sm" : "bg-card")}
+                style={
+                  on
+                    ? {
+                        background: `color-mix(in oklab, ${k.color} 16%, var(--card))`,
+                        borderColor: k.color,
+                      }
+                    : undefined
+                }
+              >
+                <span className="flex items-center gap-2">
+                  <span
+                    className="flex size-9 items-center justify-center rounded-xl text-white"
+                    style={{ background: k.color }}
+                  >
+                    <Icon className="size-4" />
+                  </span>
+                  <span>
+                    <span className="block text-sm font-bold">{k.label}</span>
+                    <span className="mt-0.5 block text-[11px] leading-tight text-muted-foreground">{k.hint}</span>
+                  </span>
+                </span>
+              </button>
+            );
+          })}
         </div>
       </section>
 
@@ -177,9 +228,10 @@ export default function PracticePage() {
               type="button"
               onClick={() => setCount(n)}
               className={cn(
-                "h-11 flex-1 rounded-2xl border text-sm font-bold",
-                count === n ? "border-primary bg-primary text-primary-foreground" : "border-border bg-card"
+                "h-12 flex-1 rounded-2xl border text-sm font-black",
+                count === n ? "text-white" : "border-border bg-card"
               )}
+              style={count === n ? { background: activeKind.color, borderColor: activeKind.color } : undefined}
             >
               {n}
             </button>
@@ -203,7 +255,7 @@ export default function PracticePage() {
             {chosen.length === units.length ? "Quitar todas" : "Elegir todas"}
           </button>
         </div>
-        <ul className="mt-3 space-y-4">
+        <ul className="mt-3 space-y-5">
           {sections.map((section) => {
             const on = section.unitIds.every((id) => chosen.includes(id));
             const some = section.unitIds.some((id) => chosen.includes(id));
@@ -212,14 +264,17 @@ export default function PracticePage() {
                 <button
                   type="button"
                   onClick={() => toggleSection(section.unitIds)}
-                  className="mb-2 flex w-full items-center justify-between rounded-xl px-1 py-1 text-left"
+                  className="mb-2 flex w-full items-center justify-between rounded-2xl px-3 py-2 text-left"
+                  style={{ background: `color-mix(in oklab, ${section.color} 14%, var(--card))` }}
                 >
                   <span className="text-xs font-bold tracking-widest uppercase" style={{ color: section.color }}>
                     {section.title}
                   </span>
-                  <span className="text-xs text-muted-foreground">{on ? "todas" : some ? "parcial" : "ninguna"}</span>
+                  <span className="rounded-full px-2 py-0.5 text-[11px] font-bold text-white" style={{ background: section.color }}>
+                    {on ? "todas" : some ? "parcial" : "ninguna"}
+                  </span>
                 </button>
-                <ul className="space-y-1.5">
+                <ul className="grid gap-2 sm:grid-cols-2">
                   {units
                     .filter((u) => u.sectionId === section.id)
                     .map((u) => {
@@ -229,19 +284,21 @@ export default function PracticePage() {
                           <button
                             type="button"
                             onClick={() => toggleUnit(u.id)}
-                            className={cn(
-                              "flex w-full items-center gap-3 rounded-2xl border px-3 py-3 text-left",
-                              checked ? "border-primary/50 bg-primary/5" : "border-border bg-card"
-                            )}
+                            className="flex w-full items-center gap-3 rounded-2xl border px-3 py-3 text-left"
+                            style={
+                              checked
+                                ? {
+                                    background: `color-mix(in oklab, ${u.sectionColor} 12%, var(--card))`,
+                                    borderColor: `color-mix(in oklab, ${u.sectionColor} 45%, var(--border))`,
+                                  }
+                                : undefined
+                            }
                           >
                             <span
-                              className={cn(
-                                "flex size-5 shrink-0 items-center justify-center rounded-md border",
-                                checked ? "border-primary bg-primary text-primary-foreground" : "border-input"
-                              )}
-                              aria-hidden
+                              className="flex size-10 shrink-0 items-center justify-center rounded-xl text-white"
+                              style={{ background: checked ? u.sectionColor : "var(--muted)", color: checked ? "#fff" : "var(--muted-foreground)" }}
                             >
-                              {checked ? "✓" : ""}
+                              <UnitIcon name={u.icon} className="size-5" />
                             </span>
                             <span className="min-w-0 flex-1">
                               <span className="block font-semibold leading-tight">{u.title}</span>
@@ -249,6 +306,16 @@ export default function PracticePage() {
                                 {u.exerciseCount} ejercicios
                                 {u.weak ? " · se está debilitando" : ""}
                               </span>
+                            </span>
+                            <span
+                              className={cn(
+                                "flex size-6 shrink-0 items-center justify-center rounded-full text-xs font-black",
+                                checked ? "text-white" : "border border-input text-transparent"
+                              )}
+                              style={checked ? { background: u.sectionColor } : undefined}
+                              aria-hidden
+                            >
+                              ✓
                             </span>
                           </button>
                         </li>
@@ -261,14 +328,15 @@ export default function PracticePage() {
         </ul>
       </section>
 
-      <div className="fixed right-0 bottom-16 left-0 z-30 border-t bg-background/95 px-4 py-3 backdrop-blur-md pb-[max(0.75rem,env(safe-area-inset-bottom))]">
-        <div className="mx-auto max-w-lg">
+      <div className="fixed right-0 bottom-16 left-0 z-30 border-t bg-background/95 px-4 py-3 backdrop-blur-md">
+        <div className="mx-auto max-w-5xl">
           <Button
-            className="h-12 w-full rounded-2xl text-base font-bold"
+            className="h-12 w-full rounded-2xl text-base font-bold text-white"
+            style={{ background: pool.length === 0 ? undefined : activeKind.color }}
             disabled={pool.length === 0}
             onClick={() => start()}
           >
-            <Dumbbell className="size-4" />
+            <Zap className="size-4" />
             Empezar · {Math.min(count, pool.length)} ejercicios
           </Button>
           {pool.length === 0 && (

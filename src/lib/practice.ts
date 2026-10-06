@@ -65,6 +65,7 @@ export type PracticeUnitOption = {
   sectionId: string;
   sectionTitle: string;
   sectionColor: string;
+  icon: string;
   exerciseCount: number;
   weak: boolean;
 };
@@ -85,6 +86,7 @@ export function practiceUnitOptions(progress: UserProgress): PracticeUnitOption[
         sectionId: section.id,
         sectionTitle: section.title,
         sectionColor: section.color,
+        icon: unit.icon,
         exerciseCount: lessons.reduce((n, l) => n + l.exercises.length, 0),
         weak: complete && strength < 0.45,
       });

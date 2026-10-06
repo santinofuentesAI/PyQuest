@@ -2,11 +2,12 @@
 
 import Link from "next/link";
 import { useParams } from "next/navigation";
-import { ArrowLeft, ArrowRight, Dumbbell, Play } from "lucide-react";
+import { ArrowLeft, ArrowRight, Clock, Dumbbell, Play } from "lucide-react";
 import { getLibraryArticle, LIBRARY } from "@/lib/library";
-import { getUnit } from "@/lib/curriculum";
+import { getSectionForUnit, getUnit } from "@/lib/curriculum";
 import { LibraryBlocks } from "@/components/library-blocks";
 import { LibraryWorkshop } from "@/components/library-workshop";
+import { UnitIcon } from "@/components/unit-icon";
 import { Button } from "@/components/ui/button";
 
 export default function LibraryArticlePage() {
@@ -29,6 +30,8 @@ export default function LibraryArticlePage() {
   }
 
   const lessonId = unit?.lessons[0]?.id;
+  const section = unit ? getSectionForUnit(unit.id) : undefined;
+  const accent = section?.color ?? "#7c3aed";
 
   return (
     <div className="mx-auto max-w-5xl px-4 py-8 pb-24">
@@ -36,9 +39,30 @@ export default function LibraryArticlePage() {
         <ArrowLeft className="size-4" />
         Librería
       </Link>
-      <p className="mt-4 text-xs font-bold tracking-widest text-primary uppercase">{article.kicker}</p>
-      <h1 className="font-heading mt-1 text-3xl font-extrabold">{article.title}</h1>
-      <p className="mt-1 text-sm text-muted-foreground">{article.minutes} min de lectura · ejemplos ejecutables · práctica libre</p>
+      <header
+        className="mt-4 overflow-hidden rounded-3xl border p-5 sm:p-6"
+        style={{
+          background: `linear-gradient(135deg, color-mix(in oklab, ${accent} 22%, var(--card)), var(--card) 70%)`,
+          borderColor: `color-mix(in oklab, ${accent} 35%, var(--border))`,
+        }}
+      >
+        <div className="flex items-start gap-4">
+          <span className="flex size-14 shrink-0 items-center justify-center rounded-2xl text-white shadow-md" style={{ background: accent }}>
+            <UnitIcon name={unit?.icon} className="size-7" />
+          </span>
+          <div className="min-w-0">
+            <p className="text-xs font-bold tracking-widest uppercase" style={{ color: accent }}>
+              {article.kicker}
+              {section ? ` · ${section.title}` : ""}
+            </p>
+            <h1 className="font-heading mt-1 text-3xl font-extrabold">{article.title}</h1>
+            <p className="mt-2 inline-flex items-center gap-1 text-sm font-semibold text-muted-foreground">
+              <Clock className="size-4" />
+              {article.minutes} min · ejemplos ejecutables · práctica libre
+            </p>
+          </div>
+        </div>
+      </header>
 
       <div className="mt-6 max-w-3xl">
         <LibraryBlocks blocks={article.blocks} />

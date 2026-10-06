@@ -18,6 +18,7 @@ import {
   briefText,
   hintsFor,
   humanPythonError,
+  looksIncomplete,
   projectPayout,
   reviewDelivery,
   testsToCode,
@@ -63,7 +64,10 @@ export function ProjectSession({
   const jobState = progress.jobProjects?.[project.id];
   const hintsUsed = jobState?.hintsUsed ?? 0;
   const completed = jobState?.completed ?? false;
-  const remaining = completed ? jobState?.paidUsd ?? 0 : projectPayout(project, hintsUsed);
+  const wallet = progress.jobUsd ?? 0;
+  const remaining = completed
+    ? jobState?.paidUsd ?? 0
+    : projectPayout(project, hintsUsed, jobState?.walletHints ?? 0);
   const failCount = jobState?.failCount ?? 0;
 
   useEffect(() => {
@@ -175,8 +179,15 @@ export function ProjectSession({
 
   function askHint() {
     const result = progress.useJobHint(project.id);
-    if (!result.ok && !result.hint) {
-      toast.error("No te alcanza el salario para otra pista.");
+    if (!result.ok) {
+      if (result.reason === "empty") {
+        toast.message("Ya usaste todas las pistas de este encargo.");
+        if (result.hint) setHintText(result.hint);
+        return;
+      }
+      toast.error(
+        `La pista cuesta $${project.hintCostUsd}. Este encargo todavía paga $${remaining} y tu billetera tiene $${wallet}.`
+      );
       return;
     }
     if (result.charged > 0) {
@@ -194,7 +205,13 @@ export function ProjectSession({
       window.setTimeout(() => setCoins([]), 900);
     }
     if (result.hint) setHintText(result.hint);
-    if (result.charged > 0) toast.message(`Pista: −$${result.charged} de este encargo`);
+    if (result.charged > 0) {
+      toast.message(
+        result.reason === "wallet"
+          ? `Pista: −$${result.charged} de tu billetera`
+          : `Pista: −$${result.charged} del sueldo de este encargo`
+      );
+    }
     if (result.ok && result.charged > 0 && hintsUsed + 1 === 4) {
       window.setTimeout(() => setBossNotice(true), 600);
     }
@@ -213,7 +230,10 @@ export function ProjectSession({
     setBossNotice(false);
   }
 
-  const canHint = hintsUsed < jobHints.length && (completed || remaining >= project.hintCostUsd);
+  const hintsLeft = Math.max(0, jobHints.length - hintsUsed);
+  const canAffordHint = completed || remaining >= project.hintCostUsd || wallet >= project.hintCostUsd;
+  const canHint = hintsLeft > 0 && canAffordHint;
+  const stillTemplate = looksIncomplete(code, project.starterCode);
 
   if (mood === "fired" || failCount >= 3) {
     return (
@@ -334,10 +354,13 @@ export function ProjectSession({
             <h1 className="truncate font-heading text-sm font-bold sm:text-base">{project.title}</h1>
           </div>
         </div>
-        <div className="flex items-center gap-2">
-          <div className="inline-flex items-center gap-1.5 rounded-full bg-emerald-500/15 px-3 py-1.5 text-sm font-black tabular-nums text-emerald-300 ring-1 ring-emerald-400/30">
+        <div className="flex shrink-0 items-center gap-1.5">
+          <div className="inline-flex items-center gap-1.5 rounded-full bg-emerald-500 px-3 py-1.5 text-sm font-black tabular-nums text-emerald-950">
             <Wallet className="size-4" />
             ${remaining}
+          </div>
+          <div className="inline-flex items-center gap-1 rounded-full bg-amber-400 px-2.5 py-1.5 text-[11px] font-black tabular-nums text-amber-950 sm:px-3 sm:text-xs">
+            Billetera ${wallet}
           </div>
         </div>
       </header>
@@ -372,20 +395,60 @@ export function ProjectSession({
               >
                 {completed ? "Ya cobrado" : "Entregar al jefe"}
               </Button>
+              <button
+                type="button"
+                onClick={askHint}
+                className="relative inline-flex h-11 items-center gap-2 rounded-xl px-4 text-sm font-black shadow-md"
+                style={{ backgroundColor: "#f5c518", color: "#1c1408" }}
+              >
+                <Lightbulb className="size-4" />
+                {hintsLeft === 0 ? "Pistas agotadas" : `Pista · $${project.hintCostUsd}`}
+                {coins.length > 0 && (
+                  <span className="coin-burst" aria-hidden>
+                    {coins.map((c) => (
+                      <i key={c.id} style={{ ["--dx" as string]: c.dx, ["--dy" as string]: c.dy }}>
+                        $
+                      </i>
+                    ))}
+                  </span>
+                )}
+              </button>
               {completed && (
                 <p className="self-center text-sm font-semibold text-emerald-400">
                   Cobraste ${jobState?.paidUsd ?? 0} · +40 XP
                 </p>
               )}
             </div>
+            {stillTemplate && !completed && (
+              <div className="mt-3 rounded-2xl border border-sky-400/50 bg-sky-500 px-4 py-3 text-sm text-sky-950">
+                <p className="font-black">Esto es la plantilla. Todavía no está hecho.</p>
+                <p className="mt-1 leading-snug">
+                  El jefe no acepta el archivo de ejemplo. Completa el cálculo, pulsa Ejecutar y después entrégalo.
+                </p>
+              </div>
+            )}
+            <p className="mt-2 text-xs font-medium text-zinc-300">
+              {hintsLeft === 0
+                ? "Ya no quedan pistas en este encargo."
+                : canHint
+                  ? `Quedan ${hintsLeft} pistas. Se descuentan del sueldo de este encargo${wallet > 0 ? " o de tu billetera" : ""}.`
+                  : `Te faltan $${Math.max(0, project.hintCostUsd - Math.max(remaining, wallet))} para la siguiente pista.`}
+            </p>
           </div>
           <div className="mt-4 space-y-3 lg:col-span-2 lg:mt-0">
-            <div className="rounded-2xl border border-amber-400/20 bg-amber-400/10 px-4 py-3 text-sm leading-relaxed text-amber-50">
-              {briefText(project)}
+            <div className="rounded-2xl border-2 border-amber-300 bg-amber-50 px-4 py-3 text-sm leading-relaxed text-amber-950">
+              <p className="text-[11px] font-black tracking-wider text-amber-800 uppercase">Encargo</p>
+              <p className="mt-1 font-medium">{briefText(project)}</p>
             </div>
             {warning && mood !== "ok" && (
               <div className="rounded-2xl border border-amber-500/40 bg-amber-950/80 px-4 py-3 text-sm font-semibold text-amber-100">
                 {warning}
+              </div>
+            )}
+            {hintText && (
+              <div className="rounded-2xl border-2 border-amber-300 bg-amber-50 px-4 py-3 text-sm leading-relaxed text-amber-950 shadow-lg">
+                <p className="text-[11px] font-black tracking-wider text-amber-800 uppercase">Pista del jefe</p>
+                <p className="mt-1 font-semibold">{hintText}</p>
               </div>
             )}
             {(out || err) && (
@@ -394,41 +457,6 @@ export function ProjectSession({
               </pre>
             )}
           </div>
-        </div>
-      </div>
-
-      <div className="pointer-events-none fixed bottom-16 left-3 z-30 sm:bottom-20 sm:left-6">
-        <div className="pointer-events-auto relative">
-          {hintText && (
-            <div className="mb-2 max-w-xs rounded-2xl border border-amber-400/30 bg-[#16120a] px-3 py-2 text-sm text-amber-50 shadow-xl">
-              <p className="text-[10px] font-bold tracking-wider text-amber-400 uppercase">Pista</p>
-              <p className="mt-1 leading-snug">{hintText}</p>
-            </div>
-          )}
-          <button
-            type="button"
-            onClick={askHint}
-            disabled={!canHint}
-            className={cn(
-              "relative inline-flex items-center gap-2 rounded-full bg-amber-400 px-4 py-2.5 text-sm font-black text-zinc-900 shadow-[0_8px_24px_rgba(245,197,24,0.35)]",
-              !canHint && "opacity-50"
-            )}
-          >
-            <Lightbulb className="size-4" />
-            Pista · ${project.hintCostUsd}
-            {coins.length > 0 && (
-              <span className="coin-burst" aria-hidden>
-                {coins.map((c) => (
-                  <i key={c.id} style={{ ["--dx" as string]: c.dx, ["--dy" as string]: c.dy }}>
-                    $
-                  </i>
-                ))}
-              </span>
-            )}
-          </button>
-          <p className="mt-1 text-[11px] font-medium text-zinc-400">
-            Se descuenta de este salario · {hintsUsed}/{jobHints.length} usadas
-          </p>
         </div>
       </div>
 

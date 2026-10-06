@@ -159,6 +159,8 @@ export type PortfolioItem = {
 export type JobProjectProgress = {
   completed: boolean;
   hintsUsed: number;
+  /** Hints paid from the career wallet, so they do not also cut this job's pay. */
+  walletHints?: number;
   paidUsd: number;
   draftCode?: string;
   introSeen?: boolean;

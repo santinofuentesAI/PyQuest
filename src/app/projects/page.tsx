@@ -71,7 +71,7 @@ export default function ProjectsPage() {
                 const state = progress.jobProjects?.[job.id];
                 const paid = state?.completed
                   ? state.paidUsd
-                  : projectPayout(job, state?.hintsUsed ?? 0);
+                  : projectPayout(job, state?.hintsUsed ?? 0, state?.walletHints ?? 0);
                 return (
                   <li key={job.id}>
                     {unlocked ? (

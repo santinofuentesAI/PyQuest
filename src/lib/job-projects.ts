@@ -49,8 +49,9 @@ export function hintsFor(project: JobProject): string[] {
   return unique.slice(0, MAX_JOB_HINTS);
 }
 
-export function projectPayout(project: JobProject, hintsUsed: number): number {
-  return Math.max(0, project.salaryUsd - hintsUsed * project.hintCostUsd);
+export function projectPayout(project: JobProject, hintsUsed: number, walletHints = 0): number {
+  const chargedToJob = Math.max(0, hintsUsed - walletHints);
+  return Math.max(0, project.salaryUsd - chargedToJob * project.hintCostUsd);
 }
 
 export function testsToCode(project: JobProject): string {
