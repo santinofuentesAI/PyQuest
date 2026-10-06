@@ -120,7 +120,10 @@ export const LIBRARY: LibraryArticle[] = [
   a("u13", "Módulos y pip", "Fundamentos", 6, [
     { type: "p", text: "import trae código de otro archivo o librería. El ecosistema de datos (numpy, pandas, matplotlib, sklearn) se instala con pip; en PyQuest, Pyodide ya trae los tres primeros." },
     { type: "code", code: "import math\nfrom math import sqrt\nimport numpy as np  # convención" },
-    { type: "list", items: ["import x: usa x.nombre", "from x import y: usa y", "as crea un alias", "No hagas from numpy import *: ensucia el espacio de nombres"] },
+    { type: "h", text: "Cómo leer una API" },
+    { type: "p", text: "Antes de llamar una función, lee cuatro cosas: el módulo (math), el nombre (sqrt), los argumentos (un número) y el retorno (un float). Eso es la API: el contrato de uso, no magia." },
+    { type: "code", code: "import math\nraiz = math.sqrt(16)   # API: math.sqrt(x) -> float\nprint(int(raiz))       # 4", caption: "Módulo.función(argumento)." },
+    { type: "list", items: ["import x: usa x.nombre", "from x import y: usa y", "as crea un alias", "No hagas from numpy import *: ensucia el espacio de nombres", "Si no recuerdas los argumentos, vuelve a la ficha: nombre, entradas, salida"] },
     { type: "callout", tone: "warn", text: "Nunca ejecutes pip a ciegas en producción. Fija versiones (requirements.txt) cuando salgas del navegador." },
   ]),
   a("p0", "Proyecto: stats de bolsillo", "Fundamentos", 5, [

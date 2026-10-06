@@ -6930,7 +6930,7 @@
               "id": "u13-l1",
               "title": "No reinventes",
               "description": "La librería estándar + pip.",
-              "xp": 94,
+              "xp": 122,
               "exercises": [
                 {
                   "id": "u13-e1",
@@ -6978,10 +6978,10 @@
                 {
                   "id": "u13-e3",
                   "type": "predict_output",
-                  "prompt": "¿Salida (aprox. enteros)?",
+                  "prompt": "math.sqrt(9) es 3.0. ¿Qué imprime int() de ese resultado?",
                   "difficulty": 1,
                   "xp": 10,
-                  "explanation": "sqrt está en math. En arrays usarás np.sqrt, vectorizado.",
+                  "explanation": "sqrt está en math y devuelve un float. int() quita el decimal. En arrays usarás np.sqrt, vectorizado.",
                   "solution": "3",
                   "acceptedOutputs": [
                     "3"
@@ -7106,6 +7106,46 @@
                     "numpy"
                   ],
                   "starterCode": "import numpy as np\nprint(np.__name__)"
+                },
+                {
+                  "id": "u13-e9",
+                  "type": "multiple_choice",
+                  "prompt": "Leer la API de una función es saber…",
+                  "difficulty": 1,
+                  "xp": 10,
+                  "explanation": "Ficha mínima: módulo, nombre, argumentos, retorno. math.sqrt(x) pide un número y devuelve un float.",
+                  "solution": "De qué módulo sale, qué argumentos pide y qué devuelve",
+                  "choices": [
+                    {
+                      "id": "a",
+                      "text": "De qué módulo sale, qué argumentos pide y qué devuelve"
+                    },
+                    {
+                      "id": "b",
+                      "text": "Solo memorizar el nombre sin los argumentos"
+                    },
+                    {
+                      "id": "c",
+                      "text": "Instalarla otra vez cada vez que la llamas"
+                    }
+                  ],
+                  "correctChoiceId": "a"
+                },
+                {
+                  "id": "u13-e10",
+                  "type": "code",
+                  "prompt": "Ficha de API: `math.sqrt(x)` → float. Importa math, guarda `raiz = math.sqrt(16)` e imprime `int(raiz)`.",
+                  "difficulty": 2,
+                  "xp": 18,
+                  "explanation": "Lees la ficha y la llamas: módulo.función(argumento). 16 tiene raíz 4.0; int lo deja en 4.",
+                  "solution": "import math\nraiz = math.sqrt(16)\nprint(int(raiz))",
+                  "starterCode": "",
+                  "tests": [
+                    {
+                      "assert": "raiz == 4"
+                    }
+                  ],
+                  "expectedStdout": "4"
                 }
               ],
               "level": 1
@@ -9376,10 +9416,10 @@
                 {
                   "id": "u16-l3-e3",
                   "type": "predict_output",
-                  "prompt": "¿Salida aproximada del print?",
+                  "prompt": "¿Qué número exacto imprime mean de 0 y 10?",
                   "difficulty": 1,
                   "xp": 10,
-                  "explanation": "mean vectorizada: no sumes a mano.",
+                  "explanation": "mean vectorizada: (0+10)/2 es 5.0. La salida tiene que coincidir, no vale un 'más o menos'.",
                   "solution": "5.0",
                   "acceptedOutputs": [
                     "5.0"

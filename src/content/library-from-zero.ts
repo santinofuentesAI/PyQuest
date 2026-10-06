@@ -172,6 +172,7 @@ export const FROM_ZERO: Record<string, LibraryBlock[]> = {
       { term: "módulo", def: "Un archivo .py (o un paquete) con código reutilizable." },
       { term: "pip", def: "El instalador de paquetes de Python en tu máquina. En el navegador de PyQuest no lo necesitas." },
       { term: "alias as", def: "Un mote. import pandas as pd es la convención." },
+      { term: "API", def: "La ficha de uso: módulo, nombre, argumentos y qué devuelve. No es un menú secreto." },
     ]),
   ],
   p0: [
