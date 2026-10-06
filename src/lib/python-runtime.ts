@@ -21,10 +21,12 @@ const pending = new Map<string, Pending>();
 let requestId = 0;
 let runQueue: Promise<unknown> = Promise.resolve();
 const statusListeners = new Set<(s: RuntimeStatus) => void>();
+const wantedPackages = new Set<string>();
 
 export type RuntimeStatus =
   | { state: "idle" }
-  | { state: "loading" }
+  | { state: "loading"; message?: string }
+  | { state: "warming"; message?: string }
   | { state: "ready" }
   | { state: "error"; message: string };
 
@@ -66,6 +68,20 @@ function recreateWorker() {
       ready = true;
       setStatus({ state: "ready" });
       readyWaiters.splice(0).forEach((fn) => fn());
+      if (wantedPackages.size) {
+        worker?.postMessage({ type: "warmup", packages: [...wantedPackages] });
+      }
+      return;
+    }
+    if (msg.type === "status") {
+      setStatus({
+        state: msg.phase === "warming" || ready ? "warming" : "loading",
+        message: typeof msg.message === "string" ? msg.message : undefined,
+      });
+      return;
+    }
+    if (msg.type === "warm") {
+      if (ready) setStatus({ state: "ready" });
       return;
     }
     if (msg.type === "init_error") {
@@ -112,11 +128,18 @@ function recreateWorker() {
 
 export function preloadPython(opts?: { dataStack?: boolean; packages?: string[] }) {
   if (typeof window === "undefined") return;
+  if (opts?.dataStack) {
+    wantedPackages.add("numpy");
+    wantedPackages.add("pandas");
+    wantedPackages.add("matplotlib");
+  }
+  for (const name of opts?.packages ?? []) wantedPackages.add(name);
   if (!worker || initError) recreateWorker();
-  const roots = [
-    ...(opts?.dataStack ? ["numpy", "pandas", "matplotlib"] : []),
-    ...(opts?.packages ?? []),
-  ];
+  else if (ready && wantedPackages.size) {
+    setStatus({ state: "warming", message: "Instalando NumPy, Pandas y Matplotlib…" });
+    worker.postMessage({ type: "warmup", packages: [...wantedPackages] });
+  }
+  const roots = [...wantedPackages];
   if (roots.length) {
     void pickPyodideIndex().then((index) => prefetchDataStack(index, roots));
   }
@@ -163,7 +186,7 @@ async function performRun(options: RunOptions): Promise<PythonRunResult> {
   preloadPython();
   await waitReady();
   const id = `r${++requestId}`;
-  const timeoutMs = options.timeoutMs ?? TIMEOUT_MS;
+  const timeoutMs = options.timeoutMs ?? (options.capturePlots ? 45000 : TIMEOUT_MS);
 
   return new Promise((resolve, reject) => {
     const onTimeout = () => {

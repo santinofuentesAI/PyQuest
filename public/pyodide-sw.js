@@ -5,7 +5,7 @@ const CACHE = `pyquest-pyodide-${VERSION}`;
 function isPyodideRequest(url) {
   try {
     const u = new URL(url);
-    if (u.pathname.endsWith("/pyodide-worker.js")) return true;
+    if (u.origin === self.location.origin) return false;
     if (u.hostname.includes("jsdelivr.net") && u.pathname.includes("pyodide")) return true;
     if (u.pathname.includes("/pyodide/")) return true;
     return false;

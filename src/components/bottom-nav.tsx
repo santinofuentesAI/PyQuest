@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { BookOpen, BriefcaseBusiness, Dumbbell, Map, Trophy, User } from "lucide-react";
+import { BookOpen, BriefcaseBusiness, Dumbbell, FlaskConical, Map, User } from "lucide-react";
 import { isImmersivePath } from "@/lib/chrome";
 import { cn } from "@/lib/utils";
 
@@ -11,7 +11,7 @@ const items = [
   { href: "/practice", label: "Práctica", icon: Dumbbell },
   { href: "/projects", label: "Proyectos", icon: BriefcaseBusiness },
   { href: "/library", label: "Librería", icon: BookOpen },
-  { href: "/league", label: "Liga", icon: Trophy },
+  { href: "/playground", label: "Laboratorio", icon: FlaskConical },
   { href: "/profile", label: "Perfil", icon: User },
 ];
 
@@ -34,8 +34,8 @@ export function BottomNav() {
                   active ? "text-primary" : "text-muted-foreground hover:text-foreground"
                 )}
               >
-                <Icon className={cn("size-5", active && "fill-primary/15")} />
-                {item.label}
+                <Icon className={cn("size-5 shrink-0", active && "fill-primary/15")} />
+                <span className="max-w-[4.4rem] text-center text-[10px] leading-[1.1] sm:text-[11px]">{item.label}</span>
               </Link>
             </li>
           );

@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { useProgress } from "@/lib/progress-store";
-import { levelFromXp, leagueTitle } from "@/lib/gamification";
+import { levelFromXp } from "@/lib/gamification";
 import { BADGES } from "@/lib/curriculum";
 import { PALETTES, DEFAULT_PALETTE } from "@/lib/palettes";
 import { Button } from "@/components/ui/button";
@@ -25,7 +25,7 @@ export default function ProfilePage() {
     <div className="mx-auto max-w-lg px-4 py-8 pb-24">
       <h1 className="font-heading text-3xl font-extrabold">{p.displayName}</h1>
       <p className="text-muted-foreground">
-        Nivel {lvl.level} · {p.xp} XP · Liga {leagueTitle(p.league)} · Oficina ${p.jobUsd ?? 0}
+        Nivel {lvl.level} · {p.xp} XP · Oficina ${p.jobUsd ?? 0}
       </p>
 
       <section className="mt-8 rounded-2xl border bg-card p-4">

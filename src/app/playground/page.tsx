@@ -6,6 +6,7 @@ import { CodeEditor } from "@/components/code-editor";
 import { Button } from "@/components/ui/button";
 import { PythonStatus } from "@/components/python-status";
 import { runPython, preloadPython } from "@/lib/python-runtime";
+import { humanPythonError } from "@/lib/job-projects";
 
 const SAMPLE = `import numpy as np
 import pandas as pd
@@ -31,7 +32,7 @@ export default function PlaygroundPage() {
   const [busy, setBusy] = useState(false);
 
   useEffect(() => {
-    preloadPython();
+    preloadPython({ dataStack: true });
   }, []);
 
   async function run() {
@@ -39,12 +40,17 @@ export default function PlaygroundPage() {
     setBusy(true);
     setErr(null);
     try {
-      const res = await runPython({ code, capturePlots: true, timeoutMs: 12000 });
+      const res = await runPython({
+        code,
+        capturePlots: true,
+        packages: ["numpy", "pandas", "matplotlib"],
+        timeoutMs: 90000,
+      });
       setOut(res.stdout);
-      setErr(res.error);
-      setImages(res.images);
-    } catch {
-      setErr("Python no pudo cargar. Revisa la conexión y vuelve a ejecutar.");
+      setErr(res.error ? humanPythonError(res.error) ?? res.error : null);
+      setImages(res.images ?? []);
+    } catch (error) {
+      setErr(error instanceof Error ? error.message : "Python no pudo cargar. Revisa la conexión y vuelve a ejecutar.");
     } finally {
       setBusy(false);
     }
@@ -54,7 +60,7 @@ export default function PlaygroundPage() {
     <div className="mx-auto max-w-3xl px-4 py-8 pb-24">
       <h1 className="font-heading text-3xl font-extrabold">Laboratorio</h1>
       <p className="mt-1 text-sm text-muted-foreground">
-        Ejecuta Python real aquí. Primera carga: descarga Pyodide y los paquetes (puede tardar ~20 s).{" "}
+        Ejecuta Python real aquí. El motor carga primero; NumPy, Pandas y Matplotlib se instalan la primera vez que los usas y después quedan en caché.{" "}
         <Link href="/library" className="font-semibold text-primary">
           Volver a la librería
         </Link>

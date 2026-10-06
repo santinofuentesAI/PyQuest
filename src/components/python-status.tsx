@@ -24,10 +24,18 @@ export function PythonStatus({ className }: { className?: string }) {
       </p>
     );
   }
+  const spinning = status.state === "loading" || status.state === "warming";
+  const label =
+    status.message ??
+    (status.state === "warming"
+      ? "Instalando Matplotlib…"
+      : status.state === "loading"
+        ? "Descargando el motor de Python…"
+        : "Laboratorio en espera");
   return (
     <p className={cn("inline-flex items-center gap-1.5 text-xs text-muted-foreground", className)}>
-      {status.state === "loading" ? <Loader2 className="size-3.5 animate-spin" /> : <FlaskConical className="size-3.5" />}
-      {status.state === "loading" ? "Cargando Pyodide (NumPy, Pandas, Matplotlib)…" : "Laboratorio en espera"}
+      {spinning ? <Loader2 className="size-3.5 animate-spin" /> : <FlaskConical className="size-3.5" />}
+      {label}
     </p>
   );
 }
