@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import { useProgress } from "@/lib/progress-store";
 import { levelFromXp, leagueTitle } from "@/lib/gamification";
 import { BADGES } from "@/lib/curriculum";
@@ -8,12 +9,14 @@ import { PALETTES, DEFAULT_PALETTE } from "@/lib/palettes";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Switch } from "@/components/ui/switch";
+import { PortfolioSection } from "@/components/portfolio-section";
 import { toast } from "sonner";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
 
 export default function ProfilePage() {
   const p = useProgress();
+  const router = useRouter();
   const lvl = levelFromXp(p.xp);
   const [code, setCode] = useState("");
   const currentPalette = p.palette ?? DEFAULT_PALETTE;
@@ -22,7 +25,7 @@ export default function ProfilePage() {
     <div className="mx-auto max-w-lg px-4 py-8 pb-24">
       <h1 className="font-heading text-3xl font-extrabold">{p.displayName}</h1>
       <p className="text-muted-foreground">
-        Nivel {lvl.level} · {p.xp} XP · Liga {leagueTitle(p.league)}
+        Nivel {lvl.level} · {p.xp} XP · Liga {leagueTitle(p.league)} · Oficina ${p.jobUsd ?? 0}
       </p>
 
       <section className="mt-8 rounded-2xl border bg-card p-4">
@@ -38,6 +41,7 @@ export default function ProfilePage() {
             if (result.ok) {
               toast.success(result.message);
               setCode("");
+              if (result.openMap) router.push("/learn");
             } else {
               toast.error(result.message);
             }
@@ -110,6 +114,8 @@ export default function ProfilePage() {
           <Switch checked={p.soundEnabled !== false} onCheckedChange={(c) => p.setSound(c)} />
         </div>
       </section>
+
+      <PortfolioSection />
 
       <section className="mt-6">
         <h2 className="font-bold">Insignias</h2>

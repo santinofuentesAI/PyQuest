@@ -1,6 +1,7 @@
 "use client";
 
 import type { PythonRunResult } from "./types";
+import { pickPyodideIndex, prefetchDataStack } from "./pyodide-cdn";
 
 const TIMEOUT_MS = 8000;
 
@@ -109,9 +110,16 @@ function recreateWorker() {
   worker.postMessage({ type: "init" });
 }
 
-export function preloadPython() {
+export function preloadPython(opts?: { dataStack?: boolean; packages?: string[] }) {
   if (typeof window === "undefined") return;
   if (!worker || initError) recreateWorker();
+  const roots = [
+    ...(opts?.dataStack ? ["numpy", "pandas", "matplotlib"] : []),
+    ...(opts?.packages ?? []),
+  ];
+  if (roots.length) {
+    void pickPyodideIndex().then((index) => prefetchDataStack(index, roots));
+  }
 }
 
 function waitReady(): Promise<void> {

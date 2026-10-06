@@ -11,8 +11,8 @@ const Monaco = dynamic(() => import("@monaco-editor/react"), { ssr: false,
   loading: () => <p className="p-4 text-sm">Cargando editor avanzado…</p> });
 const SYMBOLS = [":", '"', "'", "(", ")", "[", "]", "{", "}", "=", "==", "!=", ">", "<", ">=", "<=", "+", "-", "*", "/", ",", ".", "_", "#"];
 
-export function CodeEditor({ value, onChange, height = 220, words = [] }: {
-  value: string; onChange: (v: string) => void; height?: number; words?: string[];
+export function CodeEditor({ value, onChange, height = 220, words = [], forceDark = false }: {
+  value: string; onChange: (v: string) => void; height?: number; words?: string[]; forceDark?: boolean;
 }) {
   const palette = useProgress((s) => s.palette);
   const [advanced, setAdvanced] = useState(false);
@@ -65,7 +65,7 @@ export function CodeEditor({ value, onChange, height = 220, words = [] }: {
         </button>
       </div>
       {advanced ? <Monaco height={height} language="python" value={value}
-        theme={paletteById(palette).dark ? "vs-dark" : "light"}
+        theme={forceDark || paletteById(palette).dark ? "vs-dark" : "light"}
         onMount={(ed) => { monaco.current = ed; }} onChange={(v) => onChange(v ?? "")}
         options={{ minimap: { enabled: false }, fontSize: 16, wordWrap: "on", automaticLayout: true, tabSize: 4, scrollBeyondLastLine: false, padding: { top: 12, bottom: 12 }, tabCompletion: "on" }} />
         : <textarea ref={area} aria-label="Código Python" value={value} spellCheck={false} autoCapitalize="off" autoCorrect="off"

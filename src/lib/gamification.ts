@@ -4,6 +4,8 @@ export const MAX_HEARTS = 5;
 export const HEART_REGEN_MS = 20 * 60 * 1000;
 export const STREAK_FREEZE_COST = 40;
 export const HEART_REFILL_COST = 80;
+export const HEART_SALARY_COST = 30;
+export const FREEZE_SALARY_COST = 50;
 
 export const LEAGUES: { id: LeagueId; title: string; minWeeklyXp: number; color: string }[] = [
   { id: "bronze", title: "Bronce", minWeeklyXp: 0, color: "#c47a3a" },

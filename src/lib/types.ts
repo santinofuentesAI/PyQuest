@@ -143,6 +143,29 @@ export type UnitProgress = {
   completedLessonIds: string[];
 };
 
+export type PortfolioItem = {
+  id: string;
+  source: "job" | "lab";
+  title: string;
+  description: string;
+  code: string;
+  stdout?: string;
+  image?: string;
+  company?: string;
+  jobId?: string;
+  createdAt: number;
+};
+
+export type JobProjectProgress = {
+  completed: boolean;
+  hintsUsed: number;
+  paidUsd: number;
+  draftCode?: string;
+  introSeen?: boolean;
+  /** Failed deliveries to the boss. 3 = fired. */
+  failCount?: number;
+};
+
 export type UserProgress = {
   displayName: string;
   onboarded: boolean;
@@ -169,6 +192,12 @@ export type UserProgress = {
   palette: import("./palettes").PaletteId;
   soundEnabled: boolean;
   redeemedCodes: string[];
+  /** Every unit, lesson and office job is playable. */
+  unlockAll: boolean;
+  /** Fictional career pay from office jobs. */
+  jobUsd: number;
+  jobProjects: Record<string, JobProjectProgress>;
+  portfolio: PortfolioItem[];
 };
 
 export type PythonRunResult = {

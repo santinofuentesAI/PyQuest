@@ -1,9 +1,11 @@
 "use client";
 
 import Link from "next/link";
-import { BookOpen, Check, Lock, Sparkles, Crown, RotateCcw, Play } from "lucide-react";
+import { BookOpen, Briefcase, Check, Lock, Sparkles, Crown, RotateCcw, Play } from "lucide-react";
 import { SECTIONS, UNITS } from "@/lib/curriculum";
 import { continueLessonId, continueUnitId, isUnitUnlocked, useProgress } from "@/lib/progress-store";
+import { isSectionCoreComplete } from "@/lib/job-projects";
+import { hasFullUnlock } from "@/lib/redeem-codes";
 import { decayStrength } from "@/lib/gamification";
 import { cn } from "@/lib/utils";
 import { PythonStatus } from "@/components/python-status";
@@ -44,6 +46,13 @@ export function SkillTree({ highlight }: { highlight?: string }) {
           <BookOpen className="size-4" />
           Abrir la librería
         </Link>
+        <Link
+          href="/projects"
+          className={cn(buttonVariants({ variant: "outline" }), "mt-2 h-11 w-full rounded-2xl font-bold")}
+        >
+          <Briefcase className="size-4" />
+          Encargos de oficina
+        </Link>
       </div>
 
       {SECTIONS.map((section) => (
@@ -57,6 +66,11 @@ export function SkillTree({ highlight }: { highlight?: string }) {
             </p>
             <h2 className="font-heading text-xl font-bold">{section.title}</h2>
             <p className="text-sm text-muted-foreground">{section.subtitle}</p>
+            {hasFullUnlock(progress) || section.id === "s0" || isSectionCoreComplete(section.id, progress) ? (
+              <Link href="/projects" className="mt-1 inline-block text-sm font-semibold" style={{ color: section.color }}>
+                Encargos de oficina →
+              </Link>
+            ) : null}
           </div>
           <ol className="relative z-0 space-y-4 before:absolute before:top-4 before:bottom-4 before:left-7 before:z-0 before:w-1 before:rounded-full before:bg-border">
             {section.units.map((unit, idx) => {

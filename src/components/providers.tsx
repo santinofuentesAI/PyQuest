@@ -5,6 +5,8 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { Toaster } from "@/components/ui/sonner";
 import { useEffect } from "react";
 import { useProgress } from "@/lib/progress-store";
+import { preloadPython } from "@/lib/python-runtime";
+import { registerPyodideServiceWorker } from "@/lib/pyodide-cdn";
 import { applyPalette, DEFAULT_PALETTE, paletteById } from "@/lib/palettes";
 
 function PaletteShell({ children }: { children: React.ReactNode }) {
@@ -29,6 +31,18 @@ function PaletteShell({ children }: { children: React.ReactNode }) {
 }
 
 export function Providers({ children }: { children: React.ReactNode }) {
+  useEffect(() => {
+    registerPyodideServiceWorker();
+    const idleId =
+      typeof window.requestIdleCallback === "function"
+        ? window.requestIdleCallback(() => preloadPython())
+        : window.setTimeout(() => preloadPython(), 0);
+    return () => {
+      if (typeof window.cancelIdleCallback === "function") window.cancelIdleCallback(idleId);
+      else window.clearTimeout(idleId);
+    };
+  }, []);
+
   return (
     <PaletteShell>
       <TooltipProvider delay={200}>

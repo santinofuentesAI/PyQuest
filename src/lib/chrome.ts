@@ -4,6 +4,7 @@ export function isImmersivePath(pathname: string) {
     pathname.startsWith("/onboarding") ||
     pathname.startsWith("/placement") ||
     pathname.startsWith("/lesson") ||
-    pathname.startsWith("/review")
+    pathname.startsWith("/review") ||
+    pathname.startsWith("/projects/")
   );
 }

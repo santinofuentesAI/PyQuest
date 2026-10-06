@@ -5,6 +5,7 @@ import { useParams } from "next/navigation";
 import { BookOpen, Check, Lock, RotateCcw, Sparkles } from "lucide-react";
 import { getUnit, getSectionForUnit, LEVEL_LABELS, lessonLevel } from "@/lib/curriculum";
 import { isUnitUnlocked, useProgress } from "@/lib/progress-store";
+import { hasFullUnlock } from "@/lib/redeem-codes";
 import { decayStrength } from "@/lib/gamification";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
@@ -53,7 +54,7 @@ export default function UnitPage() {
       <ol className="mt-6 space-y-2">
         {unit.lessons.map((lesson, i) => {
           const done = up?.completedLessonIds.includes(lesson.id);
-          const open = unlocked && (done || lesson.id === nextLesson?.id || i === 0);
+          const open = unlocked && (hasFullUnlock(progress) || done || lesson.id === nextLesson?.id || i === 0);
           return (
             <li key={lesson.id}>
               {open ? (
