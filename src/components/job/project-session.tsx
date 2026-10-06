@@ -366,7 +366,7 @@ export function ProjectSession({
               </Button>
               <Button
                 variant="secondary"
-                className="h-11 rounded-xl font-bold"
+                className="h-11 rounded-xl bg-zinc-800 font-bold text-zinc-100 hover:bg-zinc-700"
                 onClick={() => run(true)}
                 disabled={busy || completed}
               >
@@ -457,7 +457,7 @@ export function ProjectSession({
               El jefe se está enojando. Si ignoras esto otra vez, te saca de este encargo.
             </p>
             <Button
-              className="mt-6 h-11 rounded-2xl px-6 font-bold"
+              className="mt-6 h-11 rounded-2xl bg-zinc-800 px-6 font-bold text-zinc-100 hover:bg-zinc-700"
               variant="secondary"
               onClick={() => setMood("missing")}
             >
