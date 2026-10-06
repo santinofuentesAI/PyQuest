@@ -42,8 +42,8 @@ export default function UnitPage() {
       <h1 className="font-heading mt-1 text-3xl font-extrabold">{unit.title}</h1>
       <p className="mt-2 text-muted-foreground">{unit.description}</p>
       <p className="mt-3 rounded-2xl border bg-card/80 px-3 py-2 text-sm text-muted-foreground">
-        Cada tema tiene 4 niveles: esencial, afianza, practica y demuestra. El mapa se abre al terminar el primero;
-        los otros tres existen para que el concepto se quede.
+        Cinco niveles por tema. El primero abre el mapa. Afianzar, practicar y demostrar fijan la idea.
+        Profundiza la usa en un caso un poco más real. Dominar el tema sigue pidiendo la práctica y los encargos.
       </p>
       {complete && (
         <p className="mt-2 text-sm font-semibold text-emerald-600">

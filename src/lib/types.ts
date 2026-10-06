@@ -81,7 +81,7 @@ export type Lesson = {
   xp: number;
   exercises: Exercise[];
   /** 1 = camino principal. 2–4 = niveles extra para afianzar el tema. */
-  level?: 1 | 2 | 3 | 4;
+  level?: 1 | 2 | 3 | 4 | 5;
 };
 
 export type Unit = {

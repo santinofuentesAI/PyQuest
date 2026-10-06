@@ -5,11 +5,11 @@ Plataforma web de aprendizaje gamificado de **Python para análisis de datos e I
 ## Qué incluye este slice
 
 - Motor de ejercicios: opción múltiple, huecos con banco de palabras, código, reordenar, detectar error, predecir salida multilínea, datos reales (CSV), emparejar, construir expresiones por piezas y seguir la ejecución. En **Aprender** se conserva el orden pedagógico y se mezclan las opciones; los repasos sí mezclan ejercicios.
-- **Librería**: 53 guías, ejemplos ejecutables, razonamiento paso a paso y práctica libre de los cuatro niveles.
+- **Librería**: 53 guías, ejemplos ejecutables, razonamiento paso a paso y práctica libre de los cinco niveles.
 - Runtime Python en un **Web Worker** (timeout 8 s, `stdout`/`stderr`, figuras Matplotlib a PNG).
 - Currículo completo en el mapa (secciones 0–7): **53 unidades** con lecciones originales (enunciado, pista, solución y tests). Hub por unidad, repaso espaciado y tienda de gemas.
 - Entras directo al mapa de **Aprender** (sin slides ni test de colocación).
-- Cada unidad tiene **4 niveles** (esencial + 3 extra) para afianzar el tema.
+- Cada unidad tiene **5 niveles** (esencial, afianza, practica, demuestra y profundiza). El mapa se abre con el primero.
 - Seis paletas de color en **Perfil → Ajustes** (Lila, Océano, Atardecer, Noche, Bosque, Negro OLED).
 - Progreso en `localStorage` (modo invitado). FastAPI + PostgreSQL opcionales para persistir cuentas.
 - Modo **Práctica legendaria**, liga semanal, insignias, tienda (corazones y congelador de racha).
