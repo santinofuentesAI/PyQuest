@@ -6,7 +6,7 @@ const INDEX_URLS = [
   `https://cdn.jsdelivr.net/npm/pyodide@${PYODIDE_VERSION}/`,
 ];
 
-const KNOWN = new Set(["numpy", "pandas", "matplotlib", "micropip"]);
+const KNOWN = new Set(["numpy", "pandas", "matplotlib", "micropip", "scipy", "scikit-learn", "seaborn"]);
 
 let pyodide = null;
 let initPromise = null;
@@ -164,6 +164,19 @@ function ensurePackages(names) {
   return job;
 }
 
+function ensureImports(code) {
+  const job = packageChain.then(async () => {
+    // Pyodide does not install SciPy/sklearn/seaborn merely by executing import.
+    await pyodide.loadPackagesFromImports(code, {
+      messageCallback: (msg) => post({ type: "status", phase: "warming", message: shortLoadMessage(msg) }),
+    });
+    rememberLoaded();
+    if (loadedPackages.has("matplotlib")) await configureMatplotlib();
+  });
+  packageChain = job.catch(() => {});
+  return job;
+}
+
 function warmup(names) {
   const list = Array.isArray(names) && names.length > 0 ? names : ["numpy", "pandas", "matplotlib"];
   return ensurePackages(list).then(() => {
@@ -218,7 +231,7 @@ _images
 }
 
 function wantsPlots(code, capturePlots) {
-  return Boolean(capturePlots) && /matplotlib|pyplot|\bas\s+plt\b/.test(code ?? "");
+  return Boolean(capturePlots) && /matplotlib|pyplot|seaborn|\bas\s+(?:plt|sns)\b/.test(code ?? "");
 }
 
 function indentBlock(src) {
@@ -228,7 +241,7 @@ function indentBlock(src) {
     .join("\n");
 }
 
-async function runBossTests(tests) {
+async function runBossTests(tests, globals) {
   const src = String(tests ?? "").trim();
   if (!src) return null;
   await pyodide.runPythonAsync(`
@@ -237,8 +250,8 @@ try:
 ${indentBlock(src)}
 except Exception as __pq_ex:
     __pq_test_error = f"{type(__pq_ex).__name__}: {__pq_ex}"
-`);
-  const err = toJsValue(pyodide.runPython("__pq_test_error"));
+`, { globals });
+  const err = toJsValue(pyodide.runPython("__pq_test_error", { globals }));
   if (err && String(err) !== "None") return String(err);
   return null;
 }
@@ -251,6 +264,7 @@ async function run(code, tests, files, packages, capturePlots, onStarted) {
   if (needed.size > 0) {
     await ensurePackages([...needed]);
   }
+  await ensureImports(`${code}\n${tests ?? ""}`);
   if (typeof onStarted === "function") onStarted();
 
   writeFiles(files);
@@ -261,8 +275,8 @@ sys.stdout = io.StringIO()
 sys.stderr = io.StringIO()
 `);
 
-  const plot = wantsPlots(code, capturePlots) && loadedPackages.has("matplotlib");
-  if (plot) {
+  const plot = Boolean(capturePlots) && loadedPackages.has("matplotlib");
+  if (loadedPackages.has("matplotlib")) {
     await pyodide.runPythonAsync(`
 import matplotlib
 matplotlib.use("Agg")
@@ -271,16 +285,25 @@ plt.close("all")
 `);
   }
 
+  // Keep learner variables local to this run while retaining downloaded packages.
+  const globals = pyodide.runPython("dict(__name__='__main__')");
   let execError = null;
+  let testError = null;
+  let stdout, stderr;
+  let images;
   try {
-    await pyodide.runPythonAsync(code);
-  } catch (error) {
-    execError = friendlyError(error instanceof Error ? error.message : String(error));
+    try {
+      await pyodide.runPythonAsync(code, { globals });
+    } catch (error) {
+      execError = friendlyError(error?.message || String(error)) || "Python no pudo ejecutar este código.";
+    }
+    // Test setup is not part of the learner's program output.
+    ({ stdout, stderr } = readStd());
+    testError = execError ? null : await runBossTests(tests, globals);
+    images = plot ? captureImages() : [];
+  } finally {
+    globals.destroy();
   }
-  const testError = execError ? null : await runBossTests(tests);
-
-  const { stdout, stderr } = readStd();
-  const images = plot ? captureImages() : [];
   return { stdout, stderr, images, testError: execError || testError };
 }
 

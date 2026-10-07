@@ -1,6 +1,6 @@
 import { test, expect } from '@playwright/test';
 import curriculum from '../../src/content/curriculum.json';
-import type { Curriculum } from '../../src/lib/types';
+import type { Curriculum, Exercise } from '../../src/lib/types';
 
 for (const [name, width, height] of [['mobile', 390, 844], ['tablet', 1280, 800], ['desktop', 1440, 900]] as const) {
   test(`library editor and pieces on ${name}`, async ({ page }) => {
@@ -27,7 +27,12 @@ for (const [name, width, height] of [['mobile', 390, 844], ['tablet', 1280, 800]
 test('every reference program passes in the actual Pyodide Worker', async ({ page }) => {
   await page.goto('/library');
   const exercises = (curriculum as unknown as Curriculum).sections.flatMap((s) => s.units.flatMap((u) => u.lessons.flatMap((l) => l.exercises)));
-  const programs = exercises.filter((e) => ['code', 'data', 'predict_output'].includes(e.type));
+  const isolationChecks: Exercise[] = [
+    { id: 'runtime-private-run', type: 'code', prompt: '', explanation: '', difficulty: 1, xp: 0, solution: "__learner_secret = 42\nprint = lambda *args: None" },
+    { id: 'runtime-fresh-run', type: 'code', prompt: '', explanation: '', difficulty: 1, xp: 0, solution: "print('__learner_secret' in globals())", expectedStdout: 'False' },
+    { id: 'runtime-user-output', type: 'code', prompt: '', explanation: '', difficulty: 1, xp: 0, solution: "answer = 7\nprint(answer)", expectedStdout: '7', tests: [{ setup: "print('test setup is private')", assert: 'answer == 7' }] },
+  ];
+  const programs = [...exercises.filter((e) => ['code', 'data', 'predict_output'].includes(e.type)), ...isolationChecks];
   const failures = await page.evaluate(async (rows) => {
     const worker = new Worker('/pyodide-worker.js');
     try {
