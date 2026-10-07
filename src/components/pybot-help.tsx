@@ -20,7 +20,7 @@ const GUIDES: Record<string, { label: string; tips: string[]; href: string; acti
 export function PybotHelp({ inline = false }: { inline?: boolean }) {
   const path = usePathname();
   const [tip, setTip] = useState(0);
-  if (isImmersivePath(path) || (path === "/playground" && !inline)) return null;
+  if ((isImmersivePath(path) && !inline) || (path === "/playground" && !inline)) return null;
   const guide = Object.entries(GUIDES).find(([key]) => path.startsWith(key))?.[1] ?? GUIDES["/learn"];
   return <Dialog>
     <DialogTrigger aria-label="Hablar con Pybot" className={inline ? "flex size-11 items-center justify-center rounded-xl hover:bg-muted focus-visible:outline-2 focus-visible:outline-primary" : "pybot-help fixed right-4 bottom-24 z-40 flex size-14 items-center justify-center rounded-2xl border-2 border-card bg-card shadow-lg transition hover:-translate-y-1 focus-visible:outline-2 focus-visible:outline-primary"}>

@@ -93,14 +93,15 @@ test("a class flows through intro, retry, checkpoint and real rewards", async ({
 
 test("lab draft, portfolio and downloadable Python survive navigation", async ({ page }) => {
   await page.setViewportSize({ width: 320, height: 844 });
-  await page.goto("/playground");
+  await page.goto("/playground/editor");
   const area = page.getByRole("textbox", { name: "Código Python" });
   await area.fill("print('Mi experimento')");
   await page.reload();
   await expect(area).toHaveValue("print('Mi experimento')");
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
   await capture(page, "pybot-lab-mobile");
-  await page.getByRole("button", { name: "Guardar en portafolio", exact: true }).click();
+  await page.getByText("Ejemplos y herramientas", { exact: true }).click();
+  await page.getByRole("button", { name: "Guardar con nombre", exact: true }).click();
   await page.getByRole("textbox", { name: "Nombre", exact: true }).fill("Experimento de prueba");
   await page.getByRole("textbox", { name: "Qué descubriste" }).fill("Una idea que quiero conservar");
   await page.getByRole("button", { name: "Guardar proyecto" }).click();
