@@ -285,7 +285,13 @@ button, a, input, select, textarea { -webkit-tap-highlight-color: transparent; }
 .quest-progress-fill { transition: width .55s cubic-bezier(.2,.8,.2,1); }
 .quest-enter { animation: quest-enter .3s both; }
 .quest-reward { animation: quest-reward .55s both; }
-.quest-current { box-shadow: 0 0 0 5px color-mix(in srgb, var(--primary) 10%, transparent), 0 4px 0 color-mix(in srgb, var(--primary) 24%, var(--border)); }
+a.quest-card.quest-current {
+  box-shadow:
+    -12px 0 22px -12px color-mix(in srgb, var(--primary) 38%, transparent),
+    12px 0 22px -12px color-mix(in srgb, var(--primary) 38%, transparent),
+    0 0 0 2px color-mix(in srgb, var(--primary) 10%, transparent),
+    0 4px 0 color-mix(in srgb, var(--primary) 24%, var(--border));
+}
 .quest-dot-grid { background-image: radial-gradient(color-mix(in srgb, var(--primary) 12%, transparent) 1px, transparent 1px); background-size: 16px 16px; }
 .quest-exercise [role="radio"] { display: flex; align-items: center; gap: .75rem; min-height: 3.5rem; box-shadow: 0 3px 0 var(--border); }
 .quest-exercise [role="radio"]::before { content: ""; flex-shrink: 0; width: 1.15rem; height: 1.15rem; border: 2px solid var(--border); border-radius: 50%; background: var(--card); }

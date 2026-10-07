@@ -59,7 +59,7 @@ export function SkillTree({ highlight }: { highlight?: string }) {
     </div>
     <section key={section.id} className="quest-enter" aria-labelledby="route-heading">
       <div className="mb-4 flex items-center justify-between gap-3 rounded-2xl border bg-card p-4"><div className="min-w-0"><p className="quest-kicker">Sección {section.index + 1}</p><h3 id="route-heading" className="mt-1 text-lg font-extrabold">{section.title}</h3><p className="mt-1 text-xs text-muted-foreground">{section.subtitle}</p></div><div className="flex size-11 shrink-0 items-center justify-center rounded-full border-[3px] border-primary/15 text-xs font-extrabold text-primary">{sectionDone}/{section.units.length}</div></div>
-      <ol className="relative grid gap-4 before:absolute before:top-6 before:bottom-6 before:left-6 before:w-0.5 before:bg-border sm:grid-cols-2 sm:before:hidden">
+      <ol className="grid gap-4 sm:grid-cols-2">
         {section.units.map((u, index) => {
           const open = isUnitUnlocked(u.id, progress);
           const doneIds = progress.units[u.id]?.completedLessonIds ?? [];
