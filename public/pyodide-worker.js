@@ -161,7 +161,9 @@ async function loadPackagesNow(names) {
   if (seaborn) {
     post({ type: "status", phase: "warming", message: "Instalando Seaborn…" });
     // Pure Python wheel; its compiled dependencies were loaded from Pyodide above.
-    await pyodide.runPythonAsync('import micropip\nawait micropip.install("seaborn==0.13.2", deps=False)\nimport seaborn');
+    // Keep dependency resolution enabled: micropip 0.8 otherwise skips awaiting
+    // the wheel download. Already installed dependencies satisfy the requirements.
+    await pyodide.runPythonAsync('import micropip\nawait micropip.install("seaborn==0.13.2")\nimport seaborn');
     loadedPackages.add("seaborn");
   }
 }
@@ -318,6 +320,7 @@ plt.close("all")
 
 async function handleMessage(event) {
   const { id, type, code, tests, files, packages, capturePlots, indexURL, warmup: shouldWarm } = event.data;
+  let started = false;
   try {
     if (type === "init") {
       await init(indexURL);
@@ -332,6 +335,7 @@ async function handleMessage(event) {
     }
     if (type === "run") {
       const result = await run(code, tests, files, packages, Boolean(capturePlots), () => {
+        started = true;
         post({ type: "run_started", id });
       });
       const failed = Boolean(result.testError);
@@ -346,7 +350,7 @@ async function handleMessage(event) {
       });
     }
   } catch (error) {
-    const message = friendlyError(error instanceof Error ? error.message : String(error));
+    const message = friendlyError(error?.message || String(error)) || "Python no pudo preparar esta ejecución.";
     if (type === "init") {
       post({ type: "init_error", error: message });
       return;
@@ -370,9 +374,9 @@ async function handleMessage(event) {
       id,
       type: "result",
       ok: false,
-      stdout,
+      stdout: started ? stdout : "",
       stderr,
-      error: message,
+      error: message === "PythonError" && stderr.trim() ? friendlyError(stderr.trim()) : message,
       images: [],
     });
   }
