@@ -15,13 +15,24 @@ for (const width of [320, 390, 768, 1440]) {
     const errors: string[] = [];
     page.on("pageerror", (e) => errors.push(e.message));
     await page.goto("/learn");
-    await expect(page.getByRole("heading", { name: "Un pequeño paso. Mucho futuro." })).toBeVisible();
-    const cta = page.getByRole("link", { name: "Empezar mi primera clase" });
+    await expect(page.getByRole("heading", { name: "Aprender" })).toBeVisible();
+    const cta = page.getByRole("link", { name: "Empezar clase" });
     await expect(cta).toBeVisible();
     expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
     const box = await cta.boundingBox();
     expect(box!.x + box!.width).toBeLessThanOrEqual(width);
+    const route = page.getByRole("button", { name: /Explora tu ruta/ });
+    await expect(route).toHaveAttribute("aria-expanded", "false");
+    await expect(page.getByRole("button", { name: "2. NumPy", exact: true })).toBeHidden();
+    await expect(page.getByRole("region", { name: "Objetivo diario" })).toHaveCount(0);
+    await expect(page.getByText(/días? de racha/, { exact: true })).toHaveCount(0);
+    const firstTopic = await page.locator("ol li").first().boundingBox();
+    expect(firstTopic!.y + firstTopic!.height).toBeLessThan(600);
+    await route.click();
+    await expect(route).toHaveAttribute("aria-expanded", "true");
     await page.getByRole("button", { name: "2. NumPy", exact: true }).click();
+    await expect(route).toHaveAttribute("aria-expanded", "false");
+    await expect(route).toBeFocused();
     await expect(page.locator("#route-heading")).toHaveText("NumPy");
     await page.getByRole("button", { name: "Hablar con Pybot" }).click();
     await expect(page.getByRole("dialog")).toBeVisible();
@@ -30,6 +41,7 @@ for (const width of [320, 390, 768, 1440]) {
     await expect(page.getByRole("dialog").getByRole("status")).toContainText("Equivocarte");
     await page.keyboard.press("Escape");
     await expect(page.getByRole("dialog")).toHaveCount(0);
+    await route.click();
     await page.getByRole("button", { name: "1. Fundamentos absolutos", exact: true }).click();
     await capture(page, `pybot-map-${width}`);
     expect(errors).toEqual([]);
@@ -81,14 +93,15 @@ test("a class flows through intro, retry, checkpoint and real rewards", async ({
 
 test("lab draft, portfolio and downloadable Python survive navigation", async ({ page }) => {
   await page.setViewportSize({ width: 320, height: 844 });
-  await page.goto("/playground");
+  await page.goto("/playground/editor");
   const area = page.getByRole("textbox", { name: "Código Python" });
   await area.fill("print('Mi experimento')");
   await page.reload();
   await expect(area).toHaveValue("print('Mi experimento')");
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
   await capture(page, "pybot-lab-mobile");
-  await page.getByRole("button", { name: "Guardar en portafolio" }).click();
+  await page.getByText("Ejemplos y herramientas", { exact: true }).click();
+  await page.getByRole("button", { name: "Guardar con nombre", exact: true }).click();
   await page.getByRole("textbox", { name: "Nombre", exact: true }).fill("Experimento de prueba");
   await page.getByRole("textbox", { name: "Qué descubriste" }).fill("Una idea que quiero conservar");
   await page.getByRole("button", { name: "Guardar proyecto" }).click();
@@ -103,7 +116,7 @@ test("Pybot honors reduced motion and keeps dark themes", async ({ page }) => {
   await page.emulateMedia({ reducedMotion: "reduce" });
   await page.addInitScript(() => localStorage.setItem("pyquest-progress-v1", JSON.stringify({ version: 6, state: { palette: "night", theme: "dark" } })));
   await page.goto("/learn");
-  await expect(page.getByRole("heading", { name: "Un pequeño paso. Mucho futuro." })).toBeVisible();
+  await expect(page.getByRole("heading", { name: "Aprender" })).toBeVisible();
   expect(await page.locator(".pybot-float").first().evaluate((el) => getComputedStyle(el).animationName)).toBe("none");
   expect(await page.locator("html").getAttribute("data-palette")).toBe("night");
   expect(await page.locator("body").evaluate((el) => getComputedStyle(el).backgroundColor)).not.toBe("rgb(247, 248, 252)");

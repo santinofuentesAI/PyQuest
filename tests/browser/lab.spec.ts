@@ -9,6 +9,8 @@ test("nav shows the lab instead of the league", async ({ page }) => {
 test("lab runs NumPy, Pandas and Matplotlib", async ({ page }) => {
   await page.goto("/playground");
   await expect(page.getByRole("heading", { name: "Laboratorio" })).toBeVisible();
+  await page.getByRole("link", { name: "Construir", exact: true }).click();
+  await expect(page.getByRole("navigation", { name: "Navegación principal" })).toHaveCount(0);
   await page.getByRole("button", { name: "Ejecutar" }).click();
   const output = page.locator("pre").filter({ hasText: "Hola desde Pyodide" });
   await expect(output).toBeVisible({ timeout: 180_000 });

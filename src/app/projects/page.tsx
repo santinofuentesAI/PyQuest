@@ -59,7 +59,7 @@ export default function ProjectsPage() {
           <section key={section.id} className="mt-8">
             <div className="mb-3">
               <p className="text-xs font-bold tracking-widest uppercase" style={{ color: section.color }}>
-                Sección {section.index} · {section.title}
+                Sección {section.index + 1} · {section.title}
               </p>
               <p className="text-sm text-muted-foreground">
                 {sectionOpen

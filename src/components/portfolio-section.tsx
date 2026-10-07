@@ -118,7 +118,7 @@ export function PortfolioSection() {
   }
 
   return (
-    <section className="mt-6 rounded-2xl border bg-card p-4">
+    <section id="portfolio" className="mt-6 scroll-mt-20 rounded-2xl border bg-card p-4">
       <h2 className="flex items-center gap-2 font-bold">
         <span className="inline-flex size-8 items-center justify-center rounded-xl bg-primary/10 text-primary">
           <FolderKanban className="size-4" />
@@ -126,12 +126,12 @@ export function PortfolioSection() {
         Portafolio
       </h2>
       <p className="text-sm text-muted-foreground">
-        Encargos que aceptó el jefe y piezas que pegaste desde el laboratorio. Copia el código para tu CV o un repo.
+        Encargos que aceptó el jefe y experimentos que guardaste desde el laboratorio. Copia el código para tu CV o un repo.
       </p>
 
       {jobs.length === 0 && labs.length === 0 && !adding && (
         <p className="mt-3 rounded-xl border border-dashed px-3 py-4 text-sm text-muted-foreground">
-          Todavía no hay nada. Entrega un encargo en Proyectos o pega código del Laboratorio.
+          Todavía no hay nada. Entrega un encargo en Proyectos o guarda tu código desde el Laboratorio.
         </p>
       )}
 
