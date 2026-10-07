@@ -130,7 +130,7 @@ function shortLoadMessage(raw) {
 
 async function loadPackagesNow(names) {
   const seaborn = names.includes("seaborn") && !loadedPackages.has("seaborn");
-  const requested = seaborn ? [...names, "numpy", "pandas", "matplotlib", "micropip"] : names;
+  const requested = seaborn ? [...names, "numpy", "pandas", "matplotlib", "scipy", "micropip"] : names;
   const pending = [
     ...new Set(requested.filter((name) => typeof name === "string" && KNOWN.has(name) && !loadedPackages.has(name))),
   ];
@@ -161,7 +161,7 @@ async function loadPackagesNow(names) {
   if (seaborn) {
     post({ type: "status", phase: "warming", message: "Instalando Seaborn…" });
     // Pure Python wheel; its compiled dependencies were loaded from Pyodide above.
-    await pyodide.runPythonAsync('import micropip\nawait micropip.install("seaborn==0.13.2", deps=False)');
+    await pyodide.runPythonAsync('import micropip\nawait micropip.install("seaborn==0.13.2", deps=False)\nimport seaborn');
     loadedPackages.add("seaborn");
   }
 }
