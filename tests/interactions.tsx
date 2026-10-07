@@ -104,6 +104,7 @@ async function main() {
   const lesson: Lesson = { id: 'u2-l1', title: 'Test', description: '', xp: 20, exercises: [choice, { ...choice, id: 'second', prompt: 'Segunda pregunta' }] };
   const router = { bfcacheId: 'test', back() {}, forward() {}, refresh() {}, push() {}, replace() {}, prefetch: async () => {}, hmrRefresh() {} };
   render(<AppRouterContext.Provider value={router}><LessonPlayer lesson={lesson} /></AppRouterContext.Provider>);
+  await user.click(screen.getByRole('button', { name: 'Empezar clase' }));
   await user.click(screen.getByRole('radio', { name: 'Incorrecta' }));
   await user.click(screen.getByRole('button', { name: 'Comprobar' }));
   await screen.findByRole('button', { name: 'Corregir y reintentar' });

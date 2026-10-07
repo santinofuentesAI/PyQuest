@@ -25,7 +25,7 @@ import {
 } from "@/lib/job-projects";
 import { preloadPython, runPython } from "@/lib/python-runtime";
 import { useProgress } from "@/lib/progress-store";
-import { cn } from "@/lib/utils";
+import { PybotCoach } from "@/components/pybot";
 import "./cinematics.css";
 
 type Phase = "office" | "laptop" | "wipe" | "brief" | "work";
@@ -50,6 +50,7 @@ export function ProjectSession({
   const [phase, setPhase] = useState<Phase>(skipIntro || saved?.introSeen ? "work" : "office");
   const [code, setCode] = useState(saved?.draftCode || project.starterCode);
   const [out, setOut] = useState("");
+  const [images, setImages] = useState<string[]>([]);
   const [err, setErr] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
   const [hintText, setHintText] = useState<string | null>(null);
@@ -73,6 +74,12 @@ export function ProjectSession({
   useEffect(() => {
     preloadPython({ dataStack: true });
   }, []);
+
+  function updateCode(value: string) {
+    setCode(value);
+    // Persist immediately as well: navigating away must not lose the final edit.
+    progress.saveJobDraft(project.id, value);
+  }
 
   useEffect(() => {
     if (phase === "work" || phase === "brief") return;
@@ -135,8 +142,13 @@ export function ProjectSession({
         timeoutMs: 90000,
       });
       setOut(result.stdout);
+      setImages(result.images ?? []);
       if (!submit) {
         setErr(result.error ? humanPythonError(result.error) : null);
+        return;
+      }
+      if (result.timedOut) {
+        setErr("Python tardó demasiado. Revisa los bucles y vuelve a probar; tu entrega no se ha penalizado.");
         return;
       }
       const verdict = reviewDelivery(project, code, result);
@@ -172,6 +184,10 @@ export function ProjectSession({
       setMood("ok");
       setWarning(null);
       toast.success(`Entrega aceptada. Te pagan $${done.paid}.`);
+    } catch (error) {
+      const message = error instanceof Error ? error.message : "Python no pudo cargar. Vuelve a intentarlo.";
+      setErr(message);
+      toast.error("No pudimos comprobarlo. Tu entrega no se ha penalizado.");
     } finally {
       setBusy(false);
     }
@@ -220,9 +236,9 @@ export function ProjectSession({
   function retryThisJob() {
     progress.resetJobProject(project.id);
     setMood("ok");
-    setPhase("office");
-    setCode(project.starterCode);
+    setPhase("work");
     setOut("");
+    setImages([]);
     setErr(null);
     setWarning(null);
     setHintText(null);
@@ -376,7 +392,7 @@ export function ProjectSession({
                 </span>
                 <PythonStatus className="!text-zinc-400" />
               </div>
-              <CodeEditor value={code} onChange={setCode} height={340} forceDark />
+              <CodeEditor value={code} onChange={updateCode} height={340} forceDark />
             </div>
             <div className="mt-3 flex flex-wrap gap-2">
               <Button
@@ -436,6 +452,7 @@ export function ProjectSession({
             </p>
           </div>
           <div className="mt-4 space-y-3 lg:col-span-2 lg:mt-0">
+            <PybotCoach mood={busy ? "thinking" : completed ? "celebrate" : "encourage"} className="!border-white/10 !bg-[#182131] !text-zinc-100">{completed ? "¡Entrega aceptada! Ya está en tu portafolio." : "Ejecuta para observar el resultado. Cuando esté listo, entrega tu trabajo."}</PybotCoach>
             <div className="rounded-2xl border-2 border-amber-300 bg-amber-50 px-4 py-3 text-sm leading-relaxed text-amber-950">
               <p className="text-[11px] font-black tracking-wider text-amber-800 uppercase">Encargo</p>
               <p className="mt-1 font-medium">{briefText(project)}</p>
@@ -456,6 +473,10 @@ export function ProjectSession({
                 {err ? <span className="text-rose-300">{err}</span> : out || "(sin salida)"}
               </pre>
             )}
+            {images.map((image, index) => (
+              // eslint-disable-next-line @next/next/no-img-element
+              <img key={index} src={`data:image/png;base64,${image}`} alt="Gráfico de tu encargo" className="w-full rounded-2xl border border-white/10 bg-white" />
+            ))}
           </div>
         </div>
       </div>
@@ -465,13 +486,13 @@ export function ProjectSession({
           <div className="max-w-md rounded-3xl border border-amber-500/40 bg-[#1a1408] p-6 text-center shadow-2xl">
             <p className="text-xs font-bold tracking-[0.2em] text-amber-400 uppercase">El jefe</p>
             <p className="mt-3 font-heading text-2xl font-extrabold leading-snug text-amber-50">
-              Tu jefe notó algo raro, como que recibes ayudas… pero no puede comprobarlo.
+              Usaste las pistas disponibles. Antes de seguir, explica con tus palabras qué cambió en tu código.
             </p>
             <Button
               className="mt-6 h-11 rounded-2xl px-6 font-bold"
               onClick={() => setBossNotice(false)}
             >
-              Seguir igual
+              Seguir aprendiendo
             </Button>
           </div>
         </div>
@@ -480,9 +501,9 @@ export function ProjectSession({
       {mood === "angry" && (
         <div className="boss-angry-overlay fixed inset-0 z-50 flex items-center justify-center px-6">
           <div className="max-w-md rounded-3xl border border-rose-500/40 bg-black/70 p-6 text-center shadow-2xl">
-            <p className="text-xs font-bold tracking-[0.2em] text-rose-400 uppercase">El jefe se enoja</p>
+            <p className="text-xs font-bold tracking-[0.2em] text-rose-400 uppercase">Revisión de entrega</p>
             <p className="mt-3 font-heading text-2xl font-extrabold text-white">
-              El jefe se está enojando. Si ignoras esto otra vez, te saca de este encargo.
+              Todavía hay algo por revisar. Mira el mensaje, cambia una cosa y vuelve a ejecutar.
             </p>
             <Button
               className="mt-6 h-11 rounded-2xl bg-zinc-800 px-6 font-bold text-zinc-100 hover:bg-zinc-700"

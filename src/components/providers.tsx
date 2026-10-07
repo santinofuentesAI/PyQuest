@@ -1,6 +1,7 @@
 "use client";
 
 import { ThemeProvider } from "next-themes";
+import { MotionConfig } from "framer-motion";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { Toaster } from "@/components/ui/sonner";
 import { useEffect } from "react";
@@ -44,11 +45,11 @@ export function Providers({ children }: { children: React.ReactNode }) {
   }, []);
 
   return (
-    <PaletteShell>
+    <MotionConfig reducedMotion="user"><PaletteShell>
       <TooltipProvider delay={200}>
         {children}
         <Toaster position="top-center" />
       </TooltipProvider>
-    </PaletteShell>
+    </PaletteShell></MotionConfig>
   );
 }

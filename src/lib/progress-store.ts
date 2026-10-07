@@ -79,6 +79,7 @@ type ProgressState = UserProgress & {
   resetProgress: () => void;
   redeemCode: (raw: string) => { ok: boolean; message: string; openMap?: boolean };
   saveJobDraft: (projectId: string, code: string) => void;
+  saveLabDraft: (code: string) => void;
   useJobHint: (projectId: string) => {
     ok: boolean;
     hint: string | null;
@@ -367,6 +368,7 @@ export const useProgress = create<ProgressState>()(
           },
         });
       },
+      saveLabDraft: (labDraft) => set({ labDraft }),
       useJobHint: (projectId) => {
         const project = getJobProject(projectId);
         if (!project) return { ok: false, hint: null, charged: 0, reason: "missing" };
@@ -483,9 +485,8 @@ export const useProgress = create<ProgressState>()(
       resetJobProject: (projectId) => {
         const current = get().jobProjects ?? {};
         if (!(projectId in current)) return;
-        const next = { ...current };
-        delete next[projectId];
-        set({ jobProjects: next });
+        // Retrying clears warnings, not a previous payment or purchased hints.
+        set({ jobProjects: { ...current, [projectId]: { ...current[projectId], failCount: 0 } } });
       },
     }),
     {
@@ -514,6 +515,7 @@ export const useProgress = create<ProgressState>()(
           "resetProgress",
           "redeemCode",
           "saveJobDraft",
+          "saveLabDraft",
           "useJobHint",
           "completeJobProject",
           "recordJobFail",

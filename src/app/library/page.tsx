@@ -8,6 +8,7 @@ import { getUnit } from "@/lib/curriculum";
 import { buttonVariants } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { UnitIcon } from "@/components/unit-icon";
+import { PybotCoach } from "@/components/pybot";
 import { cn } from "@/lib/utils";
 import type { LibraryBlock } from "@/content/library";
 
@@ -82,6 +83,7 @@ export default function LibraryPage() {
           Probar en el laboratorio
         </Link>
       </section>
+      <PybotCoach className="mt-5" mood="thinking">Lee, cambia un dato y ejecuta. No memorices el ejemplo: descubre qué pasa cuando lo transformas.</PybotCoach>
 
       <label className="relative mt-6 block">
         <Search className="pointer-events-none absolute top-1/2 left-3 size-4 -translate-y-1/2 text-muted-foreground" />

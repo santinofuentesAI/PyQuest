@@ -14,6 +14,7 @@ import { useProgress } from "@/lib/progress-store";
 import { hasFullUnlock } from "@/lib/redeem-codes";
 import { buttonVariants } from "@/components/ui/button";
 import { cn, pageWrap } from "@/lib/utils";
+import { PybotCoach } from "@/components/pybot";
 
 export default function ProjectsPage() {
   const progress = useProgress();
@@ -34,6 +35,7 @@ export default function ProjectsPage() {
         abiertos para probar la oficina; a partir de NumPy se desbloquean al terminar las lecciones
         esenciales de esa sección. El salario es ficticio: si pides pista, se descuenta.
       </p>
+      <PybotCoach className="mt-5" mood="wave" title="De aprender a construir">Lee el encargo, prueba tu código y revisa sus resultados. Cada entrega aceptada pasa a tu portafolio.</PybotCoach>
 
       <div className="mt-4 flex items-center justify-between rounded-2xl border bg-card px-4 py-3">
         <div>
@@ -77,7 +79,7 @@ export default function ProjectsPage() {
                     {unlocked ? (
                       <Link
                         href={`/projects/${job.id}`}
-                        className="block rounded-2xl border bg-card p-4 hover:border-primary/40"
+                        className="quest-card block rounded-2xl p-4"
                       >
                         <div className="flex items-start justify-between gap-3">
                           <div>

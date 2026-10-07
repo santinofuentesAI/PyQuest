@@ -66,7 +66,7 @@ total = 0
     hintCostUsd: 3,
     officeLine: "Vas donde tu jefe y te dice…",
     laptopLine:
-      "Hay 12 tickets sin clasificar y el standup es en 20 minutos. Separa urgentes de normales y dime cuántos van a cada cubo.",
+      "Hay 5 tickets sin clasificar y el standup es en 20 minutos. Separa urgentes de normales y dime cuántos van a cada cubo.",
     moduleName: "Fundamentos absolutos",
     deliverable: "un clasificador de tickets que cuente urgentes y normales según palabras clave",
     summary: "Listas, condicionales y un contador por prioridad.",
@@ -118,7 +118,7 @@ anomalias = None  # array con las temperaturas anómalas
       { assert: "abs(float(media) - float(temps.mean())) < 1e-9", message: "media debe ser temps.mean()." },
       { assert: "abs(float(desv) - float(temps.std())) < 1e-9", message: "desv debe ser temps.std()." },
       { assert: "abs(float(umbral) - float(media + 2 * desv)) < 1e-9", message: "umbral = media + 2 * desv." },
-      { assert: "list(np.round(anomalias, 1)) == [12.4, 11.8]", message: "Las anomalías son 12.4 y 11.8." },
+      { assert: "np.array_equal(anomalias, temps[temps > temps.mean() + 2 * temps.std()])", message: "Filtra temps > umbral. Con estos datos, solo 12.4 supera media + 2 desviaciones." },
     ],
     hints: [
       "media = temps.mean() y desv = temps.std(). El umbral es media + 2 * desv.",
@@ -157,6 +157,7 @@ Z = None
         assert: "np.allclose(Z.std(axis=0), 1, atol=1e-8)",
         message: "La desviación de cada columna de Z debe ser ~1.",
       },
+      { assert: "np.allclose(Z, (X - X.mean(axis=0)) / X.std(axis=0))", message: "Cada valor de Z debe corresponder al z-score de su dato original." },
     ],
     hints: [
       "medias = X.mean(axis=0) y desvs = X.std(axis=0). Cuidado con el broadcasting.",
@@ -221,8 +222,8 @@ lift_pct = None  # ((media_b - media_control) / media_control) * 100
 `,
     tests: [
       {
-        assert: "abs(float(lift_pct) - 20.0) < 1e-6",
-        message: "lift_pct debe ser 20.0: B rinde un 20% más que el control.",
+        assert: "abs(float(lift_pct) - ((sum(campana_b)/len(campana_b) - sum(control)/len(control)) / (sum(control)/len(control)) * 100)) < 1e-6",
+        message: "Usa las medias: control = 21.6, B = 26. El lift es aproximadamente 20.37037%, sin redondear antes de calcular.",
       },
     ],
     capturePlots: true,
@@ -385,8 +386,8 @@ corr = None  # correlación Pearson entre minutos y churn (float)
     },
     tests: [
       {
-        assert: "float(corr) < -0.8",
-        message: "La correlación debe ser claramente negativa (menos uso, más churn).",
+        assert: "abs(float(corr) - float(np.corrcoef(df['minutos'], df['churn'])[0, 1])) < 1e-9",
+        message: "Calcula Pearson con las dos columnas; no basta con poner un número negativo.",
       },
     ],
     hints: [
@@ -428,6 +429,7 @@ accuracy = None
 `,
     tests: [
       { assert: "probs.shape == (4,)", message: "probs es un vector de 4." },
+      { assert: "np.allclose(probs, 1 / (1 + np.exp(-(X @ w))))", message: "Las probabilidades deben salir de sigmoid(X @ w)." },
       { assert: "list(preds.astype(int)) == [1, 0, 1, 0]", message: "Las predicciones deben coincidir con y." },
       { assert: "abs(float(accuracy) - 1.0) < 1e-9", message: "Con estos pesos el accuracy es 1.0." },
     ],
@@ -542,6 +544,7 @@ clases = None
     tests: [
       { assert: "probs.shape == (3, 3)", message: "probs es 3x3." },
       { assert: "np.allclose(probs.sum(axis=1), 1.0)", message: "Cada fila de probs debe sumar 1." },
+      { assert: "np.allclose(probs, np.exp(logits - logits.max(axis=1, keepdims=True)) / np.exp(logits - logits.max(axis=1, keepdims=True)).sum(axis=1, keepdims=True))", message: "Calcula softmax de los logits. Una matriz con unos en la diagonal no es la distribución pedida." },
       { assert: "list(clases.astype(int)) == [0, 1, 2]", message: "argmax por fila: 0, 1, 2." },
     ],
     hints: [
@@ -584,6 +587,7 @@ n_churn = None
 `,
     },
     tests: [
+      { assert: "list(preds.astype(int)) == list((df['minutos'] < 40).astype(int))", message: "Las predicciones deben usar minutos < 40 en cada fila." },
       { assert: "int(n_churn) == 4", message: "Hay 4 churn reales en el CSV." },
       { assert: "abs(float(accuracy) - 1.0) < 1e-9", message: "Con el umbral 40 aciertas las 8 filas." },
     ],

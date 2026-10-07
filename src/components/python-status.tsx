@@ -26,7 +26,7 @@ export function PythonStatus({ className }: { className?: string }) {
   }
   const spinning = status.state === "loading" || status.state === "warming";
   const label =
-    status.message ??
+    ("message" in status ? status.message : undefined) ??
     (status.state === "warming"
       ? "Instalando Matplotlib…"
       : status.state === "loading"

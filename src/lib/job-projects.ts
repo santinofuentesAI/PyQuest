@@ -77,10 +77,8 @@ export function looksIncomplete(code: string, starter: string): boolean {
   const compact = compactSource(code);
   if (!compact) return true;
   if (compact === compactSource(starter)) return true;
-  const noneNow = (code.match(/=\s*None/g) ?? []).length;
-  const noneStart = (starter.match(/=\s*None/g) ?? []).length;
-  if (noneStart > 0 && noneNow >= noneStart) return true;
-  if (/return \{\s*\}/.test(starter) && /return \{\s*\}/.test(code)) return true;
+  // Authored runtime checks judge values. Counting None/return {} in source
+  // rejects valid code that assigns later or has a legitimate empty fallback.
   return false;
 }
 
@@ -104,7 +102,7 @@ export function reviewDelivery(
     return {
       accepted: false,
       incomplete: true,
-      message: "El jefe: no hay nada que revisar en este archivo. Completa el encargo.",
+      message: "Todavía no hay resultados que revisar. Completa el encargo y vuelve a entregarlo.",
     };
   }
   return { accepted: true, incomplete: false, message: "" };
@@ -139,11 +137,11 @@ export function humanPythonError(error: string | null): string | null {
 export function friendlyFailMessage(error: string | null, incomplete: boolean): string {
   const detail = humanPythonError(error);
   if (incomplete && detail) {
-    return `El jefe: esto todavía parece a medias. ${detail}`;
+    return `Todavía falta una parte. ${detail}`;
   }
   if (incomplete) {
-    return "El jefe: me pasaste la plantilla. Quiero el trabajo hecho, no el archivo vacío.";
+    return "Este es el código inicial. Completa los cálculos antes de entregar.";
   }
-  if (detail) return `El jefe lo marcó: ${detail}`;
-  return "El jefe: la entrega no pasa la revisión. Revisa las variables que pedí en el briefing.";
+  if (detail) return `Revisa esto: ${detail}`;
+  return "La entrega todavía no cumple el encargo. Revisa las variables del briefing y vuelve a probar.";
 }

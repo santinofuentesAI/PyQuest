@@ -8,6 +8,7 @@ import { isUnitUnlocked, useProgress } from "@/lib/progress-store";
 import { hasFullUnlock } from "@/lib/redeem-codes";
 import { decayStrength } from "@/lib/gamification";
 import { Button } from "@/components/ui/button";
+import { Pybot, PybotCoach } from "@/components/pybot";
 import { cn } from "@/lib/utils";
 
 export default function UnitPage() {
@@ -36,11 +37,12 @@ export default function UnitPage() {
 
   return (
     <div className="mx-auto max-w-lg px-4 py-8 pb-24">
-      <p className="text-xs font-bold tracking-widest uppercase" style={{ color: section?.color }}>
+      <div className="quest-hero rounded-3xl border p-5"><div className="flex items-center gap-4"><div className="min-w-0 flex-1"><p className="text-xs font-bold tracking-widest uppercase" style={{ color: section?.color }}>
         {section?.title}
       </p>
       <h1 className="font-heading mt-1 text-3xl font-extrabold">{unit.title}</h1>
       <p className="mt-2 text-muted-foreground">{unit.description}</p>
+      </div><Pybot mood={complete ? "celebrate" : "wave"} size="md" /></div></div>
       <p className="mt-3 rounded-2xl border bg-card/80 px-3 py-2 text-sm text-muted-foreground">
         Cinco niveles por tema. El primero abre el mapa. Afianzar, practicar y demostrar fijan la idea.
         Profundiza la usa en un caso un poco más real. Dominar el tema sigue pidiendo la práctica y los encargos.
@@ -51,7 +53,7 @@ export default function UnitPage() {
         </p>
       )}
 
-      <ol className="mt-6 space-y-2">
+      <ol className="mt-6 space-y-3">
         {unit.lessons.map((lesson, i) => {
           const done = up?.completedLessonIds.includes(lesson.id);
           const open = unlocked && (hasFullUnlock(progress) || done || lesson.id === nextLesson?.id || i === 0);
@@ -61,8 +63,9 @@ export default function UnitPage() {
                 <Link
                   href={`/lesson/${lesson.id}`}
                   className={cn(
-                    "flex items-start gap-3 rounded-2xl border bg-card p-4 hover:border-primary/40",
-                    done && "border-emerald-300/60"
+                    "quest-card flex items-start gap-3 rounded-2xl p-4",
+                    done && "border-emerald-300/60",
+                    !done && lesson.id === nextLesson?.id && "quest-current border-primary/50"
                   )}
                 >
                   <span
@@ -102,6 +105,7 @@ export default function UnitPage() {
           );
         })}
       </ol>
+      <PybotCoach className="mt-5">Primero entiende la idea. Después afianza, practica, demuestra y profundiza. Cada nivel te da una forma nueva de usarla.</PybotCoach>
 
       <div className="mt-6 grid gap-2">
         {nextLesson && unlocked && (

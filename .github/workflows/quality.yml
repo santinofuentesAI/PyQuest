@@ -23,6 +23,7 @@ jobs:
       - run: npm run curriculum
       - run: git diff --exit-code -- src/content/curriculum.json
       - run: python scripts/audit_curriculum.py --runtime
+      - run: npm run test:jobs
       - run: npm run check
       - run: npx playwright install --with-deps chromium
       - run: npm run test:browser

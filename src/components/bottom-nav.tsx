@@ -20,8 +20,8 @@ export function BottomNav() {
   if (isImmersivePath(pathname)) return null;
 
   return (
-    <nav className="sticky bottom-0 z-40 border-t border-border/70 bg-background/95 backdrop-blur-md pb-[env(safe-area-inset-bottom)]">
-      <ul className="mx-auto grid max-w-3xl grid-cols-6">
+    <nav aria-label="Navegación principal" className="sticky bottom-0 z-40 border-t border-border/70 bg-card/95 backdrop-blur-md pb-[env(safe-area-inset-bottom)]">
+      <ul className="mx-auto grid max-w-3xl grid-cols-6 gap-0.5 px-1 py-1.5">
         {items.map((item) => {
           const active = pathname === item.href || pathname.startsWith(item.href + "/");
           const Icon = item.icon;
@@ -29,9 +29,10 @@ export function BottomNav() {
             <li key={item.href}>
               <Link
                 href={item.href}
+                aria-current={active ? "page" : undefined}
                 className={cn(
-                  "flex flex-col items-center gap-0.5 py-2.5 text-[11px] font-semibold",
-                  active ? "text-primary" : "text-muted-foreground hover:text-foreground"
+                  "quest-nav-link flex min-h-14 flex-col items-center justify-center gap-1 rounded-2xl px-0.5 py-2 text-[11px] font-semibold transition",
+                  active ? "bg-primary/10 text-primary" : "text-muted-foreground hover:bg-muted hover:text-foreground"
                 )}
               >
                 <Icon className={cn("size-5 shrink-0", active && "fill-primary/15")} />

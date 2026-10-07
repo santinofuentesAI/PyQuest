@@ -2,7 +2,8 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Flame, Gem, Heart, Star, Zap } from "lucide-react";
+import { Flame, Gem, Heart, Star } from "lucide-react";
+import { Pybot } from "@/components/pybot";
 import { useProgress } from "@/lib/progress-store";
 import { HEART_REGEN_MS, MAX_HEARTS, heartSlotLabel, levelFromXp, msUntilNextHeart } from "@/lib/gamification";
 import { isImmersivePath } from "@/lib/chrome";
@@ -35,10 +36,8 @@ export function TopBar() {
     <header className="sticky top-0 z-40 border-b border-border/70 bg-background/90 backdrop-blur-md">
       <div className="mx-auto flex h-14 max-w-3xl items-center justify-between gap-2 px-3">
         <Link href="/learn" className="flex items-center gap-2 font-heading text-base font-bold tracking-tight">
-          <span className="flex size-8 items-center justify-center rounded-xl bg-primary text-primary-foreground shadow-sm">
-            <Zap className="size-4" />
-          </span>
-          <span className="hidden sm:inline">PyQuest</span>
+          <Pybot size="xs" />
+          <span>PyQuest<span className="hidden text-primary sm:inline">.</span></span>
         </Link>
         <div className="flex items-center gap-1 sm:gap-2">
           <Meter
