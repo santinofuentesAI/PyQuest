@@ -10,21 +10,21 @@ import { Button } from "@/components/ui/button";
 import { isImmersivePath } from "@/lib/chrome";
 
 const GUIDES: Record<string, { label: string; tips: string[]; href: string; action: string }> = {
-  "/learn": { label: "Un paso a la vez", tips: ["Empieza por la misión sugerida. Cada tema tiene cinco niveles; el primero abre la siguiente unidad.", "Equivocarte también enseña. Una pregunta consume como máximo un corazón y puedes corregirla.", "¿Una idea no te queda clara? En la librería puedes cambiar ejemplos y practicar sin corazones."], href: "/library", action: "Explorar la librería" },
+  "/learn": { label: "Un paso a la vez", tips: ["Pulsa Empezar clase o Retomar clase, arriba a la derecha. Cada tema tiene cinco niveles; el primero abre la siguiente unidad.", "Equivocarte también enseña. Una pregunta consume como máximo un corazón y puedes corregirla.", "¿Una idea no te queda clara? En la librería puedes cambiar ejemplos y practicar sin corazones."], href: "/library", action: "Explorar la librería" },
   "/library": { label: "Aprende experimentando", tips: ["Lee un ejemplo, predice su resultado y cambia un dato antes de ejecutarlo.", "En el taller de cada tema puedes pasar de ejemplos resueltos a retos. Todos los niveles están disponibles.", "Si el código no imprime, añade print() para observar una variable. Mira qué cambió y por qué."], href: "/playground", action: "Abrir el laboratorio" },
   "/projects": { label: "Tu primera entrega", tips: ["Los dos encargos de Fundamentos están abiertos. Ejecuta antes de entregar para revisar tu código.", "Tu salario es ficticio. Las pistas lo reducen, pero pueden ayudarte a entender una idea nueva.", "Una entrega aceptada se guarda en tu portafolio. Podrás ver el código y sus resultados en Perfil."], href: "/profile", action: "Ver mi portafolio" },
   "/playground": { label: "Tu espacio para probar", tips: ["Cambia los datos del ejemplo, pulsa Ejecutar y mira cómo cambia el gráfico.", "Guarda tu código desde el laboratorio en el portafolio. El progreso vive en este navegador.", "La primera ejecución descarga Python y sus paquetes. Después se reutilizan para tus experimentos."], href: "/profile", action: "Ver mi portafolio" },
   "/practice": { label: "Practica a tu ritmo", tips: ["Aquí puedes corregir sin gastar corazones. Elige los temas que quieras reforzar.", "Alterna preguntas y código: reconocer una idea y escribirla son habilidades distintas.", "Una sesión corta y concentrada es un buen siguiente paso. Tú eliges cuántos retos resolver."], href: "/learn", action: "Volver a mi ruta" },
 };
 
-export function PybotHelp() {
+export function PybotHelp({ inline = false }: { inline?: boolean }) {
   const path = usePathname();
   const [tip, setTip] = useState(0);
-  if (isImmersivePath(path)) return null;
+  if (isImmersivePath(path) || (path === "/playground" && !inline)) return null;
   const guide = Object.entries(GUIDES).find(([key]) => path.startsWith(key))?.[1] ?? GUIDES["/learn"];
   return <Dialog>
-    <DialogTrigger aria-label="Hablar con Pybot" className="pybot-help fixed right-4 bottom-24 z-40 flex size-14 items-center justify-center rounded-2xl border-2 border-card bg-card shadow-lg transition hover:-translate-y-1 focus-visible:outline-2 focus-visible:outline-primary">
-      <Pybot size="sm" mood="wave" />
+    <DialogTrigger aria-label="Hablar con Pybot" className={inline ? "flex size-11 items-center justify-center rounded-xl hover:bg-muted focus-visible:outline-2 focus-visible:outline-primary" : "pybot-help fixed right-4 bottom-24 z-40 flex size-14 items-center justify-center rounded-2xl border-2 border-card bg-card shadow-lg transition hover:-translate-y-1 focus-visible:outline-2 focus-visible:outline-primary"}>
+      <Pybot size={inline ? "xs" : "sm"} mood="wave" />
     </DialogTrigger>
     <DialogContent className="max-h-[85dvh] overflow-y-auto rounded-3xl p-6 sm:max-w-md">
       <Pybot mood="wave" size="lg" className="mx-auto" />

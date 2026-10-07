@@ -1,12 +1,11 @@
 "use client";
 
-import { useState } from "react";
+import { useRef, useState } from "react";
 import Link from "next/link";
-import { ArrowRight, BookOpen, Briefcase, Check, CheckCheck, Flame, Lock, Play, RotateCcw, Sparkles, Star, Target } from "lucide-react";
-import { SECTIONS, UNITS, getSectionForUnit } from "@/lib/curriculum";
+import { ArrowRight, BookOpen, Briefcase, Check, ChevronDown, Compass, Lock, Play, RotateCcw } from "lucide-react";
+import { SECTIONS, getSectionForUnit } from "@/lib/curriculum";
 import { continueLessonId, continueUnitId, isUnitUnlocked, useProgress } from "@/lib/progress-store";
 import { decayStrength } from "@/lib/gamification";
-import { lessonsToday } from "@/lib/learning-experience";
 import { cn } from "@/lib/utils";
 import { Pybot, PybotCoach } from "@/components/pybot";
 import { UnitIcon } from "@/components/unit-icon";
@@ -14,43 +13,52 @@ import { buttonVariants } from "@/components/ui/button";
 
 export function SkillTree({ highlight }: { highlight?: string }) {
   const progress = useProgress();
+  const [routeOpen, setRouteOpen] = useState(false);
+  const routeToggle = useRef<HTMLButtonElement>(null);
   const [chosenSection, setChosenSection] = useState<string | null>(null);
   const nextLesson = continueLessonId(progress);
   const nextUnit = continueUnitId(progress);
-  const unit = UNITS.find((u) => u.id === nextUnit);
   const currentSection = getSectionForUnit(highlight ?? nextUnit ?? "u1") ?? SECTIONS[0];
   const section = SECTIONS.find((s) => s.id === chosenSection) ?? currentSection;
   if (!progress.hydrated) return <div role="status" className="mx-auto max-w-3xl px-5 py-16"><Pybot size="lg" mood="thinking" className="mx-auto" /><p className="text-center text-sm text-muted-foreground">Pybot está preparando tu ruta…</p></div>;
-  const today = lessonsToday(progress.completedLessons);
   const completed = Object.keys(progress.completedLessons).length;
   const sectionDone = section.units.filter((u) => u.lessons.every((l) => progress.units[u.id]?.completedLessonIds.includes(l.id))).length;
 
-  return <div className="mx-auto w-full max-w-5xl px-4 pt-6 pb-28 sm:px-6">
-    <div className="mb-5 flex items-center justify-between gap-4"><div><p className="quest-kicker">Tu espacio de aprendizaje</p><h1 className="mt-1 text-2xl font-extrabold tracking-tight sm:text-3xl">Un pequeño paso. Mucho futuro.</h1></div><span className="hidden rounded-full border bg-card px-3 py-2 text-xs font-bold sm:inline-flex"><Sparkles className="mr-1.5 size-4 text-primary" />Python · Datos · IA</span></div>
-    <section className="quest-hero relative overflow-hidden rounded-[2rem] border p-5 sm:p-8" aria-label="Tu próxima misión">
-      <div className="relative flex items-center gap-3 sm:gap-8">
-        <div className="min-w-0 flex-1">
-          <span className="inline-flex items-center gap-1.5 rounded-full bg-card/80 px-3 py-1.5 text-[10px] font-extrabold tracking-wider text-primary uppercase"><span className="size-1.5 rounded-full bg-emerald-500" />Tu siguiente misión</span>
-          <h2 className="mt-4 max-w-lg text-2xl font-extrabold leading-tight tracking-tight sm:text-4xl">{unit ? unit.title : "Tu camino sigue creciendo."}</h2>
-          <p className="mt-3 max-w-md text-sm leading-relaxed text-muted-foreground">{unit ? unit.description : "Has recorrido todas las lecciones. Refuerza lo aprendido con una práctica o un encargo."}</p>
-        </div>
-        <div className="hidden w-28 shrink-0 self-start pt-5 min-[380px]:block sm:w-48 sm:self-center sm:pt-0"><Pybot size="xl" mood="wave" className="!h-auto !w-full" /><p className="text-center text-[10px] font-bold tracking-[.18em] text-muted-foreground uppercase">Pybot está contigo</p></div>
+  function closeRoute() {
+    setRouteOpen(false);
+    routeToggle.current?.focus();
+  }
+
+  return <div className="mx-auto w-full max-w-5xl px-4 pt-4 pb-28 sm:px-6 sm:pt-6">
+    <div className="mb-4 flex items-center justify-between gap-3">
+      <div className="min-w-0">
+        <h1 className="text-2xl font-extrabold tracking-tight sm:text-3xl">Aprender</h1>
+        <p className="mt-1 text-xs text-muted-foreground">Python · Datos · IA</p>
       </div>
-      <Link href={nextLesson ? "/lesson/" + nextLesson : "/practice"} className={cn(buttonVariants(), "mt-5 h-12 w-full rounded-2xl px-5 font-bold sm:w-auto sm:px-7")}><Play className="size-4 fill-current" />{completed ? "Continuar mi ruta" : "Empezar mi primera clase"}<ArrowRight className="size-4" /></Link>
-      <div className="mt-6 flex flex-wrap gap-3 border-t border-primary/10 pt-4 text-xs font-semibold text-muted-foreground"><span className="flex items-center gap-1.5"><CheckCheck className="size-4 text-emerald-600" />Aprende haciendo</span><span className="flex items-center gap-1.5"><Target className="size-4 text-primary" />Una idea por reto</span><span className="flex items-center gap-1.5"><Star className="size-4 text-amber-500" />{completed} lecciones completadas</span></div>
-    </section>
-    <div className="mt-5 grid gap-4 sm:grid-cols-[1.2fr_1fr]">
-      <section className="quest-card rounded-2xl p-4" aria-label="Objetivo diario">
-        <div className="flex items-center justify-between"><p className="flex items-center gap-2 text-sm font-bold"><Target className="size-4 text-primary" />Tu objetivo de hoy</p><span className="text-xs font-bold text-muted-foreground">{Math.min(today, 3)}/3 clases</span></div>
-        <div className="mt-3 flex gap-2">{[0, 1, 2].map((n) => <span key={n} className={cn("flex h-8 flex-1 items-center justify-center rounded-xl transition-colors", today > n ? "bg-emerald-500/15 text-emerald-600 dark:text-emerald-300" : "bg-muted text-muted-foreground")}><Star className={cn("size-4", today > n && "fill-current")} /></span>)}</div>
-        <p className="mt-2 text-xs text-muted-foreground">{today >= 3 ? "¡Objetivo alcanzado! Tú decides si sigues explorando." : "Tres clases es una sugerencia. Tu ritmo lo eliges tú."}</p>
-      </section>
-      <section className="quest-card flex items-center gap-4 rounded-2xl p-4"><span className="flex size-14 shrink-0 items-center justify-center rounded-2xl bg-orange-500/10"><Flame className="size-7 text-orange-500" /></span><div><p className="text-xl font-extrabold">{progress.streak} {progress.streak === 1 ? "día" : "días"} de racha</p><p className="mt-1 text-xs leading-relaxed text-muted-foreground">{progress.streak ? "Cada regreso refuerza lo que sabes." : "Completa una clase para empezar tu racha."}</p></div></section>
+      <div className="flex shrink-0 items-center gap-1 sm:gap-2">
+        <Pybot size="xs" mood="wave" className="sm:!size-12" />
+        <Link href={nextLesson ? "/lesson/" + nextLesson : "/practice"} className={cn(buttonVariants({ size: "sm" }), "h-11 rounded-xl px-3 text-xs font-bold sm:px-4 sm:text-sm")}>
+          <Play className="size-3.5 fill-current" />{nextLesson ? completed ? "Retomar clase" : "Empezar clase" : "Repasar"}
+        </Link>
+      </div>
     </div>
-    <div className="mt-8 flex items-end justify-between"><div><p className="quest-kicker">Explora tu ruta</p><h2 className="mt-1 text-xl font-extrabold">De cero a tus propios proyectos</h2></div><span className="hidden text-xs text-muted-foreground sm:inline">53 temas · 5 niveles por tema</span></div>
-    <div className="mt-4 flex gap-2 overflow-x-auto pb-3" aria-label="Secciones del curso">{SECTIONS.map((s) => <button key={s.id} type="button" aria-pressed={section.id === s.id} onClick={() => setChosenSection(s.id)} className={cn("min-h-11 shrink-0 rounded-xl border px-4 text-xs font-bold transition", section.id === s.id ? "border-primary bg-primary text-primary-foreground shadow-sm" : "bg-card text-muted-foreground hover:border-primary/40")}>{s.index + 1}. {s.title}</button>)}</div>
-    <section key={section.id} className="quest-enter mt-3" aria-labelledby="route-heading">
-      <div className="mb-6 flex items-center justify-between gap-3 rounded-2xl border bg-card p-4"><div className="min-w-0"><p className="quest-kicker">Sección {section.index + 1}</p><h3 id="route-heading" className="mt-1 text-lg font-extrabold">{section.title}</h3><p className="mt-1 text-xs text-muted-foreground">{section.subtitle}</p></div><div className="flex size-14 shrink-0 items-center justify-center rounded-full border-4 border-primary/15 text-sm font-extrabold text-primary">{sectionDone}/{section.units.length}</div></div>
+    <button ref={routeToggle} type="button" aria-expanded={routeOpen} aria-controls="course-sections" onClick={() => setRouteOpen((open) => !open)} className="quest-card mb-3 flex min-h-12 w-full items-center gap-3 rounded-2xl px-4 py-3 text-left">
+      <Compass className="size-5 shrink-0 text-primary" />
+      <span className="flex-1 text-sm font-bold">Explora tu ruta<span className="ml-2 hidden text-xs font-normal text-muted-foreground sm:inline">{SECTIONS.length} secciones · 53 temas</span></span>
+      <ChevronDown className={cn("size-4 text-primary transition-transform motion-reduce:transition-none", routeOpen && "rotate-180")} />
+    </button>
+    <div id="course-sections" hidden={!routeOpen} onKeyDown={(event) => { if (event.key === "Escape") { event.preventDefault(); closeRoute(); } }}>
+      <div className="quest-enter mb-4 rounded-2xl border bg-card p-3">
+        <p className="mb-3 px-1 text-xs text-muted-foreground">Elige una sección para ver sus temas. Tu progreso sigue guardado.</p>
+        <div className="grid grid-cols-1 gap-2 sm:grid-cols-2 lg:grid-cols-4" aria-label="Secciones del curso">
+          {SECTIONS.map((s) => <button key={s.id} type="button" aria-label={`${s.index + 1}. ${s.title}`} aria-pressed={section.id === s.id} onClick={() => { setChosenSection(s.id); closeRoute(); }} className={cn("flex min-h-12 items-center gap-2 rounded-xl border px-3 py-2 text-left text-xs font-bold transition", section.id === s.id ? "border-primary bg-primary text-primary-foreground shadow-sm" : "bg-card text-muted-foreground hover:border-primary/40")}>
+            <span className="flex size-6 shrink-0 items-center justify-center rounded-lg bg-current/10">{s.index + 1}.</span>{s.title}
+          </button>)}
+        </div>
+      </div>
+    </div>
+    <section key={section.id} className="quest-enter" aria-labelledby="route-heading">
+      <div className="mb-4 flex items-center justify-between gap-3 rounded-2xl border bg-card p-4"><div className="min-w-0"><p className="quest-kicker">Sección {section.index + 1}</p><h3 id="route-heading" className="mt-1 text-lg font-extrabold">{section.title}</h3><p className="mt-1 text-xs text-muted-foreground">{section.subtitle}</p></div><div className="flex size-11 shrink-0 items-center justify-center rounded-full border-[3px] border-primary/15 text-xs font-extrabold text-primary">{sectionDone}/{section.units.length}</div></div>
       <ol className="relative grid gap-4 before:absolute before:top-6 before:bottom-6 before:left-6 before:w-0.5 before:bg-border sm:grid-cols-2 sm:before:hidden">
         {section.units.map((u, index) => {
           const open = isUnitUnlocked(u.id, progress);
