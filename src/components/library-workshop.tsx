@@ -69,7 +69,7 @@ export function LibraryWorkshop({ unit }: { unit: Unit }) {
   return <section className="mt-8 min-w-0 rounded-3xl border bg-card p-4 sm:p-6">
     <p className="text-xs font-bold uppercase tracking-widest text-primary">Aprende haciendo</p>
     <h2 className="mt-1 text-2xl font-extrabold">Tu taller de {unit.title}</h2>
-    <p className="mt-2 text-sm text-muted-foreground">{examples.length} ejemplos ejecutables · {exercises.length} ejercicios de los cuatro niveles.</p>
+    <p className="mt-2 text-sm text-muted-foreground">{examples.length} ejemplos ejecutables · {exercises.length} ejercicios de los cinco niveles.</p>
     <div className="my-5 flex flex-wrap gap-2" aria-label="Modo del taller">
       <button type="button" aria-pressed={mode === "examples"} onClick={() => setMode("examples")} className={cn("min-h-11 rounded-xl border px-4 text-sm font-bold", mode === "examples" && "border-primary bg-primary/10 text-primary")}>Ejemplos resueltos</button>
       <button type="button" aria-pressed={mode === "practice"} onClick={() => setMode("practice")} className={cn("min-h-11 rounded-xl border px-4 text-sm font-bold", mode === "practice" && "border-primary bg-primary/10 text-primary")}>Resolver ejercicios</button>

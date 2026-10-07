@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Briefcase, Copy, FlaskConical, FolderKanban, Plus, Trash2 } from "lucide-react";
+import { Briefcase, Copy, Download, FlaskConical, FolderKanban, Plus, Trash2 } from "lucide-react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -15,6 +15,15 @@ async function copyText(text: string) {
   } catch {
     toast.error("No se pudo copiar");
   }
+}
+
+function downloadCode(item: PortfolioItem) {
+  const url = URL.createObjectURL(new Blob([item.code], { type: "text/x-python;charset=utf-8" }));
+  const link = document.createElement("a");
+  link.href = url;
+  link.download = (item.title.normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/[^a-zA-Z0-9]+/g, "_").slice(0, 80) || "mi_proyecto") + ".py";
+  link.click();
+  window.setTimeout(() => URL.revokeObjectURL(url), 1000);
 }
 
 function Piece({
@@ -36,7 +45,7 @@ function Piece({
           <p className="font-heading font-bold leading-tight">{item.title}</p>
           <p className="mt-0.5 text-sm text-muted-foreground">{item.description}</p>
         </div>
-        <div className="flex shrink-0 gap-1">
+        <div className="flex shrink-0 flex-wrap gap-1">
           <Button
             type="button"
             size="sm"
@@ -47,6 +56,7 @@ function Piece({
             <Copy className="size-3.5" />
             Copiar
           </Button>
+          <Button type="button" size="icon-sm" variant="outline" className="size-8 rounded-lg" onClick={() => downloadCode(item)} aria-label={`Descargar ${item.title} como Python`}><Download className="size-3.5" /></Button>
           {onRemove ? (
             <Button type="button" size="icon-sm" variant="ghost" onClick={onRemove} aria-label="Quitar">
               <Trash2 className="size-3.5" />

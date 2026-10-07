@@ -13,6 +13,7 @@ import { PortfolioSection } from "@/components/portfolio-section";
 import { toast } from "sonner";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
+import { PybotCoach } from "@/components/pybot";
 
 export default function ProfilePage() {
   const p = useProgress();
@@ -27,6 +28,7 @@ export default function ProfilePage() {
       <p className="text-muted-foreground">
         Nivel {lvl.level} · {p.xp} XP · Oficina ${p.jobUsd ?? 0}
       </p>
+      <PybotCoach className="mt-5" mood="celebrate" title="Mira lo que has construido">Tu aprendizaje se convierte en proyectos. Aquí puedes revisar tus entregas y darle tu estilo a la app.</PybotCoach>
 
       <section className="mt-8 rounded-2xl border bg-card p-4">
         <h2 className="font-bold">Códigos</h2>

@@ -13,6 +13,7 @@
     "curriculum": "python3 scripts/generate_curriculum.py",
     "test": "node --import tsx scripts/test-ui.mjs && node --import tsx tests/runtime.ts && node --import tsx tests/interactions.tsx",
     "audit:curriculum": "python3 scripts/audit_curriculum.py",
+    "test:jobs": "node --import tsx tests/jobs.ts",
     "check": "npm run audit:curriculum && npm test && npm run lint && next typegen && tsc --noEmit && next build",
     "test:browser": "playwright test"
   },

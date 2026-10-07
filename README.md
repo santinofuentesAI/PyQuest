@@ -2,8 +2,12 @@
 
 Plataforma web de aprendizaje gamificado de **Python para análisis de datos e IA**. Lecciones de 5–10 minutos, corazones, XP, rachas, ligas, árbol de habilidades y un laboratorio que ejecuta Python **dentro del navegador** (Pyodide / WebAssembly). No hace falta instalar Anaconda para aprender.
 
-## Qué incluye este slice
+## Qué incluye
 
+- **Pybot**, mascota animada con consejos según la pantalla, aperturas de clase, ayuda al corregir y celebraciones. Respeta movimiento reducido.
+- Mapa con misión sugerida, objetivo diario orientativo, secciones navegables y progreso visible por nivel.
+- Laboratorio con borrador automático, guardado al portafolio y descarga de código Python.
+- 16 encargos con entregas verificadas, gráficos y salario ficticio; reiniciar conserva el código y no duplica recompensas.
 - Motor de ejercicios: opción múltiple, huecos con banco de palabras, código, reordenar, detectar error, predecir salida multilínea, datos reales (CSV), emparejar, construir expresiones por piezas y seguir la ejecución. En **Aprender** se conserva el orden pedagógico y se mezclan las opciones; los repasos sí mezclan ejercicios.
 - **Librería**: 53 guías, ejemplos ejecutables, razonamiento paso a paso y práctica libre de los cinco niveles.
 - Runtime Python en un **Web Worker** (timeout 8 s, `stdout`/`stderr`, figuras Matplotlib a PNG).
@@ -166,6 +170,7 @@ Tablas SQLAlchemy: `users`, `lesson_completions`, `unit_progress`, `user_badges`
 npm run curriculum
 npm run check
 python3 scripts/audit_curriculum.py --runtime
+npm run test:jobs
 ```
 
 La auditoría estructural revisa IDs, huecos, opciones, emparejamientos, piezas y
@@ -187,8 +192,13 @@ npm run test:browser
 
 La suite abre la biblioteca en 390×844, 1280×800 y 1440×900, verifica inserción
 por cursor y piezas, comprueba desbordamiento horizontal y guarda capturas.
-También ejecuta los 330 programas de referencia en el Worker real de Pyodide.
+También ejecuta los 437 programas de referencia en el Worker real de Pyodide.
 Requiere acceso a jsDelivr y PyPI para los paquetes WASM. GitHub Actions ejecuta
 este ciclo en cada pull request y en cambios a main. Un fallo deja trazas y
 capturas en el artefacto browser-review. Una prueba pendiente no equivale a una
 revisión visual aprobada.
+
+La suite de Pybot revisa 320, 390, 768 y 1440 px, una clase completa con error y
+corrección, recompensas reales, persistencia del laboratorio, descarga del portafolio
+y modo Noche con movimiento reducido. `test:jobs` comprueba los 16 programas
+de entrega y rechaza una normalización softmax incorrecta y recompensas duplicadas.

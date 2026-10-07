@@ -6,6 +6,7 @@ import { Code2, Dumbbell, ListChecks, RotateCcw, Sparkles, Zap } from "lucide-re
 import { LessonPlayer } from "@/components/lesson-player";
 import { Button } from "@/components/ui/button";
 import { UnitIcon } from "@/components/unit-icon";
+import { Pybot, PybotCoach } from "@/components/pybot";
 import { useProgress } from "@/lib/progress-store";
 import {
   buildPracticeLesson,
@@ -103,9 +104,7 @@ export default function PracticePage() {
   if (units.length === 0) {
     return (
       <div className="mx-auto max-w-md px-6 py-16 pb-24 text-center">
-        <span className="mx-auto flex size-16 items-center justify-center rounded-3xl bg-emerald-500 text-white shadow-md">
-          <Dumbbell className="size-8" />
-        </span>
+        <Pybot size="lg" mood="encourage" className="mx-auto" />
         <h1 className="font-heading mt-4 text-3xl font-extrabold">Práctica</h1>
         <p className="mt-3 text-muted-foreground">
           Completa una lección (o el test de nivel) para desbloquear repasos a la carta: sin corazones, eligiendo
@@ -148,6 +147,7 @@ export default function PracticePage() {
           )}
         </div>
       </section>
+      <PybotCoach className="mt-5">Una ronda corta puede ayudarte a fijar una idea. Elige tus temas y combina código con preguntas.</PybotCoach>
 
       <div className="mt-5 grid gap-2 sm:grid-cols-2">
         <Button

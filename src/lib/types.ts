@@ -200,6 +200,7 @@ export type UserProgress = {
   jobUsd: number;
   jobProjects: Record<string, JobProjectProgress>;
   portfolio: PortfolioItem[];
+  labDraft?: string;
 };
 
 export type PythonRunResult = {

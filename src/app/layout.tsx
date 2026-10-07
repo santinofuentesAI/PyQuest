@@ -5,6 +5,8 @@ import "./globals.css";
 import { Providers } from "@/components/providers";
 import { TopBar } from "@/components/top-bar";
 import { BottomNav } from "@/components/bottom-nav";
+import { AppStage } from "@/components/app-stage";
+import { PybotHelp } from "@/components/pybot-help";
 
 const sans = Plus_Jakarta_Sans({
   variable: "--font-jakarta",
@@ -48,7 +50,8 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         </Script>
         <Providers>
           <TopBar />
-          <main className="min-h-0 flex-1">{children}</main>
+          <main id="main-content" className="min-h-0 flex-1"><AppStage>{children}</AppStage></main>
+          <PybotHelp />
           <BottomNav />
         </Providers>
       </body>

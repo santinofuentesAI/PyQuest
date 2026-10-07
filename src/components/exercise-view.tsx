@@ -63,12 +63,22 @@ function ChoiceForm({ exercise, onSubmit }: { exercise: Exercise; onSubmit: (a: 
       }}
     >
       <div className="grid gap-2" role="radiogroup" aria-label="Opciones">
-        {choices.map((c) => (
+        {choices.map((c, index) => (
           <button
             key={c.id}
             type="button"
             role="radio"
             aria-checked={id === c.id}
+            tabIndex={id ? (id === c.id ? 0 : -1) : index === 0 ? 0 : -1}
+            onKeyDown={(e) => {
+              if (!["ArrowDown", "ArrowUp", "ArrowLeft", "ArrowRight"].includes(e.key)) return;
+              e.preventDefault();
+              const direction = e.key === "ArrowDown" || e.key === "ArrowRight" ? 1 : -1;
+              const next = (index + direction + choices.length) % choices.length;
+              setId(choices[next].id);
+              const buttons = e.currentTarget.parentElement?.querySelectorAll<HTMLButtonElement>('[role="radio"]');
+              buttons?.[next]?.focus();
+            }}
             onClick={() => setId(c.id)}
             className={cn(
               "rounded-2xl border-2 px-4 py-3 text-left text-[15px] font-medium transition",
@@ -295,13 +305,14 @@ export function Hint({ text }: { text?: string }) {
     <div>
       <button
         type="button"
+        aria-expanded={open}
         onClick={() => setOpen(!open)}
         className="inline-flex items-center gap-1 text-sm font-semibold text-amber-700 dark:text-amber-300"
       >
         <Lightbulb className="size-4" />
         {open ? "Ocultar pista" : "Pista"}
       </button>
-      {open && <p className="mt-1 rounded-xl bg-amber-50 p-3 text-sm text-amber-950 dark:bg-amber-950/40 dark:text-amber-100">{text}</p>}
+      {open && <p className="quest-enter mt-2 rounded-xl border border-amber-400/25 bg-amber-50 p-3 text-sm leading-relaxed text-amber-950 dark:bg-amber-950/40 dark:text-amber-100">{text}</p>}
     </div>
   );
 }
