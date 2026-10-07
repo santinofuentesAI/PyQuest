@@ -6,7 +6,7 @@ const INDEX_URLS = [
   `https://cdn.jsdelivr.net/npm/pyodide@${PYODIDE_VERSION}/`,
 ];
 
-const KNOWN = new Set(["numpy", "pandas", "matplotlib", "micropip", "scipy", "scikit-learn", "seaborn"]);
+const KNOWN = new Set(["numpy", "pandas", "matplotlib", "micropip", "scipy", "scikit-learn"]);
 
 let pyodide = null;
 let initPromise = null;
@@ -129,10 +129,12 @@ function shortLoadMessage(raw) {
 }
 
 async function loadPackagesNow(names) {
+  const seaborn = names.includes("seaborn") && !loadedPackages.has("seaborn");
+  const requested = seaborn ? [...names, "numpy", "pandas", "matplotlib", "micropip"] : names;
   const pending = [
-    ...new Set(names.filter((name) => typeof name === "string" && KNOWN.has(name) && !loadedPackages.has(name))),
+    ...new Set(requested.filter((name) => typeof name === "string" && KNOWN.has(name) && !loadedPackages.has(name))),
   ];
-  if (pending.length === 0) return;
+  if (pending.length === 0 && !seaborn) return;
   post({
     type: "status",
     phase: "warming",
@@ -156,6 +158,12 @@ async function loadPackagesNow(names) {
     await configureMatplotlib();
   }
   pending.forEach((name) => loadedPackages.add(name));
+  if (seaborn) {
+    post({ type: "status", phase: "warming", message: "Instalando Seaborn…" });
+    // Pure Python wheel; its compiled dependencies were loaded from Pyodide above.
+    await pyodide.runPythonAsync('import micropip\nawait micropip.install("seaborn==0.13.2", deps=False)');
+    loadedPackages.add("seaborn");
+  }
 }
 
 function ensurePackages(names) {
@@ -166,7 +174,8 @@ function ensurePackages(names) {
 
 function ensureImports(code) {
   const job = packageChain.then(async () => {
-    // Pyodide does not install SciPy/sklearn/seaborn merely by executing import.
+    if (/\b(?:import\s+seaborn\b|from\s+seaborn\b)/.test(code)) await loadPackagesNow(["seaborn"]);
+    // Pyodide does not install SciPy/sklearn merely by executing import.
     await pyodide.loadPackagesFromImports(code, {
       messageCallback: (msg) => post({ type: "status", phase: "warming", message: shortLoadMessage(msg) }),
     });
