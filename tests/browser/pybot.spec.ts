@@ -55,6 +55,15 @@ test("a class flows through intro, retry, checkpoint and real rewards", async ({
   await page.goto("/lesson/" + lesson.id);
   await expect(page.getByRole("heading", { name: lesson.title })).toBeVisible();
   await capture(page, "pybot-class-intro");
+  await expect(page.getByText("Un programa es una lista de instrucciones que Python ejecuta de arriba hacia abajo.")).toBeVisible();
+  await page.getByRole("button", { name: "Continuar" }).click();
+  await expect(page.getByRole("heading", { name: "Paso a paso" })).toBeVisible();
+  await page.getByRole("button", { name: "Continuar" }).click();
+  await expect(page.getByRole("heading", { name: "¿Qué mostrará Python?" })).toBeVisible();
+  await page.getByRole("button", { name: "Ver resultado" }).click();
+  await expect(page.getByText("Python ignora el comentario y ejecuta cada print en orden.", { exact: false })).toBeVisible();
+  await page.getByRole("button", { name: "Continuar" }).click();
+  await expect(page.getByRole("heading", { name: "Tu misión" })).toBeVisible();
   await page.getByRole("button", { name: "Empezar clase" }).click();
   for (const [i, exercise] of lesson.exercises.entries()) {
     if (exercise.type === "multiple_choice" || exercise.type === "find_error") {

@@ -4,7 +4,7 @@ import { useState, useEffect, useRef, useSyncExternalStore } from "react";
 import { useRouter } from "next/navigation";
 import confetti from "canvas-confetti";
 import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
-import { ArrowRight, Clock, Flame, Gem, Heart, X, Check, Star, Target } from "lucide-react";
+import { ArrowLeft, ArrowRight, Clock, Flame, Gem, Heart, X, Check, Star, Target, Lightbulb, Play } from "lucide-react";
 import type { Exercise, Lesson } from "@/lib/types";
 import { checkExercise, type UserAnswer } from "@/lib/validators";
 import { ExerciseView, Hint } from "@/components/exercise-view";
@@ -13,6 +13,7 @@ import { useProgress } from "@/lib/progress-store";
 import { PythonStatus } from "@/components/python-status";
 import { Pybot, PybotCoach } from "@/components/pybot";
 import { EXERCISE_GUIDES } from "@/lib/learning-experience";
+import { getLessonGuide } from "@/lib/lesson-guides";
 import { playTone } from "@/lib/sound";
 import { preloadPython } from "@/lib/python-runtime";
 import { BADGES, getLesson, getLessonContext, LEVEL_LABELS, lessonLevel, nextLessonId, UNITS } from "@/lib/curriculum";
@@ -54,6 +55,8 @@ export function LessonPlayer({
   const [correctCount, setCorrectCount] = useState(0);
   const [done, setDone] = useState(false);
   const [started, setStarted] = useState(Boolean(practice || review));
+  const [introStep, setIntroStep] = useState(0);
+  const [showExampleOutput, setShowExampleOutput] = useState(false);
   const [combo, setCombo] = useState(0);
   const [rewards, setRewards] = useState({ xp: 0, gems: 0 });
   const [newBadges, setNewBadges] = useState<string[]>([]);
@@ -67,6 +70,7 @@ export function LessonPlayer({
   const exercise: Exercise | undefined = lesson.exercises[i];
   const total = lesson.exercises.length;
   const ctx = getLessonContext(lesson.id);
+  const guide = ctx && getLessonGuide(ctx.unit.id);
   useEffect(() => {
     if (!started || done) return;
     const frame = requestAnimationFrame(() => {
@@ -185,15 +189,33 @@ export function LessonPlayer({
   // cannot disagree about which option occupies a button.
   if (!mounted) return <div role="status" className="mx-auto max-w-2xl p-8 text-center text-sm text-muted-foreground">Preparando tu lección…</div>;
 
-  if (!started) return <div className="quest-enter mx-auto flex min-h-dvh max-w-xl flex-col justify-center px-5 py-8 sm:py-12">
-    <div className="flex items-center justify-between"><Link href="/learn" className="rounded-full border bg-card p-2.5" aria-label="Volver al mapa"><X className="size-5" /></Link><span className="quest-kicker">Nivel {lessonLevel(lesson)} · {LEVEL_LABELS[lessonLevel(lesson)]}</span></div>
-    <div className="quest-hero mt-6 rounded-[2rem] border p-6 text-center"><Pybot mood="wave" size="lg" className="mx-auto" /><p className="quest-kicker mt-2">Una misión con Pybot</p><h1 className="mt-3 text-3xl font-extrabold tracking-tight">{lesson.title}</h1><p className="mt-3 text-sm leading-relaxed text-muted-foreground">{lesson.description}</p>
-      <div className="mt-5 flex justify-center gap-4 text-xs font-bold text-muted-foreground"><span className="flex items-center gap-1"><Target className="size-4 text-primary" />{total} retos</span><span className="flex items-center gap-1"><Clock className="size-4 text-primary" />5–10 min</span><span className="flex items-center gap-1"><Star className="size-4 text-amber-500" />Hasta {lesson.xp} XP</span></div>
-    </div>
-    <div className="mt-5 grid grid-cols-3 gap-2 text-center">{["Observa la idea", "Pruébala tú", "Entiende el resultado"].map((text, n) => <div key={text} className="rounded-2xl border bg-card px-2 py-3"><span className="mx-auto mb-2 flex size-7 items-center justify-center rounded-full bg-primary/10 text-xs font-bold text-primary">{n + 1}</span><p className="text-xs font-semibold">{text}</p></div>)}</div>
-    <PybotCoach className="mt-4">No tienes que acertar a la primera. Prueba, revisa la explicación y vuelve a intentarlo.</PybotCoach>
-    <Button className="mt-5 h-14 w-full rounded-2xl text-base font-extrabold" onClick={() => setStarted(true)}>Empezar clase<ArrowRight className="size-4" /></Button>
-  </div>;
+  if (!started) {
+    const labels = ["La idea", "Paso a paso", "Mira el código", "Tu misión"];
+    const move = (next: number) => {
+      setIntroStep(next);
+      document.documentElement.scrollTop = 0;
+      document.body.scrollTop = 0;
+    };
+    return <div className="quest-enter mx-auto flex min-h-dvh max-w-xl flex-col px-4 pb-5 pt-5 sm:px-6 sm:pt-8">
+      <div className="flex items-center justify-between gap-3">
+        <Link href="/learn" className="flex size-11 shrink-0 items-center justify-center rounded-full border bg-card" aria-label="Volver al mapa"><X className="size-5" /></Link>
+        <span className="quest-kicker text-right">Nivel {lessonLevel(lesson)} · {LEVEL_LABELS[lessonLevel(lesson)]}</span>
+      </div>
+      <div className="mt-5 flex items-center gap-3"><Pybot mood="thinking" size="sm" /><div><p className="quest-kicker">Aprende con Pybot</p><h1 className="font-heading text-2xl font-extrabold leading-tight sm:text-3xl">{lesson.title}</h1></div></div>
+      <div className="mt-5 flex gap-1.5" role="group" aria-label="Progreso de la explicación">{labels.map((label, index) => <div key={label} className={cn("h-1.5 flex-1 rounded-full transition-colors", index <= introStep ? "bg-primary" : "bg-primary/15")} aria-label={`${label}: ${index < introStep ? "visto" : index === introStep ? "actual" : "pendiente"}`} />)}</div>
+      <p className="mt-3 text-xs font-bold text-muted-foreground">{introStep + 1} de 4 · {labels[introStep]}</p>
+      <div key={introStep} className="quest-enter mt-5 flex-1 rounded-[1.75rem] border bg-card p-5 shadow-sm sm:p-7" aria-live="polite">
+        {introStep === 0 && <div className="space-y-5"><div><p className="quest-kicker">Primero, entiende la idea</p><h2 className="mt-2 font-heading text-2xl font-extrabold">¿Qué significa?</h2><p className="mt-3 text-base leading-relaxed">{guide?.concept ?? lesson.description}</p></div><div className="rounded-2xl bg-primary/10 p-4"><p className="text-xs font-extrabold uppercase tracking-wider text-primary">En este nivel</p><p className="mt-2 text-sm leading-relaxed">{lesson.description}</p></div><p className="text-sm leading-relaxed text-muted-foreground">Primero verás cómo funciona; después resolverás {total} retos por tu cuenta.</p></div>}
+        {introStep === 1 && <div><p className="quest-kicker">Desarma el concepto</p><h2 className="mt-2 font-heading text-2xl font-extrabold">Paso a paso</h2><ol className="mt-5 space-y-3">{(guide?.steps ?? [lesson.description, "Observa un ejemplo y predice el resultado.", "Prueba la idea en los ejercicios."]).map((step, index) => <li key={index} className="flex gap-3 rounded-2xl bg-muted/60 p-4"><span className="flex size-7 shrink-0 items-center justify-center rounded-full bg-primary text-xs font-black text-primary-foreground">{index + 1}</span><span className="text-sm leading-relaxed">{step}</span></li>)}</ol><div className="mt-5 flex gap-2 rounded-xl border border-amber-500/30 bg-amber-500/10 p-3 text-sm leading-relaxed"><Lightbulb className="mt-0.5 size-4 shrink-0 text-amber-600" /><span><strong>Ojo:</strong> {guide?.caution ?? "Lee la consigna antes de escribir tu respuesta."}</span></div></div>}
+        {introStep === 2 && <div><p className="quest-kicker">Observa y predice</p><h2 className="mt-2 font-heading text-2xl font-extrabold">¿Qué mostrará Python?</h2><p className="mt-3 text-sm leading-relaxed text-muted-foreground">Lee el ejemplo de arriba abajo e intenta imaginar la salida antes de revelarla.</p><pre className="mt-5 overflow-x-auto rounded-2xl bg-[#171628] p-4 text-sm leading-6 text-[#c7fff0]" aria-label="Ejemplo de Python"><code>{guide?.code ?? "print('Hola, Python')"}</code></pre><Button variant="outline" className="mt-4 min-h-11 rounded-xl" onClick={() => setShowExampleOutput((v) => !v)} aria-expanded={showExampleOutput}>{showExampleOutput ? "Ocultar resultado" : "Ver resultado"}<Play className="size-4" /></Button>{showExampleOutput && <div className="mt-4 rounded-2xl border border-primary/25 bg-primary/5 p-4"><p className="text-xs font-extrabold uppercase tracking-wider text-primary">Salida</p><pre className="mt-2 whitespace-pre-wrap font-mono text-sm">{guide?.output ?? "Hola, Python"}</pre><p className="mt-4 text-sm leading-relaxed">{guide?.explanation ?? lesson.description}</p></div>}</div>}
+        {introStep === 3 && <div className="space-y-5"><div><p className="quest-kicker">Ahora te toca</p><h2 className="mt-2 font-heading text-2xl font-extrabold">Tu misión</h2><p className="mt-3 text-base leading-relaxed">{lesson.description}</p></div><div className="rounded-2xl bg-primary/10 p-4"><p className="text-xs font-extrabold uppercase tracking-wider text-primary">En los ejercicios</p><p className="mt-2 text-sm leading-relaxed">Lee cada reto, prueba una respuesta y usa la explicación al comprobarla. Puedes corregir y volver a intentarlo.</p></div><div className="flex flex-wrap gap-4 text-xs font-bold text-muted-foreground"><span className="flex items-center gap-1"><Target className="size-4 text-primary" />{total} retos</span><span className="flex items-center gap-1"><Clock className="size-4 text-primary" />5–10 min</span><span className="flex items-center gap-1"><Star className="size-4 text-amber-500" />Hasta {lesson.xp} XP</span></div></div>}
+      </div>
+      <div className="sticky bottom-0 mt-4 flex gap-2 bg-background/95 py-2 backdrop-blur-sm">
+        {introStep > 0 && <Button variant="outline" className="h-12 rounded-xl" onClick={() => move(introStep - 1)}><ArrowLeft className="size-4" />Atrás</Button>}
+        <Button className="h-12 flex-1 rounded-xl text-sm font-extrabold" onClick={() => introStep < 3 ? move(introStep + 1) : setStarted(true)}>{introStep === 3 ? "Empezar clase" : "Continuar"}<ArrowRight className="size-4" /></Button>
+      </div>
+    </div>;
+  }
 
   if (done) {
     const next = nextLessonId(lesson.id);
