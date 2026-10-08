@@ -299,12 +299,12 @@ a.quest-card.quest-current {
 .quest-exercise [role="radio"][aria-checked="true"] { transform: translateY(1px); box-shadow: 0 2px 0 color-mix(in srgb, var(--primary) 50%, var(--border)); }
 .pybot > svg { width: 100%; height: 100%; overflow: visible; }
 .pybot-float { animation: pybot-float 4s ease-in-out infinite; transform-origin: 100px 110px; }
-.pybot-shadow { animation: pybot-shadow 4s ease-in-out infinite; transform-origin: 100px 180px; }
-.pybot-arm-right { transform-origin: 134px 138px; }
+.pybot-shadow { animation: pybot-shadow 4s ease-in-out infinite; transform-origin: 100px 190px; }
+.pybot-arm-right { transform-origin: 65px 143px; }
 .pybot[data-mood="wave"] .pybot-arm-right { animation: pybot-wave 1.3s ease-in-out 3; }
 .pybot[data-mood="celebrate"] .pybot-float { animation: pybot-celebrate .65s ease-in-out 3; }
 .pybot[data-mood="thinking"] .pybot-float { animation-duration: 6s; }
-.pybot-eyes { animation: pybot-blink 7s infinite; transform-origin: 100px 80px; }
+.pybot-eyes { animation: pybot-blink 7s infinite; transform-origin: 100px 85px; }
 .pybot-sparkles { animation: pybot-sparkle 1s ease-in-out 3; transform-origin: 100px 80px; }
 .pybot-coach { background: color-mix(in srgb, var(--primary) 3%, var(--card)); }
 .pybot-help .pybot { width: 60px; height: 60px; }
