@@ -7,6 +7,7 @@ import { getCourseIdForUnit, getUnit, getSectionForUnit, LEVEL_LABELS, lessonLev
 import { unitAccess } from "@/lib/courses";
 import { PaywallNote } from "@/components/course-picker";
 import { isUnitUnlocked, useProgress } from "@/lib/progress-store";
+import { canSkipToUnit, SKIP_EXAM_PASS, SKIP_EXAM_SIZE } from "@/lib/skip-exam";
 import { hasFullUnlock } from "@/lib/redeem-codes";
 import { decayStrength } from "@/lib/gamification";
 import { Button } from "@/components/ui/button";
@@ -114,12 +115,17 @@ export default function UnitPage() {
           );
         })}
       </ol>
-      <PybotCoach className="mt-5">Primero entiende la idea. Después afianza, practica, demuestra y profundiza. Cada nivel te da una forma nueva de usarla.</PybotCoach>
+      <PybotCoach className="mt-5">{unlocked ? "Primero entiende la idea. Después afianza, practica, demuestra y profundiza. Cada nivel te da una forma nueva de usarla." : canSkipToUnit(unit.id, progress) ? `Este tema está cerrado. Para saltar, aprueba un examen de ${SKIP_EXAM_SIZE} preguntas o código (${SKIP_EXAM_PASS} aciertos, de fácil a difícil).` : "Completa el tema anterior, o desbloquea el curso si este módulo es de pago."}</PybotCoach>
 
       <div className="mt-6 grid gap-2">
         {nextLesson && unlocked && (
           <Button className="h-12 rounded-2xl font-bold" render={<Link href={`/lesson/${nextLesson.id}`} />}>
             {up?.completedLessonIds.length ? "Continuar unidad" : "Empezar unidad"}
+          </Button>
+        )}
+        {!unlocked && canSkipToUnit(unit.id, progress) && (
+          <Button className="h-12 rounded-2xl font-bold" render={<Link href={`/skip/${unit.id}`} />}>
+            Examen de {SKIP_EXAM_SIZE} para saltar aquí
           </Button>
         )}
         <Button variant="outline" className="h-12 rounded-2xl font-bold" render={<Link href={`/library/${unit.id}`} />}>
