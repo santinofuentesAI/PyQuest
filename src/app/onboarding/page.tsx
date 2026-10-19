@@ -4,7 +4,9 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { CoursePicker } from "@/components/course-picker";
 import { useProgress } from "@/lib/progress-store";
+import type { CourseId } from "@/lib/types";
 
 export default function OnboardingPage() {
   const router = useRouter();
@@ -15,6 +17,8 @@ export default function OnboardingPage() {
   const hydrated = useProgress((s) => s.hydrated);
   const [name, setLocal] = useState("");
   const [step, setStep] = useState(0);
+  const [courseId, setCourseId] = useState<CourseId>("python-ia");
+  const setActiveCourse = useProgress((s) => s.setActiveCourse);
 
   useEffect(() => {
     if (!hydrated) return;
@@ -25,8 +29,8 @@ export default function OnboardingPage() {
   const slides = [
     {
       kicker: "Bienvenida",
-      title: "No hace falta que sepas programar",
-      body: "Empezamos por variables y print. Si ya vienes de DataCamp, el test de nivel te salta hasta NumPy.",
+      title: "Elige cómo quieres aprender",
+      body: "Python para IA, análisis de datos, o agentes (MCP, skills, harness). Los primeros módulos de cada curso son gratis.",
     },
     {
       kicker: "Laboratorio",
@@ -55,16 +59,17 @@ export default function OnboardingPage() {
   }
 
   return (
-    <div className="mx-auto flex min-h-[100dvh] max-w-lg flex-col justify-center px-6 py-12">
-      <p className="text-xs font-bold tracking-widest text-primary uppercase">Tu perfil</p>
-      <h1 className="font-heading mt-2 text-3xl font-extrabold">¿Cómo te llamamos en el ranking?</h1>
+    <div className="mx-auto flex min-h-[100dvh] max-w-3xl flex-col justify-center px-6 py-12">
+      <p className="text-xs font-bold tracking-widest text-primary uppercase">Tu ruta</p>
+      <h1 className="font-heading mt-2 text-3xl font-extrabold">¿Cómo te llamamos y qué quieres aprender?</h1>
       <form
-        className="mt-6 space-y-4"
+        className="mt-6 space-y-6"
         onSubmit={(e) => {
           e.preventDefault();
           setName(name.trim() || "Explorador");
+          setActiveCourse(courseId);
           complete();
-          router.push("/placement");
+          router.push(courseId === "python-ia" ? "/placement" : "/learn");
         }}
       >
         <Input
@@ -74,19 +79,21 @@ export default function OnboardingPage() {
           className="h-12 rounded-2xl text-base"
           autoFocus
         />
+        <CoursePicker compact onChoose={setCourseId} />
         <Button type="submit" className="h-12 w-full rounded-2xl font-bold">
-          Ir al test de nivel
+          {courseId === "python-ia" ? "Ir al test de nivel" : "Empezar el curso"}
         </Button>
         <button
           type="button"
           className="w-full text-sm font-semibold text-muted-foreground"
           onClick={() => {
             setName("Explorador");
+            setActiveCourse(courseId);
             complete();
             router.push("/learn");
           }}
         >
-          Saltar el test y empezar desde cero
+          Saltar el test y abrir el mapa
         </button>
       </form>
     </div>

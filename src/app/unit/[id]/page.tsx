@@ -3,7 +3,9 @@
 import Link from "next/link";
 import { useParams } from "next/navigation";
 import { BookOpen, Check, Lock, RotateCcw, Sparkles } from "lucide-react";
-import { getUnit, getSectionForUnit, LEVEL_LABELS, lessonLevel } from "@/lib/curriculum";
+import { getCourseIdForUnit, getUnit, getSectionForUnit, LEVEL_LABELS, lessonLevel } from "@/lib/curriculum";
+import { unitAccess } from "@/lib/courses";
+import { PaywallNote } from "@/components/course-picker";
 import { isUnitUnlocked, useProgress } from "@/lib/progress-store";
 import { hasFullUnlock } from "@/lib/redeem-codes";
 import { decayStrength } from "@/lib/gamification";
@@ -28,6 +30,13 @@ export default function UnitPage() {
     );
   }
 
+  if (!progress.hydrated) {
+    return <p className="px-6 py-16 text-sm text-muted-foreground">Cargando…</p>;
+  }
+  const access = unitAccess(unit.id, progress);
+  if (access === "paywall") {
+    return <PaywallNote courseId={getCourseIdForUnit(unit.id) ?? "python-ia"} />;
+  }
   const unlocked = isUnitUnlocked(unit.id, progress);
   const up = progress.units[unit.id];
   const complete = !!up && unit.lessons.every((l) => up.completedLessonIds.includes(l.id));
@@ -44,8 +53,8 @@ export default function UnitPage() {
       <p className="mt-2 text-muted-foreground">{unit.description}</p>
       </div><Pybot mood={complete ? "celebrate" : "wave"} size="md" /></div></div>
       <p className="mt-3 rounded-2xl border bg-card/80 px-3 py-2 text-sm text-muted-foreground">
-        Cinco niveles por tema. El primero abre el mapa. Afianzar, practicar y demostrar fijan la idea.
-        Profundiza la usa en un caso un poco más real. Dominar el tema sigue pidiendo la práctica y los encargos.
+        Cada tema tiene niveles. El primero abre la idea; los siguientes la afianzan. Los cursos nuevos
+        empiezan con tres niveles. El resto de la ruta se desbloquea con un pago único, sin suscripción.
       </p>
       {complete && (
         <p className="mt-2 text-sm font-semibold text-emerald-600">

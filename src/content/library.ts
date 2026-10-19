@@ -1,5 +1,6 @@
 import { FROM_ZERO } from "./library-from-zero";
 import { REASONING_GUIDES } from "./library-guides";
+import { TRACK_LIBRARY } from "./library-tracks";
 
 export type LibraryBlock =
   | { type: "p"; text: string }
@@ -29,6 +30,7 @@ function a(
 }
 
 export const LIBRARY: LibraryArticle[] = [
+  ...TRACK_LIBRARY,
   a("u1", "¿Qué es programar?", "Fundamentos", 6, [
     { type: "p", text: "Programar es escribir instrucciones precisas para que un computador haga un trabajo. Python las lee de arriba abajo, línea a línea. Si una línea falla, las siguientes no se ejecutan." },
     { type: "h", text: "print y el laboratorio" },

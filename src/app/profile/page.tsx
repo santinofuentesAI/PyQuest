@@ -29,7 +29,17 @@ export default function ProfilePage() {
       <p className="text-muted-foreground">
         Nivel {lvl.level} · {p.xp} XP · Oficina ${p.jobUsd ?? 0}
       </p>
-      <PybotCoach className="mt-5" mood="celebrate" title="Mira lo que has construido">Tu aprendizaje se convierte en proyectos. Aquí puedes revisar tus entregas y darle tu estilo a la app.</PybotCoach>
+      <PybotCoach className="mt-5" mood="celebrate" title="Mira lo que has construido">Tu aprendizaje se convierte en proyectos. Cambia de curso cuando quieras: cada ruta guarda su progreso.</PybotCoach>
+
+      <section className="mt-6 rounded-2xl border bg-card p-4">
+        <h2 className="font-bold">Cursos</h2>
+        <p className="text-sm text-muted-foreground">
+          Activo: {p.activeCourseId === "python-datos" ? "Python para análisis de datos" : p.activeCourseId === "agentes-ia" ? "Agentes de IA" : "Python para IA"}.
+        </p>
+        <Button className="mt-3 h-11 w-full rounded-xl" variant="outline" render={<Link href="/courses" />}>
+          Cambiar de curso
+        </Button>
+      </section>
 
       <section className="mt-8 rounded-2xl border bg-card p-4">
         <h2 className="font-bold">Códigos</h2>

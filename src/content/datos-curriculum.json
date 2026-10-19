@@ -1,0 +1,1139 @@
+{
+  "courseId": "python-datos",
+  "sections": [
+    {
+      "id": "sda",
+      "index": 0,
+      "title": "Análisis de datos",
+      "subtitle": "De la pregunta al insight verificable",
+      "color": "#0f766e",
+      "accent": "#5eead4",
+      "units": [
+        {
+          "id": "da1",
+          "index": 1,
+          "title": "Preguntas que un dato puede responder",
+          "description": "Antes de abrir Python: una pregunta, una tabla y una métrica con denominador.",
+          "icon": "compass",
+          "isProject": false,
+          "isTemplate": false,
+          "lessons": [
+            {
+              "id": "da1-l1",
+              "title": "Una pregunta, una métrica",
+              "description": "Un análisis empieza por lo que quieres saber, no por el gráfico.",
+              "xp": 62,
+              "exercises": [
+                {
+                  "id": "da1-l1-e1",
+                  "type": "multiple_choice",
+                  "prompt": "¿Cuál es una pregunta de análisis (no solo curiosidad)?",
+                  "difficulty": 1,
+                  "xp": 10,
+                  "hint": "Busca recorte + métrica + evidencia.",
+                  "explanation": "Una pregunta de análisis nombra el recorte (semana 1), la métrica (unidades) y pide evidencia (n).",
+                  "solution": "¿Qué canal vendió más unidades la semana 1, y con cuántas filas lo sabemos?",
+                  "choices": [
+                    {
+                      "id": "a",
+                      "text": "¿Qué canal vendió más unidades la semana 1, y con cuántas filas lo sabemos?"
+                    },
+                    {
+                      "id": "b",
+                      "text": "¿El dashboard se ve moderno?"
+                    },
+                    {
+                      "id": "c",
+                      "text": "¿Puedo usar diez colores en el gráfico?"
+                    }
+                  ],
+                  "correctChoiceId": "a"
+                },
+                {
+                  "id": "da1-l1-e2",
+                  "type": "matching",
+                  "prompt": "Empareja cada pieza de una tabla con su rol.",
+                  "difficulty": 2,
+                  "xp": 12,
+                  "explanation": "Si mezclas el rol de fila y de métrica, el promedio deja de significar lo que crees.",
+                  "solution": "{\"l1\": \"r1\", \"l2\": \"r2\", \"l3\": \"r3\"}",
+                  "left": [
+                    {
+                      "id": "l1",
+                      "text": "Fila"
+                    },
+                    {
+                      "id": "l2",
+                      "text": "Columna"
+                    },
+                    {
+                      "id": "l3",
+                      "text": "Métrica"
+                    }
+                  ],
+                  "right": [
+                    {
+                      "id": "r1",
+                      "text": "Una observación (un día, un pedido)"
+                    },
+                    {
+                      "id": "r2",
+                      "text": "Una variable con el mismo significado en cada fila"
+                    },
+                    {
+                      "id": "r3",
+                      "text": "El número que resume la pregunta"
+                    }
+                  ],
+                  "pairs": {
+                    "l1": "r1",
+                    "l2": "r2",
+                    "l3": "r3"
+                  }
+                },
+                {
+                  "id": "da1-l1-e3",
+                  "type": "predict_output",
+                  "prompt": "Hay 4 pedidos. ¿Qué imprime este recuento?",
+                  "difficulty": 1,
+                  "xp": 10,
+                  "explanation": "n=4 es el denominador. La media 14/4 = 3.5 solo tiene sentido junto a ese n.",
+                  "solution": "4\n3.5",
+                  "acceptedOutputs": [
+                    "4\n3.5"
+                  ],
+                  "starterCode": "pedidos = [4, 2, 6, 2]\nn = len(pedidos)\nprint(n)\nprint(sum(pedidos) / n)"
+                },
+                {
+                  "id": "da1-l1-e4",
+                  "type": "fill_blank",
+                  "prompt": "Completa el denominador de la media.",
+                  "difficulty": 1,
+                  "xp": 12,
+                  "explanation": "Sin len, no hay media: estarías dividiendo por un número que no es el tamaño de la muestra.",
+                  "solution": "valores = [10, 20, 30]\nmedia = sum(valores) / len(valores)\nprint(media)",
+                  "template": "valores = [10, 20, 30]\nmedia = sum(valores) / ___(valores)\nprint(media)",
+                  "blanks": [
+                    {
+                      "accepted": [
+                        "len"
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "id": "da1-l1-e5",
+                  "type": "code",
+                  "prompt": "Con `ventas = [4, 2, 6]`, guarda `n` y `total`. Imprime `n` y, en la línea siguiente, `total`.",
+                  "difficulty": 2,
+                  "xp": 18,
+                  "explanation": "Primero cuentas, después sumas. El KPI se arma con ambas cifras.",
+                  "solution": "ventas = [4, 2, 6]\nn = len(ventas)\ntotal = sum(ventas)\nprint(n)\nprint(total)",
+                  "starterCode": "ventas = [4, 2, 6]\n",
+                  "tests": [
+                    {
+                      "assert": "n == 3"
+                    },
+                    {
+                      "assert": "total == 12"
+                    }
+                  ],
+                  "hint": "len cuenta filas; sum agrega la métrica.",
+                  "expectedStdout": "3\n12"
+                }
+              ],
+              "level": 1
+            },
+            {
+              "id": "da1-l2",
+              "title": "Afianza: recorte y evidencia",
+              "description": "El mismo número miente si cambias el recorte o escondes el n.",
+              "xp": 62,
+              "exercises": [
+                {
+                  "id": "da1-l2-e1",
+                  "type": "multiple_choice",
+                  "prompt": "La web vendió 4 y la tienda 2. ¿Qué afirmación es honesta?",
+                  "difficulty": 1,
+                  "xp": 10,
+                  "explanation": "Limita la frase a los datos que viste. 'Siempre' es una generalización que esos dos números no prueban.",
+                  "solution": "La web vendió el doble de unidades que la tienda en esas dos filas",
+                  "choices": [
+                    {
+                      "id": "a",
+                      "text": "La web vendió el doble de unidades que la tienda en esas dos filas"
+                    },
+                    {
+                      "id": "b",
+                      "text": "La web siempre vende el doble"
+                    },
+                    {
+                      "id": "c",
+                      "text": "La tienda no existe"
+                    }
+                  ],
+                  "correctChoiceId": "a"
+                },
+                {
+                  "id": "da1-l2-e2",
+                  "type": "predict_output",
+                  "prompt": "Filtramos la semana 1. ¿Qué imprime?",
+                  "difficulty": 1,
+                  "xp": 10,
+                  "explanation": "El recorte deja 2 filas (4 y 2). El total 6 no se puede comparar con la semana 2 sin decir que n cambió.",
+                  "solution": "2\n6",
+                  "acceptedOutputs": [
+                    "2\n6"
+                  ],
+                  "starterCode": "filas = [('1', 4), ('1', 2), ('2', 6)]\nsemana1 = [u for s, u in filas if s == '1']\nprint(len(semana1))\nprint(sum(semana1))"
+                },
+                {
+                  "id": "da1-l2-e3",
+                  "type": "find_error",
+                  "prompt": "¿Qué está mal si quieres la media de unidades?",
+                  "difficulty": 2,
+                  "xp": 12,
+                  "explanation": "Antes de dividir, comprueba n. Una muestra vacía no tiene media.",
+                  "solution": "La lista está vacía: len es 0 y la división falla",
+                  "choices": [
+                    {
+                      "id": "a",
+                      "text": "La lista está vacía: len es 0 y la división falla"
+                    },
+                    {
+                      "id": "b",
+                      "text": "sum no existe en Python"
+                    },
+                    {
+                      "id": "c",
+                      "text": "Las medias solo se calculan con pandas"
+                    }
+                  ],
+                  "correctChoiceId": "a",
+                  "starterCode": "valores = []\nmedia = sum(valores) / len(valores)"
+                },
+                {
+                  "id": "da1-l2-e4",
+                  "type": "matching",
+                  "prompt": "Empareja el error con su consecuencia.",
+                  "difficulty": 2,
+                  "xp": 12,
+                  "explanation": "El analista nombra recorte, n y si el número es centro o extremo.",
+                  "solution": "{\"l1\": \"r1\", \"l2\": \"r2\", \"l3\": \"r3\"}",
+                  "left": [
+                    {
+                      "id": "l1",
+                      "text": "Olvidar n"
+                    },
+                    {
+                      "id": "l2",
+                      "text": "Mezclar semanas"
+                    },
+                    {
+                      "id": "l3",
+                      "text": "Usar el máximo como si fuera la media"
+                    }
+                  ],
+                  "right": [
+                    {
+                      "id": "r1",
+                      "text": "No sabes si el porcentaje sale de 3 o de 300 filas"
+                    },
+                    {
+                      "id": "r2",
+                      "text": "Un pico de un día se hace pasar por el mes entero"
+                    },
+                    {
+                      "id": "r3",
+                      "text": "El extremo se presenta como lo habitual"
+                    }
+                  ],
+                  "pairs": {
+                    "l1": "r1",
+                    "l2": "r2",
+                    "l3": "r3"
+                  }
+                },
+                {
+                  "id": "da1-l2-e5",
+                  "type": "code",
+                  "prompt": "De `filas = [('web', 4), ('tienda', 2), ('web', 6)]`, guarda `web` con las unidades del canal web e imprime `sum(web)`.",
+                  "difficulty": 2,
+                  "xp": 18,
+                  "explanation": "El filtro es el recorte. Aquí web suma 10 con n=2.",
+                  "solution": "filas = [('web', 4), ('tienda', 2), ('web', 6)]\nweb = [u for canal, u in filas if canal == 'web']\nprint(sum(web))",
+                  "starterCode": "filas = [('web', 4), ('tienda', 2), ('web', 6)]\n",
+                  "tests": [
+                    {
+                      "assert": "web == [4, 6]"
+                    }
+                  ],
+                  "expectedStdout": "10"
+                }
+              ],
+              "level": 2
+            },
+            {
+              "id": "da1-l3",
+              "title": "Practica: tu primer KPI",
+              "description": "Calcula n, total y media y escríbelos juntos.",
+              "xp": 64,
+              "exercises": [
+                {
+                  "id": "da1-l3-e1",
+                  "type": "reorder",
+                  "prompt": "Ordena el análisis: datos, recuento, métrica, mensaje.",
+                  "difficulty": 2,
+                  "xp": 14,
+                  "explanation": "Si imprimieras antes de calcular n, no tendrías denominador.",
+                  "solution": "ventas = [4, 2, 6]\nn = len(ventas)\nmedia = sum(ventas) / n\nprint(n, media)",
+                  "blocks": [
+                    {
+                      "id": "a",
+                      "code": "ventas = [4, 2, 6]"
+                    },
+                    {
+                      "id": "b",
+                      "code": "n = len(ventas)"
+                    },
+                    {
+                      "id": "c",
+                      "code": "media = sum(ventas) / n"
+                    },
+                    {
+                      "id": "d",
+                      "code": "print(n, media)"
+                    }
+                  ],
+                  "correctOrder": [
+                    "a",
+                    "b",
+                    "c",
+                    "d"
+                  ]
+                },
+                {
+                  "id": "da1-l3-e2",
+                  "type": "predict_output",
+                  "prompt": "¿Qué imprime el informe mínimo?",
+                  "difficulty": 1,
+                  "xp": 10,
+                  "explanation": "El f-string conserva ambas cifras. Un 12 suelto no dice de cuántas filas sale.",
+                  "solution": "n=3; total=12",
+                  "acceptedOutputs": [
+                    "n=3; total=12"
+                  ],
+                  "starterCode": "n = 3\ntotal = 12\nprint(f'n={n}; total={total}')"
+                },
+                {
+                  "id": "da1-l3-e3",
+                  "type": "multiple_choice",
+                  "prompt": "Un colega dice: 'las ventas son 12'. ¿Qué falta para que sea un KPI usable?",
+                  "difficulty": 1,
+                  "xp": 10,
+                  "explanation": "12 unidades ¿de un día o de un año? El número sin recorte no se puede comparar.",
+                  "solution": "El recorte (qué periodo, qué canal) y el n",
+                  "choices": [
+                    {
+                      "id": "a",
+                      "text": "El recorte (qué periodo, qué canal) y el n"
+                    },
+                    {
+                      "id": "b",
+                      "text": "Un modelo de deep learning"
+                    },
+                    {
+                      "id": "c",
+                      "text": "Que el 12 sea un entero, no un float"
+                    }
+                  ],
+                  "correctChoiceId": "a"
+                },
+                {
+                  "id": "da1-l3-e4",
+                  "type": "fill_blank",
+                  "prompt": "Completa el informe con n y total.",
+                  "difficulty": 1,
+                  "xp": 12,
+                  "explanation": "sum agrega la métrica; len ya había contado las observaciones.",
+                  "solution": "ventas = [4, 2, 6]\nn = len(ventas)\ntotal = sum(ventas)\nprint(f'n={n}; total={total}')",
+                  "template": "ventas = [4, 2, 6]\nn = len(ventas)\ntotal = ___(ventas)\nprint(f'n={n}; total={total}')",
+                  "blanks": [
+                    {
+                      "accepted": [
+                        "sum"
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "id": "da1-l3-e5",
+                  "type": "code",
+                  "prompt": "Con `ventas = [4, 2, 6, 8]`, guarda `n`, `total` y `media`. Imprime `int(media)` (la parte entera).",
+                  "difficulty": 2,
+                  "xp": 18,
+                  "explanation": "20/4 = 5. int(media) muestra 5; la media real sigue siendo 5.0.",
+                  "solution": "ventas = [4, 2, 6, 8]\nn = len(ventas)\ntotal = sum(ventas)\nmedia = total / n\nprint(int(media))",
+                  "starterCode": "ventas = [4, 2, 6, 8]\n",
+                  "tests": [
+                    {
+                      "assert": "n == 4"
+                    },
+                    {
+                      "assert": "total == 20"
+                    },
+                    {
+                      "assert": "abs(float(media) - 5) < 1e-9"
+                    }
+                  ],
+                  "expectedStdout": "5"
+                }
+              ],
+              "level": 3
+            }
+          ]
+        },
+        {
+          "id": "da2",
+          "index": 2,
+          "title": "Limpiar sin esconder el sucio",
+          "description": "Nulos, tipos y agrupaciones: documenta lo que cambias antes de resumir.",
+          "icon": "filter",
+          "isProject": false,
+          "isTemplate": false,
+          "lessons": [
+            {
+              "id": "da2-l1",
+              "title": "Nulos a la vista",
+              "description": "Un hueco en la tabla no es un cero hasta que tú lo decidas.",
+              "xp": 62,
+              "exercises": [
+                {
+                  "id": "da2-l1-e1",
+                  "type": "multiple_choice",
+                  "prompt": "En una columna de unidades, un valor ausente (NaN) significa…",
+                  "difficulty": 1,
+                  "xp": 10,
+                  "explanation": "Cero es una medición. NaN es 'no sé'. Convertir uno en el otro cambia el total.",
+                  "solution": "Que no hay dato: no es lo mismo que cero ventas",
+                  "choices": [
+                    {
+                      "id": "a",
+                      "text": "Que no hay dato: no es lo mismo que cero ventas"
+                    },
+                    {
+                      "id": "b",
+                      "text": "Que se vendió exactamente 0"
+                    },
+                    {
+                      "id": "c",
+                      "text": "Que la fila se puede borrar siempre"
+                    }
+                  ],
+                  "correctChoiceId": "a"
+                },
+                {
+                  "id": "da2-l1-e2",
+                  "type": "predict_output",
+                  "prompt": "Pandas omite el nulo al calcular la media. ¿Qué imprime?",
+                  "difficulty": 1,
+                  "xp": 10,
+                  "explanation": "Hay 1 nulo. La media usa 4 y 6 (n efectivo = 2), no tres filas.",
+                  "solution": "1\n5.0",
+                  "acceptedOutputs": [
+                    "1\n5.0"
+                  ],
+                  "starterCode": "import pandas as pd\ns = pd.Series([4.0, None, 6.0])\nprint(int(s.isna().sum()))\nprint(s.mean())"
+                },
+                {
+                  "id": "da2-l1-e3",
+                  "type": "find_error",
+                  "prompt": "¿Qué problema tiene este resumen?",
+                  "difficulty": 2,
+                  "xp": 12,
+                  "explanation": "fillna(0) convierte 'no sé' en cero ventas. Si lo haces, dilo y reporta cuántos valores tocaste.",
+                  "solution": "Rellena el nulo con 0 y baja la media a 3.33 sin avisarlo",
+                  "choices": [
+                    {
+                      "id": "a",
+                      "text": "Rellena el nulo con 0 y baja la media a 3.33 sin avisarlo"
+                    },
+                    {
+                      "id": "b",
+                      "text": "fillna no existe"
+                    },
+                    {
+                      "id": "c",
+                      "text": "None no se puede guardar en una Series"
+                    }
+                  ],
+                  "correctChoiceId": "a",
+                  "starterCode": "import pandas as pd\ns = pd.Series([4.0, None, 6.0])\nprint(s.fillna(0).mean())"
+                },
+                {
+                  "id": "da2-l1-e4",
+                  "type": "fill_blank",
+                  "prompt": "Cuenta cuántos nulos hay en la serie.",
+                  "difficulty": 1,
+                  "xp": 12,
+                  "explanation": "isna() marca True donde falta el valor. sum() cuenta esos True.",
+                  "solution": "import pandas as pd\ns = pd.Series([4.0, None, 6.0])\nnulos = int(s.isna().sum())\nprint(nulos)",
+                  "template": "import pandas as pd\ns = pd.Series([4.0, None, 6.0])\nnulos = int(s.___().sum())\nprint(nulos)",
+                  "blanks": [
+                    {
+                      "accepted": [
+                        "isna"
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "id": "da2-l1-e5",
+                  "type": "data",
+                  "prompt": "Lee `ventas.csv`. Guarda `nulos` = número de unidades ausentes e imprime `nulos`.",
+                  "difficulty": 2,
+                  "xp": 18,
+                  "explanation": "Solo la fila de tienda en semana 2 tiene unidades vacías.",
+                  "solution": "import pandas as pd\ndf = pd.read_csv('ventas.csv')\nnulos = int(df['unidades'].isna().sum())\nprint(nulos)",
+                  "starterCode": "import pandas as pd\n",
+                  "tests": [
+                    {
+                      "assert": "int(nulos) == 1"
+                    }
+                  ],
+                  "expectedStdout": "1",
+                  "files": {
+                    "ventas.csv": "semana,canal,unidades,precio\n1,web,4,10\n1,tienda,2,10\n2,web,6,12\n2,tienda,,12\n"
+                  }
+                }
+              ],
+              "level": 1
+            },
+            {
+              "id": "da2-l2",
+              "title": "Afianza: agrupar con el tamaño a cuestas",
+              "description": "Un 100% de un grupo de 1 fila no es una ley.",
+              "xp": 62,
+              "exercises": [
+                {
+                  "id": "da2-l2-e1",
+                  "type": "predict_output",
+                  "prompt": "¿Qué imprime este groupby?",
+                  "difficulty": 1,
+                  "xp": 10,
+                  "explanation": "web junta 4+6=10; tienda queda en 2. pandas ordena las claves alfabéticamente en el dict.",
+                  "solution": "{'tienda': 2, 'web': 10}",
+                  "acceptedOutputs": [
+                    "{'tienda': 2, 'web': 10}"
+                  ],
+                  "starterCode": "import pandas as pd\ndf = pd.DataFrame({'canal': ['web', 'web', 'tienda'], 'unidades': [4, 6, 2]})\nprint(df.groupby('canal')['unidades'].sum().to_dict())"
+                },
+                {
+                  "id": "da2-l2-e2",
+                  "type": "multiple_choice",
+                  "prompt": "La tienda tiene 1 fila y la web 2. Comparas la media de cada canal. ¿Qué debes reportar?",
+                  "difficulty": 1,
+                  "xp": 10,
+                  "explanation": "n=1 hace frágil cualquier media. El hallazgo incluye el tamaño.",
+                  "solution": "La media y el n de cada grupo",
+                  "choices": [
+                    {
+                      "id": "a",
+                      "text": "La media y el n de cada grupo"
+                    },
+                    {
+                      "id": "b",
+                      "text": "Solo la media más alta"
+                    },
+                    {
+                      "id": "c",
+                      "text": "Nada: groupby no sirve con n distinto"
+                    }
+                  ],
+                  "correctChoiceId": "a"
+                },
+                {
+                  "id": "da2-l2-e3",
+                  "type": "matching",
+                  "prompt": "Empareja la agregación con lo que cuenta.",
+                  "difficulty": 2,
+                  "xp": 12,
+                  "explanation": "size responde '¿con cuántas filas hablo?'; mean responde '¿qué es típico?'.",
+                  "solution": "{\"l1\": \"r1\", \"l2\": \"r2\", \"l3\": \"r3\"}",
+                  "left": [
+                    {
+                      "id": "l1",
+                      "text": "sum"
+                    },
+                    {
+                      "id": "l2",
+                      "text": "mean"
+                    },
+                    {
+                      "id": "l3",
+                      "text": "size / count"
+                    }
+                  ],
+                  "right": [
+                    {
+                      "id": "r1",
+                      "text": "Total de la métrica"
+                    },
+                    {
+                      "id": "r2",
+                      "text": "Centro, sensible al n y a extremos"
+                    },
+                    {
+                      "id": "r3",
+                      "text": "Cuántas filas hay en el grupo"
+                    }
+                  ],
+                  "pairs": {
+                    "l1": "r1",
+                    "l2": "r2",
+                    "l3": "r3"
+                  }
+                },
+                {
+                  "id": "da2-l2-e4",
+                  "type": "fill_blank",
+                  "prompt": "Agrupa por canal y suma unidades.",
+                  "difficulty": 1,
+                  "xp": 12,
+                  "explanation": "groupby separa; después eliges la columna y la agregación.",
+                  "solution": "import pandas as pd\ndf = pd.DataFrame({'canal': ['web', 'tienda'], 'unidades': [4, 2]})\nprint(df.groupby('canal')['unidades'].sum().to_dict())",
+                  "template": "import pandas as pd\ndf = pd.DataFrame({'canal': ['web', 'tienda'], 'unidades': [4, 2]})\nprint(df.___('canal')['unidades'].sum().to_dict())",
+                  "blanks": [
+                    {
+                      "accepted": [
+                        "groupby"
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "id": "da2-l2-e5",
+                  "type": "code",
+                  "prompt": "Con el DataFrame de `filas`, guarda `por_canal` = suma de unidades por canal (dict) e imprime `por_canal['web']`.",
+                  "difficulty": 2,
+                  "xp": 18,
+                  "explanation": "El dict permite consultar un grupo por nombre. web = 10.",
+                  "solution": "import pandas as pd\nfilas = pd.DataFrame({'canal': ['web', 'tienda', 'web'], 'unidades': [4, 2, 6]})\npor_canal = filas.groupby('canal')['unidades'].sum().to_dict()\nprint(por_canal['web'])",
+                  "starterCode": "import pandas as pd\nfilas = pd.DataFrame({'canal': ['web', 'tienda', 'web'], 'unidades': [4, 2, 6]})\n",
+                  "tests": [
+                    {
+                      "assert": "por_canal['web'] == 10"
+                    },
+                    {
+                      "assert": "por_canal['tienda'] == 2"
+                    }
+                  ],
+                  "expectedStdout": "10"
+                }
+              ],
+              "level": 2
+            },
+            {
+              "id": "da2-l3",
+              "title": "Practica: limpieza de un CSV",
+              "description": "Cuenta nulos, decide un recorte y resume lo válido.",
+              "xp": 62,
+              "exercises": [
+                {
+                  "id": "da2-l3-e1",
+                  "type": "multiple_choice",
+                  "prompt": "Tienes 1 nulo en 4 filas de unidades. ¿Qué haces primero?",
+                  "difficulty": 1,
+                  "xp": 10,
+                  "explanation": "La limpieza es una decisión. El informe debe poder repetirse.",
+                  "solution": "Contarlo y decidir si excluyes esa fila o la imputas, dejándolo escrito",
+                  "choices": [
+                    {
+                      "id": "a",
+                      "text": "Contarlo y decidir si excluyes esa fila o la imputas, dejándolo escrito"
+                    },
+                    {
+                      "id": "b",
+                      "text": "Borrar todas las filas porque el archivo está sucio"
+                    },
+                    {
+                      "id": "c",
+                      "text": "Rellenar con 1 000 000 para que no moleste"
+                    }
+                  ],
+                  "correctChoiceId": "a"
+                },
+                {
+                  "id": "da2-l3-e2",
+                  "type": "predict_output",
+                  "prompt": "Excluimos filas sin unidades. ¿Cuántas quedan y cuál es el total?",
+                  "difficulty": 1,
+                  "xp": 10,
+                  "explanation": "Cae la fila nula. Quedan 4+2+6 = 12 unidades en 3 filas.",
+                  "solution": "3\n12",
+                  "acceptedOutputs": [
+                    "3\n12"
+                  ],
+                  "starterCode": "import pandas as pd\ndf = pd.DataFrame({'unidades': [4.0, 2.0, 6.0, None]})\nlimpio = df.dropna(subset=['unidades'])\nprint(len(limpio))\nprint(int(limpio['unidades'].sum()))"
+                },
+                {
+                  "id": "da2-l3-e3",
+                  "type": "find_error",
+                  "prompt": "¿Qué falla al convertir precio si hay texto basura?",
+                  "difficulty": 2,
+                  "xp": 12,
+                  "explanation": "to_numeric(..., errors='coerce') convierte basura en NaN. Después decides qué hacer con esos NaN.",
+                  "solution": "astype(int) no perdona 'doce': hay que to_numeric con errors='coerce'",
+                  "choices": [
+                    {
+                      "id": "a",
+                      "text": "astype(int) no perdona 'doce': hay que to_numeric con errors='coerce'"
+                    },
+                    {
+                      "id": "b",
+                      "text": "mean no funciona con números"
+                    },
+                    {
+                      "id": "c",
+                      "text": "Las Series no aceptan texto"
+                    }
+                  ],
+                  "correctChoiceId": "a",
+                  "starterCode": "import pandas as pd\ns = pd.Series(['10', 'doce', '12'])\nprint(s.astype(int).mean())"
+                },
+                {
+                  "id": "da2-l3-e4",
+                  "type": "data",
+                  "prompt": "Lee `ventas.csv`, descarta filas sin unidades, guarda `n` y `total` (suma de unidades). Imprime `n` y `int(total)`.",
+                  "difficulty": 2,
+                  "xp": 18,
+                  "explanation": "Documentar n=3 y total=12 deja visible que una fila no entró al KPI.",
+                  "solution": "import pandas as pd\ndf = pd.read_csv('ventas.csv')\nlimpio = df.dropna(subset=['unidades'])\nn = len(limpio)\ntotal = limpio['unidades'].sum()\nprint(n)\nprint(int(total))",
+                  "starterCode": "import pandas as pd\n",
+                  "tests": [
+                    {
+                      "assert": "int(n) == 3"
+                    },
+                    {
+                      "assert": "int(total) == 12"
+                    }
+                  ],
+                  "expectedStdout": "3\n12",
+                  "files": {
+                    "ventas.csv": "semana,canal,unidades,precio\n1,web,4,10\n1,tienda,2,10\n2,web,6,12\n2,tienda,,12\n"
+                  }
+                },
+                {
+                  "id": "da2-l3-e5",
+                  "type": "matching",
+                  "prompt": "Empareja la herramienta con el momento.",
+                  "difficulty": 2,
+                  "xp": 12,
+                  "explanation": "El orden importa: contar, convertir, y solo entonces recortar.",
+                  "solution": "{\"l1\": \"r1\", \"l2\": \"r2\", \"l3\": \"r3\"}",
+                  "left": [
+                    {
+                      "id": "l1",
+                      "text": "isna().sum()"
+                    },
+                    {
+                      "id": "l2",
+                      "text": "to_numeric(errors='coerce')"
+                    },
+                    {
+                      "id": "l3",
+                      "text": "dropna(subset=['unidades'])"
+                    }
+                  ],
+                  "right": [
+                    {
+                      "id": "r1",
+                      "text": "Contar huecos antes de decidir"
+                    },
+                    {
+                      "id": "r2",
+                      "text": "Convertir texto no numérico en NaN"
+                    },
+                    {
+                      "id": "r3",
+                      "text": "Excluir filas sin la métrica"
+                    }
+                  ],
+                  "pairs": {
+                    "l1": "r1",
+                    "l2": "r2",
+                    "l3": "r3"
+                  }
+                }
+              ],
+              "level": 3
+            }
+          ]
+        },
+        {
+          "id": "da3",
+          "index": 3,
+          "title": "Contar el hallazgo",
+          "description": "Un gráfico y una frase que se pueden verificar: título, unidades y denominador.",
+          "icon": "bar-chart-3",
+          "isProject": false,
+          "isTemplate": false,
+          "lessons": [
+            {
+              "id": "da3-l1",
+              "title": "El gráfico responde la pregunta",
+              "description": "Barras comparan categorías; la línea sigue un orden temporal.",
+              "xp": 62,
+              "exercises": [
+                {
+                  "id": "da3-l1-e1",
+                  "type": "multiple_choice",
+                  "prompt": "¿Qué gráfico encaja para comparar unidades de web vs tienda?",
+                  "difficulty": 1,
+                  "xp": 10,
+                  "explanation": "Dos canales son categorías. Las barras hacen visible 10 vs 2 sin teatro.",
+                  "solution": "Barras: una categoría, una altura",
+                  "choices": [
+                    {
+                      "id": "a",
+                      "text": "Barras: una categoría, una altura"
+                    },
+                    {
+                      "id": "b",
+                      "text": "Un mapa 3D rotatorio"
+                    },
+                    {
+                      "id": "c",
+                      "text": "Un gráfico de pastel con 40 rebanadas"
+                    }
+                  ],
+                  "correctChoiceId": "a"
+                },
+                {
+                  "id": "da3-l1-e2",
+                  "type": "predict_output",
+                  "prompt": "El título debe decir el hallazgo. ¿Qué imprime este chequeo?",
+                  "difficulty": 1,
+                  "xp": 10,
+                  "explanation": "El título o la frase cuantifican. 'Ventas' como título no dice quién gana ni por cuánto.",
+                  "solution": "La web vendió 8 unidades más",
+                  "acceptedOutputs": [
+                    "La web vendió 8 unidades más"
+                  ],
+                  "starterCode": "web, tienda = 10, 2\nprint('La web vendió', web - tienda, 'unidades más')"
+                },
+                {
+                  "id": "da3-l1-e3",
+                  "type": "matching",
+                  "prompt": "Empareja el elemento visual con su trabajo.",
+                  "difficulty": 2,
+                  "xp": 12,
+                  "explanation": "Sin unidad, una barra de 10 no se sabe si son pedidos o millones.",
+                  "solution": "{\"l1\": \"r1\", \"l2\": \"r2\", \"l3\": \"r3\"}",
+                  "left": [
+                    {
+                      "id": "l1",
+                      "text": "Título"
+                    },
+                    {
+                      "id": "l2",
+                      "text": "Etiqueta del eje Y"
+                    },
+                    {
+                      "id": "l3",
+                      "text": "Leyenda"
+                    }
+                  ],
+                  "right": [
+                    {
+                      "id": "r1",
+                      "text": "El hallazgo en una frase"
+                    },
+                    {
+                      "id": "r2",
+                      "text": "La unidad (unidades, USD, %)"
+                    },
+                    {
+                      "id": "r3",
+                      "text": "Quién es cada serie si hay más de una"
+                    }
+                  ],
+                  "pairs": {
+                    "l1": "r1",
+                    "l2": "r2",
+                    "l3": "r3"
+                  }
+                },
+                {
+                  "id": "da3-l1-e4",
+                  "type": "fill_blank",
+                  "prompt": "Completa la llamada de barras: categorías y alturas, en ese orden.",
+                  "difficulty": 1,
+                  "xp": 12,
+                  "explanation": "plt.bar(x, altura). El primer argumento nombra; el segundo mide.",
+                  "solution": "import matplotlib.pyplot as plt\nplt.bar(['web', 'tienda'], [10, 2])",
+                  "template": "import matplotlib.pyplot as plt\nplt.___(['web', 'tienda'], [10, 2])",
+                  "blanks": [
+                    {
+                      "accepted": [
+                        "bar"
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "id": "da3-l1-e5",
+                  "type": "code",
+                  "prompt": "Con `canales = ['web', 'tienda']` y `unidades = [10, 2]`, guarda `lider` = el canal con más unidades e imprime `lider`.",
+                  "difficulty": 2,
+                  "xp": 18,
+                  "explanation": "index(max(...)) recupera la categoría del extremo. El gráfico debería decir lo mismo.",
+                  "solution": "canales = ['web', 'tienda']\nunidades = [10, 2]\nlider = canales[unidades.index(max(unidades))]\nprint(lider)",
+                  "starterCode": "canales = ['web', 'tienda']\nunidades = [10, 2]\n",
+                  "tests": [
+                    {
+                      "assert": "lider == 'web'"
+                    }
+                  ],
+                  "expectedStdout": "web"
+                }
+              ],
+              "level": 1
+            },
+            {
+              "id": "da3-l2",
+              "title": "Afianza: unidades y denominadores",
+              "description": "Un 25% sin total es un número huérfano.",
+              "xp": 62,
+              "exercises": [
+                {
+                  "id": "da3-l2-e1",
+                  "type": "predict_output",
+                  "prompt": "¿Qué imprime el porcentaje bien presentado?",
+                  "difficulty": 1,
+                  "xp": 10,
+                  "explanation": "El 25% se sostiene porque se ve el 3 y el 12.",
+                  "solution": "3 de 12: 25%",
+                  "acceptedOutputs": [
+                    "3 de 12: 25%"
+                  ],
+                  "starterCode": "casos, total = 3, 12\npct = casos / total * 100\nprint(f'{casos} de {total}: {pct:.0f}%')"
+                },
+                {
+                  "id": "da3-l2-e2",
+                  "type": "multiple_choice",
+                  "prompt": "Un eje Y que empieza en 9.8 en vez de 0, con valores 10 y 10.2, suele…",
+                  "difficulty": 1,
+                  "xp": 10,
+                  "explanation": "En barras, el cero ancla la altura. Truncar el eje convierte un empate casi total en un abismo.",
+                  "solution": "Exagerar una diferencia pequeña",
+                  "choices": [
+                    {
+                      "id": "a",
+                      "text": "Exagerar una diferencia pequeña"
+                    },
+                    {
+                      "id": "b",
+                      "text": "Hacer el análisis más científico"
+                    },
+                    {
+                      "id": "c",
+                      "text": "Ser obligatorio en barras"
+                    }
+                  ],
+                  "correctChoiceId": "a"
+                },
+                {
+                  "id": "da3-l2-e3",
+                  "type": "find_error",
+                  "prompt": "¿Qué problema tiene este porcentaje?",
+                  "difficulty": 2,
+                  "xp": 12,
+                  "explanation": "3% podría ser 3 de 100 o 3 de 3. Sin total, no es un KPI.",
+                  "solution": "No hay denominador: 3% de qué total",
+                  "choices": [
+                    {
+                      "id": "a",
+                      "text": "No hay denominador: 3% de qué total"
+                    },
+                    {
+                      "id": "b",
+                      "text": "Las f-strings no aceptan números"
+                    },
+                    {
+                      "id": "c",
+                      "text": "El símbolo % está prohibido"
+                    }
+                  ],
+                  "correctChoiceId": "a",
+                  "starterCode": "casos = 3\nprint(f'{casos}%')"
+                },
+                {
+                  "id": "da3-l2-e4",
+                  "type": "fill_blank",
+                  "prompt": "Calcula el porcentaje con denominador.",
+                  "difficulty": 1,
+                  "xp": 12,
+                  "explanation": "Dividir por total (12) produce 25.",
+                  "solution": "casos, total = 3, 12\npct = casos / total * 100\nprint(int(pct))",
+                  "template": "casos, total = 3, 12\npct = casos / ___ * 100\nprint(int(pct))",
+                  "blanks": [
+                    {
+                      "accepted": [
+                        "total"
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "id": "da3-l2-e5",
+                  "type": "code",
+                  "prompt": "`casos = 6` y `total = 24`. Guarda `pct` (0-100) e imprime `int(pct)`.",
+                  "difficulty": 2,
+                  "xp": 18,
+                  "explanation": "6/24 = 0.25 → 25%. El entero 25 se puede verificar a mano.",
+                  "solution": "casos = 6\ntotal = 24\npct = casos / total * 100\nprint(int(pct))",
+                  "starterCode": "casos = 6\ntotal = 24\n",
+                  "tests": [
+                    {
+                      "assert": "abs(float(pct) - 25) < 1e-9"
+                    }
+                  ],
+                  "expectedStdout": "25"
+                }
+              ],
+              "level": 2
+            },
+            {
+              "id": "da3-l3",
+              "title": "Demuestra: insight de dos semanas",
+              "description": "Cierra el ciclo: limpiar, comparar, decir el hallazgo con n.",
+              "xp": 62,
+              "exercises": [
+                {
+                  "id": "da3-l3-e1",
+                  "type": "predict_output",
+                  "prompt": "Tras dropear el nulo, ¿qué imprime el total por semana?",
+                  "difficulty": 1,
+                  "xp": 10,
+                  "explanation": "Semana 1: 4+2=6. Semana 2: solo queda 6 (la otra fila era NaN). El empate 6-6 esconde un nulo.",
+                  "solution": "{1: 6.0, 2: 6.0}",
+                  "acceptedOutputs": [
+                    "{1: 6.0, 2: 6.0}"
+                  ],
+                  "starterCode": "import pandas as pd\ndf = pd.DataFrame({'semana': [1, 1, 2, 2], 'unidades': [4.0, 2.0, 6.0, None]}).dropna(subset=['unidades'])\nprint(df.groupby('semana')['unidades'].sum().to_dict())"
+                },
+                {
+                  "id": "da3-l3-e2",
+                  "type": "multiple_choice",
+                  "prompt": "Las dos semanas suman 6 unidades, pero la 2 tiene una fila menos. ¿Qué dices?",
+                  "difficulty": 1,
+                  "xp": 10,
+                  "explanation": "Igualar totales no iguala la evidencia. El nulo es parte del hallazgo.",
+                  "solution": "El total empató, pero la semana 2 se calculó con n menor por un nulo en tienda",
+                  "choices": [
+                    {
+                      "id": "a",
+                      "text": "El total empató, pero la semana 2 se calculó con n menor por un nulo en tienda"
+                    },
+                    {
+                      "id": "b",
+                      "text": "Las semanas son idénticas en todo"
+                    },
+                    {
+                      "id": "c",
+                      "text": "Hay que multiplicar la semana 2 por 2"
+                    }
+                  ],
+                  "correctChoiceId": "a"
+                },
+                {
+                  "id": "da3-l3-e3",
+                  "type": "data",
+                  "prompt": "Lee `ventas.csv`, descarta nulos de unidades, guarda `por_semana` (suma por semana como dict) e imprime `int(por_semana[1])`.",
+                  "difficulty": 2,
+                  "xp": 18,
+                  "explanation": "El dict {1: 6, 2: 6} es correcto y todavía necesita la nota del nulo.",
+                  "solution": "import pandas as pd\ndf = pd.read_csv('ventas.csv').dropna(subset=['unidades'])\npor_semana = df.groupby('semana')['unidades'].sum().to_dict()\nprint(int(por_semana[1]))",
+                  "starterCode": "import pandas as pd\n",
+                  "tests": [
+                    {
+                      "assert": "int(por_semana[1]) == 6"
+                    },
+                    {
+                      "assert": "int(por_semana[2]) == 6"
+                    }
+                  ],
+                  "expectedStdout": "6",
+                  "files": {
+                    "ventas.csv": "semana,canal,unidades,precio\n1,web,4,10\n1,tienda,2,10\n2,web,6,12\n2,tienda,,12\n"
+                  }
+                },
+                {
+                  "id": "da3-l3-e4",
+                  "type": "matching",
+                  "prompt": "Arma la frase del informe.",
+                  "difficulty": 2,
+                  "xp": 12,
+                  "explanation": "Hallazgo + n + límite: el formato de un insight que se puede auditar.",
+                  "solution": "{\"l1\": \"r1\", \"l2\": \"r2\", \"l3\": \"r3\"}",
+                  "left": [
+                    {
+                      "id": "l1",
+                      "text": "Hallazgo"
+                    },
+                    {
+                      "id": "l2",
+                      "text": "Evidencia"
+                    },
+                    {
+                      "id": "l3",
+                      "text": "Límite"
+                    }
+                  ],
+                  "right": [
+                    {
+                      "id": "r1",
+                      "text": "Los totales semanales empatan en 6 unidades"
+                    },
+                    {
+                      "id": "r2",
+                      "text": "n válido = 3 filas tras un NaN"
+                    },
+                    {
+                      "id": "r3",
+                      "text": "No afirma qué pasará la semana 3"
+                    }
+                  ],
+                  "pairs": {
+                    "l1": "r1",
+                    "l2": "r2",
+                    "l3": "r3"
+                  }
+                },
+                {
+                  "id": "da3-l3-e5",
+                  "type": "fill_blank",
+                  "prompt": "Completa el agrupado del insight.",
+                  "difficulty": 1,
+                  "xp": 12,
+                  "explanation": "groupby('semana') es el recorte temporal del hallazgo.",
+                  "solution": "import pandas as pd\ndf = pd.read_csv('ventas.csv').dropna(subset=['unidades'])\nprint(df.groupby('semana')['unidades'].sum().to_dict())",
+                  "template": "import pandas as pd\ndf = pd.read_csv('ventas.csv').dropna(subset=['unidades'])\nprint(df.___('semana')['unidades'].sum().to_dict())",
+                  "blanks": [
+                    {
+                      "accepted": [
+                        "groupby"
+                      ]
+                    }
+                  ]
+                }
+              ],
+              "level": 3
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

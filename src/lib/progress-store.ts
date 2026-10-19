@@ -2,7 +2,7 @@
 
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
-import type { JobProjectProgress, LeagueId, LessonResult, PortfolioItem, UserProgress } from "./types";
+import type { CourseId, JobProjectProgress, LeagueId, LessonResult, PortfolioItem, UserProgress } from "./types";
 import { getJobProject, hintsFor, looksIncomplete, projectPayout } from "./job-projects";
 import { trimImage, trimStdout, upsertJobPortfolio } from "./portfolio";
 import {
@@ -17,7 +17,8 @@ import {
   todayKey,
   weekId,
 } from "./gamification";
-import { coreLessons, getUnitByLessonId, UNITS } from "./curriculum";
+import { DEFAULT_COURSE_ID, getUnitByLessonId, PYTHON_IA_UNITS, UNITS, unitsForCourse } from "./curriculum";
+import { normalizeCourseId, unitAccess } from "./courses";
 import { FULL_UNLOCK_CODE, hasFullUnlock, lookupCode } from "./redeem-codes";
 import { DEFAULT_PALETTE, type PaletteId } from "./palettes";
 
@@ -50,6 +51,9 @@ const defaultProgress = (): UserProgress => ({
   jobUsd: 0,
   jobProjects: {},
   portfolio: [],
+  activeCourseId: DEFAULT_COURSE_ID,
+  ownedCourseIds: [],
+  schoolInterestAt: null,
 });
 
 function emptyJobProgress(): JobProjectProgress {
@@ -94,6 +98,9 @@ type ProgressState = UserProgress & {
   resetJobProject: (projectId: string) => void;
   addLabPortfolio: (item: { title: string; description: string; code: string; stdout?: string; image?: string }) => boolean;
   removePortfolioItem: (id: string) => void;
+  setActiveCourse: (courseId: CourseId) => void;
+  unlockCourse: (courseId: CourseId) => boolean;
+  registerSchoolInterest: () => void;
 };
 
 function awardBadges(p: UserProgress): string[] {
@@ -238,17 +245,21 @@ export const useProgress = create<ProgressState>()(
         else if (ratio >= 0.5) startingUnitId = "u8";
         else if (ratio >= 0.3) startingUnitId = "u4";
         const nowIso = new Date().toISOString();
+        const owned = new Set(get().ownedCourseIds ?? []);
+        owned.add("python-ia");
         const p: UserProgress = {
           ...get(),
           placementDone: true,
           placementScore: score,
           startingUnitId,
           onboarded: true,
+          activeCourseId: "python-ia",
+          ownedCourseIds: [...owned],
           completedLessons: { ...get().completedLessons },
           units: { ...get().units },
         };
-        const unitIndex = UNITS.find((u) => u.id === startingUnitId)?.index ?? 1;
-        UNITS.filter((u) => u.index < unitIndex).forEach((u) => {
+        const unitIndex = PYTHON_IA_UNITS.find((u) => u.id === startingUnitId)?.index ?? 1;
+        PYTHON_IA_UNITS.filter((u) => u.index < unitIndex).forEach((u) => {
           p.units[u.id] = {
             strength: 0.7,
             lastPracticedAt: nowIso,
@@ -301,11 +312,12 @@ export const useProgress = create<ProgressState>()(
         const current = regenerateHearts(get());
         if (!def) return { ok: false, message: "Ese código no existe." };
         if (def.kind === "unlockAll") {
-          const last = UNITS[UNITS.length - 1];
+          const last = unitsForCourse(current.activeCourseId ?? DEFAULT_COURSE_ID).at(-1);
           const codes = current.redeemedCodes ?? [];
           set({
             unlockAll: true,
             startingUnitId: last?.id ?? current.startingUnitId,
+            ownedCourseIds: ["python-ia", "python-datos", "agentes-ia"],
             redeemedCodes: codes.includes(code) ? codes : [...codes, code],
           });
           return {
@@ -313,6 +325,23 @@ export const useProgress = create<ProgressState>()(
             openMap: true,
             message: codes.includes(code)
               ? "El mapa ya estaba abierto. Te llevo a todas las unidades."
+              : `Código ${code}: ${def.label}.`,
+          };
+        }
+        if (def.kind === "course") {
+          const codes = current.redeemedCodes ?? [];
+          const owned = new Set(current.ownedCourseIds ?? []);
+          owned.add(def.courseId);
+          set({
+            ownedCourseIds: [...owned],
+            activeCourseId: def.courseId,
+            redeemedCodes: codes.includes(code) ? codes : [...codes, code],
+          });
+          return {
+            ok: true,
+            openMap: true,
+            message: codes.includes(code)
+              ? `${def.label}. Te llevo al mapa.`
               : `Código ${code}: ${def.label}.`,
           };
         }
@@ -470,6 +499,19 @@ export const useProgress = create<ProgressState>()(
       removePortfolioItem: (id) => {
         set({ portfolio: (get().portfolio ?? []).filter((i) => i.id !== id) });
       },
+      setActiveCourse: (courseId) => set({ activeCourseId: normalizeCourseId(courseId) }),
+      unlockCourse: (courseId) => {
+        const id = normalizeCourseId(courseId);
+        const owned = new Set(get().ownedCourseIds ?? []);
+        if (owned.has(id) && !hasFullUnlock(get())) {
+          set({ activeCourseId: id });
+          return false;
+        }
+        owned.add(id);
+        set({ ownedCourseIds: [...owned], activeCourseId: id });
+        return true;
+      },
+      registerSchoolInterest: () => set({ schoolInterestAt: Date.now() }),
       recordJobFail: (projectId) => {
         const current = get().jobProjects ?? {};
         const prev = current[projectId] ?? emptyJobProgress();
@@ -522,14 +564,19 @@ export const useProgress = create<ProgressState>()(
           "resetJobProject",
           "addLabPortfolio",
           "removePortfolioItem",
+          "setActiveCourse",
+          "unlockCourse",
+          "registerSchoolInterest",
         ]);
         return Object.fromEntries(
           Object.entries(state).filter(([key]) => !skip.has(key))
         ) as UserProgress;
       },
-      version: 6,
+      version: 7,
       migrate: (persisted, version) => {
         const p = (persisted ?? {}) as UserProgress;
+        const hadProgress =
+          Object.keys(p.completedLessons ?? {}).length > 0 || Object.keys(p.units ?? {}).length > 0;
         const base: UserProgress = {
           ...p,
           palette: p.palette ?? (p.theme === "dark" ? "night" : DEFAULT_PALETTE),
@@ -538,6 +585,11 @@ export const useProgress = create<ProgressState>()(
           portfolio: p.portfolio ?? [],
           unlockAll: Boolean(p.unlockAll) || (p.redeemedCodes ?? []).includes(FULL_UNLOCK_CODE),
           redeemedCodes: p.redeemedCodes ?? [],
+          activeCourseId: normalizeCourseId(p.activeCourseId),
+          ownedCourseIds:
+            p.ownedCourseIds ??
+            (hadProgress || Boolean(p.unlockAll) ? [DEFAULT_COURSE_ID] : []),
+          schoolInterestAt: p.schoolInterestAt ?? null,
         };
         if (version < 2) {
           return { ...base, onboarded: true, placementDone: true };
@@ -554,10 +606,19 @@ export const useProgress = create<ProgressState>()(
         if (state && !Array.isArray(state.portfolio)) state.portfolio = [];
         if (state && (state.unlockAll || (state.redeemedCodes ?? []).includes(FULL_UNLOCK_CODE))) {
           state.unlockAll = true;
-          const last = UNITS[UNITS.length - 1];
+          const last = PYTHON_IA_UNITS[PYTHON_IA_UNITS.length - 1];
           if (last) state.startingUnitId = last.id;
-        } else if (state && typeof state.unlockAll !== "boolean") {
+        } else         if (state && typeof state.unlockAll !== "boolean") {
           state.unlockAll = false;
+        }
+        if (state) {
+          state.activeCourseId = normalizeCourseId(state.activeCourseId);
+          if (!Array.isArray(state.ownedCourseIds)) {
+            const hadProgress =
+              Object.keys(state.completedLessons ?? {}).length > 0 ||
+              Object.keys(state.units ?? {}).length > 0;
+            state.ownedCourseIds = hadProgress || state.unlockAll ? [DEFAULT_COURSE_ID] : [];
+          }
         }
         if (state) {
           state.onboarded = true;
@@ -590,16 +651,17 @@ export const useProgress = create<ProgressState>()(
 );
 
 export function continueLessonId(progress: UserProgress): string | null {
+  const courseUnits = unitsForCourse(normalizeCourseId(progress.activeCourseId));
   let startIdx = 0;
-  for (let i = UNITS.length - 1; i >= 0; i--) {
-    const done = progress.units[UNITS[i].id]?.completedLessonIds ?? [];
+  for (let i = courseUnits.length - 1; i >= 0; i--) {
+    const done = progress.units[courseUnits[i].id]?.completedLessonIds ?? [];
     if (done.length > 0) {
       startIdx = i;
       break;
     }
   }
-  for (let i = startIdx; i < UNITS.length; i++) {
-    const unit = UNITS[i];
+  for (let i = startIdx; i < courseUnits.length; i++) {
+    const unit = courseUnits[i];
     if (!isUnitUnlocked(unit.id, progress)) continue;
     const done = progress.units[unit.id]?.completedLessonIds ?? [];
     const next = unit.lessons.find((l) => !done.includes(l.id));
@@ -615,16 +677,7 @@ export function continueUnitId(progress: UserProgress): string | null {
 }
 
 export function isUnitUnlocked(unitId: string, progress: UserProgress): boolean {
-  if (hasFullUnlock(progress)) return true;
-  const unit = UNITS.find((u) => u.id === unitId);
-  if (!unit) return false;
-  const start = UNITS.find((u) => u.id === progress.startingUnitId)?.index ?? 1;
-  if (unit.index <= start) return true;
-  const prev = UNITS.find((u) => u.index === unit.index - 1);
-  if (!prev) return true;
-  const prevProg = progress.units[prev.id];
-  if (!prevProg) return false;
-  return coreLessons(prev).every((l) => prevProg.completedLessonIds.includes(l.id));
+  return unitAccess(unitId, progress) === "open";
 }
 
 export function nextHeartLabel(ms: number) {

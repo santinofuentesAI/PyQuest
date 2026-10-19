@@ -11,6 +11,8 @@ import {
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 import Link from "next/link";
+import { CourseUnlockCard, SchoolLicenseCard } from "@/components/course-picker";
+import { COURSE_CATALOG } from "@/lib/courses";
 
 export default function ShopPage() {
   const p = useProgress();
@@ -21,8 +23,16 @@ export default function ShopPage() {
       <p className="mt-1 text-muted-foreground">
         Tienes <span className="font-bold text-foreground">{p.gems} gemas</span> y{" "}
         <span className="font-bold text-foreground">${p.jobUsd ?? 0}</span> de salario de oficina.
-        Las gemas salen de las lecciones; el salario, de los encargos.
+        Las gemas salen de las lecciones; el salario, de los encargos. Los cursos son un pago único, aparte.
       </p>
+
+      <div className="mt-6 space-y-3">
+        <h2 className="font-bold">Cursos</h2>
+        {COURSE_CATALOG.map((course) => (
+          <CourseUnlockCard key={course.id} courseId={course.id} />
+        ))}
+        <SchoolLicenseCard />
+      </div>
 
       <div className="mt-6 grid gap-3 sm:grid-cols-2">
         <div className="rounded-2xl border bg-card p-4">

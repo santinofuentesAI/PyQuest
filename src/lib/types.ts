@@ -12,6 +12,8 @@ export type ExerciseType =
 
 export type Difficulty = 1 | 2 | 3 | 4 | 5;
 
+export type CourseId = "python-ia" | "python-datos" | "agentes-ia";
+
 export type Choice = {
   id: string;
   text: string;
@@ -201,6 +203,12 @@ export type UserProgress = {
   jobProjects: Record<string, JobProjectProgress>;
   portfolio: PortfolioItem[];
   labDraft?: string;
+  /** Which learning path the map, practice and library follow. */
+  activeCourseId: CourseId;
+  /** One-time unlocks. The first units of each course stay free. */
+  ownedCourseIds: CourseId[];
+  /** Local interest flag for school/bootcamp licensing — not a charge. */
+  schoolInterestAt?: number | null;
 };
 
 export type PythonRunResult = {

@@ -2,6 +2,7 @@ import {
   Award,
   BarChart3,
   Bell,
+  Bot,
   BookKey,
   BookOpen,
   Box,
@@ -35,6 +36,7 @@ import {
   Network,
   Package,
   Palette,
+  Plug,
   Repeat,
   Scroll,
   Scissors,
@@ -55,11 +57,15 @@ import {
   Trophy,
   Type,
   Waypoints,
+  Wrench,
   Zap,
   type LucideIcon,
 } from "lucide-react";
 
 const ICONS: Record<string, LucideIcon> = {
+  bot: Bot,
+  plug: Plug,
+  wrench: Wrench,
   sparkles: Sparkles,
   box: Box,
   calculator: Calculator,

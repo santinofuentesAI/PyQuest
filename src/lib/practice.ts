@@ -1,5 +1,5 @@
 import type { Exercise, ExerciseType, Lesson, UserProgress } from "./types";
-import { SECTIONS, UNITS } from "./curriculum";
+import { ALL_SECTIONS, UNITS } from "./curriculum";
 import { decayStrength } from "./gamification";
 
 const QUIZ_TYPES = new Set<ExerciseType>([
@@ -73,7 +73,7 @@ export type PracticeUnitOption = {
 export function practiceUnitOptions(progress: UserProgress): PracticeUnitOption[] {
   const lessonIds = new Set(practicedLessonIds(progress));
   const rows: PracticeUnitOption[] = [];
-  for (const section of SECTIONS) {
+  for (const section of ALL_SECTIONS) {
     for (const unit of section.units) {
       const lessons = unit.lessons.filter((l) => lessonIds.has(l.id));
       if (!lessons.length) continue;

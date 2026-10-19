@@ -27,13 +27,13 @@ const siteUrl = process.env.VERCEL_PROJECT_PRODUCTION_URL
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
-  title: "PyQuest — Python para datos e IA",
+  title: "PyQuest — Python, datos y agentes de IA",
   description:
-    "Aprende Python para análisis de datos e inteligencia artificial con lecciones cortas, corazones, rachas y un laboratorio real en el navegador.",
+    "Cursos interactivos de Python para IA, análisis de datos y agentes (MCP, skills, harness). Primeros módulos gratis, pago único por curso, laboratorio en el navegador.",
   applicationName: "PyQuest",
   openGraph: {
-    title: "PyQuest — Python para datos e IA",
-    description: "De print('hola') a tu primer modelo. En el navegador, sin instalar Anaconda.",
+    title: "PyQuest — Python, datos y agentes de IA",
+    description: "Elige un camino. Los primeros módulos son gratis. Python corre en tu pestaña.",
     locale: "es_ES",
     type: "website",
   },
