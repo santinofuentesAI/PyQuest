@@ -31,9 +31,8 @@ export default function ProjectsPage() {
       <p className="text-sm font-semibold tracking-wide text-primary uppercase">Oficina</p>
       <h1 className="font-heading mt-1 text-3xl font-extrabold tracking-tight">Proyectos</h1>
       <p className="mt-2 text-sm text-muted-foreground">
-        Dos encargos por sección, lo más parecidos a un trabajo real. Los de Fundamentos están
-        abiertos para probar la oficina; a partir de NumPy se desbloquean al terminar las lecciones
-        esenciales de esa sección. El salario es ficticio: si pides pista, se descuenta.
+        Los encargos de oficina pertenecen al curso Python para IA. En análisis de datos y agentes
+        llegarán proyectos propios; por ahora puedes practicar estos o volver al mapa de tu curso.
       </p>
       <PybotCoach className="mt-5" mood="wave" title="De aprender a construir">Lee el encargo, prueba tu código y revisa sus resultados. Cada entrega aceptada pasa a tu portafolio.</PybotCoach>
 

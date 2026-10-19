@@ -32,8 +32,15 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('--runtime', action='store_true')
     args = parser.parse_args()
-    curriculum = json.loads((ROOT / 'src/content/curriculum.json').read_text())
-    exercises = [e for s in curriculum['sections'] for u in s['units'] for l in u['lessons'] for e in l['exercises']]
+    files = [
+        ROOT / 'src/content/curriculum.json',
+        ROOT / 'src/content/datos-curriculum.json',
+        ROOT / 'src/content/agentes-curriculum.json',
+    ]
+    exercises = []
+    for path in files:
+        payload = json.loads(path.read_text())
+        exercises.extend(e for s in payload['sections'] for u in s['units'] for l in u['lessons'] for e in l['exercises'])
     errors, ids = [], set()
     counts = {'exercises': len(exercises), 'reference_programs': 0, 'trace_checkpoints': 0}
     if args.runtime:

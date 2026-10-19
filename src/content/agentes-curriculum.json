@@ -1,0 +1,1169 @@
+{
+  "courseId": "agentes-ia",
+  "sections": [
+    {
+      "id": "sag",
+      "index": 0,
+      "title": "Agentes de IA",
+      "subtitle": "MCP, skills y harness, de cero a un eval",
+      "color": "#c2410c",
+      "accent": "#fdba74",
+      "units": [
+        {
+          "id": "ag1",
+          "index": 1,
+          "title": "De un chat a un agente",
+          "description": "Un LLM responde; un agente observa, usa herramientas y vuelve a mirar.",
+          "icon": "bot",
+          "isProject": false,
+          "isTemplate": false,
+          "lessons": [
+            {
+              "id": "ag1-l1",
+              "title": "Qué es un agente",
+              "description": "El bucle observar → decidir → actuar → observar otra vez.",
+              "xp": 62,
+              "exercises": [
+                {
+                  "id": "ag1-l1-e1",
+                  "type": "multiple_choice",
+                  "prompt": "¿Qué distingue a un agente de un chat que solo completa texto?",
+                  "difficulty": 1,
+                  "xp": 10,
+                  "hint": "Piensa en un ciclo, no en un solo mensaje.",
+                  "explanation": "El agente entra en un bucle con el mundo (archivos, APIs, el usuario). El chat sin herramientas solo escribe.",
+                  "solution": "Puede usar herramientas, ver el resultado y decidir el siguiente paso",
+                  "choices": [
+                    {
+                      "id": "a",
+                      "text": "Puede usar herramientas, ver el resultado y decidir el siguiente paso"
+                    },
+                    {
+                      "id": "b",
+                      "text": "Siempre tiene más parámetros"
+                    },
+                    {
+                      "id": "c",
+                      "text": "Nunca se detiene"
+                    }
+                  ],
+                  "correctChoiceId": "a"
+                },
+                {
+                  "id": "ag1-l1-e2",
+                  "type": "matching",
+                  "prompt": "Empareja cada paso del bucle.",
+                  "difficulty": 2,
+                  "xp": 12,
+                  "explanation": "Sin observar el resultado, el siguiente paso es adivinar.",
+                  "solution": "{\"l1\": \"r1\", \"l2\": \"r2\", \"l3\": \"r3\"}",
+                  "left": [
+                    {
+                      "id": "l1",
+                      "text": "Observar"
+                    },
+                    {
+                      "id": "l2",
+                      "text": "Decidir"
+                    },
+                    {
+                      "id": "l3",
+                      "text": "Actuar"
+                    }
+                  ],
+                  "right": [
+                    {
+                      "id": "r1",
+                      "text": "Leer la tarea, el error o la salida de una herramienta"
+                    },
+                    {
+                      "id": "r2",
+                      "text": "Elegir una herramienta, una pregunta o parar"
+                    },
+                    {
+                      "id": "r3",
+                      "text": "Ejecutar la herramienta con argumentos concretos"
+                    }
+                  ],
+                  "pairs": {
+                    "l1": "r1",
+                    "l2": "r2",
+                    "l3": "r3"
+                  }
+                },
+                {
+                  "id": "ag1-l1-e3",
+                  "type": "predict_output",
+                  "prompt": "Una herramienta `buscar` devuelve texto. ¿Qué imprime el agente?",
+                  "difficulty": 1,
+                  "xp": 10,
+                  "explanation": "Actuar es llamar la herramienta con un argumento. El valor devuelto es la nueva observación.",
+                  "solution": "encontrado:ventas",
+                  "acceptedOutputs": [
+                    "encontrado:ventas"
+                  ],
+                  "starterCode": "def ejecutar(nombre, argumento):\n    if nombre == 'buscar':\n        return f'encontrado:{argumento}'\n    return 'desconocido'\n\nprint(ejecutar('buscar', 'ventas'))"
+                },
+                {
+                  "id": "ag1-l1-e4",
+                  "type": "fill_blank",
+                  "prompt": "Completa la llamada a la herramienta.",
+                  "difficulty": 1,
+                  "xp": 12,
+                  "explanation": "El agente no 'piensa' el resultado de la herramienta: la ejecuta y lee lo que devolvió.",
+                  "solution": "def ejecutar(nombre, argumento):\n    return argumento.upper()\n\nobs = ejecutar( 'eco', 'mcp' )\nprint(obs)",
+                  "template": "def ejecutar(nombre, argumento):\n    return argumento.upper()\n\nobs = ___( 'eco', 'mcp' )\nprint(obs)",
+                  "blanks": [
+                    {
+                      "accepted": [
+                        "ejecutar"
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "id": "ag1-l1-e5",
+                  "type": "code",
+                  "prompt": "Define `ejecutar(nombre, argumento)` que, si nombre es `buscar`, devuelva `ok:` más el argumento. Llama `obs = ejecutar('buscar', 'precios')` e imprime `obs`.",
+                  "difficulty": 2,
+                  "xp": 18,
+                  "explanation": "La herramienta es una función. El agente solo acierta si el nombre y el argumento coinciden con el contrato.",
+                  "solution": "def ejecutar(nombre, argumento):\n    if nombre == 'buscar':\n        return 'ok:' + argumento\n    return 'desconocido'\n\nobs = ejecutar('buscar', 'precios')\nprint(obs)",
+                  "starterCode": "",
+                  "tests": [
+                    {
+                      "assert": "obs == 'ok:precios'"
+                    }
+                  ],
+                  "expectedStdout": "ok:precios"
+                }
+              ],
+              "level": 1
+            },
+            {
+              "id": "ag1-l2",
+              "title": "Afianza: herramientas y contratos",
+              "description": "Una herramienta tiene nombre, argumentos y un resultado predecible.",
+              "xp": 62,
+              "exercises": [
+                {
+                  "id": "ag1-l2-e1",
+                  "type": "multiple_choice",
+                  "prompt": "El modelo inventa `borrar_disco` pero esa herramienta no existe. ¿Qué debe hacer el harness?",
+                  "difficulty": 1,
+                  "xp": 10,
+                  "explanation": "El contrato es cerrado: solo corren herramientas registradas. El error entra al siguiente observar.",
+                  "solution": "Rechazar la llamada y devolver un error observable",
+                  "choices": [
+                    {
+                      "id": "a",
+                      "text": "Rechazar la llamada y devolver un error observable"
+                    },
+                    {
+                      "id": "b",
+                      "text": "Ejecutarla igual por si acaso"
+                    },
+                    {
+                      "id": "c",
+                      "text": "Reiniciar el computador"
+                    }
+                  ],
+                  "correctChoiceId": "a"
+                },
+                {
+                  "id": "ag1-l2-e2",
+                  "type": "predict_output",
+                  "prompt": "¿Qué imprime este despacho?",
+                  "difficulty": 1,
+                  "xp": 10,
+                  "explanation": "Un diccionario de nombre → función es un inventario mínimo de tools.",
+                  "solution": "hola\nTrue",
+                  "acceptedOutputs": [
+                    "hola\nTrue"
+                  ],
+                  "starterCode": "herramientas = {'hora': lambda: '10:00', 'eco': lambda t: t}\nprint(herramientas['eco']('hola'))\nprint('hora' in herramientas)"
+                },
+                {
+                  "id": "ag1-l2-e3",
+                  "type": "find_error",
+                  "prompt": "¿Qué falla aquí?",
+                  "difficulty": 2,
+                  "xp": 12,
+                  "explanation": "El agente debe comprobar `nombre in herramientas` antes de llamar.",
+                  "solution": "buscar no está registrada: KeyError",
+                  "choices": [
+                    {
+                      "id": "a",
+                      "text": "buscar no está registrada: KeyError"
+                    },
+                    {
+                      "id": "b",
+                      "text": "lambda no existe en Python"
+                    },
+                    {
+                      "id": "c",
+                      "text": "Las herramientas no pueden devolver texto"
+                    }
+                  ],
+                  "correctChoiceId": "a",
+                  "starterCode": "herramientas = {'eco': lambda t: t}\nprint(herramientas['buscar']('x'))"
+                },
+                {
+                  "id": "ag1-l2-e4",
+                  "type": "matching",
+                  "prompt": "Empareja el campo del contrato con su propósito.",
+                  "difficulty": 2,
+                  "xp": 12,
+                  "explanation": "Si el nombre cambia, el modelo llama a un fantasma. Si el schema falta, inventa argumentos.",
+                  "solution": "{\"l1\": \"r1\", \"l2\": \"r2\", \"l3\": \"r3\"}",
+                  "left": [
+                    {
+                      "id": "l1",
+                      "text": "name"
+                    },
+                    {
+                      "id": "l2",
+                      "text": "description"
+                    },
+                    {
+                      "id": "l3",
+                      "text": "inputSchema"
+                    }
+                  ],
+                  "right": [
+                    {
+                      "id": "r1",
+                      "text": "Identificador estable que el modelo debe copiar tal cual"
+                    },
+                    {
+                      "id": "r2",
+                      "text": "Cuándo usarla, en lenguaje humano"
+                    },
+                    {
+                      "id": "r3",
+                      "text": "Qué argumentos son obligatorios y de qué tipo"
+                    }
+                  ],
+                  "pairs": {
+                    "l1": "r1",
+                    "l2": "r2",
+                    "l3": "r3"
+                  }
+                },
+                {
+                  "id": "ag1-l2-e5",
+                  "type": "code",
+                  "prompt": "Crea `herramientas = {'eco': lambda t: t, 'hora': lambda: '10:00'}`. Guarda `n = len(herramientas)` e imprime `n` y el resultado de `herramientas['eco']('mcp')`.",
+                  "difficulty": 2,
+                  "xp": 18,
+                  "explanation": "Dos tools registradas. eco('mcp') devuelve el argumento sin tocarlo.",
+                  "solution": "herramientas = {'eco': lambda t: t, 'hora': lambda: '10:00'}\nn = len(herramientas)\nprint(n)\nprint(herramientas['eco']('mcp'))",
+                  "starterCode": "",
+                  "tests": [
+                    {
+                      "assert": "n == 2"
+                    },
+                    {
+                      "assert": "herramientas['eco']('mcp') == 'mcp'"
+                    }
+                  ],
+                  "expectedStdout": "2\nmcp"
+                }
+              ],
+              "level": 2
+            },
+            {
+              "id": "ag1-l3",
+              "title": "Practica: un paso de agente",
+              "description": "Observación → elección de herramienta → nueva observación.",
+              "xp": 64,
+              "exercises": [
+                {
+                  "id": "ag1-l3-e1",
+                  "type": "reorder",
+                  "prompt": "Ordena un paso del agente.",
+                  "difficulty": 2,
+                  "xp": 14,
+                  "explanation": "Primero la tarea, después la decisión (nombre y args), después actuar, después mirar.",
+                  "solution": "tarea = 'busca precios'\nnombre, argumento = 'buscar', 'precios'\nobs = ejecutar(nombre, argumento)\nprint(obs)",
+                  "blocks": [
+                    {
+                      "id": "a",
+                      "code": "tarea = 'busca precios'"
+                    },
+                    {
+                      "id": "b",
+                      "code": "nombre, argumento = 'buscar', 'precios'"
+                    },
+                    {
+                      "id": "c",
+                      "code": "obs = ejecutar(nombre, argumento)"
+                    },
+                    {
+                      "id": "d",
+                      "code": "print(obs)"
+                    }
+                  ],
+                  "correctOrder": [
+                    "a",
+                    "b",
+                    "c",
+                    "d"
+                  ]
+                },
+                {
+                  "id": "ag1-l3-e2",
+                  "type": "predict_output",
+                  "prompt": "El agente para si la observación empieza por ok. ¿Qué imprime?",
+                  "difficulty": 1,
+                  "xp": 10,
+                  "explanation": "La condición de parada se evalúa sobre la observación, no 'de oídas'.",
+                  "solution": "True\nprecios",
+                  "acceptedOutputs": [
+                    "True\nprecios"
+                  ],
+                  "starterCode": "obs = 'ok:precios'\nparar = obs.startswith('ok')\nprint(parar)\nprint(obs.split(':', 1)[1])"
+                },
+                {
+                  "id": "ag1-l3-e3",
+                  "type": "multiple_choice",
+                  "prompt": "¿Cuándo debe parar un agente bien diseñado?",
+                  "difficulty": 1,
+                  "xp": 10,
+                  "explanation": "Un harness serio tiene stop conditions. Sin ellas, el bucle se come tiempo y herramientas.",
+                  "solution": "Cuando la tarea está hecha, el usuario lo pide, o se acaba el presupuesto de pasos",
+                  "choices": [
+                    {
+                      "id": "a",
+                      "text": "Cuando la tarea está hecha, el usuario lo pide, o se acaba el presupuesto de pasos"
+                    },
+                    {
+                      "id": "b",
+                      "text": "Solo cuando se queda sin RAM"
+                    },
+                    {
+                      "id": "c",
+                      "text": "Nunca: un agente útil es infinito"
+                    }
+                  ],
+                  "correctChoiceId": "a"
+                },
+                {
+                  "id": "ag1-l3-e4",
+                  "type": "fill_blank",
+                  "prompt": "Completa la condición de parada por presupuesto.",
+                  "difficulty": 1,
+                  "xp": 12,
+                  "explanation": "pasos >= max_pasos corta el bucle aunque la tarea no haya terminado.",
+                  "solution": "pasos, max_pasos = 3, 3\nparar = pasos >= max_pasos\nprint(parar)",
+                  "template": "pasos, max_pasos = 3, 3\nparar = pasos >= ___\nprint(parar)",
+                  "blanks": [
+                    {
+                      "accepted": [
+                        "max_pasos"
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "id": "ag1-l3-e5",
+                  "type": "code",
+                  "prompt": "Con `pasos = 2`, `max_pasos = 4` y `hecho = False`, guarda `parar` = True si ya terminó o se acabó el presupuesto. Imprime `parar`.",
+                  "difficulty": 2,
+                  "xp": 18,
+                  "explanation": "2 < 4 y hecho es False, así que el bucle puede dar otro paso.",
+                  "solution": "pasos = 2\nmax_pasos = 4\nhecho = False\nparar = hecho or pasos >= max_pasos\nprint(parar)",
+                  "starterCode": "pasos = 2\nmax_pasos = 4\nhecho = False\n",
+                  "tests": [
+                    {
+                      "assert": "parar is False"
+                    }
+                  ],
+                  "expectedStdout": "False"
+                }
+              ],
+              "level": 3
+            }
+          ]
+        },
+        {
+          "id": "ag2",
+          "index": 2,
+          "title": "MCP: herramientas con contrato",
+          "description": "Model Context Protocol: servidores que exponen tools, resources y prompts con un esquema.",
+          "icon": "plug",
+          "isProject": false,
+          "isTemplate": false,
+          "lessons": [
+            {
+              "id": "ag2-l1",
+              "title": "Host, cliente y servidor",
+              "description": "MCP separa quién habla con el modelo de quién toca el mundo.",
+              "xp": 62,
+              "exercises": [
+                {
+                  "id": "ag2-l1-e1",
+                  "type": "multiple_choice",
+                  "prompt": "En MCP, ¿quién expone las herramientas (por ejemplo, leer un archivo)?",
+                  "difficulty": 1,
+                  "xp": 10,
+                  "explanation": "El servidor declara tools/resources/prompts. El host (Cursor, Claude Desktop, tu app) conecta al modelo con ese cliente.",
+                  "solution": "El servidor MCP",
+                  "choices": [
+                    {
+                      "id": "a",
+                      "text": "El servidor MCP"
+                    },
+                    {
+                      "id": "b",
+                      "text": "Solo el peso del modelo"
+                    },
+                    {
+                      "id": "c",
+                      "text": "El usuario, escribiendo JSON a mano cada vez"
+                    }
+                  ],
+                  "correctChoiceId": "a"
+                },
+                {
+                  "id": "ag2-l1-e2",
+                  "type": "matching",
+                  "prompt": "Empareja el rol MCP.",
+                  "difficulty": 2,
+                  "xp": 12,
+                  "explanation": "Un host puede tener varios clients, cada uno de un server distinto: git, docs, base de datos.",
+                  "solution": "{\"l1\": \"r1\", \"l2\": \"r2\", \"l3\": \"r3\"}",
+                  "left": [
+                    {
+                      "id": "l1",
+                      "text": "Host"
+                    },
+                    {
+                      "id": "l2",
+                      "text": "Client"
+                    },
+                    {
+                      "id": "l3",
+                      "text": "Server"
+                    }
+                  ],
+                  "right": [
+                    {
+                      "id": "r1",
+                      "text": "La app donde vive el modelo (IDE, chat, agente)"
+                    },
+                    {
+                      "id": "r2",
+                      "text": "El conector que habla el protocolo con un servidor"
+                    },
+                    {
+                      "id": "r3",
+                      "text": "El proceso que ofrece tools, resources o prompts"
+                    }
+                  ],
+                  "pairs": {
+                    "l1": "r1",
+                    "l2": "r2",
+                    "l3": "r3"
+                  }
+                },
+                {
+                  "id": "ag2-l1-e3",
+                  "type": "predict_output",
+                  "prompt": "Un inventario mínimo. ¿Qué imprime?",
+                  "difficulty": 1,
+                  "xp": 10,
+                  "explanation": "El servidor se presenta con un nombre y una lista de tools. El modelo solo puede llamar esas.",
+                  "solution": "docs\n2",
+                  "acceptedOutputs": [
+                    "docs\n2"
+                  ],
+                  "starterCode": "server = {'name': 'docs', 'tools': ['buscar', 'leer']}\nprint(server['name'])\nprint(len(server['tools']))"
+                },
+                {
+                  "id": "ag2-l1-e4",
+                  "type": "fill_blank",
+                  "prompt": "Completa el acceso a la lista de tools.",
+                  "difficulty": 1,
+                  "xp": 12,
+                  "explanation": "La clave 'tools' es el inventario. El host no adivina nombres que no estén ahí.",
+                  "solution": "server = {'name': 'fs', 'tools': ['listar']}\nprint(server['tools'])",
+                  "template": "server = {'name': 'fs', 'tools': ['listar']}\nprint(server[___])",
+                  "blanks": [
+                    {
+                      "accepted": [
+                        "'tools'",
+                        "\"tools\""
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "id": "ag2-l1-e5",
+                  "type": "code",
+                  "prompt": "Crea `server = {'name': 'ventas', 'tools': ['buscar', 'leer']}`. Guarda `n_tools = len(server['tools'])` e imprime `server['name']` y `n_tools`.",
+                  "difficulty": 2,
+                  "xp": 18,
+                  "explanation": "Así se 'anuncia' un servidor: nombre estable y tools contadas.",
+                  "solution": "server = {'name': 'ventas', 'tools': ['buscar', 'leer']}\nn_tools = len(server['tools'])\nprint(server['name'])\nprint(n_tools)",
+                  "starterCode": "",
+                  "tests": [
+                    {
+                      "assert": "server['name'] == 'ventas'"
+                    },
+                    {
+                      "assert": "n_tools == 2"
+                    }
+                  ],
+                  "expectedStdout": "ventas\n2"
+                }
+              ],
+              "level": 1
+            },
+            {
+              "id": "ag2-l2",
+              "title": "Afianza: tools, resources y prompts",
+              "description": "Tres primitivas, tres trabajos distintos.",
+              "xp": 62,
+              "exercises": [
+                {
+                  "id": "ag2-l2-e1",
+                  "type": "multiple_choice",
+                  "prompt": "¿Qué primitiva MCP usarías para un PDF que el modelo puede leer pero no debería 'ejecutar'?",
+                  "difficulty": 1,
+                  "xp": 10,
+                  "explanation": "Resources son datos. Tools hacen cosas (escribir, llamar APIs). Prompts son plantillas reutilizables.",
+                  "solution": "Resource (dato legible, con URI)",
+                  "choices": [
+                    {
+                      "id": "a",
+                      "text": "Resource (dato legible, con URI)"
+                    },
+                    {
+                      "id": "b",
+                      "text": "Tool (acción con efectos)"
+                    },
+                    {
+                      "id": "c",
+                      "text": "Prompt (plantilla de instrucciones)"
+                    }
+                  ],
+                  "correctChoiceId": "a"
+                },
+                {
+                  "id": "ag2-l2-e2",
+                  "type": "matching",
+                  "prompt": "Empareja la primitiva con un ejemplo.",
+                  "difficulty": 2,
+                  "xp": 12,
+                  "explanation": "Si algo tiene efectos, es tool. Si solo se consulta, resource. Si es texto de sistema reutilizable, prompt.",
+                  "solution": "{\"l1\": \"r1\", \"l2\": \"r2\", \"l3\": \"r3\"}",
+                  "left": [
+                    {
+                      "id": "l1",
+                      "text": "Tool"
+                    },
+                    {
+                      "id": "l2",
+                      "text": "Resource"
+                    },
+                    {
+                      "id": "l3",
+                      "text": "Prompt"
+                    }
+                  ],
+                  "right": [
+                    {
+                      "id": "r1",
+                      "text": "crear_issue(titulo, cuerpo)"
+                    },
+                    {
+                      "id": "r2",
+                      "text": "file:///reporte.csv"
+                    },
+                    {
+                      "id": "r3",
+                      "text": "Plantilla 'explica este diff'"
+                    }
+                  ],
+                  "pairs": {
+                    "l1": "r1",
+                    "l2": "r2",
+                    "l3": "r3"
+                  }
+                },
+                {
+                  "id": "ag2-l2-e3",
+                  "type": "predict_output",
+                  "prompt": "Schema de una tool. ¿Qué imprime?",
+                  "difficulty": 1,
+                  "xp": 10,
+                  "explanation": "required=['path'] obliga al modelo a enviar esa clave. Sin path, el server debe rechazar.",
+                  "solution": "leer_archivo\n['path']",
+                  "acceptedOutputs": [
+                    "leer_archivo\n['path']"
+                  ],
+                  "starterCode": "schema = {\n    'name': 'leer_archivo',\n    'inputSchema': {\n        'type': 'object',\n        'properties': {'path': {'type': 'string'}},\n        'required': ['path'],\n    },\n}\nprint(schema['name'])\nprint(schema['inputSchema']['required'])"
+                },
+                {
+                  "id": "ag2-l2-e4",
+                  "type": "find_error",
+                  "prompt": "¿Qué incumplimiento hay en esta llamada?",
+                  "difficulty": 2,
+                  "xp": 12,
+                  "explanation": "El modelo debe copiar los nombres del schema. 'archivo' no satisface required=['path'].",
+                  "solution": "El argumento se llama path, no archivo: el contrato no se cumple",
+                  "choices": [
+                    {
+                      "id": "a",
+                      "text": "El argumento se llama path, no archivo: el contrato no se cumple"
+                    },
+                    {
+                      "id": "b",
+                      "text": "JSON no admite listas"
+                    },
+                    {
+                      "id": "c",
+                      "text": "Las tools no tienen argumentos"
+                    }
+                  ],
+                  "correctChoiceId": "a",
+                  "starterCode": "schema_required = ['path']\nargs = {'archivo': 'notas.md'}\nprint(all(k in args for k in schema_required))"
+                },
+                {
+                  "id": "ag2-l2-e5",
+                  "type": "code",
+                  "prompt": "Crea `tool` con `name='leer_archivo'` y `required=['path']` (dentro de inputSchema). Imprime `tool['name']` y el primer required.",
+                  "difficulty": 2,
+                  "xp": 18,
+                  "explanation": "El schema es el contrato. required[0] es path.",
+                  "solution": "tool = {'name': 'leer_archivo', 'inputSchema': {'type': 'object', 'properties': {'path': {'type': 'string'}}, 'required': ['path']}}\nprint(tool['name'])\nprint(tool['inputSchema']['required'][0])",
+                  "starterCode": "",
+                  "tests": [
+                    {
+                      "assert": "tool['name'] == 'leer_archivo'"
+                    },
+                    {
+                      "assert": "tool['inputSchema']['required'] == ['path']"
+                    }
+                  ],
+                  "expectedStdout": "leer_archivo\npath"
+                }
+              ],
+              "level": 2
+            },
+            {
+              "id": "ag2-l3",
+              "title": "Practica: un servidor mínimo",
+              "description": "Valida argumentos y despacha dos tools.",
+              "xp": 62,
+              "exercises": [
+                {
+                  "id": "ag2-l3-e1",
+                  "type": "predict_output",
+                  "prompt": "¿Qué imprime este servidor de juguete?",
+                  "difficulty": 1,
+                  "xp": 10,
+                  "explanation": "sumar conoce a y b. otra no está registrada y el servidor responde error, no improvisa.",
+                  "solution": "5\nerror:tool",
+                  "acceptedOutputs": [
+                    "5\nerror:tool"
+                  ],
+                  "starterCode": "def despachar(nombre, args):\n    if nombre == 'eco':\n        return args['texto']\n    if nombre == 'sumar':\n        return str(args['a'] + args['b'])\n    return 'error:tool'\n\nprint(despachar('sumar', {'a': 2, 'b': 3}))\nprint(despachar('otra', {}))"
+                },
+                {
+                  "id": "ag2-l3-e2",
+                  "type": "multiple_choice",
+                  "prompt": "¿Por qué MCP es más sostenible que un plugin ad hoc por cada app?",
+                  "difficulty": 1,
+                  "xp": 10,
+                  "explanation": "Un server de git o de docs se reutiliza. El protocolo es el enchufe; el host es el aparato.",
+                  "solution": "El mismo servidor puede conectarse a varios hosts que hablen el protocolo",
+                  "choices": [
+                    {
+                      "id": "a",
+                      "text": "El mismo servidor puede conectarse a varios hosts que hablen el protocolo"
+                    },
+                    {
+                      "id": "b",
+                      "text": "Elimina la necesidad de schemas"
+                    },
+                    {
+                      "id": "c",
+                      "text": "Obliga a entrenar un modelo nuevo por herramienta"
+                    }
+                  ],
+                  "correctChoiceId": "a"
+                },
+                {
+                  "id": "ag2-l3-e3",
+                  "type": "fill_blank",
+                  "prompt": "Rechaza una tool desconocida.",
+                  "difficulty": 1,
+                  "xp": 12,
+                  "explanation": "El string error:tool es la observación que el agente verá en el siguiente giro.",
+                  "solution": "def despachar(nombre, args):\n    if nombre not in {'eco', 'sumar'}:\n        return 'error:tool'\n    return 'ok'\nprint(despachar('borrar', {}))",
+                  "template": "def despachar(nombre, args):\n    if nombre not in {'eco', 'sumar'}:\n        return 'error:___'\n    return 'ok'\nprint(despachar('borrar', {}))",
+                  "blanks": [
+                    {
+                      "accepted": [
+                        "tool"
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "id": "ag2-l3-e4",
+                  "type": "code",
+                  "prompt": "Escribe `despachar(nombre, args)` con tools `eco` (devuelve args['texto']) y `sumar` (devuelve a+b como int). Guarda `r = despachar('sumar', {'a': 10, 'b': 5})` e imprime `r`.",
+                  "difficulty": 2,
+                  "xp": 18,
+                  "explanation": "10+5=15. Un server MCP real haría lo mismo tras validar el JSON contra el schema.",
+                  "solution": "def despachar(nombre, args):\n    if nombre == 'eco':\n        return args['texto']\n    if nombre == 'sumar':\n        return args['a'] + args['b']\n    return 'error:tool'\n\nr = despachar('sumar', {'a': 10, 'b': 5})\nprint(r)",
+                  "starterCode": "",
+                  "tests": [
+                    {
+                      "assert": "r == 15"
+                    }
+                  ],
+                  "expectedStdout": "15"
+                },
+                {
+                  "id": "ag2-l3-e5",
+                  "type": "matching",
+                  "prompt": "Empareja el mensaje de error con la causa.",
+                  "difficulty": 2,
+                  "xp": 12,
+                  "explanation": "Errores observables enseñan al agente a corregir. Un silencio o un crash no.",
+                  "solution": "{\"l1\": \"r1\", \"l2\": \"r2\", \"l3\": \"r3\"}",
+                  "left": [
+                    {
+                      "id": "l1",
+                      "text": "error:tool"
+                    },
+                    {
+                      "id": "l2",
+                      "text": "error:args"
+                    },
+                    {
+                      "id": "l3",
+                      "text": "ok"
+                    }
+                  ],
+                  "right": [
+                    {
+                      "id": "r1",
+                      "text": "El nombre no está en el inventario"
+                    },
+                    {
+                      "id": "r2",
+                      "text": "Falta una clave required del schema"
+                    },
+                    {
+                      "id": "r3",
+                      "text": "La tool corrió con argumentos válidos"
+                    }
+                  ],
+                  "pairs": {
+                    "l1": "r1",
+                    "l2": "r2",
+                    "l3": "r3"
+                  }
+                }
+              ],
+              "level": 3
+            }
+          ]
+        },
+        {
+          "id": "ag3",
+          "index": 3,
+          "title": "Skills y harness",
+          "description": "Una skill es un procedimiento reutilizable; el harness es el runtime que lo ejecuta con límites.",
+          "icon": "wrench",
+          "isProject": false,
+          "isTemplate": false,
+          "lessons": [
+            {
+              "id": "ag3-l1",
+              "title": "Qué es una skill",
+              "description": "Instrucciones, cuándo usarla y qué herramientas toca.",
+              "xp": 62,
+              "exercises": [
+                {
+                  "id": "ag3-l1-e1",
+                  "type": "multiple_choice",
+                  "prompt": "¿Qué es una skill en un agente?",
+                  "difficulty": 1,
+                  "xp": 10,
+                  "explanation": "La skill no 'entrena' al modelo: le da un playbook estable (como un SKILL.md) para una clase de tareas.",
+                  "solution": "Un procedimiento empaquetado: cuándo usarlo, pasos y herramientas permitidas",
+                  "choices": [
+                    {
+                      "id": "a",
+                      "text": "Un procedimiento empaquetado: cuándo usarlo, pasos y herramientas permitidas"
+                    },
+                    {
+                      "id": "b",
+                      "text": "Un peso extra del modelo"
+                    },
+                    {
+                      "id": "c",
+                      "text": "Un atajo de teclado del IDE"
+                    }
+                  ],
+                  "correctChoiceId": "a"
+                },
+                {
+                  "id": "ag3-l1-e2",
+                  "type": "matching",
+                  "prompt": "Empareja el campo de una skill.",
+                  "difficulty": 2,
+                  "xp": 12,
+                  "explanation": "Sin 'when', el agente no sabe cuándo abrirla. Sin steps, improvisa.",
+                  "solution": "{\"l1\": \"r1\", \"l2\": \"r2\", \"l3\": \"r3\"}",
+                  "left": [
+                    {
+                      "id": "l1",
+                      "text": "name"
+                    },
+                    {
+                      "id": "l2",
+                      "text": "when / description"
+                    },
+                    {
+                      "id": "l3",
+                      "text": "steps"
+                    }
+                  ],
+                  "right": [
+                    {
+                      "id": "r1",
+                      "text": "Identificador para activarla"
+                    },
+                    {
+                      "id": "r2",
+                      "text": "Señales de que esta tarea le corresponde"
+                    },
+                    {
+                      "id": "r3",
+                      "text": "El procedimiento en orden"
+                    }
+                  ],
+                  "pairs": {
+                    "l1": "r1",
+                    "l2": "r2",
+                    "l3": "r3"
+                  }
+                },
+                {
+                  "id": "ag3-l1-e3",
+                  "type": "predict_output",
+                  "prompt": "¿Qué imprime esta skill?",
+                  "difficulty": 1,
+                  "xp": 10,
+                  "explanation": "Cuatro pasos obligan a citar n. Eso es diseño de skill, no un prompt suelto.",
+                  "solution": "resumir-csv\n4",
+                  "acceptedOutputs": [
+                    "resumir-csv\n4"
+                  ],
+                  "starterCode": "skill = {\n    'name': 'resumir-csv',\n    'when': 'pidan un resumen de tabla',\n    'steps': ['leer', 'limpiar', 'resumir', 'citar n'],\n}\nprint(skill['name'])\nprint(len(skill['steps']))"
+                },
+                {
+                  "id": "ag3-l1-e4",
+                  "type": "fill_blank",
+                  "prompt": "Completa el recuento de pasos.",
+                  "difficulty": 1,
+                  "xp": 12,
+                  "explanation": "len deja medible el procedimiento. Un playbook de 1 paso no es un playbook.",
+                  "solution": "skill = {'steps': ['leer', 'limpiar', 'resumir']}\nprint(len(skill['steps']))",
+                  "template": "skill = {'steps': ['leer', 'limpiar', 'resumir']}\nprint(___(skill['steps']))",
+                  "blanks": [
+                    {
+                      "accepted": [
+                        "len"
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "id": "ag3-l1-e5",
+                  "type": "code",
+                  "prompt": "Crea `skill` con name `resumir-csv` y steps `['leer', 'limpiar', 'resumir', 'citar n']`. Imprime el name y `len(skill['steps'])`.",
+                  "difficulty": 2,
+                  "xp": 18,
+                  "explanation": "El último paso cita n: la skill enseña el hábito, no solo el cálculo.",
+                  "solution": "skill = {'name': 'resumir-csv', 'steps': ['leer', 'limpiar', 'resumir', 'citar n']}\nprint(skill['name'])\nprint(len(skill['steps']))",
+                  "starterCode": "",
+                  "tests": [
+                    {
+                      "assert": "skill['name'] == 'resumir-csv'"
+                    },
+                    {
+                      "assert": "skill['steps'][-1] == 'citar n'"
+                    }
+                  ],
+                  "expectedStdout": "resumir-csv\n4"
+                }
+              ],
+              "level": 1
+            },
+            {
+              "id": "ag3-l2",
+              "title": "Afianza: el harness",
+              "description": "Permisos, reintentos, memoria y parada: el runtime del agente.",
+              "xp": 62,
+              "exercises": [
+                {
+                  "id": "ag3-l2-e1",
+                  "type": "multiple_choice",
+                  "prompt": "El harness de un agente es…",
+                  "difficulty": 1,
+                  "xp": 10,
+                  "explanation": "El modelo propone; el harness ejecuta con reglas. Sin harness, una skill es un PDF.",
+                  "solution": "El runtime: bucle, herramientas permitidas, reintentos, memoria y condiciones de parada",
+                  "choices": [
+                    {
+                      "id": "a",
+                      "text": "El runtime: bucle, herramientas permitidas, reintentos, memoria y condiciones de parada"
+                    },
+                    {
+                      "id": "b",
+                      "text": "El dataset de preentrenamiento"
+                    },
+                    {
+                      "id": "c",
+                      "text": "Un cable USB"
+                    }
+                  ],
+                  "correctChoiceId": "a"
+                },
+                {
+                  "id": "ag3-l2-e2",
+                  "type": "predict_output",
+                  "prompt": "Permisos: solo 'leer'. ¿Qué imprime?",
+                  "difficulty": 1,
+                  "xp": 10,
+                  "explanation": "El harness niega borrar aunque el modelo lo pida. La skill no amplía permisos por sí sola.",
+                  "solution": "False\nTrue",
+                  "acceptedOutputs": [
+                    "False\nTrue"
+                  ],
+                  "starterCode": "permitidas = {'leer'}\npedida = 'borrar'\nprint(pedida in permitidas)\nprint('leer' in permitidas)"
+                },
+                {
+                  "id": "ag3-l2-e3",
+                  "type": "matching",
+                  "prompt": "Empareja la palanca del harness.",
+                  "difficulty": 2,
+                  "xp": 12,
+                  "explanation": "Un harness flojo deja al modelo con todas las tools y sin recorte de contexto.",
+                  "solution": "{\"l1\": \"r1\", \"l2\": \"r2\", \"l3\": \"r3\"}",
+                  "left": [
+                    {
+                      "id": "l1",
+                      "text": "Permisos"
+                    },
+                    {
+                      "id": "l2",
+                      "text": "Reintentos"
+                    },
+                    {
+                      "id": "l3",
+                      "text": "Memoria / contexto"
+                    }
+                  ],
+                  "right": [
+                    {
+                      "id": "r1",
+                      "text": "Qué tools puede tocar esta sesión"
+                    },
+                    {
+                      "id": "r2",
+                      "text": "Cuántas veces se reintenta un fallo recuperable"
+                    },
+                    {
+                      "id": "r3",
+                      "text": "Qué observaciones se conservan entre pasos"
+                    }
+                  ],
+                  "pairs": {
+                    "l1": "r1",
+                    "l2": "r2",
+                    "l3": "r3"
+                  }
+                },
+                {
+                  "id": "ag3-l2-e4",
+                  "type": "find_error",
+                  "prompt": "¿Qué riesgo hay aquí?",
+                  "difficulty": 2,
+                  "xp": 12,
+                  "explanation": "Una skill de resumir CSV no necesita pagar. El harness aplica el mínimo privilegio.",
+                  "solution": "pagar está permitida sin necesidad: el harness es demasiado amplio para la skill",
+                  "choices": [
+                    {
+                      "id": "a",
+                      "text": "pagar está permitida sin necesidad: el harness es demasiado amplio para la skill"
+                    },
+                    {
+                      "id": "b",
+                      "text": "in no funciona con sets"
+                    },
+                    {
+                      "id": "c",
+                      "text": "Las tools no tienen nombres"
+                    }
+                  ],
+                  "correctChoiceId": "a",
+                  "starterCode": "permitidas = {'leer', 'borrar', 'pagar'}\npedida = 'pagar'\nprint(pedida in permitidas)"
+                },
+                {
+                  "id": "ag3-l2-e5",
+                  "type": "code",
+                  "prompt": "`permitidas = {'leer', 'resumir'}`. Guarda `ok` = si `'borrar'` está permitida e imprime `ok`.",
+                  "difficulty": 2,
+                  "xp": 18,
+                  "explanation": "False: el harness de esta skill no deja borrar.",
+                  "solution": "permitidas = {'leer', 'resumir'}\nok = 'borrar' in permitidas\nprint(ok)",
+                  "starterCode": "permitidas = {'leer', 'resumir'}\n",
+                  "tests": [
+                    {
+                      "assert": "ok is False"
+                    }
+                  ],
+                  "expectedStdout": "False"
+                }
+              ],
+              "level": 2
+            },
+            {
+              "id": "ag3-l3",
+              "title": "Practica: evaluar al agente",
+              "description": "Una tarea con resultado esperado late más que 'se sintió inteligente'.",
+              "xp": 62,
+              "exercises": [
+                {
+                  "id": "ag3-l3-e1",
+                  "type": "multiple_choice",
+                  "prompt": "¿Cómo evalúas un agente de forma seria?",
+                  "difficulty": 1,
+                  "xp": 10,
+                  "explanation": "Evals: input, output esperado, presupuesto. El like ayuda, pero no sustituye el caso de prueba.",
+                  "solution": "Con tareas fijas, un resultado esperado y límites de pasos/tools",
+                  "choices": [
+                    {
+                      "id": "a",
+                      "text": "Con tareas fijas, un resultado esperado y límites de pasos/tools"
+                    },
+                    {
+                      "id": "b",
+                      "text": "Solo con un like del usuario"
+                    },
+                    {
+                      "id": "c",
+                      "text": "Midiendo cuántos tokens usa, sin mirar si acertó"
+                    }
+                  ],
+                  "correctChoiceId": "a"
+                },
+                {
+                  "id": "ag3-l3-e2",
+                  "type": "predict_output",
+                  "prompt": "Eval de juguete. ¿Qué imprime?",
+                  "difficulty": 1,
+                  "xp": 10,
+                  "explanation": "Acertó el texto y respetó el presupuesto. Las dos condiciones importan.",
+                  "solution": "True\nTrue",
+                  "acceptedOutputs": [
+                    "True\nTrue"
+                  ],
+                  "starterCode": "esperado = 'n=3; total=12'\nobtenido = 'n=3; total=12'\npasos = 2\nprint(obtenido == esperado)\nprint(pasos <= 4)"
+                },
+                {
+                  "id": "ag3-l3-e3",
+                  "type": "fill_blank",
+                  "prompt": "Completa la eval: ¿el resultado coincide?",
+                  "difficulty": 1,
+                  "xp": 12,
+                  "explanation": "== compara el artefacto. Para números, a veces usas un margen; para texto de informe, igualdad o un checker.",
+                  "solution": "esperado, obtenido = 'ok', 'ok'\nprint(obtenido == esperado)",
+                  "template": "esperado, obtenido = 'ok', 'ok'\nprint(obtenido ___ esperado)",
+                  "blanks": [
+                    {
+                      "accepted": [
+                        "=="
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "id": "ag3-l3-e4",
+                  "type": "code",
+                  "prompt": "Con `esperado = 'n=3'`, `obtenido = 'n=3'` y `pasos = 5` con `max_pasos = 4`, guarda `paso` = si acertó y `presupuesto` = si no se pasó de pasos. Imprime `paso` y `presupuesto`.",
+                  "difficulty": 2,
+                  "xp": 18,
+                  "explanation": "Acertó el contenido pero gastó 5>4 pasos: la eval no es un aprobado limpio.",
+                  "solution": "esperado = 'n=3'\nobtenido = 'n=3'\npasos = 5\nmax_pasos = 4\npaso = obtenido == esperado\npresupuesto = pasos <= max_pasos\nprint(paso)\nprint(presupuesto)",
+                  "starterCode": "esperado = 'n=3'\nobtenido = 'n=3'\npasos = 5\nmax_pasos = 4\n",
+                  "tests": [
+                    {
+                      "assert": "paso is True"
+                    },
+                    {
+                      "assert": "presupuesto is False"
+                    }
+                  ],
+                  "expectedStdout": "True\nFalse"
+                },
+                {
+                  "id": "ag3-l3-e5",
+                  "type": "matching",
+                  "prompt": "Empareja el síntoma con el ajuste.",
+                  "difficulty": 2,
+                  "xp": 12,
+                  "explanation": "La eval te dice qué palanca tocar: skill, harness o diseño de la tarea.",
+                  "solution": "{\"l1\": \"r1\", \"l2\": \"r2\", \"l3\": \"r3\"}",
+                  "left": [
+                    {
+                      "id": "l1",
+                      "text": "Acertó pero usó tools prohibidas"
+                    },
+                    {
+                      "id": "l2",
+                      "text": "Falló el formato (faltó n)"
+                    },
+                    {
+                      "id": "l3",
+                      "text": "Se quedó sin pasos a mitad de tarea"
+                    }
+                  ],
+                  "right": [
+                    {
+                      "id": "r1",
+                      "text": "Apretar permisos del harness"
+                    },
+                    {
+                      "id": "r2",
+                      "text": "Mejorar la skill (paso 'citar n')"
+                    },
+                    {
+                      "id": "r3",
+                      "text": "Subir presupuesto o partir la tarea"
+                    }
+                  ],
+                  "pairs": {
+                    "l1": "r1",
+                    "l2": "r2",
+                    "l3": "r3"
+                  }
+                }
+              ],
+              "level": 3
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

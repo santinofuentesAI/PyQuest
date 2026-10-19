@@ -1,11 +1,11 @@
-import { SECTIONS } from "./curriculum";
+import { ALL_SECTIONS } from "./curriculum";
 import { LIBRARY, getLibraryArticle, type LibraryArticle } from "@/content/library";
 
 export { LIBRARY, getLibraryArticle };
 export type { LibraryArticle };
 
 export function librarySections() {
-  return SECTIONS.map((section) => ({
+  return ALL_SECTIONS.map((section) => ({
     id: section.id,
     title: section.title,
     subtitle: section.subtitle,
