@@ -1,6 +1,7 @@
 import assert from "node:assert/strict";
 import { COURSE_CATALOG, unitAccess } from "../src/lib/courses";
 import { unitsForCourse } from "../src/lib/curriculum";
+import { canSkipToUnit } from "../src/lib/skip-exam";
 import type { CourseId, UserProgress } from "../src/lib/types";
 
 function progress(partial: Partial<UserProgress> = {}): UserProgress {
@@ -86,6 +87,9 @@ assert.equal(unitAccess("da2", finishedDa1), "open");
 const all = progress({ unlockAll: true });
 assert.equal(unitAccess("u40", all), "open");
 assert.equal(unitAccess("ag3", all), "open");
+assert.equal(canSkipToUnit("u2", empty), true);
+assert.equal(canSkipToUnit("u4", empty), false);
+assert.equal(canSkipToUnit("u40", all), false);
 
 for (const course of COURSE_CATALOG) {
   const units = unitsForCourse(course.id as CourseId);

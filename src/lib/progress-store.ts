@@ -17,8 +17,9 @@ import {
   todayKey,
   weekId,
 } from "./gamification";
-import { DEFAULT_COURSE_ID, getUnitByLessonId, PYTHON_IA_UNITS, UNITS, unitsForCourse } from "./curriculum";
-import { normalizeCourseId, unitAccess } from "./courses";
+import { DEFAULT_COURSE_ID, getCourseIdForUnit, getUnit, getUnitByLessonId, PYTHON_IA_UNITS, UNITS, unitsForCourse } from "./curriculum";
+import { normalizeCourseId, unitAccess, unitIsIncluded } from "./courses";
+import { SKIP_EXAM_PASS, skipExamPassed } from "./skip-exam";
 import { FULL_UNLOCK_CODE, hasFullUnlock, lookupCode } from "./redeem-codes";
 import { DEFAULT_PALETTE, type PaletteId } from "./palettes";
 
@@ -60,6 +61,27 @@ function emptyJobProgress(): JobProjectProgress {
   return { completed: false, hintsUsed: 0, paidUsd: 0, failCount: 0 };
 }
 
+function markUnitsKnown(progress: UserProgress, units: { id: string; lessons: { id: string; exercises: unknown[] }[] }[], nowIso: string) {
+  for (const unit of units) {
+    progress.units[unit.id] = {
+      strength: 0.7,
+      lastPracticedAt: nowIso,
+      completedLessonIds: unit.lessons.map((lesson) => lesson.id),
+    };
+    for (const lesson of unit.lessons) {
+      if (progress.completedLessons[lesson.id]) continue;
+      progress.completedLessons[lesson.id] = {
+        lessonId: lesson.id,
+        completedAt: nowIso,
+        correct: lesson.exercises.length,
+        total: lesson.exercises.length,
+        xp: 0,
+        perfect: false,
+      };
+    }
+  }
+}
+
 type ProgressState = UserProgress & {
   hydrated: boolean;
   setHydrated: () => void;
@@ -75,6 +97,7 @@ type ProgressState = UserProgress & {
   buyFreezeWithSalary: () => boolean;
   completeLesson: (result: LessonResult) => string[];
   applyPlacement: (score: number, total: number) => string;
+  applySkipExam: (unitId: string, score: number, total: number) => { passed: boolean; unitId: string; score: number; needed: number };
   unlockPracticeHearts: () => void;
   addLegendaryScore: (xp: number) => void;
   setSound: (on: boolean) => void;
@@ -259,27 +282,36 @@ export const useProgress = create<ProgressState>()(
           units: { ...get().units },
         };
         const unitIndex = PYTHON_IA_UNITS.find((u) => u.id === startingUnitId)?.index ?? 1;
-        PYTHON_IA_UNITS.filter((u) => u.index < unitIndex).forEach((u) => {
-          p.units[u.id] = {
-            strength: 0.7,
-            lastPracticedAt: nowIso,
-            completedLessonIds: u.lessons.map((l) => l.id),
-          };
-          for (const lesson of u.lessons) {
-            if (p.completedLessons[lesson.id]) continue;
-            p.completedLessons[lesson.id] = {
-              lessonId: lesson.id,
-              completedAt: nowIso,
-              correct: lesson.exercises.length,
-              total: lesson.exercises.length,
-              xp: 0,
-              perfect: false,
-            };
-          }
-        });
+        markUnitsKnown(p, PYTHON_IA_UNITS.filter((u) => u.index < unitIndex), nowIso);
         awardBadges(p);
         set(p);
         return startingUnitId;
+      },
+      applySkipExam: (unitId, score, total) => {
+        const needed = SKIP_EXAM_PASS;
+        const target = getUnit(unitId);
+        const result = { passed: false, unitId, score, needed };
+        const courseId = getCourseIdForUnit(unitId);
+        const units = courseId ? unitsForCourse(courseId) : [];
+        const index = units.findIndex((unit) => unit.id === unitId);
+        if (!target || !courseId || index <= 0 || !skipExamPassed(score, total)) return result;
+        if (!unitIsIncluded(courseId, index, get())) return result;
+        const nowIso = new Date().toISOString();
+        const p: UserProgress = {
+          ...get(),
+          xp: get().xp + 50,
+          gems: get().gems + 4,
+          completedLessons: { ...get().completedLessons },
+          units: { ...get().units },
+        };
+        markUnitsKnown(p, units.filter((unit) => unit.index < target.index), nowIso);
+        if (courseId === "python-ia") {
+          const currentStart = PYTHON_IA_UNITS.find((unit) => unit.id === p.startingUnitId)?.index ?? 1;
+          if (target.index > currentStart) p.startingUnitId = unitId;
+        }
+        awardBadges(p);
+        set(p);
+        return { ...result, passed: true };
       },
       unlockPracticeHearts: () => {},
       addLegendaryScore: (xp) => {
@@ -549,6 +581,7 @@ export const useProgress = create<ProgressState>()(
           "buyFreezeWithSalary",
           "completeLesson",
           "applyPlacement",
+          "applySkipExam",
           "unlockPracticeHearts",
           "addLegendaryScore",
           "setSound",

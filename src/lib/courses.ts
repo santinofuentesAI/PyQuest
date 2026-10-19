@@ -50,9 +50,14 @@ export function unitAccess(unitId: string, progress: UserProgress): UnitAccess {
   }
 
   if (!reached) return "progression";
-  const free = index < getCourseEntry(courseId).freeUnitCount;
-  if (!free && !ownsCourse(progress, courseId)) return "paywall";
+  if (!unitIsIncluded(courseId, index, progress)) return "paywall";
   return "open";
+}
+
+/** True if this theme is in the free slice or the learner already unlocked the course. */
+export function unitIsIncluded(courseId: CourseId, index: number, progress: UserProgress) {
+  if (hasFullUnlock(progress)) return true;
+  return index < getCourseEntry(courseId).freeUnitCount || ownsCourse(progress, courseId);
 }
 
 export function formatCoursePrice(usd = COURSE_PRICE_USD) {
