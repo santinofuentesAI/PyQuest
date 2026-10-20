@@ -3,11 +3,13 @@
 import { useState } from "react";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
-import { ArrowRight, RefreshCw } from "lucide-react";
+import { ArrowRight, RefreshCw, Volume2 } from "lucide-react";
 import { Dialog, DialogContent, DialogTitle, DialogDescription, DialogTrigger } from "@/components/ui/dialog";
 import { Pybot } from "@/components/pybot";
 import { Button } from "@/components/ui/button";
 import { isImmersivePath } from "@/lib/chrome";
+import { useProgress } from "@/lib/progress-store";
+import { speakSpanish } from "@/lib/speech";
 
 const GUIDES: Record<string, { label: string; tips: string[]; href: string; action: string }> = {
   "/learn": { label: "Un paso a la vez", tips: ["Pulsa Empezar clase o Retomar clase, arriba a la derecha. Cada tema tiene cinco niveles; el primero abre la siguiente unidad.", "Equivocarte también enseña. Una pregunta consume como máximo un corazón y puedes corregirla.", "La clase explica el nivel y luego practicas. La librería es extra, por si quieres leer más."], href: "/learn", action: "Seguir en el mapa" },
@@ -19,6 +21,7 @@ const GUIDES: Record<string, { label: string; tips: string[]; href: string; acti
 
 export function PybotHelp({ inline = false }: { inline?: boolean }) {
   const path = usePathname();
+  const voiceURI = useProgress((s) => s.voiceURI);
   const [tip, setTip] = useState(0);
   if ((isImmersivePath(path) && !inline) || (path === "/playground" && !inline)) return null;
   const guide = Object.entries(GUIDES).find(([key]) => path.startsWith(key))?.[1] ?? GUIDES["/learn"];
@@ -31,6 +34,7 @@ export function PybotHelp({ inline = false }: { inline?: boolean }) {
       <DialogTitle className="text-center text-2xl font-extrabold">Hola, soy Pybot.</DialogTitle>
       <DialogDescription className="text-center">Tu compañero de aprendizaje en PyQuest.</DialogDescription>
       <div className="rounded-2xl bg-muted/60 p-4"><p className="mb-2 text-xs font-bold text-primary">{guide.label}</p><p role="status" className="text-sm leading-relaxed">{guide.tips[tip % guide.tips.length]}</p></div>
+      <Button variant="outline" className="h-11 rounded-xl" onClick={() => speakSpanish(guide.tips[tip % guide.tips.length], voiceURI)}><Volume2 className="size-4" />Escuchar</Button>
       <Button variant="outline" className="h-11 rounded-xl" onClick={() => setTip((n) => n + 1)}><RefreshCw className="size-4" />Otro consejo</Button>
       <Button className="h-11 rounded-xl" render={<Link href={guide.href} />}>{guide.action}<ArrowRight className="size-4" /></Button>
     </DialogContent>

@@ -302,6 +302,8 @@ a.quest-card.quest-current {
 .pybot-shadow { animation: pybot-shadow 4s ease-in-out infinite; transform-origin: 100px 190px; }
 .pybot-arm-right { transform-origin: 65px 143px; }
 .pybot[data-mood="wave"] .pybot-arm-right { animation: pybot-wave 1.3s ease-in-out 3; }
+.pybot[data-mood="wave"] .pybot-mouth { animation: pybot-talk .42s ease-in-out infinite; transform-origin: 100px 108px; }
+.pybot-help .pybot[data-mood="wave"] .pybot-arm-right { animation-iteration-count: infinite; }
 .pybot[data-mood="celebrate"] .pybot-float { animation: pybot-celebrate .65s ease-in-out 3; }
 .pybot[data-mood="thinking"] .pybot-float { animation-duration: 6s; }
 .pybot-eyes { animation: pybot-blink 7s infinite; transform-origin: 100px 85px; }
@@ -316,9 +318,10 @@ a.quest-card.quest-current {
 @keyframes pybot-celebrate { 0%,100% { transform: translateY(0) rotate(-4deg); } 50% { transform: translateY(-12px) rotate(4deg); } }
 @keyframes pybot-blink { 0%,43%,47%,100% { transform: scaleY(1); } 45% { transform: scaleY(.1); } }
 @keyframes pybot-sparkle { 0%,100% { opacity: .4; transform: scale(.9); } 50% { opacity: 1; transform: scale(1.05); } }
+@keyframes pybot-talk { 0%, 100% { transform: scaleY(1); } 50% { transform: scaleY(.28); } }
 .ai-caret { animation: ai-caret 1s steps(1) infinite; }
 @keyframes ai-caret { 50% { opacity: 0; } }
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; scroll-behavior: auto !important; }
-  .pybot-float, .pybot-shadow, .pybot-eyes, .pybot-arm-right, .pybot-sparkles, .ai-caret { animation: none !important; }
+  .pybot-float, .pybot-shadow, .pybot-eyes, .pybot-arm-right, .pybot-mouth, .pybot-sparkles, .ai-caret { animation: none !important; }
 }

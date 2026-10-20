@@ -205,6 +205,8 @@ export type UserProgress = {
   /** Full-app color pack. Independent of OS light/dark. */
   palette: import("./palettes").PaletteId;
   soundEnabled: boolean;
+  /** speechSynthesis voiceURI. Empty means the first Latin American Spanish voice. */
+  voiceURI?: string | null;
   redeemedCodes: string[];
   /** Every unit, lesson and office job is playable. */
   unlockAll: boolean;

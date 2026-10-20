@@ -47,6 +47,7 @@ const defaultProgress = (): UserProgress => ({
   theme: "system",
   palette: DEFAULT_PALETTE,
   soundEnabled: true,
+  voiceURI: null,
   redeemedCodes: [],
   unlockAll: false,
   jobUsd: 0,
@@ -101,6 +102,7 @@ type ProgressState = UserProgress & {
   unlockPracticeHearts: () => void;
   addLegendaryScore: (xp: number) => void;
   setSound: (on: boolean) => void;
+  setVoice: (voiceURI: string | null) => void;
   restoreHeart: () => void;
   boostUnit: (unitId: string) => void;
   resetProgress: () => void;
@@ -328,6 +330,7 @@ export const useProgress = create<ProgressState>()(
         set(p);
       },
       setSound: (on) => set({ soundEnabled: on }),
+      setVoice: (voiceURI) => set({ voiceURI }),
       restoreHeart: () => {
         const current = regenerateHearts(get());
         const hearts =
@@ -585,6 +588,7 @@ export const useProgress = create<ProgressState>()(
           "unlockPracticeHearts",
           "addLegendaryScore",
           "setSound",
+          "setVoice",
           "restoreHeart",
           "boostUnit",
           "resetProgress",
