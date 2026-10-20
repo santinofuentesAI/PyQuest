@@ -13,7 +13,8 @@ import { Input } from "@/components/ui/input";
 import { Switch } from "@/components/ui/switch";
 import { PortfolioSection } from "@/components/portfolio-section";
 import { toast } from "sonner";
-import { Bot, Volume2 } from "lucide-react";
+import { Volume2 } from "lucide-react";
+import { AiSettings } from "@/components/ai-settings";
 import { spanishVoices, speakSpanish } from "@/lib/speech";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
@@ -158,11 +159,7 @@ export default function ProfilePage() {
             Probar voz
           </Button>
         </div>
-        <div className="mt-4 rounded-xl border bg-muted/30 p-3">
-          <div className="flex items-center justify-between gap-3"><p className="flex items-center gap-2 text-sm font-bold"><Bot className="size-4 text-primary" />Asistente de IA</p><span className="rounded-full bg-primary/10 px-2 py-1 text-[10px] font-bold text-primary">Próximamente</span></div>
-          <p className="mt-2 text-xs leading-relaxed text-muted-foreground">Aquí podrás conectar una IA para ayudarte con tu código. Esta opción todavía no está disponible.</p>
-          <Button disabled variant="outline" className="mt-3 h-11 w-full rounded-xl text-sm">Conectar una IA</Button>
-        </div>
+        <AiSettings />
       </section>
 
       <PortfolioSection />

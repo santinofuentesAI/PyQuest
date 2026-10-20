@@ -25,6 +25,7 @@ import {
 } from "@/lib/job-projects";
 import { preloadPython, runPython } from "@/lib/python-runtime";
 import { useProgress } from "@/lib/progress-store";
+import { scrollIntoViewSoon } from "@/lib/scroll-into-view";
 import { PybotCoach } from "@/components/pybot";
 import "./cinematics.css";
 
@@ -54,6 +55,8 @@ export function ProjectSession({
   const [err, setErr] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
   const [hintText, setHintText] = useState<string | null>(null);
+  const [hintNonce, setHintNonce] = useState(0);
+  const hintPanel = useRef<HTMLDivElement>(null);
   const [coins, setCoins] = useState<{ id: number; dx: string; dy: string }[]>([]);
   const [showSkip, setShowSkip] = useState(false);
   const [mood, setMood] = useState<"ok" | "missing" | "angry" | "fired">("ok");
@@ -74,6 +77,10 @@ export function ProjectSession({
   useEffect(() => {
     preloadPython({ dataStack: true });
   }, []);
+
+  useEffect(() => {
+    if (hintText) scrollIntoViewSoon(hintPanel.current);
+  }, [hintText, hintNonce]);
 
   function updateCode(value: string) {
     setCode(value);
@@ -198,7 +205,10 @@ export function ProjectSession({
     if (!result.ok) {
       if (result.reason === "empty") {
         toast.message("Ya usaste todas las pistas de este encargo.");
-        if (result.hint) setHintText(result.hint);
+        if (result.hint) {
+          setHintText(result.hint);
+          setHintNonce((n) => n + 1);
+        }
         return;
       }
       toast.error(
@@ -220,7 +230,10 @@ export function ProjectSession({
       setCoins(burst);
       window.setTimeout(() => setCoins([]), 900);
     }
-    if (result.hint) setHintText(result.hint);
+    if (result.hint) {
+      setHintText(result.hint);
+      setHintNonce((n) => n + 1);
+    }
     if (result.charged > 0) {
       toast.message(
         result.reason === "wallet"
@@ -463,7 +476,7 @@ export function ProjectSession({
               </div>
             )}
             {hintText && (
-              <div className="rounded-2xl border-2 border-amber-300 bg-amber-50 px-4 py-3 text-sm leading-relaxed text-amber-950 shadow-lg">
+              <div ref={hintPanel} id="job-hint" className="rounded-2xl border-2 border-amber-300 bg-amber-50 px-4 py-3 text-sm leading-relaxed text-amber-950 shadow-lg">
                 <p className="text-[11px] font-black tracking-wider text-amber-800 uppercase">Pista del jefe</p>
                 <p className="mt-1 font-semibold">{hintText}</p>
               </div>

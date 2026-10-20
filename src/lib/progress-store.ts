@@ -22,6 +22,7 @@ import { normalizeCourseId, unitAccess, unitIsIncluded } from "./courses";
 import { SKIP_EXAM_PASS, skipExamPassed } from "./skip-exam";
 import { FULL_UNLOCK_CODE, hasFullUnlock, lookupCode } from "./redeem-codes";
 import { DEFAULT_PALETTE, type PaletteId } from "./palettes";
+import { DEFAULT_LMSTUDIO_BASE } from "./ai-providers";
 
 const defaultProgress = (): UserProgress => ({
   displayName: "Explorador",
@@ -56,6 +57,10 @@ const defaultProgress = (): UserProgress => ({
   activeCourseId: DEFAULT_COURSE_ID,
   ownedCourseIds: [],
   schoolInterestAt: null,
+  aiProvider: "openai",
+  aiApiKey: "",
+  aiBaseUrl: DEFAULT_LMSTUDIO_BASE,
+  aiModel: "",
 });
 
 function emptyJobProgress(): JobProjectProgress {
@@ -103,6 +108,7 @@ type ProgressState = UserProgress & {
   addLegendaryScore: (xp: number) => void;
   setSound: (on: boolean) => void;
   setVoice: (voiceURI: string | null) => void;
+  setAi: (patch: Partial<Pick<UserProgress, "aiProvider" | "aiApiKey" | "aiBaseUrl" | "aiModel">>) => void;
   restoreHeart: () => void;
   boostUnit: (unitId: string) => void;
   resetProgress: () => void;
@@ -331,6 +337,13 @@ export const useProgress = create<ProgressState>()(
       },
       setSound: (on) => set({ soundEnabled: on }),
       setVoice: (voiceURI) => set({ voiceURI }),
+      setAi: (patch) =>
+        set({
+          aiProvider: patch.aiProvider ?? get().aiProvider ?? "openai",
+          aiApiKey: patch.aiApiKey ?? get().aiApiKey ?? "",
+          aiBaseUrl: patch.aiBaseUrl ?? get().aiBaseUrl ?? DEFAULT_LMSTUDIO_BASE,
+          aiModel: patch.aiModel ?? get().aiModel ?? "",
+        }),
       restoreHeart: () => {
         const current = regenerateHearts(get());
         const hearts =
@@ -589,6 +602,7 @@ export const useProgress = create<ProgressState>()(
           "addLegendaryScore",
           "setSound",
           "setVoice",
+          "setAi",
           "restoreHeart",
           "boostUnit",
           "resetProgress",
@@ -627,6 +641,10 @@ export const useProgress = create<ProgressState>()(
             p.ownedCourseIds ??
             (hadProgress || Boolean(p.unlockAll) ? [DEFAULT_COURSE_ID] : []),
           schoolInterestAt: p.schoolInterestAt ?? null,
+          aiProvider: p.aiProvider ?? "openai",
+          aiApiKey: p.aiApiKey ?? "",
+          aiBaseUrl: p.aiBaseUrl ?? DEFAULT_LMSTUDIO_BASE,
+          aiModel: p.aiModel ?? "",
         };
         if (version < 2) {
           return { ...base, onboarded: true, placementDone: true };
@@ -658,6 +676,10 @@ export const useProgress = create<ProgressState>()(
           }
         }
         if (state) {
+          if (!state.aiProvider) state.aiProvider = "openai";
+          if (typeof state.aiApiKey !== "string") state.aiApiKey = "";
+          if (typeof state.aiBaseUrl !== "string") state.aiBaseUrl = DEFAULT_LMSTUDIO_BASE;
+          if (typeof state.aiModel !== "string") state.aiModel = "";
           state.onboarded = true;
           state.placementDone = true;
           const have = new Set((state.portfolio ?? []).filter((i) => i.jobId).map((i) => i.jobId));

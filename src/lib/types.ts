@@ -15,6 +15,8 @@ export type Difficulty = 1 | 2 | 3 | 4 | 5;
 
 export type CourseId = "python-ia" | "python-datos" | "agentes-ia";
 
+export type AiProviderId = "openai" | "deepseek" | "gemini" | "openrouter" | "lmstudio";
+
 export type Choice = {
   id: string;
   text: string;
@@ -221,6 +223,11 @@ export type UserProgress = {
   ownedCourseIds: CourseId[];
   /** Local interest flag for school/bootcamp licensing — not a charge. */
   schoolInterestAt?: number | null;
+  /** Which model host Pybot talks to. The key stays in this browser. */
+  aiProvider?: AiProviderId;
+  aiApiKey?: string;
+  aiBaseUrl?: string;
+  aiModel?: string;
 };
 
 export type PythonRunResult = {
