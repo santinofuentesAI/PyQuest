@@ -104,10 +104,11 @@ async function main() {
   const lesson: Lesson = { id: 'u2-l1', title: 'Test', description: '', xp: 20, exercises: [choice, { ...choice, id: 'second', prompt: 'Segunda pregunta' }] };
   const router = { bfcacheId: 'test', back() {}, forward() {}, refresh() {}, push() {}, replace() {}, prefetch: async () => {}, hmrRefresh() {} };
   render(<AppRouterContext.Provider value={router}><LessonPlayer lesson={lesson} /></AppRouterContext.Provider>);
-  await user.click(screen.getByRole('button', { name: 'Continuar' }));
-  await user.click(screen.getByRole('button', { name: 'Continuar' }));
-  await user.click(screen.getByRole('button', { name: 'Ver resultado' }));
-  await user.click(screen.getByRole('button', { name: 'Continuar' }));
+  for (let step = 0; step < 12 && !screen.queryByRole('button', { name: 'Empezar clase' }); step++) {
+    const reveal = screen.queryByRole('button', { name: 'Ver resultado' });
+    if (reveal) await user.click(reveal);
+    await user.click(screen.getByRole('button', { name: 'Continuar' }));
+  }
   await user.click(screen.getByRole('button', { name: 'Empezar clase' }));
   await user.click(screen.getByRole('radio', { name: 'Incorrecta' }));
   await user.click(screen.getByRole('button', { name: 'Comprobar' }));
