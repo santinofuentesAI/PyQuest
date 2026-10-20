@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Flame, Gem, Heart, Star } from "lucide-react";
+import { Gem, Heart, Star } from "lucide-react";
 import { Pybot } from "@/components/pybot";
 import { useProgress } from "@/lib/progress-store";
 import { HEART_REGEN_MS, MAX_HEARTS, heartSlotLabel, levelFromXp, msUntilNextHeart } from "@/lib/gamification";
@@ -59,10 +59,10 @@ export function TopBar() {
             className="text-cyan-700 dark:text-cyan-300"
           />
           <Meter
-            icon={<Flame className="size-4 fill-orange-500 text-orange-500" />}
+            icon={<StreakFlame />}
             value={String(progress.streak)}
-            label={`Racha de ${progress.streak} día${progress.streak === 1 ? "" : "s"}`}
-            className="text-orange-600 dark:text-orange-400"
+            label={`Racha de ${progress.streak} día${progress.streak === 1 ? "" : "s"}. Vuelve mañana para mantenerla.`}
+            className={cn("streak-meter text-orange-600 dark:text-orange-400", progress.streak > 0 && "streak-live")}
           />
           <Meter
             icon={<Star className="size-4 fill-amber-400 text-amber-500" />}
@@ -76,6 +76,17 @@ export function TopBar() {
         <div className="h-full bg-gradient-to-r from-violet-500 to-cyan-400 transition-all" style={{ width: `${pct}%` }} />
       </div>
     </header>
+  );
+}
+
+function StreakFlame() {
+  return (
+    <svg viewBox="0 0 16 16" className="streak-flame size-4 overflow-visible" aria-hidden>
+      <path className="streak-flame-outer" d="M8 1.1C8 1.1 3.8 5.4 3.8 9.2C3.8 11.8 5.6 14 8 14C10.4 14 12.2 11.8 12.2 9.2C12.2 5.4 8 1.1 8 1.1Z" fill="#f97316" />
+      <path className="streak-flame-mid" d="M8 4.8C8 4.8 5.8 7.3 5.8 9.4C5.8 10.9 6.8 12 8 12C9.2 12 10.2 10.9 10.2 9.4C10.2 7.3 8 4.8 8 4.8Z" fill="#fb923c" />
+      <path className="streak-flame-core" d="M8 8.4c-.9.8-1.3 1.5-1.3 2.2 0 .9.6 1.5 1.3 1.5s1.3-.6 1.3-1.5c0-.7-.4-1.4-1.3-2.2Z" fill="#fde68a" />
+      <circle className="streak-ember" cx="6.2" cy="5.5" r=".7" fill="#fde68a" />
+    </svg>
   );
 }
 
