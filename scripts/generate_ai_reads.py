@@ -536,39 +536,13 @@ READS: dict[str, dict] = {
             q("¿Qué estaría mal si el título dijera 'la web siempre duplica a la tienda'?", "Siempre no está en los datos. Solo hay un recorte con n=2", ("4 es menor que 2", "El f-string calcula una tendencia", "n sobra cuando hay unidades"), "El código cuenta un recorte. El título no puede promoverlo a ley.", 4, 4),
         ],
     ),
-    "ag1": read(
-        "prompt = 'Eres analista. Resume en 2 frases. Cita n y la unidad.'\npiezas = prompt.split()\nprint(len(piezas))\nprint(piezas[0])\n",
-        "Una IA escribió un prompt y lo partió como si cada palabra fuera un token.",
-        [
-            q("¿Qué es este prompt?", "La instrucción: rol, formato y la evidencia que debe citar", ("El peso del modelo", "Un CSV de ventas", "La ventana de contexto completa"), "El texto le dice al modelo quién es y cómo debe responder.", 1, 1),
-            q("¿Por qué split() no basta para contar tokens?", "Un tokenizador real parte subpalabras, no solo espacios", ("Porque len no existe", "Porque el prompt está vacío", "Porque print consume tokens"), "len(piezas) es un conteo de palabras de juguete, no la factura del modelo.", 2, 3),
-            q("¿Qué está mal si se cree que piezas[0] es el primer token del modelo?", "Eres es la primera palabra, no necesariamente el primer token", ("El prompt no tiene rol", "split() entrena el modelo", "Cita n borra el texto"), "Los tokens no coinciden siempre con las palabras. Hay que decir que esto es un modelo mental.", 2, 4),
-        ],
-    ),
-    "ag2": read(
-        "server = {'name': 'ventas', 'tools': ['buscar', 'leer']}\npedido = {'tool': 'borrar', 'arg': 'todo'}\npermitida = pedido['tool'] in server['tools']\nprint(server['name'])\nprint(permitida)\n",
-        "La IA simuló un servidor MCP recibiendo una llamada.",
-        [
-            q("¿Qué publica este server?", "Un nombre y la lista de herramientas que sí existen", ("Un modelo entrenado", "Un prompt del usuario", "Las filas de un CSV"), "buscar y leer están en el contrato. borrar no.", 1, 1),
-            q("¿Qué revisa permitida?", "Si la herramienta pedida está en el inventario", ("Si el argumento es un número", "Si el server se llama borrar", "Si hay presupuesto de tokens"), "in mira la lista tools. borrar no está.", 3, 3),
-            q("¿Qué está mal si el host ejecuta el pedido aunque permitida sea False?", "Se salta el contrato MCP y corre una herramienta que el server no ofreció", ("print invierte el booleano", "tools no puede ser una lista", "name tiene que ser el del pedido"), "El contrato es la lista. Fuera de ella, la llamada se rechaza.", 2, 5),
-        ],
-    ),
-    "ag3": read(
-        "pasos = 4\nmax_pasos = 4\nhecho = False\nparar = hecho or pasos >= max_pasos\nprint(parar)\n",
-        "La IA escribió la parada de un harness.",
-        [
-            q("¿Qué es max_pasos?", "El presupuesto: cuántas acciones puede intentar", ("La respuesta final", "El nombre de la skill", "El número de tokens de una palabra"), "El harness corta aunque el modelo quiera seguir.", 2, 2),
-            q("¿Por qué parar es True si hecho es False?", "Porque ya se gastó el presupuesto de pasos", ("Porque or exige que las dos sean True", "Porque print niega el valor", "Porque 4 es menor que 4"), "or para si terminó o si se acabaron los pasos. Aquí se acabaron.", 4, 5),
-            q("¿Qué estaría mal sin esta condición?", "El agente podría seguir llamando herramientas sin límite", ("hecho pasaría a True solo", "max_pasos se imprime", "or no existe en Python"), "Un bucle sin parada no es un agente controlado: es gasto infinito.", 1, 4),
-        ],
-    ),
 }
 
 
 def main() -> None:
+    # Agentes de IA no interpreta programas: no exige una lectura de Python.
     ids: list[str] = []
-    for name in ("curriculum.json", "datos-curriculum.json", "agentes-curriculum.json"):
+    for name in ("curriculum.json", "datos-curriculum.json"):
         payload = json.loads((ROOT / name).read_text(encoding="utf-8"))
         for section in payload["sections"]:
             ids.extend(unit["id"] for unit in section["units"])

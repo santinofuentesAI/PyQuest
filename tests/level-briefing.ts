@@ -19,4 +19,10 @@ assert.equal(later.length, 2);
 assert.equal(later[0].body, second.description);
 assert.equal(later.some((slide) => slide.kind === "code"), false);
 
+const agents = getUnit("ag1");
+assert.ok(agents);
+const agentExample = levelBriefing(agents.lessons[0], agents, getLessonGuide("ag1"), true).find((slide) => slide.kind === "code");
+assert.equal(agentExample?.title, "Así se escribe");
+assert.doesNotMatch(`${agentExample?.title} ${agentExample?.kicker} ${agentExample?.body}`, /Python/);
+
 console.log("Level briefing keeps the module explanation on the first level and practice on every level.");

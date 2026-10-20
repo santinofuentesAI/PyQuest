@@ -1,10 +1,15 @@
 import assert from "node:assert/strict";
-import { UNITS } from "../src/lib/curriculum";
+import { getCourseIdForUnit, UNITS } from "../src/lib/curriculum";
 import { checkExercise } from "../src/lib/validators";
 import { filterExercises, poolForUnits } from "../src/lib/practice";
 import type { UserProgress } from "../src/lib/types";
 
-const reads = UNITS.map((unit) => {
+for (const unit of UNITS.filter((item) => getCourseIdForUnit(item.id) === "agentes-ia")) {
+  const found = unit.lessons.flatMap((lesson) => lesson.exercises).filter((exercise) => exercise.type === "ai_interpret");
+  assert.equal(found.length, 0, `${unit.id} stays off Python readings`);
+}
+
+const reads = UNITS.filter((unit) => getCourseIdForUnit(unit.id) !== "agentes-ia").map((unit) => {
   const lesson = unit.lessons[0];
   const found = lesson?.exercises.filter((exercise) => exercise.type === "ai_interpret") ?? [];
   assert.equal(found.length, 1, `${unit.id} needs one AI reading on its first lesson`);

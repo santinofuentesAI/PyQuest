@@ -68,7 +68,7 @@ export const COURSE_CATALOG: CourseCatalogEntry[] = [
     audience: "Quien ya habla con modelos y quiere construir agentes serios, interactivos y evaluables.",
     includes: [
       "Primer tema gratis: prompts, tokens y el bucle del agente",
-      "Ejercicios con contratos JSON y Python ejecutable",
+      "Ejercicios de prompts, contratos y el bucle del agente",
       "Evals con resultado esperado y presupuesto de pasos",
     ],
     comingSoon: "Servidores MCP de ejemplo, skills de collab y un harness más completo.",
