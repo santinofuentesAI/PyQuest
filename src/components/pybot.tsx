@@ -22,12 +22,12 @@ export function Pybot({ mood = "happy", size = "md", className, decorative = tru
           <path d="M75 179H93L95 185Q95 190 88 190H75Q69 190 71 184Z" fill="#70dfba" stroke="#218b79" strokeWidth="2" />
           <path d="M107 179H125L129 184Q131 190 124 190H111Q105 190 105 185Z" fill="#70dfba" stroke="#218b79" strokeWidth="2" />
           <g className="pybot-arm-left">
-            <path d="M128 136Q146 146 150 160Q152 168 144 170Q134 166 126 150Z" fill="#67d9b7" stroke="#218b79" strokeWidth="2" strokeLinejoin="round" />
-            <circle className="pybot-hand" cx="150" cy="166" r="8" fill="#67d9b7" stroke="#218b79" strokeWidth="2" />
+            <path d="M130 142Q142 154 148 164" fill="none" stroke="#67d9b7" strokeWidth="7" strokeLinecap="round" />
+            <circle className="pybot-hand" cx="150" cy="166" r="7" fill="#67d9b7" stroke="#218b79" strokeWidth="2" />
           </g>
           <g className="pybot-arm-right">
-            <path d="M72 136Q52 122 44 136Q38 150 52 156Q66 158 72 144Z" fill="#67d9b7" stroke="#218b79" strokeWidth="2" strokeLinejoin="round" />
-            <circle className="pybot-hand" cx="41" cy="140" r="8" fill="#67d9b7" stroke="#218b79" strokeWidth="2" />
+            <path d="M70 142Q54 128 44 138" fill="none" stroke="#67d9b7" strokeWidth="7" strokeLinecap="round" />
+            <circle className="pybot-hand" cx="41" cy="140" r="7" fill="#67d9b7" stroke="#218b79" strokeWidth="2" />
           </g>
           <path d="M72 129Q100 124 128 129L136 157Q139 177 116 179H84Q61 177 64 157Z" fill="#73dfbb" stroke="#218b79" strokeWidth="2" />
           <path d="M66 164Q100 171 134 164L132 170Q126 179 112 179H87Q72 178 67 171Z" fill="#43bfa1" />
@@ -48,7 +48,7 @@ export function Pybot({ mood = "happy", size = "md", className, decorative = tru
             {mood === "celebrate" ? <path d="M72 85Q78 74 84 85M116 85Q122 74 128 85" stroke="#a5ffe1" strokeWidth="5" strokeLinecap="round" /> : <><rect x="73" y={mood === "thinking" ? 79 : 75} width="11" height={mood === "thinking" ? 14 : 20} rx="5.5" fill="#a5ffe1" /><rect x="116" y="75" width="11" height="20" rx="5.5" fill="#a5ffe1" /></>}
           </g>
           <ellipse cx="67" cy="100" rx="6" ry="3.5" fill="#ee91a5" /><ellipse cx="133" cy="100" rx="6" ry="3.5" fill="#ee91a5" />
-          <path className="pybot-mouth" d={mood === "thinking" ? "M95 106H105" : "M89 102Q100 115 111 102"} stroke="#a5ffe1" strokeWidth="4.5" strokeLinecap="round" />
+          <path className="pybot-mouth" d={mood === "thinking" ? "M96 107H104" : "M93 106Q100 111 107 106"} stroke="#a5ffe1" strokeWidth="3.5" strokeLinecap="round" />
           <circle cx="138" cy="126" r="4.5" fill="#ffd34f" stroke="#e5af25" strokeWidth="1.5" />
         </g>
         {mood === "celebrate" ? <g className="pybot-sparkles" stroke="#e8af26" strokeWidth="2.5" strokeLinejoin="round"><path d="M24 40L27 47L34 50L27 53L24 60L21 53L14 50L21 47ZM174 48L176 54L182 56L176 58L174 64L172 58L166 56L172 54ZM174 121L177 128L184 131L177 134L174 141L171 134L164 131L171 128Z" /></g> : null}
