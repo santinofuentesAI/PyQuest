@@ -19,7 +19,7 @@ export function AiInterpret({
   onSubmit: (answer: UserAnswer) => void;
 }) {
   const reduce = useReducedMotion();
-  const code = exercise.starterCode ?? "";
+  const code = (exercise.starterCode ?? "").replace(/\n+$/, "");
   const questions = exercise.aiQuestions ?? [];
   const [count, setCount] = useState(reduce ? code.length : 0);
   const [phase, setPhase] = useState<Phase>(reduce ? "read" : "write");
