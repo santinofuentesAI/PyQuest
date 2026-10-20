@@ -53,11 +53,8 @@ export default function LibraryPage() {
   return (
     <div className="mx-auto max-w-6xl px-4 py-8 pb-28">
       <section
-        className="overflow-hidden rounded-3xl border p-5 shadow-sm sm:p-7"
-        style={{
-          background:
-            "linear-gradient(135deg, color-mix(in oklab, #7c3aed 22%, var(--card)) 0%, color-mix(in oklab, #06b6d4 16%, var(--card)) 55%, var(--card) 100%)",
-        }}
+        className="quest-banner overflow-hidden rounded-3xl border p-5 shadow-sm sm:p-7"
+        style={{ "--banner": "#7c3aed" }}
       >
         <p className="text-xs font-bold tracking-widest text-violet-700 uppercase dark:text-violet-300">Guía visual</p>
         <h1 className="font-heading mt-1 flex items-center gap-3 text-3xl font-extrabold">

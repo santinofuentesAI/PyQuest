@@ -30,7 +30,9 @@ export function PybotHelp({ inline = false }: { inline?: boolean }) {
       <Pybot size={inline ? "xs" : "sm"} mood="wave" />
     </DialogTrigger>
     <DialogContent className="max-h-[85dvh] overflow-y-auto rounded-3xl p-6 sm:max-w-md">
-      <Pybot mood="wave" size="lg" className="mx-auto" />
+      <div className="rounded-3xl bg-[radial-gradient(ellipse_at_50%_20%,#d9fff1,transparent_72%)] px-4 py-2">
+        <Pybot mood="wave" size="lg" className="mx-auto" />
+      </div>
       <DialogTitle className="text-center text-2xl font-extrabold">Hola, soy Pybot.</DialogTitle>
       <DialogDescription className="text-center">Tu compañero de aprendizaje en PyQuest.</DialogDescription>
       <div className="rounded-2xl bg-muted/60 p-4"><p className="mb-2 text-xs font-bold text-primary">{guide.label}</p><p role="status" className="text-sm leading-relaxed">{guide.tips[tip % guide.tips.length]}</p></div>

@@ -22,14 +22,12 @@ export function Pybot({ mood = "happy", size = "md", className, decorative = tru
           <path d="M75 179H93L95 185Q95 190 88 190H75Q69 190 71 184Z" fill="#70dfba" stroke="#218b79" strokeWidth="2" />
           <path d="M107 179H125L129 184Q131 190 124 190H111Q105 190 105 185Z" fill="#70dfba" stroke="#218b79" strokeWidth="2" />
           <g className="pybot-arm-left">
-            <path d="M124 146C136 150 146 156 150 164C152 172 140 174 138 166C132 156 124 150 118 146Z" fill="#67d9b7" stroke="#218b79" strokeWidth="2" strokeLinejoin="round" />
-            <circle className="pybot-hand" cx="148" cy="168" r="9" fill="#67d9b7" stroke="#218b79" strokeWidth="2" />
-            <path d="M140 160C136 166 136 172 142 174" fill="none" stroke="#67d9b7" strokeWidth="6" strokeLinecap="round" />
+            <path d="M124 134C136 138 146 144 150 152C152 160 140 162 138 154C132 144 124 138 118 134Z" fill="#67d9b7" stroke="#218b79" strokeWidth="2" strokeLinejoin="round" />
+            <circle className="pybot-hand" cx="148" cy="156" r="9" fill="#67d9b7" stroke="#218b79" strokeWidth="2" />
           </g>
           <g className="pybot-arm-right">
-            <path d="M76 146C64 150 54 156 50 164C48 172 60 174 62 166C68 156 76 150 82 146Z" fill="#67d9b7" stroke="#218b79" strokeWidth="2" strokeLinejoin="round" />
-            <circle className="pybot-hand" cx="52" cy="168" r="9" fill="#67d9b7" stroke="#218b79" strokeWidth="2" />
-            <path d="M60 160C64 166 64 172 58 174" fill="none" stroke="#67d9b7" strokeWidth="6" strokeLinecap="round" />
+            <path d="M76 134C64 138 54 144 50 152C48 160 60 162 62 154C68 144 76 138 82 134Z" fill="#67d9b7" stroke="#218b79" strokeWidth="2" strokeLinejoin="round" />
+            <circle className="pybot-hand" cx="52" cy="156" r="9" fill="#67d9b7" stroke="#218b79" strokeWidth="2" />
           </g>
           <path d="M72 129Q100 124 128 129L136 157Q139 177 116 179H84Q61 177 64 157Z" fill="#73dfbb" stroke="#218b79" strokeWidth="2" />
           <path d="M66 164Q100 171 134 164L132 170Q126 179 112 179H87Q72 178 67 171Z" fill="#43bfa1" />

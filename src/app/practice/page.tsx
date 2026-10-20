@@ -127,11 +127,8 @@ export default function PracticePage() {
   return (
     <div className="mx-auto max-w-5xl px-4 py-8 pb-36">
       <section
-        className="overflow-hidden rounded-3xl border p-5 shadow-sm sm:p-7"
-        style={{
-          background:
-            "linear-gradient(135deg, color-mix(in oklab, #059669 20%, var(--card)) 0%, color-mix(in oklab, #7c3aed 14%, var(--card)) 60%, var(--card) 100%)",
-        }}
+        className="quest-banner overflow-hidden rounded-3xl border p-5 shadow-sm sm:p-7"
+        style={{ "--banner": "#059669" }}
       >
         <p className="text-xs font-bold tracking-widest text-emerald-700 uppercase dark:text-emerald-300">Sin corazones</p>
         <h1 className="font-heading mt-1 flex items-center gap-3 text-3xl font-extrabold">

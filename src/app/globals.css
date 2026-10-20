@@ -281,6 +281,7 @@ button, a, input, select, textarea { -webkit-tap-highlight-color: transparent; }
 .quest-card { border: 1px solid var(--border); background: var(--card); box-shadow: 0 3px 0 color-mix(in srgb, var(--border) 70%, transparent); transition: border-color .2s, transform .2s, box-shadow .2s; }
 @media (hover: hover) { a.quest-card:hover { transform: translateY(-3px); border-color: var(--primary); box-shadow: 0 6px 18px color-mix(in srgb, var(--primary) 9%, transparent); } }
 .quest-hero { background: radial-gradient(ellipse at 95% 15%, color-mix(in srgb, #53dcba 24%, transparent), transparent 58%), linear-gradient(125deg, color-mix(in srgb, var(--primary) 10%, var(--card)), var(--card) 75%); }
+.quest-banner { background: radial-gradient(120% 80% at 0% 0%, color-mix(in oklab, var(--banner) 42%, transparent), transparent 62%), linear-gradient(180deg, color-mix(in oklab, var(--banner) 14%, var(--card)), var(--card) 78%); }
 .quest-kicker { font-size: .65rem; font-weight: 800; letter-spacing: .17em; text-transform: uppercase; color: var(--primary); }
 .quest-progress-fill { transition: width .55s cubic-bezier(.2,.8,.2,1); }
 .quest-enter { animation: quest-enter .3s both; }
@@ -300,8 +301,8 @@ a.quest-card.quest-current {
 .pybot > svg { width: 100%; height: 100%; overflow: visible; }
 .pybot-float { animation: pybot-float 4s ease-in-out infinite; transform-origin: 100px 110px; }
 .pybot-shadow { animation: pybot-shadow 4s ease-in-out infinite; transform-origin: 100px 190px; }
-.pybot-arm-left { transform-origin: 120px 146px; animation: pybot-sway 2.4s ease-in-out infinite; }
-.pybot-arm-right { transform-origin: 80px 146px; animation: pybot-sway 2.4s ease-in-out infinite reverse; }
+.pybot-arm-left { transform-origin: 120px 134px; animation: pybot-sway 2.4s ease-in-out infinite; }
+.pybot-arm-right { transform-origin: 80px 134px; animation: pybot-sway 2.4s ease-in-out infinite reverse; }
 .pybot-hand { transform-box: fill-box; transform-origin: center; animation: pybot-hand 1.5s ease-in-out infinite; }
 .pybot[data-mood="wave"] .pybot-arm-right { animation: pybot-wave 1.3s ease-in-out infinite; }
 .pybot[data-mood="celebrate"] .pybot-float { animation: pybot-celebrate .65s ease-in-out 3; }
