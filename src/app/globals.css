@@ -300,8 +300,8 @@ a.quest-card.quest-current {
 .pybot > svg { width: 100%; height: 100%; overflow: visible; }
 .pybot-float { animation: pybot-float 4s ease-in-out infinite; transform-origin: 100px 110px; }
 .pybot-shadow { animation: pybot-shadow 4s ease-in-out infinite; transform-origin: 100px 190px; }
-.pybot-arm-left { transform-origin: 122px 150px; animation: pybot-sway 2.4s ease-in-out infinite; }
-.pybot-arm-right { transform-origin: 78px 150px; animation: pybot-sway 2.4s ease-in-out infinite reverse; }
+.pybot-arm-left { transform-origin: 120px 146px; animation: pybot-sway 2.4s ease-in-out infinite; }
+.pybot-arm-right { transform-origin: 80px 146px; animation: pybot-sway 2.4s ease-in-out infinite reverse; }
 .pybot-hand { transform-box: fill-box; transform-origin: center; animation: pybot-hand 1.5s ease-in-out infinite; }
 .pybot[data-mood="wave"] .pybot-arm-right { animation: pybot-wave 1.3s ease-in-out infinite; }
 .pybot[data-mood="celebrate"] .pybot-float { animation: pybot-celebrate .65s ease-in-out 3; }
