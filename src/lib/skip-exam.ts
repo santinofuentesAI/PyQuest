@@ -58,7 +58,7 @@ export function buildSkipExam(unitId: string): SkipExam | null {
   const pool = [
     ...prior.flatMap((unit) => unit.lessons.flatMap((lesson) => lesson.exercises)),
     ...skipExamBank(courseId),
-  ];
+  ].filter((exercise) => exercise.type !== "ai_interpret");
   const picked = pickRamp(pool, SKIP_EXAM_SIZE);
   if (picked.length < SKIP_EXAM_SIZE) return null;
 

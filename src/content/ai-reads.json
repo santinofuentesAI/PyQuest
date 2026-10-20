@@ -1,0 +1,5489 @@
+{
+  "u1": {
+    "id": "u1-ai",
+    "type": "ai_interpret",
+    "prompt": "Una IA escribió un saludo. Lee qué hace y dónde se rompe.",
+    "difficulty": 2,
+    "xp": 16,
+    "explanation": "Leíste el código como revisor: qué hace, por qué está escrito así y qué no se sostiene.",
+    "solution": "Para que Hola sea texto y print lo muestre | Muestra un valor y pasa a la línea siguiente | Hola sin comillas se usa como variable y no existe",
+    "starterCode": "print(\"Hola\")\nprint(Hola)\n",
+    "aiQuestions": [
+      {
+        "prompt": "¿Por qué la primera línea usa comillas?",
+        "choices": [
+          {
+            "id": "a",
+            "text": "Para que Hola sea texto y print lo muestre"
+          },
+          {
+            "id": "b",
+            "text": "Para sumar Hola con otro número"
+          },
+          {
+            "id": "c",
+            "text": "Porque print solo acepta números"
+          },
+          {
+            "id": "d",
+            "text": "Para importar una librería"
+          }
+        ],
+        "correctChoiceId": "a",
+        "explanation": "Sin comillas, Hola es un nombre, no un texto.",
+        "focusLines": [
+          1,
+          1
+        ]
+      },
+      {
+        "prompt": "¿Qué hace print en este programa?",
+        "choices": [
+          {
+            "id": "a",
+            "text": "Muestra un valor y pasa a la línea siguiente"
+          },
+          {
+            "id": "b",
+            "text": "Guarda el valor en un archivo CSV"
+          },
+          {
+            "id": "c",
+            "text": "Entrena un modelo"
+          },
+          {
+            "id": "d",
+            "text": "Borra la variable"
+          }
+        ],
+        "correctChoiceId": "a",
+        "explanation": "print escribe en la salida. No guarda ni entrena.",
+        "focusLines": [
+          1,
+          1
+        ]
+      },
+      {
+        "prompt": "¿Qué está mal en la línea marcada?",
+        "choices": [
+          {
+            "id": "a",
+            "text": "Hola sin comillas se usa como variable y no existe"
+          },
+          {
+            "id": "b",
+            "text": "print está mal escrito"
+          },
+          {
+            "id": "c",
+            "text": "Sobran los paréntesis"
+          },
+          {
+            "id": "d",
+            "text": "La primera línea imprime un número"
+          }
+        ],
+        "correctChoiceId": "a",
+        "explanation": "La segunda llamada busca una variable Hola. Nadie la definió.",
+        "focusLines": [
+          2,
+          2
+        ]
+      }
+    ]
+  },
+  "u2": {
+    "id": "u2-ai",
+    "type": "ai_interpret",
+    "prompt": "La IA guardó una edad. Revisa el tipo antes de creer la suma.",
+    "difficulty": 2,
+    "xp": 16,
+    "explanation": "Leíste el código como revisor: qué hace, por qué está escrito así y qué no se sostiene.",
+    "solution": "Porque la IA guardó texto, no un número | str | No se puede sumar texto y un número con +",
+    "starterCode": "edad = \"20\"\nprint(type(edad).__name__)\nprint(edad + 1)\n",
+    "aiQuestions": [
+      {
+        "prompt": "¿Por qué edad lleva comillas?",
+        "choices": [
+          {
+            "id": "a",
+            "text": "Porque la IA guardó texto, no un número"
+          },
+          {
+            "id": "b",
+            "text": "Porque 20 es un float"
+          },
+          {
+            "id": "c",
+            "text": "Porque type no existe"
+          },
+          {
+            "id": "d",
+            "text": "Porque las comillas convierten a int"
+          }
+        ],
+        "correctChoiceId": "a",
+        "explanation": "Las comillas crean un str aunque se vea como un número.",
+        "focusLines": [
+          1,
+          1
+        ]
+      },
+      {
+        "prompt": "¿Qué imprime la segunda línea?",
+        "choices": [
+          {
+            "id": "a",
+            "text": "str"
+          },
+          {
+            "id": "b",
+            "text": "int"
+          },
+          {
+            "id": "c",
+            "text": "20"
+          },
+          {
+            "id": "d",
+            "text": "bool"
+          }
+        ],
+        "correctChoiceId": "a",
+        "explanation": "type(...).__name__ dice el nombre del tipo. Aquí es texto.",
+        "focusLines": [
+          2,
+          2
+        ]
+      },
+      {
+        "prompt": "¿Qué está mal al sumar?",
+        "choices": [
+          {
+            "id": "a",
+            "text": "No se puede sumar texto y un número con +"
+          },
+          {
+            "id": "b",
+            "text": "20 + 1 da 201 siempre"
+          },
+          {
+            "id": "c",
+            "text": "print no puede mostrar tipos"
+          },
+          {
+            "id": "d",
+            "text": "Falta un import de math"
+          }
+        ],
+        "correctChoiceId": "a",
+        "explanation": "edad + 1 mezcla str e int. Antes hay que convertir con int.",
+        "focusLines": [
+          3,
+          3
+        ]
+      }
+    ]
+  },
+  "u3": {
+    "id": "u3-ai",
+    "type": "ai_interpret",
+    "prompt": "La IA calculó un precio y comparó. Sigue el orden de las operaciones.",
+    "difficulty": 2,
+    "xp": 16,
+    "explanation": "Leíste el código como revisor: qué hace, por qué está escrito así y qué no se sostiene.",
+    "solution": "Porque * ocurre antes que + | True, porque precio sigue siendo 10 | Un solo = asigna; dentro de print no es una comparación",
+    "starterCode": "precio = 10\nprint(precio * 2 + 3)\nprint(precio == 10)\n",
+    "aiQuestions": [
+      {
+        "prompt": "¿Por qué el resultado de la segunda línea es 23 y no 50?",
+        "choices": [
+          {
+            "id": "a",
+            "text": "Porque * ocurre antes que +"
+          },
+          {
+            "id": "b",
+            "text": "Porque print redondea"
+          },
+          {
+            "id": "c",
+            "text": "Porque 10 se lee como texto"
+          },
+          {
+            "id": "d",
+            "text": "Porque == suma"
+          }
+        ],
+        "correctChoiceId": "a",
+        "explanation": "La multiplicación va primero: 20 + 3 = 23.",
+        "focusLines": [
+          2,
+          2
+        ]
+      },
+      {
+        "prompt": "¿Qué responde la comparación de la tercera línea?",
+        "choices": [
+          {
+            "id": "a",
+            "text": "True, porque precio sigue siendo 10"
+          },
+          {
+            "id": "b",
+            "text": "False, porque ya se multiplicó"
+          },
+          {
+            "id": "c",
+            "text": "23"
+          },
+          {
+            "id": "d",
+            "text": "Un error de sintaxis"
+          }
+        ],
+        "correctChoiceId": "a",
+        "explanation": "== compara. La multiplicación no cambió precio.",
+        "focusLines": [
+          3,
+          3
+        ]
+      },
+      {
+        "prompt": "Si la IA hubiera escrito print(precio = 10), ¿qué estaría mal?",
+        "choices": [
+          {
+            "id": "a",
+            "text": "Un solo = asigna; dentro de print no es una comparación"
+          },
+          {
+            "id": "b",
+            "text": "= y == son iguales"
+          },
+          {
+            "id": "c",
+            "text": "Falta una coma"
+          },
+          {
+            "id": "d",
+            "text": "precio no puede valer 10"
+          }
+        ],
+        "correctChoiceId": "a",
+        "explanation": "Para preguntar si son iguales se usa ==.",
+        "focusLines": [
+          3,
+          3
+        ]
+      }
+    ]
+  },
+  "u4": {
+    "id": "u4-ai",
+    "type": "ai_interpret",
+    "prompt": "La IA quiso pasar el nombre a minúsculas. Mira si de verdad lo cambió.",
+    "difficulty": 2,
+    "xp": 16,
+    "explanation": "Leíste el código como revisor: qué hace, por qué está escrito así y qué no se sostiene.",
+    "solution": "P, el primero. Los índices empiezan en 0 | Para pedir una versión en minúsculas | El resultado no se guarda, así que print sigue mostrando PyQuest",
+    "starterCode": "nombre = \"PyQuest\"\nprint(nombre[0])\nnombre.lower()\nprint(nombre)\n",
+    "aiQuestions": [
+      {
+        "prompt": "¿Qué carácter imprime nombre[0]?",
+        "choices": [
+          {
+            "id": "a",
+            "text": "P, el primero. Los índices empiezan en 0"
+          },
+          {
+            "id": "b",
+            "text": "y, la segunda letra"
+          },
+          {
+            "id": "c",
+            "text": "t, la última"
+          },
+          {
+            "id": "d",
+            "text": "Toda la palabra"
+          }
+        ],
+        "correctChoiceId": "a",
+        "explanation": "La posición 0 es la P de PyQuest.",
+        "focusLines": [
+          2,
+          2
+        ]
+      },
+      {
+        "prompt": "¿Por qué la IA llamó lower()?",
+        "choices": [
+          {
+            "id": "a",
+            "text": "Para pedir una versión en minúsculas"
+          },
+          {
+            "id": "b",
+            "text": "Para borrar el nombre"
+          },
+          {
+            "id": "c",
+            "text": "Para convertir a número"
+          },
+          {
+            "id": "d",
+            "text": "Para contar vocales"
+          }
+        ],
+        "correctChoiceId": "a",
+        "explanation": "lower() devuelve otro texto en minúsculas.",
+        "focusLines": [
+          3,
+          3
+        ]
+      },
+      {
+        "prompt": "¿Qué está mal en el uso de lower()?",
+        "choices": [
+          {
+            "id": "a",
+            "text": "El resultado no se guarda, así que print sigue mostrando PyQuest"
+          },
+          {
+            "id": "b",
+            "text": "lower() modifica el texto original"
+          },
+          {
+            "id": "c",
+            "text": "El índice 0 está fuera de rango"
+          },
+          {
+            "id": "d",
+            "text": "print no acepta strings"
+          }
+        ],
+        "correctChoiceId": "a",
+        "explanation": "Los strings no cambian solos. Hay que asignar el resultado.",
+        "focusLines": [
+          3,
+          4
+        ]
+      }
+    ]
+  },
+  "u5": {
+    "id": "u5-ai",
+    "type": "ai_interpret",
+    "prompt": "La IA creyó que tenía una copia de la lista.",
+    "difficulty": 2,
+    "xp": 16,
+    "explanation": "Leíste el código como revisor: qué hace, por qué está escrito así y qué no se sostiene.",
+    "solution": "Para añadir un elemento al final de la misma lista | copia y notas son la misma lista | copia = notas.copy()",
+    "starterCode": "notas = [7, 9]\ncopia = notas\nnotas.append(10)\nprint(copia)\n",
+    "aiQuestions": [
+      {
+        "prompt": "¿Para qué sirve append?",
+        "choices": [
+          {
+            "id": "a",
+            "text": "Para añadir un elemento al final de la misma lista"
+          },
+          {
+            "id": "b",
+            "text": "Para crear una lista nueva sin tocar la original"
+          },
+          {
+            "id": "c",
+            "text": "Para ordenar de mayor a menor"
+          },
+          {
+            "id": "d",
+            "text": "Para convertir la lista en texto"
+          }
+        ],
+        "correctChoiceId": "a",
+        "explanation": "append modifica la lista que ya existe.",
+        "focusLines": [
+          3,
+          3
+        ]
+      },
+      {
+        "prompt": "¿Por qué print(copia) muestra también el 10?",
+        "choices": [
+          {
+            "id": "a",
+            "text": "copia y notas son la misma lista"
+          },
+          {
+            "id": "b",
+            "text": "append copia los valores"
+          },
+          {
+            "id": "c",
+            "text": "print siempre añade 10"
+          },
+          {
+            "id": "d",
+            "text": "Las listas no se pueden modificar"
+          }
+        ],
+        "correctChoiceId": "a",
+        "explanation": "Asignar copia = notas no copia: comparte el mismo objeto.",
+        "focusLines": [
+          2,
+          4
+        ]
+      },
+      {
+        "prompt": "¿Qué debería haber escrito la IA para una copia de verdad?",
+        "choices": [
+          {
+            "id": "a",
+            "text": "copia = notas.copy()"
+          },
+          {
+            "id": "b",
+            "text": "copia = notas"
+          },
+          {
+            "id": "c",
+            "text": "copia = notas.append(10)"
+          },
+          {
+            "id": "d",
+            "text": "copy(notas) = copia"
+          }
+        ],
+        "correctChoiceId": "a",
+        "explanation": "copy() crea otra lista. append no devuelve esa copia.",
+        "focusLines": [
+          2,
+          2
+        ]
+      }
+    ]
+  },
+  "u6": {
+    "id": "u6-ai",
+    "type": "ai_interpret",
+    "prompt": "La IA mezcló una tupla y un set. Distingue para qué sirve cada uno.",
+    "difficulty": 2,
+    "xp": 16,
+    "explanation": "Leíste el código como revisor: qué hace, por qué está escrito así y qué no se sostiene.",
+    "solution": "El orden importa y no se piensa modificar | 2, porque el set guarda IA una sola vez | Un set no se indexa por posición",
+    "starterCode": "registro = ('Ana', 23)\netiquetas = {'IA', 'datos', 'IA'}\nprint(registro[0])\nprint(len(etiquetas))\n",
+    "aiQuestions": [
+      {
+        "prompt": "¿Por qué registro es una tupla?",
+        "choices": [
+          {
+            "id": "a",
+            "text": "El orden importa y no se piensa modificar"
+          },
+          {
+            "id": "b",
+            "text": "Para borrar duplicados"
+          },
+          {
+            "id": "c",
+            "text": "Porque tiene claves"
+          },
+          {
+            "id": "d",
+            "text": "Porque se puede hacer append"
+          }
+        ],
+        "correctChoiceId": "a",
+        "explanation": "('Ana', 23) conserva posición: el nombre va primero.",
+        "focusLines": [
+          1,
+          1
+        ]
+      },
+      {
+        "prompt": "¿Qué imprime len(etiquetas)?",
+        "choices": [
+          {
+            "id": "a",
+            "text": "2, porque el set guarda IA una sola vez"
+          },
+          {
+            "id": "b",
+            "text": "3, porque hay tres textos"
+          },
+          {
+            "id": "c",
+            "text": "1, porque solo cuenta letras"
+          },
+          {
+            "id": "d",
+            "text": "23"
+          }
+        ],
+        "correctChoiceId": "a",
+        "explanation": "Un set elimina duplicados. IA aparece dos veces y cuenta una.",
+        "focusLines": [
+          2,
+          4
+        ]
+      },
+      {
+        "prompt": "¿Qué estaría mal si la IA hiciera etiquetas[0]?",
+        "choices": [
+          {
+            "id": "a",
+            "text": "Un set no se indexa por posición"
+          },
+          {
+            "id": "b",
+            "text": "El 0 es la clave IA"
+          },
+          {
+            "id": "c",
+            "text": "len no funciona en sets"
+          },
+          {
+            "id": "d",
+            "text": "La tupla no tiene posición 0"
+          }
+        ],
+        "correctChoiceId": "a",
+        "explanation": "Los sets no prometen orden ni índices.",
+        "focusLines": [
+          2,
+          2
+        ]
+      }
+    ]
+  },
+  "u7": {
+    "id": "u7-ai",
+    "type": "ai_interpret",
+    "prompt": "La IA leyó un diccionario y pidió una clave que no está.",
+    "difficulty": 2,
+    "xp": 16,
+    "explanation": "Leíste el código como revisor: qué hace, por qué está escrito así y qué no se sostiene.",
+    "solution": "Porque busca el valor de la clave nombre | El nombre con el que recuperas un valor | ciudad no existe y lanza KeyError",
+    "starterCode": "persona = {'nombre': 'Lía', 'edad': 20}\nprint(persona['nombre'])\nprint(persona['ciudad'])\n",
+    "aiQuestions": [
+      {
+        "prompt": "¿Por qué la segunda línea imprime Lía?",
+        "choices": [
+          {
+            "id": "a",
+            "text": "Porque busca el valor de la clave nombre"
+          },
+          {
+            "id": "b",
+            "text": "Porque el dict está ordenado alfabéticamente"
+          },
+          {
+            "id": "c",
+            "text": "Porque print muestra las claves"
+          },
+          {
+            "id": "d",
+            "text": "Porque edad vale Lía"
+          }
+        ],
+        "correctChoiceId": "a",
+        "explanation": "Los corchetes consultan por clave, no por posición.",
+        "focusLines": [
+          2,
+          2
+        ]
+      },
+      {
+        "prompt": "¿Qué es una clave en este dict?",
+        "choices": [
+          {
+            "id": "a",
+            "text": "El nombre con el que recuperas un valor"
+          },
+          {
+            "id": "b",
+            "text": "Siempre un número de fila"
+          },
+          {
+            "id": "c",
+            "text": "El resultado de print"
+          },
+          {
+            "id": "d",
+            "text": "Una lista de duplicados"
+          }
+        ],
+        "correctChoiceId": "a",
+        "explanation": "nombre y edad son claves. Lía y 20 son valores.",
+        "focusLines": [
+          1,
+          1
+        ]
+      },
+      {
+        "prompt": "¿Qué está mal en la tercera línea?",
+        "choices": [
+          {
+            "id": "a",
+            "text": "ciudad no existe y lanza KeyError"
+          },
+          {
+            "id": "b",
+            "text": "ciudad vale 20"
+          },
+          {
+            "id": "c",
+            "text": "Sobran las comillas de Lía"
+          },
+          {
+            "id": "d",
+            "text": "Un dict no puede tener dos pares"
+          }
+        ],
+        "correctChoiceId": "a",
+        "explanation": "Para una clave opcional conviene .get('ciudad', 'sin dato').",
+        "focusLines": [
+          3,
+          3
+        ]
+      }
+    ]
+  },
+  "u8": {
+    "id": "u8-ai",
+    "type": "ai_interpret",
+    "prompt": "La IA clasificó un puntaje. Solo debe ejecutarse una rama.",
+    "difficulty": 2,
+    "xp": 16,
+    "explanation": "Leíste el código como revisor: qué hace, por qué está escrito así y qué no se sostiene.",
+    "solution": "72 no llega a 90, así que esa rama se salta | Para probar la siguiente condición solo si la anterior falló | Python no sabría qué instrucción pertenece al if",
+    "starterCode": "puntos = 72\nif puntos >= 90:\n    print('excelente')\nelif puntos >= 60:\n    print('aprobado')\nelse:\n    print('a practicar')\n",
+    "aiQuestions": [
+      {
+        "prompt": "¿Por qué no imprime excelente?",
+        "choices": [
+          {
+            "id": "a",
+            "text": "72 no llega a 90, así que esa rama se salta"
+          },
+          {
+            "id": "b",
+            "text": "if siempre imprime todas las ramas"
+          },
+          {
+            "id": "c",
+            "text": "else se ejecuta primero"
+          },
+          {
+            "id": "d",
+            "text": "72 es texto"
+          }
+        ],
+        "correctChoiceId": "a",
+        "explanation": "La condición del if es falsa. Python sigue con elif.",
+        "focusLines": [
+          2,
+          3
+        ]
+      },
+      {
+        "prompt": "¿Por qué usa elif y no otro if suelto?",
+        "choices": [
+          {
+            "id": "a",
+            "text": "Para probar la siguiente condición solo si la anterior falló"
+          },
+          {
+            "id": "b",
+            "text": "Porque elif suma los puntos"
+          },
+          {
+            "id": "c",
+            "text": "Porque else no puede ir después"
+          },
+          {
+            "id": "d",
+            "text": "Porque print exige elif"
+          }
+        ],
+        "correctChoiceId": "a",
+        "explanation": "Una sola rama gana. elif no se evalúa si el if ya fue verdadero.",
+        "focusLines": [
+          4,
+          5
+        ]
+      },
+      {
+        "prompt": "¿Qué estaría mal si faltara la indentación de print?",
+        "choices": [
+          {
+            "id": "a",
+            "text": "Python no sabría qué instrucción pertenece al if"
+          },
+          {
+            "id": "b",
+            "text": "El número 72 cambiaría"
+          },
+          {
+            "id": "c",
+            "text": "elif se convertiría en un bucle"
+          },
+          {
+            "id": "d",
+            "text": "print dejaría de existir"
+          }
+        ],
+        "correctChoiceId": "a",
+        "explanation": "La indentación es el bloque. Sin ella hay IndentationError o un programa distinto.",
+        "focusLines": [
+          3,
+          3
+        ]
+      }
+    ]
+  },
+  "u9": {
+    "id": "u9-ai",
+    "type": "ai_interpret",
+    "prompt": "La IA quiso sumar 1+2+3. El acumulador está en el lugar equivocado.",
+    "difficulty": 2,
+    "xp": 16,
+    "explanation": "Leíste el código como revisor: qué hace, por qué está escrito así y qué no se sostiene.",
+    "solution": "1, 2 y 3. El 4 no entra | Para ir guardando la suma entre vueltas | Pone total en 0 en cada vuelta y se pierde la suma",
+    "starterCode": "total = 0\nfor numero in range(1, 4):\n    total = 0\n    total += numero\nprint(total)\n",
+    "aiQuestions": [
+      {
+        "prompt": "¿Qué valores recorre range(1, 4)?",
+        "choices": [
+          {
+            "id": "a",
+            "text": "1, 2 y 3. El 4 no entra"
+          },
+          {
+            "id": "b",
+            "text": "1, 2, 3 y 4"
+          },
+          {
+            "id": "c",
+            "text": "0, 1, 2, 3"
+          },
+          {
+            "id": "d",
+            "text": "Solo el 4"
+          }
+        ],
+        "correctChoiceId": "a",
+        "explanation": "El extremo final de range no se incluye.",
+        "focusLines": [
+          2,
+          2
+        ]
+      },
+      {
+        "prompt": "¿Para qué se quería total fuera del for?",
+        "choices": [
+          {
+            "id": "a",
+            "text": "Para ir guardando la suma entre vueltas"
+          },
+          {
+            "id": "b",
+            "text": "Para borrar numero"
+          },
+          {
+            "id": "c",
+            "text": "Para imprimir en cada vuelta"
+          },
+          {
+            "id": "d",
+            "text": "Para crear un dict"
+          }
+        ],
+        "correctChoiceId": "a",
+        "explanation": "El acumulador tiene que sobrevivir de una vuelta a la siguiente.",
+        "focusLines": [
+          1,
+          1
+        ]
+      },
+      {
+        "prompt": "¿Qué está mal en la línea marcada?",
+        "choices": [
+          {
+            "id": "a",
+            "text": "Pone total en 0 en cada vuelta y se pierde la suma"
+          },
+          {
+            "id": "b",
+            "text": "range incluye el 4"
+          },
+          {
+            "id": "c",
+            "text": "print está dentro del for"
+          },
+          {
+            "id": "d",
+            "text": "+= no existe"
+          }
+        ],
+        "correctChoiceId": "a",
+        "explanation": "Al reiniciar total, al final solo queda el último número: 3.",
+        "focusLines": [
+          3,
+          4
+        ]
+      }
+    ]
+  },
+  "u10": {
+    "id": "u10-ai",
+    "type": "ai_interpret",
+    "prompt": "La IA escribió una función que muestra el doble, pero no lo entrega.",
+    "difficulty": 2,
+    "xp": 16,
+    "explanation": "Leíste el código como revisor: qué hace, por qué está escrito así y qué no se sostiene.",
+    "solution": "Define una función reutilizable con un parámetro | Para mostrar 12 en la salida | Falta return, así que resultado es None",
+    "starterCode": "def doble(numero):\n    print(numero * 2)\n\nresultado = doble(6)\nprint(resultado)\n",
+    "aiQuestions": [
+      {
+        "prompt": "¿Qué hace def doble?",
+        "choices": [
+          {
+            "id": "a",
+            "text": "Define una función reutilizable con un parámetro"
+          },
+          {
+            "id": "b",
+            "text": "Ejecuta el doble en ese mismo instante"
+          },
+          {
+            "id": "c",
+            "text": "Importa math"
+          },
+          {
+            "id": "d",
+            "text": "Crea una lista llamada doble"
+          }
+        ],
+        "correctChoiceId": "a",
+        "explanation": "def crea la función. Todavía no la llama.",
+        "focusLines": [
+          1,
+          2
+        ]
+      },
+      {
+        "prompt": "¿Por qué la IA usó print dentro de la función?",
+        "choices": [
+          {
+            "id": "a",
+            "text": "Para mostrar 12 en la salida"
+          },
+          {
+            "id": "b",
+            "text": "Para devolver 12 a resultado"
+          },
+          {
+            "id": "c",
+            "text": "Para borrar numero"
+          },
+          {
+            "id": "d",
+            "text": "Porque return no puede ir en funciones"
+          }
+        ],
+        "correctChoiceId": "a",
+        "explanation": "print muestra. No entrega el valor a quien llamó.",
+        "focusLines": [
+          2,
+          2
+        ]
+      },
+      {
+        "prompt": "¿Qué está mal si se esperaba guardar el doble?",
+        "choices": [
+          {
+            "id": "a",
+            "text": "Falta return, así que resultado es None"
+          },
+          {
+            "id": "b",
+            "text": "doble(6) da 6"
+          },
+          {
+            "id": "c",
+            "text": "El parámetro se llama mal"
+          },
+          {
+            "id": "d",
+            "text": "print(resultado) suma 6"
+          }
+        ],
+        "correctChoiceId": "a",
+        "explanation": "Sin return, la función devuelve None aunque haya impreso 12.",
+        "focusLines": [
+          2,
+          5
+        ]
+      }
+    ]
+  },
+  "u11": {
+    "id": "u11-ai",
+    "type": "ai_interpret",
+    "prompt": "La IA atrapó el error al convertir texto. Mira qué tan ancho es el except.",
+    "difficulty": 2,
+    "xp": 16,
+    "explanation": "Leíste el código como revisor: qué hace, por qué está escrito así y qué no se sostiene.",
+    "solution": "Porque int puede fallar si el texto no es un número | 0, el valor de reserva | Exception esconde cualquier fallo, no solo una conversión inválida",
+    "starterCode": "dato = 'sin dato'\ntry:\n    numero = int(dato)\nexcept Exception:\n    numero = 0\nprint(numero)\n",
+    "aiQuestions": [
+      {
+        "prompt": "¿Por qué hay un try?",
+        "choices": [
+          {
+            "id": "a",
+            "text": "Porque int puede fallar si el texto no es un número"
+          },
+          {
+            "id": "b",
+            "text": "Porque print siempre lanza un error"
+          },
+          {
+            "id": "c",
+            "text": "Porque dato ya es un int"
+          },
+          {
+            "id": "d",
+            "text": "Para importar excepciones"
+          }
+        ],
+        "correctChoiceId": "a",
+        "explanation": "int('sin dato') no sabe qué número construir.",
+        "focusLines": [
+          2,
+          3
+        ]
+      },
+      {
+        "prompt": "¿Qué imprime el programa?",
+        "choices": [
+          {
+            "id": "a",
+            "text": "0, el valor de reserva"
+          },
+          {
+            "id": "b",
+            "text": "sin dato"
+          },
+          {
+            "id": "c",
+            "text": "None"
+          },
+          {
+            "id": "d",
+            "text": "No imprime nada"
+          }
+        ],
+        "correctChoiceId": "a",
+        "explanation": "El except asigna 0 y el print está fuera del try.",
+        "focusLines": [
+          4,
+          6
+        ]
+      },
+      {
+        "prompt": "¿Qué está mal en el except?",
+        "choices": [
+          {
+            "id": "a",
+            "text": "Exception esconde cualquier fallo, no solo una conversión inválida"
+          },
+          {
+            "id": "b",
+            "text": "except no puede asignar 0"
+          },
+          {
+            "id": "c",
+            "text": "int no lanza errores"
+          },
+          {
+            "id": "d",
+            "text": "Falta un for"
+          }
+        ],
+        "correctChoiceId": "a",
+        "explanation": "Conviene capturar ValueError para no tapar otros bugs.",
+        "focusLines": [
+          4,
+          4
+        ]
+      }
+    ]
+  },
+  "u12": {
+    "id": "u12-ai",
+    "type": "ai_interpret",
+    "prompt": "La IA creó un contador. Revisa si el método guarda el estado.",
+    "difficulty": 2,
+    "xp": 16,
+    "explanation": "Leíste el código como revisor: qué hace, por qué está escrito así y qué no se sostiene.",
+    "solution": "Para preparar cada objeto cuando se crea | El dato guardado en ese objeto | Calcula valor local y no lo guarda en self.valor",
+    "starterCode": "class Contador:\n    def __init__(self):\n        self.valor = 0\n    def sumar(self):\n        valor = self.valor + 1\n\nc = Contador()\nc.sumar()\nprint(c.valor)\n",
+    "aiQuestions": [
+      {
+        "prompt": "¿Para qué está __init__?",
+        "choices": [
+          {
+            "id": "a",
+            "text": "Para preparar cada objeto cuando se crea"
+          },
+          {
+            "id": "b",
+            "text": "Para sumar 1 en cada print"
+          },
+          {
+            "id": "c",
+            "text": "Para borrar la clase"
+          },
+          {
+            "id": "d",
+            "text": "Para importar self"
+          }
+        ],
+        "correctChoiceId": "a",
+        "explanation": "__init__ corre al hacer Contador(). Aquí deja valor en 0.",
+        "focusLines": [
+          2,
+          3
+        ]
+      },
+      {
+        "prompt": "¿Qué es self.valor?",
+        "choices": [
+          {
+            "id": "a",
+            "text": "El dato guardado en ese objeto"
+          },
+          {
+            "id": "b",
+            "text": "Una variable global"
+          },
+          {
+            "id": "c",
+            "text": "El nombre de la clase"
+          },
+          {
+            "id": "d",
+            "text": "La salida de print"
+          }
+        ],
+        "correctChoiceId": "a",
+        "explanation": "self distingue el estado de esta instancia.",
+        "focusLines": [
+          3,
+          3
+        ]
+      },
+      {
+        "prompt": "¿Qué está mal en sumar?",
+        "choices": [
+          {
+            "id": "a",
+            "text": "Calcula valor local y no lo guarda en self.valor"
+          },
+          {
+            "id": "b",
+            "text": "Contador() no crea un objeto"
+          },
+          {
+            "id": "c",
+            "text": "print muestra 1"
+          },
+          {
+            "id": "d",
+            "text": "__init__ no puede usar self"
+          }
+        ],
+        "correctChoiceId": "a",
+        "explanation": "Sin self.valor = ..., el objeto sigue en 0.",
+        "focusLines": [
+          5,
+          5
+        ]
+      }
+    ]
+  },
+  "u13": {
+    "id": "u13-ai",
+    "type": "ai_interpret",
+    "prompt": "La IA importó math y usó dos funciones. Una no está a la vista.",
+    "difficulty": 2,
+    "xp": 16,
+    "explanation": "Leíste el código como revisor: qué hace, por qué está escrito así y qué no se sostiene.",
+    "solution": "Porque import math obliga a usar el nombre del módulo | 9.0, un float | ceil no está importado: falta math.ceil",
+    "starterCode": "import math\nprint(math.sqrt(81))\nprint(ceil(2.1))\n",
+    "aiQuestions": [
+      {
+        "prompt": "¿Por qué escribe math.sqrt y no solo sqrt?",
+        "choices": [
+          {
+            "id": "a",
+            "text": "Porque import math obliga a usar el nombre del módulo"
+          },
+          {
+            "id": "b",
+            "text": "Porque sqrt es una palabra reservada"
+          },
+          {
+            "id": "c",
+            "text": "Porque math suma 81"
+          },
+          {
+            "id": "d",
+            "text": "Porque print importa solo"
+          }
+        ],
+        "correctChoiceId": "a",
+        "explanation": "El prefijo deja claro de dónde sale la función.",
+        "focusLines": [
+          1,
+          2
+        ]
+      },
+      {
+        "prompt": "¿Qué devuelve math.sqrt(81)?",
+        "choices": [
+          {
+            "id": "a",
+            "text": "9.0, un float"
+          },
+          {
+            "id": "b",
+            "text": "9, un int"
+          },
+          {
+            "id": "c",
+            "text": "81"
+          },
+          {
+            "id": "d",
+            "text": "3"
+          }
+        ],
+        "correctChoiceId": "a",
+        "explanation": "La raíz cuadrada de math es float.",
+        "focusLines": [
+          2,
+          2
+        ]
+      },
+      {
+        "prompt": "¿Qué está mal en la tercera línea?",
+        "choices": [
+          {
+            "id": "a",
+            "text": "ceil no está importado: falta math.ceil"
+          },
+          {
+            "id": "b",
+            "text": "ceil redondea hacia abajo"
+          },
+          {
+            "id": "c",
+            "text": "81 no tiene raíz"
+          },
+          {
+            "id": "d",
+            "text": "import va debajo de print"
+          }
+        ],
+        "correctChoiceId": "a",
+        "explanation": "import math no vuelca ceil suelto en el programa.",
+        "focusLines": [
+          3,
+          3
+        ]
+      }
+    ]
+  },
+  "p0": {
+    "id": "p0-ai",
+    "type": "ai_interpret",
+    "prompt": "La IA resumió tres ventas. La media no cuenta sola.",
+    "difficulty": 2,
+    "xp": 16,
+    "explanation": "Leíste el código como revisor: qué hace, por qué está escrito así y qué no se sostiene.",
+    "solution": "Porque la media necesita el número de datos | Muestra el extremo, no solo el centro | len vale 0 y la división rompe el programa",
+    "starterCode": "ventas = [4, 8, 12]\nprint(sum(ventas) / len(ventas))\nprint(max(ventas))\n",
+    "aiQuestions": [
+      {
+        "prompt": "¿Por qué divide entre len(ventas)?",
+        "choices": [
+          {
+            "id": "a",
+            "text": "Porque la media necesita el número de datos"
+          },
+          {
+            "id": "b",
+            "text": "Porque max exige un denominador"
+          },
+          {
+            "id": "c",
+            "text": "Porque sum ya divide"
+          },
+          {
+            "id": "d",
+            "text": "Porque las listas empiezan en 1"
+          }
+        ],
+        "correctChoiceId": "a",
+        "explanation": "sum da el total. len es el n del promedio.",
+        "focusLines": [
+          2,
+          2
+        ]
+      },
+      {
+        "prompt": "¿Qué aporta max al lado de la media?",
+        "choices": [
+          {
+            "id": "a",
+            "text": "Muestra el extremo, no solo el centro"
+          },
+          {
+            "id": "b",
+            "text": "Reemplaza a la media"
+          },
+          {
+            "id": "c",
+            "text": "Cuenta cuántas filas hay"
+          },
+          {
+            "id": "d",
+            "text": "Convierte la lista en texto"
+          }
+        ],
+        "correctChoiceId": "a",
+        "explanation": "La media es 8, pero el máximo es 12. El contraste importa.",
+        "focusLines": [
+          3,
+          3
+        ]
+      },
+      {
+        "prompt": "¿Qué estaría mal con ventas = []?",
+        "choices": [
+          {
+            "id": "a",
+            "text": "len vale 0 y la división rompe el programa"
+          },
+          {
+            "id": "b",
+            "text": "max devolvería 0"
+          },
+          {
+            "id": "c",
+            "text": "sum ignoraría el error"
+          },
+          {
+            "id": "d",
+            "text": "print no acepta listas"
+          }
+        ],
+        "correctChoiceId": "a",
+        "explanation": "No hay media de una muestra vacía. Hay que mirar n antes de dividir.",
+        "focusLines": [
+          2,
+          2
+        ]
+      }
+    ]
+  },
+  "u14": {
+    "id": "u14-ai",
+    "type": "ai_interpret",
+    "prompt": "La IA pasó una lista a un array y lo multiplicó.",
+    "difficulty": 2,
+    "xp": 16,
+    "explanation": "Leíste el código como revisor: qué hace, por qué está escrito así y qué no se sostiene.",
+    "solution": "Para tener forma, tipo y operaciones de NumPy | Un eje con tres valores | a * 2 no repite la lista: multiplica cada valor",
+    "starterCode": "import numpy as np\na = np.array([2, 4, 6])\nprint(a.shape)\nprint((a * 2).tolist())\n",
+    "aiQuestions": [
+      {
+        "prompt": "¿Por qué usa np.array?",
+        "choices": [
+          {
+            "id": "a",
+            "text": "Para tener forma, tipo y operaciones de NumPy"
+          },
+          {
+            "id": "b",
+            "text": "Para borrar los números pares"
+          },
+          {
+            "id": "c",
+            "text": "Porque las listas no existen"
+          },
+          {
+            "id": "d",
+            "text": "Para leer un CSV"
+          }
+        ],
+        "correctChoiceId": "a",
+        "explanation": "El array conoce su shape y opera por elementos.",
+        "focusLines": [
+          2,
+          2
+        ]
+      },
+      {
+        "prompt": "¿Qué significa shape (3,)?",
+        "choices": [
+          {
+            "id": "a",
+            "text": "Un eje con tres valores"
+          },
+          {
+            "id": "b",
+            "text": "Tres filas y tres columnas"
+          },
+          {
+            "id": "c",
+            "text": "El máximo es 3"
+          },
+          {
+            "id": "d",
+            "text": "El tipo es texto"
+          }
+        ],
+        "correctChoiceId": "a",
+        "explanation": "(3,) es un vector de longitud 3.",
+        "focusLines": [
+          3,
+          3
+        ]
+      },
+      {
+        "prompt": "¿Qué estaría mal si la IA esperara [2, 4, 6, 2, 4, 6]?",
+        "choices": [
+          {
+            "id": "a",
+            "text": "a * 2 no repite la lista: multiplica cada valor"
+          },
+          {
+            "id": "b",
+            "text": "tolist() ordena"
+          },
+          {
+            "id": "c",
+            "text": "shape duplica el array"
+          },
+          {
+            "id": "d",
+            "text": "import numpy concatena"
+          }
+        ],
+        "correctChoiceId": "a",
+        "explanation": "En un array, * 2 es vectorizado: [4, 8, 12].",
+        "focusLines": [
+          4,
+          4
+        ]
+      }
+    ]
+  },
+  "u15": {
+    "id": "u15-ai",
+    "type": "ai_interpret",
+    "prompt": "La IA cortó un array y luego lo filtró.",
+    "difficulty": 2,
+    "xp": 16,
+    "explanation": "Leíste el código como revisor: qué hace, por qué está escrito así y qué no se sostiene.",
+    "solution": "Porque el final 3 queda fuera. Entran las posiciones 1 y 2 | Crea una máscara True/False para filtrar | El extremo final de un slice nunca entra",
+    "starterCode": "import numpy as np\na = np.array([3, 6, 9, 12])\nprint(a[1:3].tolist())\nprint(a[a > 6].tolist())\n",
+    "aiQuestions": [
+      {
+        "prompt": "¿Por qué el slice no incluye el 12?",
+        "choices": [
+          {
+            "id": "a",
+            "text": "Porque el final 3 queda fuera. Entran las posiciones 1 y 2"
+          },
+          {
+            "id": "b",
+            "text": "Porque 12 no es número"
+          },
+          {
+            "id": "c",
+            "text": "Porque > 6 se aplica primero"
+          },
+          {
+            "id": "d",
+            "text": "Porque los arrays empiezan en 1"
+          }
+        ],
+        "correctChoiceId": "a",
+        "explanation": "[1:3] toma 6 y 9.",
+        "focusLines": [
+          3,
+          3
+        ]
+      },
+      {
+        "prompt": "¿Qué hace a > 6?",
+        "choices": [
+          {
+            "id": "a",
+            "text": "Crea una máscara True/False para filtrar"
+          },
+          {
+            "id": "b",
+            "text": "Borra el array"
+          },
+          {
+            "id": "c",
+            "text": "Devuelve el máximo"
+          },
+          {
+            "id": "d",
+            "text": "Convierte todo a texto"
+          }
+        ],
+        "correctChoiceId": "a",
+        "explanation": "La máscara se usa como índice: quedan 9 y 12.",
+        "focusLines": [
+          4,
+          4
+        ]
+      },
+      {
+        "prompt": "¿Qué estaría mal si la IA dijera que [1:3] incluye la posición 3?",
+        "choices": [
+          {
+            "id": "a",
+            "text": "El extremo final de un slice nunca entra"
+          },
+          {
+            "id": "b",
+            "text": "El 3 es el valor, no la posición"
+          },
+          {
+            "id": "c",
+            "text": "tolist() quita el último"
+          },
+          {
+            "id": "d",
+            "text": "NumPy cuenta desde 1"
+          }
+        ],
+        "correctChoiceId": "a",
+        "explanation": "La posición 3 es 12 y queda fuera del corte.",
+        "focusLines": [
+          3,
+          3
+        ]
+      }
+    ]
+  },
+  "u16": {
+    "id": "u16-ai",
+    "type": "ai_interpret",
+    "prompt": "La IA sumó un escalar y etiquetó cada valor.",
+    "difficulty": 2,
+    "xp": 16,
+    "explanation": "Leíste el código como revisor: qué hace, por qué está escrito así y qué no se sostiene.",
+    "solution": "Broadcasting suma 2 a cada elemento | alto si el valor es mayor que 3, si no bajo | Broadcasting no empareja formas arbitrarias",
+    "starterCode": "import numpy as np\na = np.array([1, 4, 7])\nprint((a + 2).tolist())\nprint(np.where(a > 3, 'alto', 'bajo').tolist())\n",
+    "aiQuestions": [
+      {
+        "prompt": "¿Por qué a + 2 no falla?",
+        "choices": [
+          {
+            "id": "a",
+            "text": "Broadcasting suma 2 a cada elemento"
+          },
+          {
+            "id": "b",
+            "text": "Porque 2 es un array de tres números"
+          },
+          {
+            "id": "c",
+            "text": "Porque where convierte a texto"
+          },
+          {
+            "id": "d",
+            "text": "Porque + concatena"
+          }
+        ],
+        "correctChoiceId": "a",
+        "explanation": "Un escalar compatible se aplica a todo el array.",
+        "focusLines": [
+          3,
+          3
+        ]
+      },
+      {
+        "prompt": "¿Qué decide np.where aquí?",
+        "choices": [
+          {
+            "id": "a",
+            "text": "alto si el valor es mayor que 3, si no bajo"
+          },
+          {
+            "id": "b",
+            "text": "El promedio del array"
+          },
+          {
+            "id": "c",
+            "text": "Solo el primer elemento"
+          },
+          {
+            "id": "d",
+            "text": "La forma del array"
+          }
+        ],
+        "correctChoiceId": "a",
+        "explanation": "1 es bajo. 4 y 7 son alto.",
+        "focusLines": [
+          4,
+          4
+        ]
+      },
+      {
+        "prompt": "¿Qué estaría mal al sumar un array de forma incompatible?",
+        "choices": [
+          {
+            "id": "a",
+            "text": "Broadcasting no empareja formas arbitrarias"
+          },
+          {
+            "id": "b",
+            "text": "Siempre recorta el más largo"
+          },
+          {
+            "id": "c",
+            "text": "where arregla la forma"
+          },
+          {
+            "id": "d",
+            "text": "tolist() alinea los ejes"
+          }
+        ],
+        "correctChoiceId": "a",
+        "explanation": "Las formas tienen que coincidir o ser ampliables. Si no, hay error.",
+        "focusLines": [
+          3,
+          3
+        ]
+      }
+    ]
+  },
+  "u17": {
+    "id": "u17-ai",
+    "type": "ai_interpret",
+    "prompt": "La IA resumió un array con un valor extremo.",
+    "difficulty": 2,
+    "xp": 16,
+    "explanation": "Leíste el código como revisor: qué hace, por qué está escrito así y qué no se sostiene.",
+    "solution": "El promedio aritmético de todos los valores | Porque el 100 empuja la media y casi no mueve la mediana | Esconde que un solo 100 cambia el centro",
+    "starterCode": "import numpy as np\na = np.array([1, 3, 5, 100])\nprint(a.mean())\nprint(np.median(a))\n",
+    "aiQuestions": [
+      {
+        "prompt": "¿Qué calcula mean()?",
+        "choices": [
+          {
+            "id": "a",
+            "text": "El promedio aritmético de todos los valores"
+          },
+          {
+            "id": "b",
+            "text": "El valor del medio"
+          },
+          {
+            "id": "c",
+            "text": "El más frecuente"
+          },
+          {
+            "id": "d",
+            "text": "La suma sin dividir"
+          }
+        ],
+        "correctChoiceId": "a",
+        "explanation": "La media usa todos los números, incluido el 100.",
+        "focusLines": [
+          3,
+          3
+        ]
+      },
+      {
+        "prompt": "¿Por qué la mediana cuenta otra historia?",
+        "choices": [
+          {
+            "id": "a",
+            "text": "Porque el 100 empuja la media y casi no mueve la mediana"
+          },
+          {
+            "id": "b",
+            "text": "Porque median ignora el array"
+          },
+          {
+            "id": "c",
+            "text": "Porque mean borra el 100"
+          },
+          {
+            "id": "d",
+            "text": "Porque son el mismo número"
+          }
+        ],
+        "correctChoiceId": "a",
+        "explanation": "Un extremo desplaza el promedio más que el valor central.",
+        "focusLines": [
+          3,
+          4
+        ]
+      },
+      {
+        "prompt": "¿Qué estaría mal al reportar solo la media?",
+        "choices": [
+          {
+            "id": "a",
+            "text": "Esconde que un solo 100 cambia el centro"
+          },
+          {
+            "id": "b",
+            "text": "La mediana no existe en NumPy"
+          },
+          {
+            "id": "c",
+            "text": "mean() devuelve texto"
+          },
+          {
+            "id": "d",
+            "text": "Hay que importar pandas para un array"
+          }
+        ],
+        "correctChoiceId": "a",
+        "explanation": "Con un outlier, media y mediana se leen juntas.",
+        "focusLines": [
+          3,
+          3
+        ]
+      }
+    ]
+  },
+  "u18": {
+    "id": "u18-ai",
+    "type": "ai_interpret",
+    "prompt": "La IA cambió la forma del array y filtró.",
+    "difficulty": 2,
+    "xp": 16,
+    "explanation": "Leíste el código como revisor: qué hace, por qué está escrito así y qué no se sostiene.",
+    "solution": "Reorganiza los 6 valores en 2 filas y 3 columnas | Elige valores, no posiciones. Quedan 4, 5 y 6 | 2×2 no tiene sitio para 6 valores",
+    "starterCode": "import numpy as np\na = np.array([1, 2, 3, 4, 5, 6])\nb = a.reshape(2, 3)\nprint(b.shape)\nprint(b[b > 3].tolist())\n",
+    "aiQuestions": [
+      {
+        "prompt": "¿Qué hace reshape(2, 3)?",
+        "choices": [
+          {
+            "id": "a",
+            "text": "Reorganiza los 6 valores en 2 filas y 3 columnas"
+          },
+          {
+            "id": "b",
+            "text": "Borra tres valores"
+          },
+          {
+            "id": "c",
+            "text": "Ordena de mayor a menor"
+          },
+          {
+            "id": "d",
+            "text": "Crea una copia con ceros"
+          }
+        ],
+        "correctChoiceId": "a",
+        "explanation": "6 elementos caben en 2×3. El shape pasa a (2, 3).",
+        "focusLines": [
+          2,
+          3
+        ]
+      },
+      {
+        "prompt": "¿El filtro b > 3 depende de la forma?",
+        "choices": [
+          {
+            "id": "a",
+            "text": "Elige valores, no posiciones. Quedan 4, 5 y 6"
+          },
+          {
+            "id": "b",
+            "text": "Solo mira la primera fila"
+          },
+          {
+            "id": "c",
+            "text": "Devuelve el shape"
+          },
+          {
+            "id": "d",
+            "text": "Falla porque b es matriz"
+          }
+        ],
+        "correctChoiceId": "a",
+        "explanation": "La máscara aplana el criterio: importan los números mayores que 3.",
+        "focusLines": [
+          4,
+          4
+        ]
+      },
+      {
+        "prompt": "¿Qué estaría mal con reshape(2, 2)?",
+        "choices": [
+          {
+            "id": "a",
+            "text": "2×2 no tiene sitio para 6 valores"
+          },
+          {
+            "id": "b",
+            "text": "Siempre recorta"
+          },
+          {
+            "id": "c",
+            "text": "shape ignoraría el error"
+          },
+          {
+            "id": "d",
+            "text": "El filtro lo arregla"
+          }
+        ],
+        "correctChoiceId": "a",
+        "explanation": "La cantidad de celdas tiene que coincidir con el tamaño.",
+        "focusLines": [
+          2,
+          2
+        ]
+      }
+    ]
+  },
+  "p1": {
+    "id": "p1-ai",
+    "type": "ai_interpret",
+    "prompt": "La IA resumió temperaturas. Falta decir la unidad y el n.",
+    "difficulty": 2,
+    "xp": 16,
+    "explanation": "Leíste el código como revisor: qué hace, por qué está escrito así y qué no se sostiene.",
+    "solution": "La temperatura promedio de esas cuatro lecturas | Muestra el pico, no solo el centro | No dice n=4 ni la unidad (°C)",
+    "starterCode": "import numpy as np\ntemps = np.array([12.0, 15.5, 14.0, 18.2])\nprint(temps.mean())\nprint(temps.max())\n",
+    "aiQuestions": [
+      {
+        "prompt": "¿Qué representa mean() aquí?",
+        "choices": [
+          {
+            "id": "a",
+            "text": "La temperatura promedio de esas cuatro lecturas"
+          },
+          {
+            "id": "b",
+            "text": "La mediana"
+          },
+          {
+            "id": "c",
+            "text": "El primer día"
+          },
+          {
+            "id": "d",
+            "text": "Un pronóstico"
+          }
+        ],
+        "correctChoiceId": "a",
+        "explanation": "Suma las lecturas y divide entre 4.",
+        "focusLines": [
+          3,
+          3
+        ]
+      },
+      {
+        "prompt": "¿Por qué max ayuda al lado de la media?",
+        "choices": [
+          {
+            "id": "a",
+            "text": "Muestra el pico, no solo el centro"
+          },
+          {
+            "id": "b",
+            "text": "Reemplaza el promedio"
+          },
+          {
+            "id": "c",
+            "text": "Cuenta los días nulos"
+          },
+          {
+            "id": "d",
+            "text": "Convierte a texto"
+          }
+        ],
+        "correctChoiceId": "a",
+        "explanation": "El máximo dice qué tan lejos llegó la serie.",
+        "focusLines": [
+          4,
+          4
+        ]
+      },
+      {
+        "prompt": "¿Qué está incompleto en este resumen?",
+        "choices": [
+          {
+            "id": "a",
+            "text": "No dice n=4 ni la unidad (°C)"
+          },
+          {
+            "id": "b",
+            "text": "mean() está mal calculada"
+          },
+          {
+            "id": "c",
+            "text": "NumPy no puede promediar"
+          },
+          {
+            "id": "d",
+            "text": "max() borra la media"
+          }
+        ],
+        "correctChoiceId": "a",
+        "explanation": "Un número de temperatura sin n ni unidad no se puede auditar.",
+        "focusLines": [
+          3,
+          4
+        ]
+      }
+    ]
+  },
+  "u19": {
+    "id": "u19-ai",
+    "type": "ai_interpret",
+    "prompt": "La IA dibujó una línea. El gráfico todavía no dice qué es.",
+    "difficulty": 2,
+    "xp": 16,
+    "explanation": "Leíste el código como revisor: qué hace, por qué está escrito así y qué no se sostiene.",
+    "solution": "Une los puntos (1,4), (2,4) y (3,9) | Una lista es la posición horizontal y la otra la vertical | Título, ejes y unidad. Así no se sabe qué sube a 9",
+    "starterCode": "import matplotlib.pyplot as plt\nxs = [1, 2, 3]\nys = [4, 4, 9]\nplt.plot(xs, ys)\nplt.show()\n",
+    "aiQuestions": [
+      {
+        "prompt": "¿Qué hace plt.plot(xs, ys)?",
+        "choices": [
+          {
+            "id": "a",
+            "text": "Une los puntos (1,4), (2,4) y (3,9)"
+          },
+          {
+            "id": "b",
+            "text": "Calcula la media de ys"
+          },
+          {
+            "id": "c",
+            "text": "Guarda un CSV"
+          },
+          {
+            "id": "d",
+            "text": "Entrena un modelo"
+          }
+        ],
+        "correctChoiceId": "a",
+        "explanation": "plot dibuja. No resume ni ajusta un modelo.",
+        "focusLines": [
+          4,
+          4
+        ]
+      },
+      {
+        "prompt": "¿Por qué xs e ys van separados?",
+        "choices": [
+          {
+            "id": "a",
+            "text": "Una lista es la posición horizontal y la otra la vertical"
+          },
+          {
+            "id": "b",
+            "text": "Porque plot solo acepta un número"
+          },
+          {
+            "id": "c",
+            "text": "Porque show() los resta"
+          },
+          {
+            "id": "d",
+            "text": "Porque matplotlib exige dicts"
+          }
+        ],
+        "correctChoiceId": "a",
+        "explanation": "Cada índice es un punto: x con su y.",
+        "focusLines": [
+          2,
+          4
+        ]
+      },
+      {
+        "prompt": "¿Qué le falta a este gráfico para poder leerse?",
+        "choices": [
+          {
+            "id": "a",
+            "text": "Título, ejes y unidad. Así no se sabe qué sube a 9"
+          },
+          {
+            "id": "b",
+            "text": "plt.show() borra los datos"
+          },
+          {
+            "id": "c",
+            "text": "Hay demasiados puntos"
+          },
+          {
+            "id": "d",
+            "text": "plot no acepta listas"
+          }
+        ],
+        "correctChoiceId": "a",
+        "explanation": "Sin nombres, la línea es una forma, no un hallazgo.",
+        "focusLines": [
+          4,
+          5
+        ]
+      }
+    ]
+  },
+  "u20": {
+    "id": "u20-ai",
+    "type": "ai_interpret",
+    "prompt": "La IA puso un título corto en un gráfico de barras.",
+    "difficulty": 2,
+    "xp": 16,
+    "explanation": "Leíste el código como revisor: qué hace, por qué está escrito así y qué no se sostiene.",
+    "solution": "web contra tienda, con alturas 4 y 2 | Para decir qué se está mirando | No dice periodo, métrica ni unidad",
+    "starterCode": "import matplotlib.pyplot as plt\nplt.bar(['web', 'tienda'], [4, 2])\nplt.title('Ventas')\nplt.show()\n",
+    "aiQuestions": [
+      {
+        "prompt": "¿Qué compara el bar?",
+        "choices": [
+          {
+            "id": "a",
+            "text": "web contra tienda, con alturas 4 y 2"
+          },
+          {
+            "id": "b",
+            "text": "La media de los canales"
+          },
+          {
+            "id": "c",
+            "text": "Un histograma de edades"
+          },
+          {
+            "id": "d",
+            "text": "La correlación"
+          }
+        ],
+        "correctChoiceId": "a",
+        "explanation": "Cada barra es una categoría y su altura es el valor.",
+        "focusLines": [
+          2,
+          2
+        ]
+      },
+      {
+        "prompt": "¿Para qué sirve title?",
+        "choices": [
+          {
+            "id": "a",
+            "text": "Para decir qué se está mirando"
+          },
+          {
+            "id": "b",
+            "text": "Para calcular las alturas"
+          },
+          {
+            "id": "c",
+            "text": "Para ordenar las barras"
+          },
+          {
+            "id": "d",
+            "text": "Para exportar un modelo"
+          }
+        ],
+        "correctChoiceId": "a",
+        "explanation": "El título es la frase que el gráfico defiende.",
+        "focusLines": [
+          3,
+          3
+        ]
+      },
+      {
+        "prompt": "¿Qué está flojo en el título 'Ventas'?",
+        "choices": [
+          {
+            "id": "a",
+            "text": "No dice periodo, métrica ni unidad"
+          },
+          {
+            "id": "b",
+            "text": "bar no acepta texto"
+          },
+          {
+            "id": "c",
+            "text": "4 es menor que 2"
+          },
+          {
+            "id": "d",
+            "text": "show() cambia los datos"
+          }
+        ],
+        "correctChoiceId": "a",
+        "explanation": "Ventas de qué, cuándo y en qué unidad. Si no, la barra no se puede citar.",
+        "focusLines": [
+          3,
+          3
+        ]
+      }
+    ]
+  },
+  "u21": {
+    "id": "u21-ai",
+    "type": "ai_interpret",
+    "prompt": "La IA pidió un barplot de seaborn sobre una tabla.",
+    "difficulty": 2,
+    "xp": 16,
+    "explanation": "Leíste el código como revisor: qué hace, por qué está escrito así y qué no se sostiene.",
+    "solution": "Porque seaborn espera columnas con nombre | Una medida de tendencia, no cada fila suelta | El default no es la suma de 4 y 6",
+    "starterCode": "import seaborn as sns\nimport pandas as pd\ndf = pd.DataFrame({'canal': ['web', 'web', 'tienda'], 'unidades': [4, 6, 2]})\nsns.barplot(data=df, x='canal', y='unidades')\n",
+    "aiQuestions": [
+      {
+        "prompt": "¿Por qué usa un DataFrame?",
+        "choices": [
+          {
+            "id": "a",
+            "text": "Porque seaborn espera columnas con nombre"
+          },
+          {
+            "id": "b",
+            "text": "Porque list no existe"
+          },
+          {
+            "id": "c",
+            "text": "Porque barplot suma strings"
+          },
+          {
+            "id": "d",
+            "text": "Porque pandas dibuja solo"
+          }
+        ],
+        "correctChoiceId": "a",
+        "explanation": "x e y nombran columnas, no posiciones sueltas.",
+        "focusLines": [
+          3,
+          4
+        ]
+      },
+      {
+        "prompt": "¿Qué resume barplot por canal, por defecto?",
+        "choices": [
+          {
+            "id": "a",
+            "text": "Una medida de tendencia, no cada fila suelta"
+          },
+          {
+            "id": "b",
+            "text": "El texto de la columna canal"
+          },
+          {
+            "id": "c",
+            "text": "Solo la primera fila"
+          },
+          {
+            "id": "d",
+            "text": "Un modelo de clasificación"
+          }
+        ],
+        "correctChoiceId": "a",
+        "explanation": "Con varias filas web, la barra no es 'una fila': resume.",
+        "focusLines": [
+          4,
+          4
+        ]
+      },
+      {
+        "prompt": "¿Qué estaría mal al leer la barra web como si fuera la suma?",
+        "choices": [
+          {
+            "id": "a",
+            "text": "El default no es la suma de 4 y 6"
+          },
+          {
+            "id": "b",
+            "text": "seaborn no agrupa"
+          },
+          {
+            "id": "c",
+            "text": "tienda vale 10"
+          },
+          {
+            "id": "d",
+            "text": "Falta matplotlib y por eso suma"
+          }
+        ],
+        "correctChoiceId": "a",
+        "explanation": "Hay que saber si la barra es media o total antes de citarla.",
+        "focusLines": [
+          4,
+          4
+        ]
+      }
+    ]
+  },
+  "u22": {
+    "id": "u22-ai",
+    "type": "ai_interpret",
+    "prompt": "La IA tituló una conclusión que los dos puntos no alcanzan a probar.",
+    "difficulty": 2,
+    "xp": 16,
+    "explanation": "Leíste el código como revisor: qué hace, por qué está escrito así y qué no se sostiene.",
+    "solution": "Dos puntos: de 4 se pasa a 8 | Afirma una frase que el lector se va a creer | 'Siempre' generaliza más allá de dos puntos",
+    "starterCode": "import matplotlib.pyplot as plt\nplt.plot([1, 2], [4, 8])\nplt.title('La web siempre vende el doble')\nplt.show()\n",
+    "aiQuestions": [
+      {
+        "prompt": "¿Qué muestran de verdad los datos?",
+        "choices": [
+          {
+            "id": "a",
+            "text": "Dos puntos: de 4 se pasa a 8"
+          },
+          {
+            "id": "b",
+            "text": "Que todos los canales duplican siempre"
+          },
+          {
+            "id": "c",
+            "text": "Un año completo de ventas"
+          },
+          {
+            "id": "d",
+            "text": "Un test estadístico"
+          }
+        ],
+        "correctChoiceId": "a",
+        "explanation": "plot solo tiene dos valores. Nada más.",
+        "focusLines": [
+          2,
+          2
+        ]
+      },
+      {
+        "prompt": "¿Por qué el título es parte del análisis?",
+        "choices": [
+          {
+            "id": "a",
+            "text": "Afirma una frase que el lector se va a creer"
+          },
+          {
+            "id": "b",
+            "text": "matplotlib lo calcula con los datos"
+          },
+          {
+            "id": "c",
+            "text": "show() lo verifica"
+          },
+          {
+            "id": "d",
+            "text": "Es decoración sin sentido"
+          }
+        ],
+        "correctChoiceId": "a",
+        "explanation": "El título es una afirmación, no un adorno.",
+        "focusLines": [
+          3,
+          3
+        ]
+      },
+      {
+        "prompt": "¿Qué está mal en el título?",
+        "choices": [
+          {
+            "id": "a",
+            "text": "'Siempre' generaliza más allá de dos puntos"
+          },
+          {
+            "id": "b",
+            "text": "8 es menor que 4"
+          },
+          {
+            "id": "c",
+            "text": "plot no puede usar listas"
+          },
+          {
+            "id": "d",
+            "text": "Falta seaborn"
+          }
+        ],
+        "correctChoiceId": "a",
+        "explanation": "Esos puntos no prueban una ley. El título se pasa de lo observado.",
+        "focusLines": [
+          3,
+          3
+        ]
+      }
+    ]
+  },
+  "p2": {
+    "id": "p2-ai",
+    "type": "ai_interpret",
+    "prompt": "La IA armó dos números para un tablero. Todavía no hay contexto.",
+    "difficulty": 2,
+    "xp": 16,
+    "explanation": "Leíste el código como revisor: qué hace, por qué está escrito así y qué no se sostiene.",
+    "solution": "El nombre de cada panel con su número | Un solo centro esconde el extremo | No hay n, unidad ni periodo de esos valores",
+    "starterCode": "paneles = ['media', 'maximo']\nvalores = [8, 12]\nprint(paneles[0], valores[0])\nprint(paneles[1], valores[1])\n",
+    "aiQuestions": [
+      {
+        "prompt": "¿Qué empareja el programa?",
+        "choices": [
+          {
+            "id": "a",
+            "text": "El nombre de cada panel con su número"
+          },
+          {
+            "id": "b",
+            "text": "Un modelo y su accuracy"
+          },
+          {
+            "id": "c",
+            "text": "Filas de un CSV externo"
+          },
+          {
+            "id": "d",
+            "text": "Tokens de un prompt"
+          }
+        ],
+        "correctChoiceId": "a",
+        "explanation": "El índice 0 es media=8 y el 1 es máximo=12.",
+        "focusLines": [
+          3,
+          4
+        ]
+      },
+      {
+        "prompt": "¿Por qué un tablero necesita más de un número?",
+        "choices": [
+          {
+            "id": "a",
+            "text": "Un solo centro esconde el extremo"
+          },
+          {
+            "id": "b",
+            "text": "Porque print exige dos líneas"
+          },
+          {
+            "id": "c",
+            "text": "Porque las listas deben ser pares"
+          },
+          {
+            "id": "d",
+            "text": "Porque máximo es siempre la media"
+          }
+        ],
+        "correctChoiceId": "a",
+        "explanation": "Media y máximo juntos evitan una historia a medias.",
+        "focusLines": [
+          1,
+          4
+        ]
+      },
+      {
+        "prompt": "¿Qué está incompleto para publicarlo?",
+        "choices": [
+          {
+            "id": "a",
+            "text": "No hay n, unidad ni periodo de esos valores"
+          },
+          {
+            "id": "b",
+            "text": "Los índices empiezan en 1"
+          },
+          {
+            "id": "c",
+            "text": "print no muestra texto"
+          },
+          {
+            "id": "d",
+            "text": "valores está vacío"
+          }
+        ],
+        "correctChoiceId": "a",
+        "explanation": "8 y 12 sin decir de qué muestra son no se pueden defender.",
+        "focusLines": [
+          3,
+          4
+        ]
+      }
+    ]
+  },
+  "u23": {
+    "id": "u23-ai",
+    "type": "ai_interpret",
+    "prompt": "La IA construyó una tabla pequeña.",
+    "difficulty": 2,
+    "xp": 16,
+    "explanation": "Leíste el código como revisor: qué hace, por qué está escrito así y qué no se sostiene.",
+    "solution": "Una tabla con columnas con nombre y una fila por observación | Filas y columnas: 2 por 2 | sum() totaliza. El promedio dividiría entre el n",
+    "starterCode": "import pandas as pd\ndf = pd.DataFrame({'ciudad': ['Lima', 'Cusco'], 'ventas': [10, 4]})\nprint(df.shape)\nprint(df['ventas'].sum())\n",
+    "aiQuestions": [
+      {
+        "prompt": "¿Qué es un DataFrame aquí?",
+        "choices": [
+          {
+            "id": "a",
+            "text": "Una tabla con columnas con nombre y una fila por observación"
+          },
+          {
+            "id": "b",
+            "text": "Un array de un solo número"
+          },
+          {
+            "id": "c",
+            "text": "Un gráfico"
+          },
+          {
+            "id": "d",
+            "text": "Un prompt"
+          }
+        ],
+        "correctChoiceId": "a",
+        "explanation": "ciudad y ventas son columnas. Hay dos filas.",
+        "focusLines": [
+          2,
+          2
+        ]
+      },
+      {
+        "prompt": "¿Qué dice shape?",
+        "choices": [
+          {
+            "id": "a",
+            "text": "Filas y columnas: 2 por 2"
+          },
+          {
+            "id": "b",
+            "text": "La suma de las ventas"
+          },
+          {
+            "id": "c",
+            "text": "Solo el número de columnas"
+          },
+          {
+            "id": "d",
+            "text": "El tipo de Lima"
+          }
+        ],
+        "correctChoiceId": "a",
+        "explanation": "(2, 2) es dos observaciones y dos variables.",
+        "focusLines": [
+          3,
+          3
+        ]
+      },
+      {
+        "prompt": "¿Qué estaría mal al decir que la suma es el promedio?",
+        "choices": [
+          {
+            "id": "a",
+            "text": "sum() totaliza. El promedio dividiría entre el n"
+          },
+          {
+            "id": "b",
+            "text": "shape ya divide"
+          },
+          {
+            "id": "c",
+            "text": "Cusco no entra en la suma"
+          },
+          {
+            "id": "d",
+            "text": "DataFrame no tiene columnas"
+          }
+        ],
+        "correctChoiceId": "a",
+        "explanation": "10+4 es 14. La media sería 14/2.",
+        "focusLines": [
+          4,
+          4
+        ]
+      }
+    ]
+  },
+  "u24": {
+    "id": "u24-ai",
+    "type": "ai_interpret",
+    "prompt": "La IA filtró filas y se quedó con una columna.",
+    "difficulty": 2,
+    "xp": 16,
+    "explanation": "Leíste el código como revisor: qué hace, por qué está escrito así y qué no se sostiene.",
+    "solution": "Una máscara de filas: True donde la edad llega a 18 | Después de elegir filas, loc se queda con esa columna | Es solo quienes cumplen la edad. Bo no está",
+    "starterCode": "import pandas as pd\ndf = pd.DataFrame({'nombre': ['Ana', 'Bo'], 'edad': [20, 17]})\nprint(df.loc[df.edad >= 18, 'nombre'].tolist())\n",
+    "aiQuestions": [
+      {
+        "prompt": "¿Qué hace df.edad >= 18?",
+        "choices": [
+          {
+            "id": "a",
+            "text": "Una máscara de filas: True donde la edad llega a 18"
+          },
+          {
+            "id": "b",
+            "text": "Ordena el DataFrame"
+          },
+          {
+            "id": "c",
+            "text": "Borra la columna nombre"
+          },
+          {
+            "id": "d",
+            "text": "Calcula la media"
+          }
+        ],
+        "correctChoiceId": "a",
+        "explanation": "Ana queda. Bo, con 17, no.",
+        "focusLines": [
+          3,
+          3
+        ]
+      },
+      {
+        "prompt": "¿Por qué hay una coma y luego 'nombre'?",
+        "choices": [
+          {
+            "id": "a",
+            "text": "Después de elegir filas, loc se queda con esa columna"
+          },
+          {
+            "id": "b",
+            "text": "nombre es el índice"
+          },
+          {
+            "id": "c",
+            "text": "La coma suma las edades"
+          },
+          {
+            "id": "d",
+            "text": "loc solo acepta números"
+          }
+        ],
+        "correctChoiceId": "a",
+        "explanation": "loc[filas, columna] es el recorte de Ana.",
+        "focusLines": [
+          3,
+          3
+        ]
+      },
+      {
+        "prompt": "¿Qué estaría mal al usar el resultado como 'todas las personas'?",
+        "choices": [
+          {
+            "id": "a",
+            "text": "Es solo quienes cumplen la edad. Bo no está"
+          },
+          {
+            "id": "b",
+            "text": "tolist() duplica filas"
+          },
+          {
+            "id": "c",
+            "text": "18 se lee como texto"
+          },
+          {
+            "id": "d",
+            "text": "loc no filtra"
+          }
+        ],
+        "correctChoiceId": "a",
+        "explanation": "El filtro cambia quién entra. Hay que decir el criterio.",
+        "focusLines": [
+          3,
+          3
+        ]
+      }
+    ]
+  },
+  "u25": {
+    "id": "u25-ai",
+    "type": "ai_interpret",
+    "prompt": "La IA borró nulos. Mira qué información dejó de poder contar.",
+    "difficulty": 2,
+    "xp": 16,
+    "explanation": "Leíste el código como revisor: qué hace, por qué está escrito así y qué no se sostiene.",
+    "solution": "Quita las filas donde falta un valor | Para recordar cuántas filas había antes de borrar | Se pierde contar cuántos nulos se fueron",
+    "starterCode": "import pandas as pd\ndf = pd.DataFrame({'edad': [20, None, 30]})\nantes = len(df)\ndf = df.dropna()\nprint(len(df))\n",
+    "aiQuestions": [
+      {
+        "prompt": "¿Qué hace dropna()?",
+        "choices": [
+          {
+            "id": "a",
+            "text": "Quita las filas donde falta un valor"
+          },
+          {
+            "id": "b",
+            "text": "Rellena los nulos con cero"
+          },
+          {
+            "id": "c",
+            "text": "Convierte None en 30"
+          },
+          {
+            "id": "d",
+            "text": "Ordena la columna"
+          }
+        ],
+        "correctChoiceId": "a",
+        "explanation": "La fila del None desaparece. Quedan dos edades.",
+        "focusLines": [
+          3,
+          3
+        ]
+      },
+      {
+        "prompt": "¿Para qué guardó antes?",
+        "choices": [
+          {
+            "id": "a",
+            "text": "Para recordar cuántas filas había antes de borrar"
+          },
+          {
+            "id": "b",
+            "text": "Para calcular la mediana"
+          },
+          {
+            "id": "c",
+            "text": "Porque len no funciona dos veces"
+          },
+          {
+            "id": "d",
+            "text": "Para crear un índice"
+          }
+        ],
+        "correctChoiceId": "a",
+        "explanation": "antes vale 3. Después de reasignar, df ya no tiene esa fila.",
+        "focusLines": [
+          2,
+          2
+        ]
+      },
+      {
+        "prompt": "¿Qué está mal en el informe si solo se imprime len(df)?",
+        "choices": [
+          {
+            "id": "a",
+            "text": "Se pierde contar cuántos nulos se fueron"
+          },
+          {
+            "id": "b",
+            "text": "dropna() no borra nada"
+          },
+          {
+            "id": "c",
+            "text": "None es un número"
+          },
+          {
+            "id": "d",
+            "text": "antes cambia el tipo"
+          }
+        ],
+        "correctChoiceId": "a",
+        "explanation": "Sin el n original, el 2 parece la tabla completa.",
+        "focusLines": [
+          3,
+          4
+        ]
+      }
+    ]
+  },
+  "u26": {
+    "id": "u26-ai",
+    "type": "ai_interpret",
+    "prompt": "La IA agrupó unidades por canal.",
+    "difficulty": 2,
+    "xp": 16,
+    "explanation": "Leíste el código como revisor: qué hace, por qué está escrito así y qué no se sostiene.",
+    "solution": "Las filas que comparten el mismo canal | Porque sumó 4 y 6 | Es una suma. El promedio sería 5",
+    "starterCode": "import pandas as pd\ndf = pd.DataFrame({'canal': ['web', 'web', 'tienda'], 'u': [4, 6, 2]})\ng = df.groupby('canal')['u'].sum()\nprint(g['web'])\n",
+    "aiQuestions": [
+      {
+        "prompt": "¿Qué agrupa groupby('canal')?",
+        "choices": [
+          {
+            "id": "a",
+            "text": "Las filas que comparten el mismo canal"
+          },
+          {
+            "id": "b",
+            "text": "Cada número por separado"
+          },
+          {
+            "id": "c",
+            "text": "Solo la primera fila"
+          },
+          {
+            "id": "d",
+            "text": "Las columnas en orden alfabético"
+          }
+        ],
+        "correctChoiceId": "a",
+        "explanation": "web tiene dos filas. tienda tiene una.",
+        "focusLines": [
+          3,
+          3
+        ]
+      },
+      {
+        "prompt": "¿Por qué el resultado de web es 10?",
+        "choices": [
+          {
+            "id": "a",
+            "text": "Porque sumó 4 y 6"
+          },
+          {
+            "id": "b",
+            "text": "Porque promedió"
+          },
+          {
+            "id": "c",
+            "text": "Porque contó filas"
+          },
+          {
+            "id": "d",
+            "text": "Porque tomó el máximo"
+          }
+        ],
+        "correctChoiceId": "a",
+        "explanation": "sum en el grupo web totaliza las unidades.",
+        "focusLines": [
+          3,
+          4
+        ]
+      },
+      {
+        "prompt": "¿Qué estaría mal al llamar a eso 'promedio de la web'?",
+        "choices": [
+          {
+            "id": "a",
+            "text": "Es una suma. El promedio sería 5"
+          },
+          {
+            "id": "b",
+            "text": "groupby no puede sumar"
+          },
+          {
+            "id": "c",
+            "text": "tienda vale 10"
+          },
+          {
+            "id": "d",
+            "text": "g['web'] es texto"
+          }
+        ],
+        "correctChoiceId": "a",
+        "explanation": "El nombre de la métrica tiene que coincidir con la operación.",
+        "focusLines": [
+          3,
+          4
+        ]
+      }
+    ]
+  },
+  "u27": {
+    "id": "u27-ai",
+    "type": "ai_interpret",
+    "prompt": "La IA resumió una serie por mes.",
+    "difficulty": 2,
+    "xp": 16,
+    "explanation": "Leíste el código como revisor: qué hace, por qué está escrito así y qué no se sostiene.",
+    "solution": "Para que el índice sea tiempo y se pueda remuestrear | Suma los valores que caen en cada mes | Es solo el último mes, no la suma de todos",
+    "starterCode": "import pandas as pd\nfechas = pd.to_datetime(['2024-01-01', '2024-01-02', '2024-02-01'])\ns = pd.Series([2, 3, 8], index=fechas)\nprint(s.resample('ME').sum().iloc[-1])\n",
+    "aiQuestions": [
+      {
+        "prompt": "¿Para qué convierte las fechas con to_datetime?",
+        "choices": [
+          {
+            "id": "a",
+            "text": "Para que el índice sea tiempo y se pueda remuestrear"
+          },
+          {
+            "id": "b",
+            "text": "Para borrar enero"
+          },
+          {
+            "id": "c",
+            "text": "Para convertir los valores en texto"
+          },
+          {
+            "id": "d",
+            "text": "Porque Series no acepta números"
+          }
+        ],
+        "correctChoiceId": "a",
+        "explanation": "resample necesita un índice de fechas, no strings sueltos.",
+        "focusLines": [
+          2,
+          3
+        ]
+      },
+      {
+        "prompt": "¿Qué hace resample('ME').sum()?",
+        "choices": [
+          {
+            "id": "a",
+            "text": "Suma los valores que caen en cada mes"
+          },
+          {
+            "id": "b",
+            "text": "Calcula un modelo"
+          },
+          {
+            "id": "c",
+            "text": "Cuenta tokens"
+          },
+          {
+            "id": "d",
+            "text": "Ordena alfabéticamente"
+          }
+        ],
+        "correctChoiceId": "a",
+        "explanation": "Enero junta 2 y 3. Febrero se queda con 8.",
+        "focusLines": [
+          4,
+          4
+        ]
+      },
+      {
+        "prompt": "¿Qué estaría mal al leer iloc[-1] como 'el total de todo'?",
+        "choices": [
+          {
+            "id": "a",
+            "text": "Es solo el último mes, no la suma de todos"
+          },
+          {
+            "id": "b",
+            "text": "ME significa mediana"
+          },
+          {
+            "id": "c",
+            "text": "iloc[-1] es enero"
+          },
+          {
+            "id": "d",
+            "text": "sum() promedia"
+          }
+        ],
+        "correctChoiceId": "a",
+        "explanation": "El último periodo es febrero. El total de la serie sería otro número.",
+        "focusLines": [
+          4,
+          4
+        ]
+      }
+    ]
+  },
+  "p3": {
+    "id": "p3-ai",
+    "type": "ai_interpret",
+    "prompt": "La IA miró una mini tabla tipo Titanic.",
+    "difficulty": 2,
+    "xp": 16,
+    "explanation": "Leíste el código como revisor: qué hace, por qué está escrito así y qué no se sostiene.",
+    "solution": "count ignora el nulo. Solo hay dos edades | La proporción de unos: 2 de 3 | Una fila no tiene edad. El n de age es 2",
+    "starterCode": "import pandas as pd\ndf = pd.DataFrame({'survived': [1, 0, 1], 'age': [38, None, 26]})\nprint(df['age'].count())\nprint(df['survived'].mean())\n",
+    "aiQuestions": [
+      {
+        "prompt": "¿Por qué count() de age no es 3?",
+        "choices": [
+          {
+            "id": "a",
+            "text": "count ignora el nulo. Solo hay dos edades"
+          },
+          {
+            "id": "b",
+            "text": "mean borra una fila"
+          },
+          {
+            "id": "c",
+            "text": "survived no entra en el DataFrame"
+          },
+          {
+            "id": "d",
+            "text": "count cuenta columnas"
+          }
+        ],
+        "correctChoiceId": "a",
+        "explanation": "None no cuenta como edad observada.",
+        "focusLines": [
+          3,
+          3
+        ]
+      },
+      {
+        "prompt": "¿Qué es la media de survived aquí?",
+        "choices": [
+          {
+            "id": "a",
+            "text": "La proporción de unos: 2 de 3"
+          },
+          {
+            "id": "b",
+            "text": "La edad promedio"
+          },
+          {
+            "id": "c",
+            "text": "El máximo de age"
+          },
+          {
+            "id": "d",
+            "text": "Un accuracy de un modelo"
+          }
+        ],
+        "correctChoiceId": "a",
+        "explanation": "1, 0 y 1 promedian 0.666... Es una tasa, no una edad.",
+        "focusLines": [
+          4,
+          4
+        ]
+      },
+      {
+        "prompt": "¿Qué estaría mal al decir que la edad media usa a los tres?",
+        "choices": [
+          {
+            "id": "a",
+            "text": "Una fila no tiene edad. El n de age es 2"
+          },
+          {
+            "id": "b",
+            "text": "survived está vacío"
+          },
+          {
+            "id": "c",
+            "text": "count() cuenta nulos"
+          },
+          {
+            "id": "d",
+            "text": "mean() de survived usa age"
+          }
+        ],
+        "correctChoiceId": "a",
+        "explanation": "Mezclar el n de filas con el n de una columna con nulos cambia la historia.",
+        "focusLines": [
+          3,
+          4
+        ]
+      }
+    ]
+  },
+  "u28": {
+    "id": "u28-ai",
+    "type": "ai_interpret",
+    "prompt": "La IA describió un puñado de números.",
+    "difficulty": 2,
+    "xp": 16,
+    "explanation": "Leíste el código como revisor: qué hace, por qué está escrito así y qué no se sostiene.",
+    "solution": "4, porque (2+2+2+10)/4 | El rango: qué tan lejos están los extremos | La media es 4, pero tres datos valen 2 y uno vale 10",
+    "starterCode": "datos = [2, 2, 2, 10]\nmedia = sum(datos) / len(datos)\nprint(media)\nprint(max(datos) - min(datos))\n",
+    "aiQuestions": [
+      {
+        "prompt": "¿Qué es la media en este caso?",
+        "choices": [
+          {
+            "id": "a",
+            "text": "4, porque (2+2+2+10)/4"
+          },
+          {
+            "id": "b",
+            "text": "2, la moda"
+          },
+          {
+            "id": "c",
+            "text": "10, el máximo"
+          },
+          {
+            "id": "d",
+            "text": "8, el rango"
+          }
+        ],
+        "correctChoiceId": "a",
+        "explanation": "La media usa los cuatro valores.",
+        "focusLines": [
+          2,
+          3
+        ]
+      },
+      {
+        "prompt": "¿Qué mide max - min?",
+        "choices": [
+          {
+            "id": "a",
+            "text": "El rango: qué tan lejos están los extremos"
+          },
+          {
+            "id": "b",
+            "text": "La mediana"
+          },
+          {
+            "id": "c",
+            "text": "La cantidad de datos"
+          },
+          {
+            "id": "d",
+            "text": "La moda"
+          }
+        ],
+        "correctChoiceId": "a",
+        "explanation": "10 - 2 = 8. Dice la dispersión bruta.",
+        "focusLines": [
+          4,
+          4
+        ]
+      },
+      {
+        "prompt": "¿Qué estaría mal al decir que 'casi todos valen 4'?",
+        "choices": [
+          {
+            "id": "a",
+            "text": "La media es 4, pero tres datos valen 2 y uno vale 10"
+          },
+          {
+            "id": "b",
+            "text": "El rango es 4"
+          },
+          {
+            "id": "c",
+            "text": "len es 10"
+          },
+          {
+            "id": "d",
+            "text": "sum no incluye el 10"
+          }
+        ],
+        "correctChoiceId": "a",
+        "explanation": "El centro calculado no es un valor típico de la lista.",
+        "focusLines": [
+          2,
+          4
+        ]
+      }
+    ]
+  },
+  "u29": {
+    "id": "u29-ai",
+    "type": "ai_interpret",
+    "prompt": "La IA simuló tres extracciones de una campana.",
+    "difficulty": 2,
+    "xp": 16,
+    "explanation": "Leíste el código como revisor: qué hace, por qué está escrito así y qué no se sostiene.",
+    "solution": "Un número al azar de una normal centrada en 0 | Para que la muestra se pueda repetir | Son 3 sorteos, no el centro teórico",
+    "starterCode": "import random\nrandom.seed(0)\nmuestra = [random.gauss(0, 1) for _ in range(3)]\nprint(len(muestra))\nprint(round(sum(muestra) / len(muestra), 2))\n",
+    "aiQuestions": [
+      {
+        "prompt": "¿Qué hace random.gauss(0, 1)?",
+        "choices": [
+          {
+            "id": "a",
+            "text": "Un número al azar de una normal centrada en 0"
+          },
+          {
+            "id": "b",
+            "text": "Siempre devuelve 0"
+          },
+          {
+            "id": "c",
+            "text": "Una fila de pandas"
+          },
+          {
+            "id": "d",
+            "text": "Un token"
+          }
+        ],
+        "correctChoiceId": "a",
+        "explanation": "gauss(media, desviación) no repite el mismo valor.",
+        "focusLines": [
+          3,
+          3
+        ]
+      },
+      {
+        "prompt": "¿Por qué fijó seed(0)?",
+        "choices": [
+          {
+            "id": "a",
+            "text": "Para que la muestra se pueda repetir"
+          },
+          {
+            "id": "b",
+            "text": "Para que la media sea exactamente 0"
+          },
+          {
+            "id": "c",
+            "text": "Para borrar el azar de la lista"
+          },
+          {
+            "id": "d",
+            "text": "Porque gauss lo exige"
+          }
+        ],
+        "correctChoiceId": "a",
+        "explanation": "La semilla hace el experimento reproducible.",
+        "focusLines": [
+          2,
+          2
+        ]
+      },
+      {
+        "prompt": "¿Qué está mal al tratar esa media como 'la media de la normal'?",
+        "choices": [
+          {
+            "id": "a",
+            "text": "Son 3 sorteos, no el centro teórico"
+          },
+          {
+            "id": "b",
+            "text": "seed impide calcular la media"
+          },
+          {
+            "id": "c",
+            "text": "len es 0"
+          },
+          {
+            "id": "d",
+            "text": "gauss devuelve texto"
+          }
+        ],
+        "correctChoiceId": "a",
+        "explanation": "Con n=3 la media muestral se mueve. La normal teórica sigue centrada en 0.",
+        "focusLines": [
+          3,
+          4
+        ]
+      }
+    ]
+  },
+  "u30": {
+    "id": "u30-ai",
+    "type": "ai_interpret",
+    "prompt": "La IA midió una correlación perfecta.",
+    "difficulty": 2,
+    "xp": 16,
+    "explanation": "Leíste el código como revisor: qué hace, por qué está escrito así y qué no se sostiene.",
+    "solution": "y es el doble de x, así que suben juntos | Cuando uno sube, el otro también, de forma lineal | La correlación no demuestra la causa",
+    "starterCode": "import numpy as np\nx = np.array([1, 2, 3, 4])\ny = np.array([2, 4, 6, 8])\nprint(round(np.corrcoef(x, y)[0, 1], 2))\n",
+    "aiQuestions": [
+      {
+        "prompt": "¿Qué relación hay entre x e y?",
+        "choices": [
+          {
+            "id": "a",
+            "text": "y es el doble de x, así que suben juntos"
+          },
+          {
+            "id": "b",
+            "text": "y es independiente"
+          },
+          {
+            "id": "c",
+            "text": "y es el promedio de x"
+          },
+          {
+            "id": "d",
+            "text": "No se pueden correlacionar"
+          }
+        ],
+        "correctChoiceId": "a",
+        "explanation": "Cada y es 2 veces su x. La relación es lineal.",
+        "focusLines": [
+          2,
+          3
+        ]
+      },
+      {
+        "prompt": "¿Qué significa un coeficiente cercano a 1?",
+        "choices": [
+          {
+            "id": "a",
+            "text": "Cuando uno sube, el otro también, de forma lineal"
+          },
+          {
+            "id": "b",
+            "text": "Que x causa y"
+          },
+          {
+            "id": "c",
+            "text": "Que la muestra es de un solo punto"
+          },
+          {
+            "id": "d",
+            "text": "Que hay un error de tipos"
+          }
+        ],
+        "correctChoiceId": "a",
+        "explanation": "corrcoef mide asociación lineal, no el mecanismo.",
+        "focusLines": [
+          4,
+          4
+        ]
+      },
+      {
+        "prompt": "¿Qué estaría mal al decir 'x causa y'?",
+        "choices": [
+          {
+            "id": "a",
+            "text": "La correlación no demuestra la causa"
+          },
+          {
+            "id": "b",
+            "text": "1 significa que no hay relación"
+          },
+          {
+            "id": "c",
+            "text": "corrcoef promedia los valores"
+          },
+          {
+            "id": "d",
+            "text": "Faltan comillas"
+          }
+        ],
+        "correctChoiceId": "a",
+        "explanation": "Pueden moverse juntos por otra razón. Causa es otra pregunta.",
+        "focusLines": [
+          4,
+          4
+        ]
+      }
+    ]
+  },
+  "u31": {
+    "id": "u31-ai",
+    "type": "ai_interpret",
+    "prompt": "La IA miró un p-valor y una diferencia.",
+    "difficulty": 2,
+    "xp": 16,
+    "explanation": "Leíste el código como revisor: qué hace, por qué está escrito así y qué no se sostiene.",
+    "solution": "Qué tan sorpresivo sería el resultado si no hubiera efecto | 0.30 no cruza ese umbral | Una diferencia puede ser real y aun así no cruzar el umbral, o al revés",
+    "starterCode": "diferencia = 0.2\np = 0.30\nprint(p < 0.05)\nprint(diferencia)\n",
+    "aiQuestions": [
+      {
+        "prompt": "¿Qué pregunta un p-valor?",
+        "choices": [
+          {
+            "id": "a",
+            "text": "Qué tan sorpresivo sería el resultado si no hubiera efecto"
+          },
+          {
+            "id": "b",
+            "text": "El tamaño del efecto en unidades reales"
+          },
+          {
+            "id": "c",
+            "text": "El número de filas"
+          },
+          {
+            "id": "d",
+            "text": "La media del grupo"
+          }
+        ],
+        "correctChoiceId": "a",
+        "explanation": "p no es la diferencia. Es una pieza de la prueba.",
+        "focusLines": [
+          2,
+          2
+        ]
+      },
+      {
+        "prompt": "¿Por qué p < 0.05 da False?",
+        "choices": [
+          {
+            "id": "a",
+            "text": "0.30 no cruza ese umbral"
+          },
+          {
+            "id": "b",
+            "text": "Porque la diferencia es 0"
+          },
+          {
+            "id": "c",
+            "text": "Porque print compara strings"
+          },
+          {
+            "id": "d",
+            "text": "Porque 0.2 es mayor que 1"
+          }
+        ],
+        "correctChoiceId": "a",
+        "explanation": "0.30 es mayor que 0.05. No se rechaza con esa regla.",
+        "focusLines": [
+          3,
+          3
+        ]
+      },
+      {
+        "prompt": "¿Qué está mal al decir que 0.2 'no existe' porque p es 0.30?",
+        "choices": [
+          {
+            "id": "a",
+            "text": "Una diferencia puede ser real y aun así no cruzar el umbral, o al revés"
+          },
+          {
+            "id": "b",
+            "text": "p es la diferencia"
+          },
+          {
+            "id": "c",
+            "text": "0.05 es el tamaño del efecto"
+          },
+          {
+            "id": "d",
+            "text": "print borra diferencia"
+          }
+        ],
+        "correctChoiceId": "a",
+        "explanation": "Tamaño y sorpresa son lecturas distintas. No se sustituyen.",
+        "focusLines": [
+          1,
+          3
+        ]
+      }
+    ]
+  },
+  "p4": {
+    "id": "p4-ai",
+    "type": "ai_interpret",
+    "prompt": "La IA redactó una frase de informe.",
+    "difficulty": 2,
+    "xp": 16,
+    "explanation": "Leíste el código como revisor: qué hace, por qué está escrito así y qué no se sostiene.",
+    "solution": "Para saber cuántos datos sostienen la media | Intercala los valores dentro del texto | 12.5 no se sabría si son kg, personas o pesos",
+    "starterCode": "n = 40\nmedia = 12.5\nunidad = 'kg'\nprint(f'n={n}, media={media} {unidad}')\n",
+    "aiQuestions": [
+      {
+        "prompt": "¿Por qué la frase incluye n?",
+        "choices": [
+          {
+            "id": "a",
+            "text": "Para saber cuántos datos sostienen la media"
+          },
+          {
+            "id": "b",
+            "text": "Porque f-string exige dos variables"
+          },
+          {
+            "id": "c",
+            "text": "Porque kg es un p-valor"
+          },
+          {
+            "id": "d",
+            "text": "Porque media sin n es más precisa"
+          }
+        ],
+        "correctChoiceId": "a",
+        "explanation": "12.5 kg con n=40 se puede juzgar. Sin n, no.",
+        "focusLines": [
+          1,
+          4
+        ]
+      },
+      {
+        "prompt": "¿Qué hace el f-string?",
+        "choices": [
+          {
+            "id": "a",
+            "text": "Intercala los valores dentro del texto"
+          },
+          {
+            "id": "b",
+            "text": "Calcula un test t"
+          },
+          {
+            "id": "c",
+            "text": "Borra la unidad"
+          },
+          {
+            "id": "d",
+            "text": "Convierte kg a libras"
+          }
+        ],
+        "correctChoiceId": "a",
+        "explanation": "Las llaves se reemplazan por n, media y unidad.",
+        "focusLines": [
+          4,
+          4
+        ]
+      },
+      {
+        "prompt": "¿Qué estaría mal si se omitiera la unidad?",
+        "choices": [
+          {
+            "id": "a",
+            "text": "12.5 no se sabría si son kg, personas o pesos"
+          },
+          {
+            "id": "b",
+            "text": "n dejaría de ser 40"
+          },
+          {
+            "id": "c",
+            "text": "print fallaría"
+          },
+          {
+            "id": "d",
+            "text": "La media se duplicaría"
+          }
+        ],
+        "correctChoiceId": "a",
+        "explanation": "El número sin unidad no es un hallazgo citable.",
+        "focusLines": [
+          3,
+          4
+        ]
+      }
+    ]
+  },
+  "u32": {
+    "id": "u32-ai",
+    "type": "ai_interpret",
+    "prompt": "La IA separó datos para aprender y datos para evaluar.",
+    "difficulty": 2,
+    "xp": 16,
+    "explanation": "Leíste el código como revisor: qué hace, por qué está escrito así y qué no se sostiene.",
+    "solution": "Para no evaluar el modelo con las mismas filas con las que aprendió | Reserva cerca de un cuarto de las filas para probar | Eso premia memorizar, no generalizar",
+    "starterCode": "from sklearn.model_selection import train_test_split\nx = [[1], [2], [3], [4]]\ny = [0, 0, 1, 1]\nx_tr, x_te, y_tr, y_te = train_test_split(x, y, test_size=0.25, random_state=0)\nprint(len(x_tr), len(x_te))\n",
+    "aiQuestions": [
+      {
+        "prompt": "¿Para qué está train_test_split?",
+        "choices": [
+          {
+            "id": "a",
+            "text": "Para no evaluar el modelo con las mismas filas con las que aprendió"
+          },
+          {
+            "id": "b",
+            "text": "Para borrar los y"
+          },
+          {
+            "id": "c",
+            "text": "Para calcular la media"
+          },
+          {
+            "id": "d",
+            "text": "Para dibujar un gráfico"
+          }
+        ],
+        "correctChoiceId": "a",
+        "explanation": "Parte la tabla en entrenamiento y prueba.",
+        "focusLines": [
+          4,
+          4
+        ]
+      },
+      {
+        "prompt": "¿Qué hace test_size=0.25?",
+        "choices": [
+          {
+            "id": "a",
+            "text": "Reserva cerca de un cuarto de las filas para probar"
+          },
+          {
+            "id": "b",
+            "text": "Entrena 25 modelos"
+          },
+          {
+            "id": "c",
+            "text": "Borra el 25% de las columnas"
+          },
+          {
+            "id": "d",
+            "text": "Fija la accuracy en 0.25"
+          }
+        ],
+        "correctChoiceId": "a",
+        "explanation": "De 4 filas, una se va a prueba y tres se quedan para entrenar.",
+        "focusLines": [
+          4,
+          5
+        ]
+      },
+      {
+        "prompt": "¿Qué estaría mal al medir el acierto solo sobre x_tr?",
+        "choices": [
+          {
+            "id": "a",
+            "text": "Eso premia memorizar, no generalizar"
+          },
+          {
+            "id": "b",
+            "text": "random_state impide partir"
+          },
+          {
+            "id": "c",
+            "text": "len(x_te) es siempre 0"
+          },
+          {
+            "id": "d",
+            "text": "y no se puede partir"
+          }
+        ],
+        "correctChoiceId": "a",
+        "explanation": "El examen tiene que ser x_te, las filas que el modelo no usó para ajustarse.",
+        "focusLines": [
+          4,
+          5
+        ]
+      }
+    ]
+  },
+  "u33": {
+    "id": "u33-ai",
+    "type": "ai_interpret",
+    "prompt": "La IA estandarizó una columna.",
+    "difficulty": 2,
+    "xp": 16,
+    "explanation": "Leíste el código como revisor: qué hace, por qué está escrito así y qué no se sostiene.",
+    "solution": "Centra los valores: el promedio pasa cerca de 0 | Para que la escala no dependa de las unidades originales | El examen se contaminaría con información de las filas que hay que evaluar",
+    "starterCode": "import numpy as np\nx = np.array([10.0, 20.0, 30.0])\nmedia = x.mean()\nescala = x.std()\nz = (x - media) / escala\nprint(round(z.mean(), 6))\n",
+    "aiQuestions": [
+      {
+        "prompt": "¿Qué resta x - media?",
+        "choices": [
+          {
+            "id": "a",
+            "text": "Centra los valores: el promedio pasa cerca de 0"
+          },
+          {
+            "id": "b",
+            "text": "Los convierte en probabilidades"
+          },
+          {
+            "id": "c",
+            "text": "Borra el 20"
+          },
+          {
+            "id": "d",
+            "text": "Calcula la accuracy"
+          }
+        ],
+        "correctChoiceId": "a",
+        "explanation": "Restar la media quita el nivel y deja las distancias.",
+        "focusLines": [
+          4,
+          4
+        ]
+      },
+      {
+        "prompt": "¿Por qué divide entre la desviación?",
+        "choices": [
+          {
+            "id": "a",
+            "text": "Para que la escala no dependa de las unidades originales"
+          },
+          {
+            "id": "b",
+            "text": "Para sumar 1 a cada valor"
+          },
+          {
+            "id": "c",
+            "text": "Porque std es el máximo"
+          },
+          {
+            "id": "d",
+            "text": "Para crear un DataFrame"
+          }
+        ],
+        "correctChoiceId": "a",
+        "explanation": "Dividir por std deja los valores en unidades de dispersión.",
+        "focusLines": [
+          3,
+          4
+        ]
+      },
+      {
+        "prompt": "¿Qué estaría mal al calcular media y std con el set de prueba incluido en el ajuste?",
+        "choices": [
+          {
+            "id": "a",
+            "text": "El examen se contaminaría con información de las filas que hay que evaluar"
+          },
+          {
+            "id": "b",
+            "text": "z.mean() no puede ser 0"
+          },
+          {
+            "id": "c",
+            "text": "std siempre es 1 antes de dividir"
+          },
+          {
+            "id": "d",
+            "text": "NumPy no resta arrays"
+          }
+        ],
+        "correctChoiceId": "a",
+        "explanation": "La escala se aprende en entrenamiento y luego se aplica a la prueba.",
+        "focusLines": [
+          2,
+          4
+        ]
+      }
+    ]
+  },
+  "u34": {
+    "id": "u34-ai",
+    "type": "ai_interpret",
+    "prompt": "La IA armó el corazón de una predicción lineal.",
+    "difficulty": 2,
+    "xp": 16,
+    "explanation": "Leíste el código como revisor: qué hace, por qué está escrito así y qué no se sostiene.",
+    "solution": "Una puntuación lineal de esa nota | Si esa puntuación cae del lado positivo | Es una puntuación. La probabilidad exigiría otra función, como una sigmoide",
+    "starterCode": "peso = 0.5\nsesgo = -1\nnota = 4\nlogit = peso * nota + sesgo\nprint(logit > 0)\n",
+    "aiQuestions": [
+      {
+        "prompt": "¿Qué combina peso * nota + sesgo?",
+        "choices": [
+          {
+            "id": "a",
+            "text": "Una puntuación lineal de esa nota"
+          },
+          {
+            "id": "b",
+            "text": "La accuracy del examen"
+          },
+          {
+            "id": "c",
+            "text": "Un árbol de decisión"
+          },
+          {
+            "id": "d",
+            "text": "Un token"
+          }
+        ],
+        "correctChoiceId": "a",
+        "explanation": "Es el mismo esquema de una regresión: coeficiente, dato y sesgo.",
+        "focusLines": [
+          4,
+          4
+        ]
+      },
+      {
+        "prompt": "¿Qué decide logit > 0 aquí?",
+        "choices": [
+          {
+            "id": "a",
+            "text": "Si esa puntuación cae del lado positivo"
+          },
+          {
+            "id": "b",
+            "text": "El valor de la nota original"
+          },
+          {
+            "id": "c",
+            "text": "Cuántas filas hay"
+          },
+          {
+            "id": "d",
+            "text": "El learning rate"
+          }
+        ],
+        "correctChoiceId": "a",
+        "explanation": "4 * 0.5 - 1 = 1, así que la comparación es True.",
+        "focusLines": [
+          5,
+          5
+        ]
+      },
+      {
+        "prompt": "¿Qué estaría mal al llamar a esto 'la probabilidad'?",
+        "choices": [
+          {
+            "id": "a",
+            "text": "Es una puntuación. La probabilidad exigiría otra función, como una sigmoide"
+          },
+          {
+            "id": "b",
+            "text": "peso no puede ser 0.5"
+          },
+          {
+            "id": "c",
+            "text": "sesgo suma notas"
+          },
+          {
+            "id": "d",
+            "text": "print solo acepta probabilidades"
+          }
+        ],
+        "correctChoiceId": "a",
+        "explanation": "logit no está entre 0 y 1. No se cita como probabilidad.",
+        "focusLines": [
+          4,
+          5
+        ]
+      }
+    ]
+  },
+  "u35": {
+    "id": "u35-ai",
+    "type": "ai_interpret",
+    "prompt": "La IA describió un bosque con árboles poco profundos.",
+    "difficulty": 2,
+    "xp": 16,
+    "explanation": "Leíste el código como revisor: qué hace, por qué está escrito así y qué no se sostiene.",
+    "solution": "Una secuencia de preguntas que parten los datos | Para promediar votos y no fiarse de una sola partición | El árbol puede memorizar filas en vez de una regla general",
+    "starterCode": "arboles = 3\nprofundidad = 2\nprint(arboles)\nprint('cada árbol mira hasta', profundidad, 'cortes')\n",
+    "aiQuestions": [
+      {
+        "prompt": "¿Qué es un árbol en este modelo?",
+        "choices": [
+          {
+            "id": "a",
+            "text": "Una secuencia de preguntas que parten los datos"
+          },
+          {
+            "id": "b",
+            "text": "Un prompt"
+          },
+          {
+            "id": "c",
+            "text": "Una columna de pandas"
+          },
+          {
+            "id": "d",
+            "text": "El p-valor"
+          }
+        ],
+        "correctChoiceId": "a",
+        "explanation": "Cada corte es una pregunta. La profundidad limita cuántas seguidas hay.",
+        "focusLines": [
+          4,
+          4
+        ]
+      },
+      {
+        "prompt": "¿Por qué usar varios árboles?",
+        "choices": [
+          {
+            "id": "a",
+            "text": "Para promediar votos y no fiarse de una sola partición"
+          },
+          {
+            "id": "b",
+            "text": "Porque un árbol no puede usar números"
+          },
+          {
+            "id": "c",
+            "text": "Para borrar la profundidad"
+          },
+          {
+            "id": "d",
+            "text": "Porque 3 es el learning rate"
+          }
+        ],
+        "correctChoiceId": "a",
+        "explanation": "El bosque junta árboles. Un árbol solo se memoriza más fácil.",
+        "focusLines": [
+          1,
+          2
+        ]
+      },
+      {
+        "prompt": "¿Qué estaría mal si la profundidad fuera enorme en pocos datos?",
+        "choices": [
+          {
+            "id": "a",
+            "text": "El árbol puede memorizar filas en vez de una regla general"
+          },
+          {
+            "id": "b",
+            "text": "Entonces la profundidad es el n"
+          },
+          {
+            "id": "c",
+            "text": "Los bosques no tienen profundidad"
+          },
+          {
+            "id": "d",
+            "text": "print fallaría"
+          }
+        ],
+        "correctChoiceId": "a",
+        "explanation": "Más cortes no significan mejor examen si el árbol vio las respuestas.",
+        "focusLines": [
+          2,
+          2
+        ]
+      }
+    ]
+  },
+  "u36": {
+    "id": "u36-ai",
+    "type": "ai_interpret",
+    "prompt": "La IA clasificó un punto mirando al vecino más cercano.",
+    "difficulty": 2,
+    "xp": 16,
+    "explanation": "Leíste el código como revisor: qué hace, por qué está escrito así y qué no se sostiene.",
+    "solution": "La distancia de cada vecino a la consulta | El punto 0 está más cerca de 0.2 que los otros | Una columna con números enormes dominaría la distancia",
+    "starterCode": "vecinos = [(0, 'gato'), (1, 'gato'), (5, 'perro')]\nconsulta = 0.2\nordenado = sorted(vecinos, key=lambda v: abs(v[0] - consulta))\nprint(ordenado[0][1])\n",
+    "aiQuestions": [
+      {
+        "prompt": "¿Qué ordena la lambda?",
+        "choices": [
+          {
+            "id": "a",
+            "text": "La distancia de cada vecino a la consulta"
+          },
+          {
+            "id": "b",
+            "text": "El nombre alfabético"
+          },
+          {
+            "id": "c",
+            "text": "La longitud del string"
+          },
+          {
+            "id": "d",
+            "text": "El índice del DataFrame"
+          }
+        ],
+        "correctChoiceId": "a",
+        "explanation": "abs(v[0] - 0.2) es la distancia en la recta.",
+        "focusLines": [
+          4,
+          4
+        ]
+      },
+      {
+        "prompt": "¿Por qué el resultado es gato?",
+        "choices": [
+          {
+            "id": "a",
+            "text": "El punto 0 está más cerca de 0.2 que los otros"
+          },
+          {
+            "id": "b",
+            "text": "Porque hay más perros"
+          },
+          {
+            "id": "c",
+            "text": "Porque sorted invierte las clases"
+          },
+          {
+            "id": "d",
+            "text": "Porque 5 es el menor"
+          }
+        ],
+        "correctChoiceId": "a",
+        "explanation": "KNN con un vecino copia la etiqueta del más cercano.",
+        "focusLines": [
+          4,
+          4
+        ]
+      },
+      {
+        "prompt": "¿Qué estaría mal al no escalar las columnas antes?",
+        "choices": [
+          {
+            "id": "a",
+            "text": "Una columna con números enormes dominaría la distancia"
+          },
+          {
+            "id": "b",
+            "text": "sorted no acepta tuplas"
+          },
+          {
+            "id": "c",
+            "text": "lambda borra la clase"
+          },
+          {
+            "id": "d",
+            "text": "El vecino 5 siempre gana"
+          }
+        ],
+        "correctChoiceId": "a",
+        "explanation": "La distancia suma ejes. Si uno está en miles, tapa al resto.",
+        "focusLines": [
+          3,
+          4
+        ]
+      }
+    ]
+  },
+  "u37": {
+    "id": "u37-ai",
+    "type": "ai_interpret",
+    "prompt": "La IA asignó cada punto al centro más cercano.",
+    "difficulty": 2,
+    "xp": 16,
+    "explanation": "Leíste el código como revisor: qué hace, por qué está escrito así y qué no se sostiene.",
+    "solution": "A qué centro se parece más el punto | Están más cerca de 1 que de 10 | El grupo es un cluster, no una clase que alguien anotó",
+    "starterCode": "centros = [1, 10]\npuntos = [0, 2, 9, 11]\nfor p in puntos:\n    grupo = 0 if abs(p - centros[0]) < abs(p - centros[1]) else 1\n    print(p, grupo)\n",
+    "aiQuestions": [
+      {
+        "prompt": "¿Qué decide el if?",
+        "choices": [
+          {
+            "id": "a",
+            "text": "A qué centro se parece más el punto"
+          },
+          {
+            "id": "b",
+            "text": "La media global"
+          },
+          {
+            "id": "c",
+            "text": "Un árbol de tres cortes"
+          },
+          {
+            "id": "d",
+            "text": "El token del prompt"
+          }
+        ],
+        "correctChoiceId": "a",
+        "explanation": "Compara distancias a 1 y a 10.",
+        "focusLines": [
+          4,
+          4
+        ]
+      },
+      {
+        "prompt": "¿Por qué 0 y 2 caen en el grupo 0?",
+        "choices": [
+          {
+            "id": "a",
+            "text": "Están más cerca de 1 que de 10"
+          },
+          {
+            "id": "b",
+            "text": "Porque son pares"
+          },
+          {
+            "id": "c",
+            "text": "Porque print los ordena"
+          },
+          {
+            "id": "d",
+            "text": "Porque el centro 10 está vacío"
+          }
+        ],
+        "correctChoiceId": "a",
+        "explanation": "K-means, en este paso, solo asigna. No explica la causa.",
+        "focusLines": [
+          2,
+          4
+        ]
+      },
+      {
+        "prompt": "¿Qué estaría mal al tratar el número de grupo como una etiqueta real?",
+        "choices": [
+          {
+            "id": "a",
+            "text": "El grupo es un cluster, no una clase que alguien anotó"
+          },
+          {
+            "id": "b",
+            "text": "abs no mide distancia"
+          },
+          {
+            "id": "c",
+            "text": "Hay cuatro centros"
+          },
+          {
+            "id": "d",
+            "text": "else no se ejecuta nunca"
+          }
+        ],
+        "correctChoiceId": "a",
+        "explanation": "0 y 1 son ids del algoritmo. El sentido lo pones tú después.",
+        "focusLines": [
+          4,
+          5
+        ]
+      }
+    ]
+  },
+  "u38": {
+    "id": "u38-ai",
+    "type": "ai_interpret",
+    "prompt": "La IA celebró 95% de acierto en un problema desbalanceado.",
+    "difficulty": 2,
+    "xp": 16,
+    "explanation": "Leíste el código como revisor: qué hace, por qué está escrito así y qué no se sostiene.",
+    "solution": "La accuracy: fracción de filas bien clasificadas | Recuerda que la clase de interés es el 5% | Puede esconder que el modelo nunca encuentra los 5 casos que importan",
+    "starterCode": "aciertos = 95\nn = 100\npositivos = 5\nprint(aciertos / n)\nprint(positivos / n)\n",
+    "aiQuestions": [
+      {
+        "prompt": "¿Qué es aciertos / n?",
+        "choices": [
+          {
+            "id": "a",
+            "text": "La accuracy: fracción de filas bien clasificadas"
+          },
+          {
+            "id": "b",
+            "text": "El recall de la clase rara"
+          },
+          {
+            "id": "c",
+            "text": "El tamaño del efecto"
+          },
+          {
+            "id": "d",
+            "text": "Un p-valor"
+          }
+        ],
+        "correctChoiceId": "a",
+        "explanation": "95 de 100 están bien. Eso solo no dice cuáles.",
+        "focusLines": [
+          4,
+          4
+        ]
+      },
+      {
+        "prompt": "¿Qué aporta positivos / n?",
+        "choices": [
+          {
+            "id": "a",
+            "text": "Recuerda que la clase de interés es el 5%"
+          },
+          {
+            "id": "b",
+            "text": "La accuracy"
+          },
+          {
+            "id": "c",
+            "text": "El learning rate"
+          },
+          {
+            "id": "d",
+            "text": "La profundidad del árbol"
+          }
+        ],
+        "correctChoiceId": "a",
+        "explanation": "Si casi todo es negativo, acertar 'siempre no' ya da un número alto.",
+        "focusLines": [
+          3,
+          5
+        ]
+      },
+      {
+        "prompt": "¿Qué está mal al publicar solo el 95%?",
+        "choices": [
+          {
+            "id": "a",
+            "text": "Puede esconder que el modelo nunca encuentra los 5 casos que importan"
+          },
+          {
+            "id": "b",
+            "text": "n tiene que ser 95"
+          },
+          {
+            "id": "c",
+            "text": "print divide mal"
+          },
+          {
+            "id": "d",
+            "text": "positivos no se puede imprimir"
+          }
+        ],
+        "correctChoiceId": "a",
+        "explanation": "En clases raras hacen falta recall o precisión, no solo accuracy.",
+        "focusLines": [
+          4,
+          5
+        ]
+      }
+    ]
+  },
+  "p5": {
+    "id": "p5-ai",
+    "type": "ai_interpret",
+    "prompt": "La IA nombró qué entra y qué sale de un modelo.",
+    "difficulty": 2,
+    "xp": 16,
+    "explanation": "Leíste el código como revisor: qué hace, por qué está escrito así y qué no se sostiene.",
+    "solution": "Las columnas que el modelo puede mirar para predecir | Lo que se quiere predecir: si aprobó | El modelo vería la respuesta antes del examen",
+    "starterCode": "features = ['horas', 'repasos']\nobjetivo = 'aprobo'\nprint('Entradas:', features)\nprint('Salida:', objetivo)\n",
+    "aiQuestions": [
+      {
+        "prompt": "¿Qué son features?",
+        "choices": [
+          {
+            "id": "a",
+            "text": "Las columnas que el modelo puede mirar para predecir"
+          },
+          {
+            "id": "b",
+            "text": "La etiqueta que hay que adivinar"
+          },
+          {
+            "id": "c",
+            "text": "El test de prueba"
+          },
+          {
+            "id": "d",
+            "text": "Los tokens del prompt"
+          }
+        ],
+        "correctChoiceId": "a",
+        "explanation": "horas y repasos son entradas. No son la respuesta.",
+        "focusLines": [
+          1,
+          3
+        ]
+      },
+      {
+        "prompt": "¿Qué es objetivo?",
+        "choices": [
+          {
+            "id": "a",
+            "text": "Lo que se quiere predecir: si aprobó"
+          },
+          {
+            "id": "b",
+            "text": "Una feature más"
+          },
+          {
+            "id": "c",
+            "text": "El random_state"
+          },
+          {
+            "id": "d",
+            "text": "La media de horas"
+          }
+        ],
+        "correctChoiceId": "a",
+        "explanation": "aprobo es la etiqueta, no una entrada.",
+        "focusLines": [
+          2,
+          4
+        ]
+      },
+      {
+        "prompt": "¿Qué estaría mal si aprobo también estuviera en features?",
+        "choices": [
+          {
+            "id": "a",
+            "text": "El modelo vería la respuesta antes del examen"
+          },
+          {
+            "id": "b",
+            "text": "Habría que borrar horas"
+          },
+          {
+            "id": "c",
+            "text": "print no acepta listas"
+          },
+          {
+            "id": "d",
+            "text": "El objetivo debe ser numérico siempre"
+          }
+        ],
+        "correctChoiceId": "a",
+        "explanation": "Filtrar la etiqueta de las entradas es parte de no hacer trampa.",
+        "focusLines": [
+          1,
+          2
+        ]
+      }
+    ]
+  },
+  "u39": {
+    "id": "u39-ai",
+    "type": "ai_interpret",
+    "prompt": "La IA calculó la puntuación de una neurona.",
+    "difficulty": 2,
+    "xp": 16,
+    "explanation": "Leíste el código como revisor: qué hace, por qué está escrito así y qué no se sostiene.",
+    "solution": "Empareja cada entrada con su peso | Un ajuste que no depende de las entradas | Falta una decisión o una activación. Esto es solo el número lineal",
+    "starterCode": "entradas = [0.2, 0.8]\npesos = [0.5, -0.5]\nsesgo = 0.1\npuntuacion = sum(e * p for e, p in zip(entradas, pesos)) + sesgo\nprint(round(puntuacion, 2))\n",
+    "aiQuestions": [
+      {
+        "prompt": "¿Qué hace zip(entradas, pesos)?",
+        "choices": [
+          {
+            "id": "a",
+            "text": "Empareja cada entrada con su peso"
+          },
+          {
+            "id": "b",
+            "text": "Entrena durante 10 épocas"
+          },
+          {
+            "id": "c",
+            "text": "Normaliza a media 0"
+          },
+          {
+            "id": "d",
+            "text": "Crea un DataFrame"
+          }
+        ],
+        "correctChoiceId": "a",
+        "explanation": "0.2 va con 0.5 y 0.8 con -0.5.",
+        "focusLines": [
+          4,
+          4
+        ]
+      },
+      {
+        "prompt": "¿Qué suma el sesgo?",
+        "choices": [
+          {
+            "id": "a",
+            "text": "Un ajuste que no depende de las entradas"
+          },
+          {
+            "id": "b",
+            "text": "El número de capas"
+          },
+          {
+            "id": "c",
+            "text": "La accuracy"
+          },
+          {
+            "id": "d",
+            "text": "El learning rate"
+          }
+        ],
+        "correctChoiceId": "a",
+        "explanation": "El sesgo se añade después de los productos.",
+        "focusLines": [
+          3,
+          4
+        ]
+      },
+      {
+        "prompt": "¿Qué estaría mal al llamar a esta puntuación 'la clase predicha'?",
+        "choices": [
+          {
+            "id": "a",
+            "text": "Falta una decisión o una activación. Esto es solo el número lineal"
+          },
+          {
+            "id": "b",
+            "text": "zip resta los pesos"
+          },
+          {
+            "id": "c",
+            "text": "El sesgo borra las entradas"
+          },
+          {
+            "id": "d",
+            "text": "round entrena la red"
+          }
+        ],
+        "correctChoiceId": "a",
+        "explanation": "0.2*0.5 + 0.8*(-0.5) + 0.1 = -0.2. Aún no es una etiqueta.",
+        "focusLines": [
+          4,
+          5
+        ]
+      }
+    ]
+  },
+  "u40": {
+    "id": "u40-ai",
+    "type": "ai_interpret",
+    "prompt": "La IA escribió el producto que usarías en una capa lineal.",
+    "difficulty": 2,
+    "xp": 16,
+    "explanation": "Leíste el código como revisor: qué hace, por qué está escrito así y qué no se sostiene.",
+    "solution": "El producto punto: suma de multiplicar por pares | Una capa lineal combina entradas y pesos así | El producto punto no puede emparejarlos",
+    "starterCode": "import numpy as np\nx = np.array([1.0, 2.0])\nw = np.array([0.4, 0.4])\nprint(float(x @ w))\n",
+    "aiQuestions": [
+      {
+        "prompt": "¿Qué hace @ entre dos arrays?",
+        "choices": [
+          {
+            "id": "a",
+            "text": "El producto punto: suma de multiplicar por pares"
+          },
+          {
+            "id": "b",
+            "text": "Concatena las listas"
+          },
+          {
+            "id": "c",
+            "text": "Calcula la media"
+          },
+          {
+            "id": "d",
+            "text": "Entrena por gradiente"
+          }
+        ],
+        "correctChoiceId": "a",
+        "explanation": "1*0.4 + 2*0.4 = 1.2.",
+        "focusLines": [
+          4,
+          4
+        ]
+      },
+      {
+        "prompt": "¿Por qué esto se parece a una capa de Keras o PyTorch?",
+        "choices": [
+          {
+            "id": "a",
+            "text": "Una capa lineal combina entradas y pesos así"
+          },
+          {
+            "id": "b",
+            "text": "Porque numpy es un optimizador"
+          },
+          {
+            "id": "c",
+            "text": "Porque @ guarda un checkpoint"
+          },
+          {
+            "id": "d",
+            "text": "Porque float crea una red"
+          }
+        ],
+        "correctChoiceId": "a",
+        "explanation": "El marco entrena esos pesos. Esta línea solo los aplica.",
+        "focusLines": [
+          2,
+          4
+        ]
+      },
+      {
+        "prompt": "¿Qué estaría mal si x y w no tuvieran el mismo tamaño?",
+        "choices": [
+          {
+            "id": "a",
+            "text": "El producto punto no puede emparejarlos"
+          },
+          {
+            "id": "b",
+            "text": "@ recorta el más largo"
+          },
+          {
+            "id": "c",
+            "text": "float lo resuelve"
+          },
+          {
+            "id": "d",
+            "text": "NumPy copia los pesos que faltan"
+          }
+        ],
+        "correctChoiceId": "a",
+        "explanation": "Cada entrada necesita su peso. Si no, la forma no cierra.",
+        "focusLines": [
+          2,
+          4
+        ]
+      }
+    ]
+  },
+  "u41": {
+    "id": "u41-ai",
+    "type": "ai_interpret",
+    "prompt": "La IA simuló tres pasos de entrenamiento.",
+    "difficulty": 2,
+    "xp": 16,
+    "explanation": "Leíste el código como revisor: qué hace, por qué está escrito así y qué no se sostiene.",
+    "solution": "Una pasada que actualiza el número | Escala qué tanto se resta el gradiente en cada paso | El gradiente no cambia. En un entrenamiento real se recalcula",
+    "starterCode": "perdida = 1.0\nlr = 0.1\ngradiente = 2.0\nfor epoca in range(3):\n    perdida = perdida - lr * gradiente\nprint(round(perdida, 2))\n",
+    "aiQuestions": [
+      {
+        "prompt": "¿Qué es una época en este bucle?",
+        "choices": [
+          {
+            "id": "a",
+            "text": "Una pasada que actualiza el número"
+          },
+          {
+            "id": "b",
+            "text": "Un token del prompt"
+          },
+          {
+            "id": "c",
+            "text": "Una fila de prueba"
+          },
+          {
+            "id": "d",
+            "text": "El tamaño del batch en pandas"
+          }
+        ],
+        "correctChoiceId": "a",
+        "explanation": "range(3) da tres actualizaciones.",
+        "focusLines": [
+          4,
+          5
+        ]
+      },
+      {
+        "prompt": "¿Qué hace el learning rate 0.1?",
+        "choices": [
+          {
+            "id": "a",
+            "text": "Escala qué tanto se resta el gradiente en cada paso"
+          },
+          {
+            "id": "b",
+            "text": "Fija la pérdida en 0.1"
+          },
+          {
+            "id": "c",
+            "text": "Cuenta las épocas"
+          },
+          {
+            "id": "d",
+            "text": "Borrala el gradiente"
+          }
+        ],
+        "correctChoiceId": "a",
+        "explanation": "Cada paso resta 0.1 * 2 = 0.2.",
+        "focusLines": [
+          2,
+          5
+        ]
+      },
+      {
+        "prompt": "¿Qué está simplificado de más?",
+        "choices": [
+          {
+            "id": "a",
+            "text": "El gradiente no cambia. En un entrenamiento real se recalcula"
+          },
+          {
+            "id": "b",
+            "text": "range no puede ser 3"
+          },
+          {
+            "id": "c",
+            "text": "lr tiene que ser negativo"
+          },
+          {
+            "id": "d",
+            "text": "print entrena solo"
+          }
+        ],
+        "correctChoiceId": "a",
+        "explanation": "Aquí la pérdida baja en línea recta. Un gradiente de verdad depende de los pesos.",
+        "focusLines": [
+          3,
+          5
+        ]
+      }
+    ]
+  },
+  "u42": {
+    "id": "u42-ai",
+    "type": "ai_interpret",
+    "prompt": "La IA guardó una imagen diminuta como matriz.",
+    "difficulty": 2,
+    "xp": 16,
+    "explanation": "Leíste el código como revisor: qué hace, por qué está escrito así y qué no se sostiene.",
+    "solution": "Alto y ancho: 3 por 3 | Cuántos píxeles están encendidos | Se pierde la forma: un 1 ya no sabe si es esquina o centro",
+    "starterCode": "imagen = [\n    [0, 0, 1],\n    [0, 1, 0],\n    [1, 0, 0],\n]\nprint(len(imagen), len(imagen[0]))\nprint(sum(sum(fila) for fila in imagen))\n",
+    "aiQuestions": [
+      {
+        "prompt": "¿Qué mide len(imagen), len(imagen[0])?",
+        "choices": [
+          {
+            "id": "a",
+            "text": "Alto y ancho: 3 por 3"
+          },
+          {
+            "id": "b",
+            "text": "Los canales de color"
+          },
+          {
+            "id": "c",
+            "text": "La accuracy"
+          },
+          {
+            "id": "d",
+            "text": "El batch"
+          }
+        ],
+        "correctChoiceId": "a",
+        "explanation": "Cada lista interna es una fila de píxeles.",
+        "focusLines": [
+          5,
+          5
+        ]
+      },
+      {
+        "prompt": "¿Qué suma el doble sum?",
+        "choices": [
+          {
+            "id": "a",
+            "text": "Cuántos píxeles están encendidos"
+          },
+          {
+            "id": "b",
+            "text": "El número de filas"
+          },
+          {
+            "id": "c",
+            "text": "El índice del 1"
+          },
+          {
+            "id": "d",
+            "text": "Una pérdida"
+          }
+        ],
+        "correctChoiceId": "a",
+        "explanation": "Hay tres unos. El resto son ceros.",
+        "focusLines": [
+          6,
+          6
+        ]
+      },
+      {
+        "prompt": "¿Qué estaría mal al aplanar la imagen y olvidar el alto y el ancho?",
+        "choices": [
+          {
+            "id": "a",
+            "text": "Se pierde la forma: un 1 ya no sabe si es esquina o centro"
+          },
+          {
+            "id": "b",
+            "text": "sum no puede anidar"
+          },
+          {
+            "id": "c",
+            "text": "len de una fila es 1"
+          },
+          {
+            "id": "d",
+            "text": "Las matrices no pueden tener ceros"
+          }
+        ],
+        "correctChoiceId": "a",
+        "explanation": "MNIST se puede aplanar, pero entonces el modelo ya no ve vecinos espaciales.",
+        "focusLines": [
+          1,
+          5
+        ]
+      }
+    ]
+  },
+  "u43": {
+    "id": "u43-ai",
+    "type": "ai_interpret",
+    "prompt": "La IA convirtió una frase en ids.",
+    "difficulty": 2,
+    "xp": 16,
+    "explanation": "Leíste el código como revisor: qué hace, por qué está escrito así y qué no se sostiene.",
+    "solution": "Un dict de pieza a número | [0, 1, 2], en el orden de la frase | vocab[p] lanza KeyError. Hay que decidir un id para lo desconocido",
+    "starterCode": "texto = 'no me gustó'\npiezas = texto.split()\nvocab = {'no': 0, 'me': 1, 'gustó': 2}\nids = [vocab[p] for p in piezas]\nprint(ids)\n",
+    "aiQuestions": [
+      {
+        "prompt": "¿Qué es el vocabulario?",
+        "choices": [
+          {
+            "id": "a",
+            "text": "Un dict de pieza a número"
+          },
+          {
+            "id": "b",
+            "text": "La etiqueta del sentimiento"
+          },
+          {
+            "id": "c",
+            "text": "Un embedding entrenado"
+          },
+          {
+            "id": "d",
+            "text": "El learning rate"
+          }
+        ],
+        "correctChoiceId": "a",
+        "explanation": "Cada palabra conocida recibe un id estable.",
+        "focusLines": [
+          3,
+          3
+        ]
+      },
+      {
+        "prompt": "¿Qué imprime ids?",
+        "choices": [
+          {
+            "id": "a",
+            "text": "[0, 1, 2], en el orden de la frase"
+          },
+          {
+            "id": "b",
+            "text": "El texto original"
+          },
+          {
+            "id": "c",
+            "text": "Un solo 0"
+          },
+          {
+            "id": "d",
+            "text": "La longitud del embedding"
+          }
+        ],
+        "correctChoiceId": "a",
+        "explanation": "split parte tres piezas y cada una se busca en el dict.",
+        "focusLines": [
+          2,
+          5
+        ]
+      },
+      {
+        "prompt": "¿Qué está mal si aparece una palabra que no está en vocab?",
+        "choices": [
+          {
+            "id": "a",
+            "text": "vocab[p] lanza KeyError. Hay que decidir un id para lo desconocido"
+          },
+          {
+            "id": "b",
+            "text": "split la borra"
+          },
+          {
+            "id": "c",
+            "text": "ids la convierte en 0"
+          },
+          {
+            "id": "d",
+            "text": "print la ignora"
+          }
+        ],
+        "correctChoiceId": "a",
+        "explanation": "Un texto real trae palabras nuevas. El mapa tiene que tener un plan.",
+        "focusLines": [
+          4,
+          4
+        ]
+      }
+    ]
+  },
+  "p6": {
+    "id": "p6-ai",
+    "type": "ai_interpret",
+    "prompt": "La IA comparó predicciones de un clasificador de juguete.",
+    "difficulty": 2,
+    "xp": 16,
+    "explanation": "Leíste el código como revisor: qué hace, por qué está escrito así y qué no se sostiene.",
+    "solution": "Cuántas predicciones coinciden con lo real | Porque 2 aciertos sin el n no se leen | zip recorta al más corto y el n mentiría",
+    "starterCode": "pred = ['gato', 'perro', 'gato']\nreal = ['gato', 'gato', 'gato']\naciertos = sum(p == r for p, r in zip(pred, real))\nprint(aciertos, '/', len(real))\n",
+    "aiQuestions": [
+      {
+        "prompt": "¿Qué cuenta la suma?",
+        "choices": [
+          {
+            "id": "a",
+            "text": "Cuántas predicciones coinciden con lo real"
+          },
+          {
+            "id": "b",
+            "text": "Cuántas clases existen"
+          },
+          {
+            "id": "c",
+            "text": "La pérdida"
+          },
+          {
+            "id": "d",
+            "text": "Los tokens"
+          }
+        ],
+        "correctChoiceId": "a",
+        "explanation": "La primera y la tercera coinciden. La segunda no.",
+        "focusLines": [
+          3,
+          3
+        ]
+      },
+      {
+        "prompt": "¿Por qué imprime también len(real)?",
+        "choices": [
+          {
+            "id": "a",
+            "text": "Porque 2 aciertos sin el n no se leen"
+          },
+          {
+            "id": "b",
+            "text": "Porque zip lo exige"
+          },
+          {
+            "id": "c",
+            "text": "Porque pred está vacío"
+          },
+          {
+            "id": "d",
+            "text": "Para calcular un gradiente"
+          }
+        ],
+        "correctChoiceId": "a",
+        "explanation": "2/3 dice el tamaño del examen.",
+        "focusLines": [
+          4,
+          4
+        ]
+      },
+      {
+        "prompt": "¿Qué estaría mal si pred y real tuvieran distinto largo?",
+        "choices": [
+          {
+            "id": "a",
+            "text": "zip recorta al más corto y el n mentiría"
+          },
+          {
+            "id": "b",
+            "text": "== lanza un error siempre"
+          },
+          {
+            "id": "c",
+            "text": "sum cuenta letras"
+          },
+          {
+            "id": "d",
+            "text": "len(real) pasa a 0"
+          }
+        ],
+        "correctChoiceId": "a",
+        "explanation": "Hay que afirmar que cada predicción tiene su etiqueta.",
+        "focusLines": [
+          1,
+          3
+        ]
+      }
+    ]
+  },
+  "boss1": {
+    "id": "boss1-ai",
+    "type": "ai_interpret",
+    "prompt": "La IA auditó un hallazgo antes de contarlo.",
+    "difficulty": 2,
+    "xp": 16,
+    "explanation": "Leíste el código como revisor: qué hace, por qué está escrito así y qué no se sostiene.",
+    "solution": "La fila cuyo valor es None | n original, n usable y la suma de lo usable | None no es 0. Es un dato que falta",
+    "starterCode": "filas = [\n    {'canal': 'web', 'u': 4},\n    {'canal': 'tienda', 'u': None},\n]\nvalidas = [f for f in filas if f['u'] is not None]\nprint(len(filas), len(validas), sum(f['u'] for f in validas))\n",
+    "aiQuestions": [
+      {
+        "prompt": "¿Qué deja fuera la comprensión de lista?",
+        "choices": [
+          {
+            "id": "a",
+            "text": "La fila cuyo valor es None"
+          },
+          {
+            "id": "b",
+            "text": "La fila de la web"
+          },
+          {
+            "id": "c",
+            "text": "Todas las filas"
+          },
+          {
+            "id": "d",
+            "text": "Los canales"
+          }
+        ],
+        "correctChoiceId": "a",
+        "explanation": "validas solo tiene la web.",
+        "focusLines": [
+          4,
+          4
+        ]
+      },
+      {
+        "prompt": "¿Por qué imprime tres números?",
+        "choices": [
+          {
+            "id": "a",
+            "text": "n original, n usable y la suma de lo usable"
+          },
+          {
+            "id": "b",
+            "text": "Tres medias"
+          },
+          {
+            "id": "c",
+            "text": "Tres p-valores"
+          },
+          {
+            "id": "d",
+            "text": "Tres accuracy"
+          }
+        ],
+        "correctChoiceId": "a",
+        "explanation": "2 filas, 1 usable, suma 4.",
+        "focusLines": [
+          5,
+          5
+        ]
+      },
+      {
+        "prompt": "¿Qué estaría mal al decir 'la tienda vendió 0'?",
+        "choices": [
+          {
+            "id": "a",
+            "text": "None no es 0. Es un dato que falta"
+          },
+          {
+            "id": "b",
+            "text": "len(validas) es 2"
+          },
+          {
+            "id": "c",
+            "text": "sum incluye None"
+          },
+          {
+            "id": "d",
+            "text": "La web no está"
+          }
+        ],
+        "correctChoiceId": "a",
+        "explanation": "Convertir ausencia en cero inventa una venta.",
+        "focusLines": [
+          2,
+          4
+        ]
+      }
+    ]
+  },
+  "boss2": {
+    "id": "boss2-ai",
+    "type": "ai_interpret",
+    "prompt": "La IA listó un gráfico en texto y le puso título.",
+    "difficulty": 2,
+    "xp": 16,
+    "explanation": "Leíste el código como revisor: qué hace, por qué está escrito así y qué no se sostiene.",
+    "solution": "Cada par canal-valor | Los puntos son datos. El título es la frase que afirmas | Los números son unidades, no dinero",
+    "starterCode": "puntos = [('web', 4), ('tienda', 2)]\nfor nombre, valor in puntos:\n    print(nombre, valor)\nprint('titulo: unidades de la semana 1')\n",
+    "aiQuestions": [
+      {
+        "prompt": "¿Qué recorre el for?",
+        "choices": [
+          {
+            "id": "a",
+            "text": "Cada par canal-valor"
+          },
+          {
+            "id": "b",
+            "text": "Los títulos"
+          },
+          {
+            "id": "c",
+            "text": "Un modelo entrenado"
+          },
+          {
+            "id": "d",
+            "text": "Los tokens del prompt"
+          }
+        ],
+        "correctChoiceId": "a",
+        "explanation": "La primera vuelta es web 4. La segunda, tienda 2.",
+        "focusLines": [
+          2,
+          3
+        ]
+      },
+      {
+        "prompt": "¿Por qué el título va aparte de los puntos?",
+        "choices": [
+          {
+            "id": "a",
+            "text": "Los puntos son datos. El título es la frase que afirmas"
+          },
+          {
+            "id": "b",
+            "text": "print solo acepta una línea"
+          },
+          {
+            "id": "c",
+            "text": "El for calcula el título"
+          },
+          {
+            "id": "d",
+            "text": "valor es el periodo"
+          }
+        ],
+        "correctChoiceId": "a",
+        "explanation": "Sin esa frase, 4 y 2 no dicen periodo ni métrica.",
+        "focusLines": [
+          4,
+          4
+        ]
+      },
+      {
+        "prompt": "¿Qué estaría mal si el título dijera 'ingresos'?",
+        "choices": [
+          {
+            "id": "a",
+            "text": "Los números son unidades, no dinero"
+          },
+          {
+            "id": "b",
+            "text": "La tienda vale 4"
+          },
+          {
+            "id": "c",
+            "text": "El for está al revés"
+          },
+          {
+            "id": "d",
+            "text": "print borra web"
+          }
+        ],
+        "correctChoiceId": "a",
+        "explanation": "El título tiene que nombrar la misma magnitud que la altura.",
+        "focusLines": [
+          1,
+          4
+        ]
+      }
+    ]
+  },
+  "boss3": {
+    "id": "boss3-ai",
+    "type": "ai_interpret",
+    "prompt": "La IA armó la ficha de un proyecto de portafolio.",
+    "difficulty": 2,
+    "xp": 16,
+    "explanation": "Leíste el código como revisor: qué hace, por qué está escrito así y qué no se sostiene.",
+    "solution": "Porque el portafolio tiene que decir qué se quiso saber | Cuántas filas sostienen el dato y en qué se mide | Nadie podría repetir el número",
+    "starterCode": "proyecto = {\n    'pregunta': '¿Qué canal vendió más unidades en la semana 1?',\n    'n': 2,\n    'unidad': 'unidades',\n}\nprint(proyecto['pregunta'])\nprint(proyecto['n'], proyecto['unidad'])\n",
+    "aiQuestions": [
+      {
+        "prompt": "¿Por qué la pregunta va en el dict?",
+        "choices": [
+          {
+            "id": "a",
+            "text": "Porque el portafolio tiene que decir qué se quiso saber"
+          },
+          {
+            "id": "b",
+            "text": "Porque n es el modelo"
+          },
+          {
+            "id": "c",
+            "text": "Porque print exige una clase"
+          },
+          {
+            "id": "d",
+            "text": "Porque unidad entrena"
+          }
+        ],
+        "correctChoiceId": "a",
+        "explanation": "Sin pregunta, los números no tienen oficio.",
+        "focusLines": [
+          2,
+          2
+        ]
+      },
+      {
+        "prompt": "¿Qué documentan n y unidad?",
+        "choices": [
+          {
+            "id": "a",
+            "text": "Cuántas filas sostienen el dato y en qué se mide"
+          },
+          {
+            "id": "b",
+            "text": "El learning rate y la época"
+          },
+          {
+            "id": "c",
+            "text": "El prompt y el token"
+          },
+          {
+            "id": "d",
+            "text": "La accuracy y el recall"
+          }
+        ],
+        "correctChoiceId": "a",
+        "explanation": "n=2 y unidades acotan lo que se puede afirmar.",
+        "focusLines": [
+          3,
+          5
+        ]
+      },
+      {
+        "prompt": "¿Qué estaría mal al publicar el proyecto sin el código que produjo el n?",
+        "choices": [
+          {
+            "id": "a",
+            "text": "Nadie podría repetir el número"
+          },
+          {
+            "id": "b",
+            "text": "El dict no puede tener strings"
+          },
+          {
+            "id": "c",
+            "text": "print cambia la pregunta"
+          },
+          {
+            "id": "d",
+            "text": "n tiene que ser un float"
+          }
+        ],
+        "correctChoiceId": "a",
+        "explanation": "Un portafolio se audita si la pregunta, el n y el código viajan juntos.",
+        "focusLines": [
+          1,
+          5
+        ]
+      }
+    ]
+  },
+  "da1": {
+    "id": "da1-ai",
+    "type": "ai_interpret",
+    "prompt": "La IA respondió una pregunta de análisis con n y media.",
+    "difficulty": 2,
+    "xp": 16,
+    "explanation": "Leíste el código como revisor: qué hace, por qué está escrito así y qué no se sostiene.",
+    "solution": "Porque la media sin denominador no se puede auditar | Cuál es el promedio de esos pedidos y con qué n | El código no tiene canales. Esa frase no sale de estos números",
+    "starterCode": "pedidos = [4, 2, 6, 2]\nn = len(pedidos)\nmedia = sum(pedidos) / n\nprint(n)\nprint(media)\n",
+    "aiQuestions": [
+      {
+        "prompt": "¿Por qué imprime n antes de la media?",
+        "choices": [
+          {
+            "id": "a",
+            "text": "Porque la media sin denominador no se puede auditar"
+          },
+          {
+            "id": "b",
+            "text": "Porque print ordena de mayor a menor"
+          },
+          {
+            "id": "c",
+            "text": "Porque len es la media"
+          },
+          {
+            "id": "d",
+            "text": "Porque sum ya divide"
+          }
+        ],
+        "correctChoiceId": "a",
+        "explanation": "n=4 dice cuántos pedidos sostienen 3.5.",
+        "focusLines": [
+          2,
+          5
+        ]
+      },
+      {
+        "prompt": "¿Qué pregunta sí contesta este código?",
+        "choices": [
+          {
+            "id": "a",
+            "text": "Cuál es el promedio de esos pedidos y con qué n"
+          },
+          {
+            "id": "b",
+            "text": "Qué canal vende siempre más"
+          },
+          {
+            "id": "c",
+            "text": "Si el gráfico es bonito"
+          },
+          {
+            "id": "d",
+            "text": "El p-valor de la diferencia"
+          }
+        ],
+        "correctChoiceId": "a",
+        "explanation": "Solo hay una lista. No hay canales ni prueba estadística.",
+        "focusLines": [
+          1,
+          5
+        ]
+      },
+      {
+        "prompt": "¿Qué estaría mal al decir 'el canal web es mejor'?",
+        "choices": [
+          {
+            "id": "a",
+            "text": "El código no tiene canales. Esa frase no sale de estos números"
+          },
+          {
+            "id": "b",
+            "text": "media está mal dividida"
+          },
+          {
+            "id": "c",
+            "text": "n incluye el 0"
+          },
+          {
+            "id": "d",
+            "text": "print borra el 6"
+          }
+        ],
+        "correctChoiceId": "a",
+        "explanation": "Interpretar de más es el fallo. El cálculo solo habla de esos cuatro pedidos.",
+        "focusLines": [
+          1,
+          3
+        ]
+      }
+    ]
+  },
+  "da2": {
+    "id": "da2-ai",
+    "type": "ai_interpret",
+    "prompt": "La IA contó nulos sin esconder la tabla original.",
+    "difficulty": 2,
+    "xp": 16,
+    "explanation": "Leíste el código como revisor: qué hace, por qué está escrito así y qué no se sostiene.",
+    "solution": "Cuántas edades faltan | Para conservar el antes y el después | Inventas una edad y el promedio deja de ser el de los datos vistos",
+    "starterCode": "import pandas as pd\ndf = pd.DataFrame({'edad': [20, None, 30]})\nprint(df['edad'].isna().sum())\nlimpio = df.dropna()\nprint(len(df), len(limpio))\n",
+    "aiQuestions": [
+      {
+        "prompt": "¿Qué cuenta isna().sum()?",
+        "choices": [
+          {
+            "id": "a",
+            "text": "Cuántas edades faltan"
+          },
+          {
+            "id": "b",
+            "text": "Cuántas filas quedan después de borrar"
+          },
+          {
+            "id": "c",
+            "text": "La media de edad"
+          },
+          {
+            "id": "d",
+            "text": "Las columnas del DataFrame"
+          }
+        ],
+        "correctChoiceId": "a",
+        "explanation": "Hay un None. El conteo es 1.",
+        "focusLines": [
+          3,
+          3
+        ]
+      },
+      {
+        "prompt": "¿Por qué limpio es otra variable y no df = dropna()?",
+        "choices": [
+          {
+            "id": "a",
+            "text": "Para conservar el antes y el después"
+          },
+          {
+            "id": "b",
+            "text": "Porque dropna no existe"
+          },
+          {
+            "id": "c",
+            "text": "Porque len solo funciona una vez"
+          },
+          {
+            "id": "d",
+            "text": "Porque None es cero"
+          }
+        ],
+        "correctChoiceId": "a",
+        "explanation": "df sigue en 3 filas. limpio queda en 2.",
+        "focusLines": [
+          4,
+          5
+        ]
+      },
+      {
+        "prompt": "¿Qué estaría mal al rellenar el nulo con 0 y no decirlo?",
+        "choices": [
+          {
+            "id": "a",
+            "text": "Inventas una edad y el promedio deja de ser el de los datos vistos"
+          },
+          {
+            "id": "b",
+            "text": "isna() se rompe"
+          },
+          {
+            "id": "c",
+            "text": "len(df) pasa a 0"
+          },
+          {
+            "id": "d",
+            "text": "dropna suma las edades"
+          }
+        ],
+        "correctChoiceId": "a",
+        "explanation": "Limpiar sin documentar el cambio es esconder el sucio.",
+        "focusLines": [
+          3,
+          4
+        ]
+      }
+    ]
+  },
+  "da3": {
+    "id": "da3-ai",
+    "type": "ai_interpret",
+    "prompt": "La IA escribió el hallazgo que iría bajo un gráfico.",
+    "difficulty": 2,
+    "xp": 16,
+    "explanation": "Leíste el código como revisor: qué hace, por qué está escrito así y qué no se sostiene.",
+    "solution": "Para que 4 y 2 no se lean como pesos ni como personas | Dice que la comparación sale de dos filas | Siempre no está en los datos. Solo hay un recorte con n=2",
+    "starterCode": "n = 2\nweb = 4\ntienda = 2\nprint(f'web {web} unidades, tienda {tienda} unidades, n={n}')\n",
+    "aiQuestions": [
+      {
+        "prompt": "¿Por qué la frase repite la palabra unidades?",
+        "choices": [
+          {
+            "id": "a",
+            "text": "Para que 4 y 2 no se lean como pesos ni como personas"
+          },
+          {
+            "id": "b",
+            "text": "Porque f-string duplica los números"
+          },
+          {
+            "id": "c",
+            "text": "Porque n tiene que ser texto"
+          },
+          {
+            "id": "d",
+            "text": "Porque print traduce solo"
+          }
+        ],
+        "correctChoiceId": "a",
+        "explanation": "La unidad viaja con el número.",
+        "focusLines": [
+          4,
+          4
+        ]
+      },
+      {
+        "prompt": "¿Qué aporta n=2?",
+        "choices": [
+          {
+            "id": "a",
+            "text": "Dice que la comparación sale de dos filas"
+          },
+          {
+            "id": "b",
+            "text": "Es el total de unidades"
+          },
+          {
+            "id": "c",
+            "text": "Es el promedio"
+          },
+          {
+            "id": "d",
+            "text": "Es el p-valor"
+          }
+        ],
+        "correctChoiceId": "a",
+        "explanation": "Sin n, no se sabe si el doble es una anécdota o una muestra grande.",
+        "focusLines": [
+          1,
+          4
+        ]
+      },
+      {
+        "prompt": "¿Qué estaría mal si el título dijera 'la web siempre duplica a la tienda'?",
+        "choices": [
+          {
+            "id": "a",
+            "text": "Siempre no está en los datos. Solo hay un recorte con n=2"
+          },
+          {
+            "id": "b",
+            "text": "4 es menor que 2"
+          },
+          {
+            "id": "c",
+            "text": "El f-string calcula una tendencia"
+          },
+          {
+            "id": "d",
+            "text": "n sobra cuando hay unidades"
+          }
+        ],
+        "correctChoiceId": "a",
+        "explanation": "El código cuenta un recorte. El título no puede promoverlo a ley.",
+        "focusLines": [
+          4,
+          4
+        ]
+      }
+    ]
+  },
+  "ag1": {
+    "id": "ag1-ai",
+    "type": "ai_interpret",
+    "prompt": "Una IA escribió un prompt y lo partió como si cada palabra fuera un token.",
+    "difficulty": 2,
+    "xp": 16,
+    "explanation": "Leíste el código como revisor: qué hace, por qué está escrito así y qué no se sostiene.",
+    "solution": "La instrucción: rol, formato y la evidencia que debe citar | Un tokenizador real parte subpalabras, no solo espacios | Eres es la primera palabra, no necesariamente el primer token",
+    "starterCode": "prompt = 'Eres analista. Resume en 2 frases. Cita n y la unidad.'\npiezas = prompt.split()\nprint(len(piezas))\nprint(piezas[0])\n",
+    "aiQuestions": [
+      {
+        "prompt": "¿Qué es este prompt?",
+        "choices": [
+          {
+            "id": "a",
+            "text": "La instrucción: rol, formato y la evidencia que debe citar"
+          },
+          {
+            "id": "b",
+            "text": "El peso del modelo"
+          },
+          {
+            "id": "c",
+            "text": "Un CSV de ventas"
+          },
+          {
+            "id": "d",
+            "text": "La ventana de contexto completa"
+          }
+        ],
+        "correctChoiceId": "a",
+        "explanation": "El texto le dice al modelo quién es y cómo debe responder.",
+        "focusLines": [
+          1,
+          1
+        ]
+      },
+      {
+        "prompt": "¿Por qué split() no basta para contar tokens?",
+        "choices": [
+          {
+            "id": "a",
+            "text": "Un tokenizador real parte subpalabras, no solo espacios"
+          },
+          {
+            "id": "b",
+            "text": "Porque len no existe"
+          },
+          {
+            "id": "c",
+            "text": "Porque el prompt está vacío"
+          },
+          {
+            "id": "d",
+            "text": "Porque print consume tokens"
+          }
+        ],
+        "correctChoiceId": "a",
+        "explanation": "len(piezas) es un conteo de palabras de juguete, no la factura del modelo.",
+        "focusLines": [
+          2,
+          3
+        ]
+      },
+      {
+        "prompt": "¿Qué está mal si se cree que piezas[0] es el primer token del modelo?",
+        "choices": [
+          {
+            "id": "a",
+            "text": "Eres es la primera palabra, no necesariamente el primer token"
+          },
+          {
+            "id": "b",
+            "text": "El prompt no tiene rol"
+          },
+          {
+            "id": "c",
+            "text": "split() entrena el modelo"
+          },
+          {
+            "id": "d",
+            "text": "Cita n borra el texto"
+          }
+        ],
+        "correctChoiceId": "a",
+        "explanation": "Los tokens no coinciden siempre con las palabras. Hay que decir que esto es un modelo mental.",
+        "focusLines": [
+          2,
+          4
+        ]
+      }
+    ]
+  },
+  "ag2": {
+    "id": "ag2-ai",
+    "type": "ai_interpret",
+    "prompt": "La IA simuló un servidor MCP recibiendo una llamada.",
+    "difficulty": 2,
+    "xp": 16,
+    "explanation": "Leíste el código como revisor: qué hace, por qué está escrito así y qué no se sostiene.",
+    "solution": "Un nombre y la lista de herramientas que sí existen | Si la herramienta pedida está en el inventario | Se salta el contrato MCP y corre una herramienta que el server no ofreció",
+    "starterCode": "server = {'name': 'ventas', 'tools': ['buscar', 'leer']}\npedido = {'tool': 'borrar', 'arg': 'todo'}\npermitida = pedido['tool'] in server['tools']\nprint(server['name'])\nprint(permitida)\n",
+    "aiQuestions": [
+      {
+        "prompt": "¿Qué publica este server?",
+        "choices": [
+          {
+            "id": "a",
+            "text": "Un nombre y la lista de herramientas que sí existen"
+          },
+          {
+            "id": "b",
+            "text": "Un modelo entrenado"
+          },
+          {
+            "id": "c",
+            "text": "Un prompt del usuario"
+          },
+          {
+            "id": "d",
+            "text": "Las filas de un CSV"
+          }
+        ],
+        "correctChoiceId": "a",
+        "explanation": "buscar y leer están en el contrato. borrar no.",
+        "focusLines": [
+          1,
+          1
+        ]
+      },
+      {
+        "prompt": "¿Qué revisa permitida?",
+        "choices": [
+          {
+            "id": "a",
+            "text": "Si la herramienta pedida está en el inventario"
+          },
+          {
+            "id": "b",
+            "text": "Si el argumento es un número"
+          },
+          {
+            "id": "c",
+            "text": "Si el server se llama borrar"
+          },
+          {
+            "id": "d",
+            "text": "Si hay presupuesto de tokens"
+          }
+        ],
+        "correctChoiceId": "a",
+        "explanation": "in mira la lista tools. borrar no está.",
+        "focusLines": [
+          3,
+          3
+        ]
+      },
+      {
+        "prompt": "¿Qué está mal si el host ejecuta el pedido aunque permitida sea False?",
+        "choices": [
+          {
+            "id": "a",
+            "text": "Se salta el contrato MCP y corre una herramienta que el server no ofreció"
+          },
+          {
+            "id": "b",
+            "text": "print invierte el booleano"
+          },
+          {
+            "id": "c",
+            "text": "tools no puede ser una lista"
+          },
+          {
+            "id": "d",
+            "text": "name tiene que ser el del pedido"
+          }
+        ],
+        "correctChoiceId": "a",
+        "explanation": "El contrato es la lista. Fuera de ella, la llamada se rechaza.",
+        "focusLines": [
+          2,
+          5
+        ]
+      }
+    ]
+  },
+  "ag3": {
+    "id": "ag3-ai",
+    "type": "ai_interpret",
+    "prompt": "La IA escribió la parada de un harness.",
+    "difficulty": 2,
+    "xp": 16,
+    "explanation": "Leíste el código como revisor: qué hace, por qué está escrito así y qué no se sostiene.",
+    "solution": "El presupuesto: cuántas acciones puede intentar | Porque ya se gastó el presupuesto de pasos | El agente podría seguir llamando herramientas sin límite",
+    "starterCode": "pasos = 4\nmax_pasos = 4\nhecho = False\nparar = hecho or pasos >= max_pasos\nprint(parar)\n",
+    "aiQuestions": [
+      {
+        "prompt": "¿Qué es max_pasos?",
+        "choices": [
+          {
+            "id": "a",
+            "text": "El presupuesto: cuántas acciones puede intentar"
+          },
+          {
+            "id": "b",
+            "text": "La respuesta final"
+          },
+          {
+            "id": "c",
+            "text": "El nombre de la skill"
+          },
+          {
+            "id": "d",
+            "text": "El número de tokens de una palabra"
+          }
+        ],
+        "correctChoiceId": "a",
+        "explanation": "El harness corta aunque el modelo quiera seguir.",
+        "focusLines": [
+          2,
+          2
+        ]
+      },
+      {
+        "prompt": "¿Por qué parar es True si hecho es False?",
+        "choices": [
+          {
+            "id": "a",
+            "text": "Porque ya se gastó el presupuesto de pasos"
+          },
+          {
+            "id": "b",
+            "text": "Porque or exige que las dos sean True"
+          },
+          {
+            "id": "c",
+            "text": "Porque print niega el valor"
+          },
+          {
+            "id": "d",
+            "text": "Porque 4 es menor que 4"
+          }
+        ],
+        "correctChoiceId": "a",
+        "explanation": "or para si terminó o si se acabaron los pasos. Aquí se acabaron.",
+        "focusLines": [
+          4,
+          5
+        ]
+      },
+      {
+        "prompt": "¿Qué estaría mal sin esta condición?",
+        "choices": [
+          {
+            "id": "a",
+            "text": "El agente podría seguir llamando herramientas sin límite"
+          },
+          {
+            "id": "b",
+            "text": "hecho pasaría a True solo"
+          },
+          {
+            "id": "c",
+            "text": "max_pasos se imprime"
+          },
+          {
+            "id": "d",
+            "text": "or no existe en Python"
+          }
+        ],
+        "correctChoiceId": "a",
+        "explanation": "Un bucle sin parada no es un agente controlado: es gasto infinito.",
+        "focusLines": [
+          1,
+          4
+        ]
+      }
+    ]
+  }
+}

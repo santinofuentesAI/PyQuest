@@ -9,6 +9,7 @@ import { TraceExercise } from "@/components/trace-exercise";
 import { CodeEditor } from "@/components/code-editor";
 import { cn } from "@/lib/utils";
 import { Lightbulb } from "lucide-react";
+import { AiInterpret } from "@/components/ai-interpret";
 import { PromptText, promptAlreadyShowsCode } from "@/lib/prompt-text";
 import { shuffle } from "@/lib/practice";
 
@@ -19,6 +20,10 @@ export function ExerciseView({
   exercise: Exercise;
   onSubmit: (answer: UserAnswer) => void;
 }) {
+  if (exercise.type === "ai_interpret") {
+    return <AiInterpret exercise={exercise} onSubmit={onSubmit} />;
+  }
+
   const showStarter =
     Boolean(exercise.starterCode) &&
     (exercise.type === "find_error" || exercise.type === "predict_output") &&

@@ -8,7 +8,8 @@ export type ExerciseType =
   | "data"
   | "matching"
   | "token_order"
-  | "trace";
+  | "trace"
+  | "ai_interpret";
 
 export type Difficulty = 1 | 2 | 3 | 4 | 5;
 
@@ -64,6 +65,15 @@ export type Exercise = {
   outputComparison?: "exact" | "numeric";
   /** Distractors for the optional word bank; accepted answers are included by the UI. */
   wordBank?: string[];
+  /** Questions about code an AI just wrote. Four choices each. */
+  aiQuestions?: {
+    prompt: string;
+    choices: Choice[];
+    correctChoiceId: string;
+    explanation: string;
+    /** Inclusive 1-based line range framed like a screenshot. */
+    focusLines?: [number, number];
+  }[];
   /** Trace a program through authored, independently checked checkpoints. */
   traceSteps?: {
     line: number;

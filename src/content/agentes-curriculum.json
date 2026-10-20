@@ -12,12 +12,297 @@
         {
           "id": "ag1",
           "index": 1,
-          "title": "De un chat a un agente",
-          "description": "Un LLM responde; un agente observa, usa herramientas y vuelve a mirar.",
+          "title": "Prompts, tokens y agentes",
+          "description": "Un prompt es el texto que entra al modelo. Los tokens son las piezas. Un agente usa esa lectura para actuar.",
           "icon": "bot",
           "isProject": false,
           "isTemplate": false,
           "lessons": [
+            {
+              "id": "ag1-prompt",
+              "title": "Qué es un prompt",
+              "description": "El prompt es la instrucción: rol, tarea, formato y límites, no un deseo vago.",
+              "xp": 42,
+              "exercises": [
+                {
+                  "id": "ag1-prompt-e1",
+                  "type": "multiple_choice",
+                  "prompt": "¿Qué es un prompt?",
+                  "difficulty": 1,
+                  "xp": 10,
+                  "explanation": "Sin prompt no hay tarea. El modelo completa a partir de ese texto.",
+                  "solution": "El texto que le das al modelo: la tarea y el contexto para responder",
+                  "choices": [
+                    {
+                      "id": "a",
+                      "text": "El texto que le das al modelo: la tarea y el contexto para responder"
+                    },
+                    {
+                      "id": "b",
+                      "text": "El peso del modelo en disco"
+                    },
+                    {
+                      "id": "c",
+                      "text": "Un botón de enviar sin contenido"
+                    }
+                  ],
+                  "correctChoiceId": "a"
+                },
+                {
+                  "id": "ag1-prompt-e2",
+                  "type": "multiple_choice",
+                  "prompt": "¿Qué prompt pide un resultado que se puede revisar?",
+                  "difficulty": 2,
+                  "xp": 10,
+                  "explanation": "Rol, recorte y formato convierten una frase vaga en una instrucción auditable.",
+                  "solution": "Resume en 2 frases. Incluye n y la unidad (kg).",
+                  "choices": [
+                    {
+                      "id": "a",
+                      "text": "Resume en 2 frases. Incluye n y la unidad (kg)."
+                    },
+                    {
+                      "id": "b",
+                      "text": "Hazlo bonito e inteligente."
+                    },
+                    {
+                      "id": "c",
+                      "text": "Escribe algo de ventas."
+                    }
+                  ],
+                  "correctChoiceId": "a"
+                },
+                {
+                  "id": "ag1-prompt-e3",
+                  "type": "predict_output",
+                  "prompt": "¿Qué imprime esta plantilla de prompt?",
+                  "difficulty": 1,
+                  "xp": 10,
+                  "explanation": "El prompt se arma como texto. Aquí la tarea queda explícita en la frase.",
+                  "solution": "Tarea: cita n",
+                  "acceptedOutputs": [
+                    "Tarea: cita n"
+                  ],
+                  "starterCode": "tarea = 'cita n'\nprint('Tarea: ' + tarea)"
+                },
+                {
+                  "id": "ag1-prompt-e4",
+                  "type": "fill_blank",
+                  "prompt": "Completa el rol al inicio del prompt.",
+                  "difficulty": 1,
+                  "xp": 12,
+                  "explanation": "El rol le dice al modelo desde qué oficio debe responder.",
+                  "solution": "rol = \"analista\"\nprompt = \"Eres un \" + rol",
+                  "template": "rol = \"analista\"\nprompt = \"Eres un \" + ___",
+                  "blanks": [
+                    {
+                      "accepted": [
+                        "rol"
+                      ]
+                    }
+                  ]
+                }
+              ],
+              "level": 1
+            },
+            {
+              "id": "ag1-tokens",
+              "title": "Tokens",
+              "description": "El modelo no lee letras sueltas: parte el texto en tokens y gasta un presupuesto.",
+              "xp": 48,
+              "exercises": [
+                {
+                  "id": "ag1-tokens-e1",
+                  "type": "multiple_choice",
+                  "prompt": "¿Qué es un token?",
+                  "difficulty": 1,
+                  "xp": 10,
+                  "explanation": "El presupuesto del modelo se mide en tokens, no en páginas.",
+                  "solution": "Una pieza de texto (a veces una palabra, a veces un trozo) que el modelo cuenta",
+                  "choices": [
+                    {
+                      "id": "a",
+                      "text": "Una pieza de texto (a veces una palabra, a veces un trozo) que el modelo cuenta"
+                    },
+                    {
+                      "id": "b",
+                      "text": "Una contraseña del usuario"
+                    },
+                    {
+                      "id": "c",
+                      "text": "Una fila de un CSV"
+                    }
+                  ],
+                  "correctChoiceId": "a"
+                },
+                {
+                  "id": "ag1-tokens-e2",
+                  "type": "predict_output",
+                  "prompt": "Un tokenizador de juguete parte por espacios. ¿Qué imprime?",
+                  "difficulty": 1,
+                  "xp": 10,
+                  "explanation": "split() cuenta palabras. Un tokenizador real a veces parte una palabra en varios tokens.",
+                  "solution": "2",
+                  "acceptedOutputs": [
+                    "2"
+                  ],
+                  "starterCode": "texto = 'Hola agente'\nprint(len(texto.split()))"
+                },
+                {
+                  "id": "ag1-tokens-e3",
+                  "type": "multiple_choice",
+                  "prompt": "Si el prompt más la respuesta no caben en la ventana de contexto…",
+                  "difficulty": 2,
+                  "xp": 10,
+                  "explanation": "La ventana es un presupuesto. Pasarse no 'añade memoria': se pierde texto.",
+                  "solution": "El modelo no puede ver todo: se corta el principio o no entra la respuesta",
+                  "choices": [
+                    {
+                      "id": "a",
+                      "text": "El modelo no puede ver todo: se corta el principio o no entra la respuesta"
+                    },
+                    {
+                      "id": "b",
+                      "text": "Se crean tokens gratis"
+                    },
+                    {
+                      "id": "c",
+                      "text": "El CSV se ordena solo"
+                    }
+                  ],
+                  "correctChoiceId": "a"
+                },
+                {
+                  "id": "ag1-tokens-e4",
+                  "type": "code",
+                  "prompt": "Con `texto = 'lee el n'`, guarda `n_piezas = len(texto.split())` e imprime `n_piezas`.",
+                  "difficulty": 2,
+                  "xp": 18,
+                  "explanation": "Este conteo es un modelo mental. No es el tokenizador del modelo, pero muestra que el texto se parte.",
+                  "solution": "texto = 'lee el n'\nn_piezas = len(texto.split())\nprint(n_piezas)",
+                  "starterCode": "texto = 'lee el n'\n",
+                  "tests": [
+                    {
+                      "assert": "n_piezas == 3"
+                    }
+                  ],
+                  "expectedStdout": "3"
+                }
+              ],
+              "level": 1
+            },
+            {
+              "id": "ag1-engineering",
+              "title": "Prompt engineering",
+              "description": "Afinar el prompt es elegir ejemplos, formato y una parada. No es pedir 'haz magia'.",
+              "xp": 42,
+              "exercises": [
+                {
+                  "id": "ag1-engineering-e1",
+                  "type": "multiple_choice",
+                  "prompt": "¿Qué cambia un buen prompt, no un prompt más largo?",
+                  "difficulty": 1,
+                  "xp": 10,
+                  "explanation": "Ingeniería de prompts es diseño: criterio, formato y un ejemplo. La longitud sola no ayuda.",
+                  "solution": "La tarea, el formato de salida y un ejemplo de lo que cuenta como bien",
+                  "choices": [
+                    {
+                      "id": "a",
+                      "text": "La tarea, el formato de salida y un ejemplo de lo que cuenta como bien"
+                    },
+                    {
+                      "id": "b",
+                      "text": "Repetir la misma frase cincuenta veces"
+                    },
+                    {
+                      "id": "c",
+                      "text": "Quitar todos los sustantivos"
+                    }
+                  ],
+                  "correctChoiceId": "a"
+                },
+                {
+                  "id": "ag1-engineering-e2",
+                  "type": "matching",
+                  "prompt": "Empareja cada pieza de un prompt.",
+                  "difficulty": 2,
+                  "xp": 12,
+                  "explanation": "Sin formato ni parada, el modelo sigue generando texto que no puedes evaluar.",
+                  "solution": "{\"l1\": \"r1\", \"l2\": \"r2\", \"l3\": \"r3\"}",
+                  "left": [
+                    {
+                      "id": "l1",
+                      "text": "Rol"
+                    },
+                    {
+                      "id": "l2",
+                      "text": "Formato"
+                    },
+                    {
+                      "id": "l3",
+                      "text": "Criterio de parada"
+                    }
+                  ],
+                  "right": [
+                    {
+                      "id": "r1",
+                      "text": "Desde qué oficio responde"
+                    },
+                    {
+                      "id": "r2",
+                      "text": "Cómo debe verse la respuesta"
+                    },
+                    {
+                      "id": "r3",
+                      "text": "Cuándo dejar de escribir"
+                    }
+                  ],
+                  "pairs": {
+                    "l1": "r1",
+                    "l2": "r2",
+                    "l3": "r3"
+                  }
+                },
+                {
+                  "id": "ag1-engineering-e3",
+                  "type": "multiple_choice",
+                  "prompt": "Le pides 'arregla el código' y no pegas el error. ¿Qué falta?",
+                  "difficulty": 2,
+                  "xp": 10,
+                  "explanation": "El modelo no ve tu pantalla. Si el fallo no está en el prompt, inventa un arreglo.",
+                  "solution": "La evidencia: el traceback o el resultado que salió mal",
+                  "choices": [
+                    {
+                      "id": "a",
+                      "text": "La evidencia: el traceback o el resultado que salió mal"
+                    },
+                    {
+                      "id": "b",
+                      "text": "Más adjetivos"
+                    },
+                    {
+                      "id": "c",
+                      "text": "Un token de más en la palabra arregla"
+                    }
+                  ],
+                  "correctChoiceId": "a"
+                },
+                {
+                  "id": "ag1-engineering-e4",
+                  "type": "predict_output",
+                  "prompt": "¿Qué imprime esta regla de parada del prompt?",
+                  "difficulty": 1,
+                  "xp": 10,
+                  "explanation": "El prompt puede exigir parar al llegar al presupuesto. Aquí ya se cumplió.",
+                  "solution": "True",
+                  "acceptedOutputs": [
+                    "True"
+                  ],
+                  "starterCode": "pasos = 3\nmax_pasos = 3\nprint(pasos >= max_pasos)"
+                }
+              ],
+              "level": 1
+            },
             {
               "id": "ag1-l1",
               "title": "Qué es un agente",

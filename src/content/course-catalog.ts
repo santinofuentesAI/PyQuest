@@ -62,12 +62,12 @@ export const COURSE_CATALOG: CourseCatalogEntry[] = [
     id: "agentes-ia",
     title: "Agentes de IA",
     kicker: "Nuevo",
-    tagline: "MCP, skills y harness: de un chat a un agente que usa herramientas con límites.",
+    tagline: "Prompts, tokens, MCP y harness: leer lo que hace un agente y ponerle límites.",
     description:
-      "Aprende el bucle observar–decidir–actuar, el contrato de MCP (host, client, server, tools, resources, prompts) y cómo una skill vive dentro de un harness con permisos, parada y evals.",
+      "El primer tema es gratis y va al oficio de ahora: qué es un prompt, cómo se parten los tokens y cómo un agente observa, actúa y para. Después, MCP y un harness con permisos y evals.",
     audience: "Quien ya habla con modelos y quiere construir agentes serios, interactivos y evaluables.",
     includes: [
-      "3 temas: agente, MCP, skills y harness",
+      "Primer tema gratis: prompts, tokens y el bucle del agente",
       "Ejercicios con contratos JSON y Python ejecutable",
       "Evals con resultado esperado y presupuesto de pasos",
     ],

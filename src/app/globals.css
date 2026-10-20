@@ -316,7 +316,9 @@ a.quest-card.quest-current {
 @keyframes pybot-celebrate { 0%,100% { transform: translateY(0) rotate(-4deg); } 50% { transform: translateY(-12px) rotate(4deg); } }
 @keyframes pybot-blink { 0%,43%,47%,100% { transform: scaleY(1); } 45% { transform: scaleY(.1); } }
 @keyframes pybot-sparkle { 0%,100% { opacity: .4; transform: scale(.9); } 50% { opacity: 1; transform: scale(1.05); } }
+.ai-caret { animation: ai-caret 1s steps(1) infinite; }
+@keyframes ai-caret { 50% { opacity: 0; } }
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; scroll-behavior: auto !important; }
-  .pybot-float, .pybot-shadow, .pybot-eyes, .pybot-arm-right, .pybot-sparkles { animation: none !important; }
+  .pybot-float, .pybot-shadow, .pybot-eyes, .pybot-arm-right, .pybot-sparkles, .ai-caret { animation: none !important; }
 }

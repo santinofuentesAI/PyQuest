@@ -2,7 +2,7 @@
 
 import { useMemo, useState } from "react";
 import Link from "next/link";
-import { Code2, Dumbbell, ListChecks, RotateCcw, Sparkles, Zap } from "lucide-react";
+import { Code2, Dumbbell, ListChecks, RotateCcw, Sparkles, Bot, Zap } from "lucide-react";
 import { LessonPlayer } from "@/components/lesson-player";
 import { Button } from "@/components/ui/button";
 import { UnitIcon } from "@/components/unit-icon";
@@ -28,16 +28,21 @@ const KINDS: {
   { id: "all", label: "De todo", hint: "Quiz y código mezclados", icon: Sparkles, color: "#7c3aed" },
   { id: "quiz", label: "Quiz", hint: "Opciones, huecos, emparejar", icon: ListChecks, color: "#0891b2" },
   { id: "code", label: "Código", hint: "Escribir y ejecutar Python", icon: Code2, color: "#059669" },
+  { id: "interpret", label: "Interpretar IA", hint: "Leer código que escribió una IA", icon: Bot, color: "#c2410c" },
 ];
 
 export default function PracticePage() {
   const progress = useProgress();
-  const units = useMemo(() => practiceUnitOptions(progress), [progress]);
   const [selected, setSelected] = useState<string[] | null>(null);
   const [kind, setKind] = useState<PracticeKind>("all");
   const [count, setCount] = useState<(typeof COUNTS)[number]>(12);
   const [session, setSession] = useState<Lesson | null>(null);
   const [run, setRun] = useState(0);
+  const units = useMemo(() => practiceUnitOptions(progress, kind), [progress, kind]);
+  const canPractice = useMemo(
+    () => practiceUnitOptions(progress, "all").length > 0 || practiceUnitOptions(progress, "interpret").length > 0,
+    [progress]
+  );
 
   const chosen = selected ?? units.map((u) => u.id);
 
@@ -101,7 +106,7 @@ export default function PracticePage() {
     );
   }
 
-  if (units.length === 0) {
+  if (units.length === 0 && !canPractice) {
     return (
       <div className="mx-auto max-w-md px-6 py-16 pb-24 text-center">
         <Pybot size="lg" mood="encourage" className="mx-auto" />
@@ -147,7 +152,7 @@ export default function PracticePage() {
           )}
         </div>
       </section>
-      <PybotCoach className="mt-5">Una ronda corta puede ayudarte a fijar una idea. Elige tus temas y combina código con preguntas.</PybotCoach>
+      <PybotCoach className="mt-5">Una ronda corta fija una idea. Interpretar IA es el modo para leer código generado y decir qué hace, por qué está así y qué falla.</PybotCoach>
 
       <div className="mt-5 grid gap-2 sm:grid-cols-2">
         <Button
@@ -182,7 +187,7 @@ export default function PracticePage() {
 
       <section className="mt-8">
         <h2 className="font-bold">Tipo</h2>
-        <div className="mt-2 grid gap-2 sm:grid-cols-3">
+        <div className="mt-2 grid gap-2 sm:grid-cols-2 lg:grid-cols-4">
           {KINDS.map((k) => {
             const Icon = k.icon;
             const on = kind === k.id;
