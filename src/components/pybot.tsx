@@ -23,9 +23,11 @@ export function Pybot({ mood = "happy", size = "md", className, decorative = tru
           <path d="M107 179H125L129 184Q131 190 124 190H111Q105 190 105 185Z" fill="#70dfba" stroke="#218b79" strokeWidth="2" />
           <g className="pybot-arm-left">
             <path d="M128 136Q146 146 150 160Q152 168 144 170Q134 166 126 150Z" fill="#67d9b7" stroke="#218b79" strokeWidth="2" strokeLinejoin="round" />
+            <circle className="pybot-hand" cx="150" cy="166" r="8" fill="#67d9b7" stroke="#218b79" strokeWidth="2" />
           </g>
           <g className="pybot-arm-right">
             <path d="M72 136Q52 122 44 136Q38 150 52 156Q66 158 72 144Z" fill="#67d9b7" stroke="#218b79" strokeWidth="2" strokeLinejoin="round" />
+            <circle className="pybot-hand" cx="41" cy="140" r="8" fill="#67d9b7" stroke="#218b79" strokeWidth="2" />
           </g>
           <path d="M72 129Q100 124 128 129L136 157Q139 177 116 179H84Q61 177 64 157Z" fill="#73dfbb" stroke="#218b79" strokeWidth="2" />
           <path d="M66 164Q100 171 134 164L132 170Q126 179 112 179H87Q72 178 67 171Z" fill="#43bfa1" />
