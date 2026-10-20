@@ -4,7 +4,9 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useProgress } from "@/lib/progress-store";
 import { levelFromXp } from "@/lib/gamification";
-import { BADGES } from "@/lib/curriculum";
+import { BADGES, getUnit } from "@/lib/curriculum";
+import { howToEarn } from "@/lib/badges";
+import { UnitIcon } from "@/components/unit-icon";
 import { PALETTES, DEFAULT_PALETTE } from "@/lib/palettes";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -167,17 +169,20 @@ export default function ProfilePage() {
 
       <section className="mt-6">
         <h2 className="font-bold">Insignias</h2>
-        <ul className="mt-3 grid grid-cols-2 gap-2">
+        <p className="mt-1 text-sm text-muted-foreground">Cada medalla dice cómo se logra. Escuchar la lee en voz alta.</p>
+        <ul className="mt-3 grid grid-cols-2 gap-3">
           {BADGES.map((b) => {
             const earned = p.badges.includes(b.id);
+            const how = howToEarn(b, typeof b.value === "string" ? getUnit(b.value)?.title : undefined);
             return (
-              <li
-                key={b.id}
-                className={`rounded-2xl border p-3 text-sm ${earned ? "bg-amber-50 dark:bg-amber-950/40" : "opacity-50"}`}
-              >
-                <p className="font-bold">{b.title}</p>
-                <p className="text-xs text-muted-foreground">{b.description}</p>
-                <button type="button" className="mt-2 inline-flex items-center gap-1 text-xs font-bold text-primary" onClick={() => speakSpanish(`${b.title}. ${b.description}`, p.voiceURI)}>
+              <li key={b.id} className={cn("flex flex-col rounded-3xl border p-3 text-sm", earned ? "border-amber-300 bg-amber-50 dark:border-amber-800 dark:bg-amber-950/40" : "bg-card")}>
+                <span className={cn("mx-auto flex size-14 items-center justify-center rounded-full border-4", earned ? "border-amber-400 bg-amber-100 text-amber-700 dark:bg-amber-900 dark:text-amber-200" : "border-muted bg-muted text-muted-foreground")}>
+                  <UnitIcon name={b.icon} className="size-6" />
+                </span>
+                <p className="mt-2 text-center font-extrabold">{b.title}</p>
+                <p className="mt-2 text-[10px] font-bold tracking-wider text-primary uppercase">Cómo se logra</p>
+                <p className="mt-1 flex-1 text-xs leading-relaxed text-muted-foreground">{how}</p>
+                <button type="button" className="mt-3 inline-flex h-9 items-center justify-center gap-1 rounded-xl border bg-background text-xs font-bold" onClick={() => speakSpanish(`${b.title}. Cómo se logra: ${how}`, p.voiceURI)}>
                   <Volume2 className="size-3.5" />
                   Escuchar
                 </button>

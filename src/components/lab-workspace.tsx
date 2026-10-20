@@ -15,6 +15,7 @@ import { humanPythonError } from "@/lib/job-projects";
 import { useProgress } from "@/lib/progress-store";
 import { toast } from "sonner";
 import { trimImage, trimStdout } from "@/lib/portfolio";
+import { LAB_BUILDS } from "@/lib/lab-builds";
 
 const SAMPLE = `import numpy as np
 import pandas as pd
@@ -118,6 +119,18 @@ export function LabWorkspace() {
       </section>
     </div>
     <p role="status" className="mt-2 text-center text-[10px] text-zinc-300">{actionFeedback ?? "Borrador guardado automáticamente en este navegador"}</p>
+    <section className="mt-3 rounded-2xl border border-white/10 bg-[#303454] p-3" aria-labelledby="lab-builds">
+      <h2 id="lab-builds" className="px-1 text-sm font-extrabold">Qué puedes construir</h2>
+      <p className="mt-1 px-1 text-xs leading-relaxed text-zinc-300">Toca una idea y el editor se llena con ese Python.</p>
+      <div className="mt-3 grid gap-2 sm:grid-cols-3">
+        {LAB_BUILDS.map((build) => (
+          <button key={build.id} type="button" className="rounded-xl bg-white/10 px-3 py-3 text-left hover:bg-white/15" onClick={() => { progress.saveLabDraft(build.code); setTab("code"); setActionFeedback(`Listo: ${build.title}. Pulsa Ejecutar.`); }}>
+            <p className="text-sm font-extrabold">{build.title}</p>
+            <p className="mt-1 text-xs leading-relaxed text-zinc-300">{build.line}</p>
+          </button>
+        ))}
+      </div>
+    </section>
     <details className="group mt-3 rounded-xl border border-white/10 bg-[#303454]">
       <summary className="flex min-h-11 cursor-pointer list-none items-center justify-between gap-3 px-4 text-xs font-bold">Ejemplos y herramientas<ChevronDown className="size-4 text-primary transition-transform group-open:rotate-180 motion-reduce:transition-none" /></summary>
       <div className="border-t border-white/10 bg-card p-4 text-card-foreground">
