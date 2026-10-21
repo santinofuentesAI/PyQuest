@@ -6,7 +6,10 @@ import type { UserProgress } from "../src/lib/types";
 
 for (const unit of UNITS.filter((item) => getCourseIdForUnit(item.id) === "agentes-ia")) {
   const found = unit.lessons.flatMap((lesson) => lesson.exercises).filter((exercise) => exercise.type === "ai_interpret");
-  assert.equal(found.length, 0, `${unit.id} stays off Python readings`);
+  for (const exercise of found) {
+    assert.equal(exercise.aiLabel, "Respuesta hecha por IA", exercise.id);
+    assert.doesNotMatch(exercise.starterCode ?? "", /\b(print|def |import |Python)\b/, exercise.id);
+  }
 }
 
 const reads = UNITS.filter((unit) => getCourseIdForUnit(unit.id) !== "agentes-ia").map((unit) => {

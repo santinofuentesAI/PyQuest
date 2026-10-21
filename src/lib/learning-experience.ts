@@ -17,6 +17,17 @@ export const EXERCISE_GUIDES: Record<ExerciseType, { label: string; tip: string 
   },
 };
 
+export function exerciseGuide(exercise: { type: ExerciseType; aiLabel?: string }) {
+  const guide = EXERCISE_GUIDES[exercise.type];
+  if (exercise.type === "ai_interpret" && exercise.aiLabel) {
+    return {
+      label: guide.label,
+      tip: "Mira cómo se escribe la respuesta. Luego di qué afirma, qué no pediste y qué no puedes publicar.",
+    };
+  }
+  return guide;
+}
+
 export function lessonsToday(results: Record<string, LessonResult>, now = new Date()): number {
   const start = new Date(now.getFullYear(), now.getMonth(), now.getDate()).getTime();
   const end = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1).getTime();

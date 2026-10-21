@@ -67,7 +67,9 @@ export type Exercise = {
   outputComparison?: "exact" | "numeric";
   /** Distractors for the optional word bank; accepted answers are included by the UI. */
   wordBank?: string[];
-  /** Questions about code an AI just wrote. Four choices each. */
+  /** Header on the streamed artifact. Defaults to code written by an AI. */
+  aiLabel?: string;
+  /** Questions about an artifact an AI just wrote. Four choices each. */
   aiQuestions?: {
     prompt: string;
     choices: Choice[];

@@ -34,7 +34,7 @@ export function levelBriefing(lesson: Lesson, unit: Unit, guide?: LessonGuide, s
     kicker: agents ? "Mira el ejemplo" : "Mira el código",
     title: agents ? "Así se escribe" : "¿Qué mostrará Python?",
     body: agents
-      ? "Es un prompt o un contrato. Léelo de arriba abajo y luego practícalo, sin pasar por la librería."
+      ? "Léelo de arriba abajo. Luego lo practicas, sin pasar por la librería."
       : "Lee el ejemplo de arriba abajo. Luego lo practicas, sin pasar por la librería.",
   };
 

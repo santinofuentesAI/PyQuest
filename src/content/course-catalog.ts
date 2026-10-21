@@ -62,12 +62,12 @@ export const COURSE_CATALOG: CourseCatalogEntry[] = [
     id: "agentes-ia",
     title: "Agentes de IA",
     kicker: "Nuevo",
-    tagline: "Prompts, tokens, MCP y harness: leer lo que hace un agente y ponerle límites.",
+    tagline: "Los 4D de Anthropic, prompts, MCP y harness.",
     description:
-      "El primer tema es gratis y va al oficio de ahora: qué es un prompt, cómo se parten los tokens y cómo un agente observa, actúa y para. Después, MCP y un harness con permisos y evals.",
+      "El primer tema es gratis: delegar, describir, discernir y ser diligente, y después el prompt, los tokens y el bucle del agente. Luego, MCP y un harness con permisos y evals.",
     audience: "Quien ya habla con modelos y quiere construir agentes serios, interactivos y evaluables.",
     includes: [
-      "Primer tema gratis: prompts, tokens y el bucle del agente",
+      "Primer tema gratis: los 4D, prompts, tokens y el bucle del agente",
       "Ejercicios de prompts, contratos y el bucle del agente",
       "Evals con resultado esperado y presupuesto de pasos",
     ],

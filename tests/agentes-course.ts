@@ -22,6 +22,11 @@ function blobs(exercise: Exercise) {
 
 const units = unitsForCourse("agentes-ia");
 assert.equal(units.length, 3);
+const opening = units[0]?.lessons.map((lesson) => lesson.id) ?? [];
+assert.deepEqual(opening.slice(0, 5), ["ag1-4d", "ag1-delegar", "ag1-discernir", "ag1-diligencia", "ag1-prompt"]);
+const inspection = units.flatMap((unit) => unit.lessons.flatMap((lesson) => lesson.exercises)).find((exercise) => exercise.type === "ai_interpret");
+assert.equal(inspection?.aiLabel, "Respuesta hecha por IA");
+assert.match(inspection?.starterCode ?? "", /Pedido:/);
 let exercises = 0;
 for (const unit of units) {
   assert.equal(getCourseIdForUnit(unit.id), "agentes-ia");

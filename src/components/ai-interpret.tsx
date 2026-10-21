@@ -73,7 +73,7 @@ export function AiInterpret({
       <p className="text-sm leading-relaxed">{exercise.prompt}</p>
       <div className="overflow-hidden rounded-2xl border border-zinc-800 bg-zinc-950 text-zinc-100 shadow-sm">
         <div className="flex items-center justify-between gap-3 border-b border-white/10 px-3 py-2">
-          <p className="text-[11px] font-bold tracking-wide text-zinc-300 uppercase">Código hecho por IA</p>
+          <p className="text-[11px] font-bold tracking-wide text-zinc-300 uppercase">{exercise.aiLabel ?? "Código hecho por IA"}</p>
           <p className="text-[11px] text-zinc-400" aria-live="polite">
             {writing ? "Escribiendo…" : "Listo para leer"}
           </p>
@@ -82,7 +82,7 @@ export function AiInterpret({
           <pre
             ref={scroller}
             className="max-h-64 overflow-auto px-3 py-3 font-mono text-[13px] leading-6"
-            aria-label="Código generado"
+            aria-label={exercise.aiLabel ? "Texto generado" : "Código generado"}
           >
             {lines.map((line, index) => {
               const opacity = lineOpacity(index);
@@ -103,7 +103,7 @@ export function AiInterpret({
           {phase === "read" ? (
             <button
               type="button"
-              aria-label="Bajar el código"
+              aria-label={exercise.aiLabel ? "Bajar el texto" : "Bajar el código"}
               onClick={scrollDown}
               className="absolute right-2 bottom-2 flex size-6 items-center justify-center rounded-full border border-white/15 bg-zinc-900/80 text-zinc-300"
             >

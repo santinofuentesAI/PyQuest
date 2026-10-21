@@ -592,15 +592,310 @@ def datos_course() -> dict:
     }
 
 
+def reply_question(prompt, correct, wrongs, why, start, end):
+    return {
+        "prompt": prompt,
+        "choices": [
+            {"id": "a", "text": correct},
+            {"id": "b", "text": wrongs[0]},
+            {"id": "c", "text": wrongs[1]},
+            {"id": "d", "text": wrongs[2]},
+        ],
+        "correctChoiceId": "a",
+        "explanation": why,
+        "focusLines": [start, end],
+    }
+
+
+def inspect_reply(eid, prompt, artifact, questions):
+    """Stream an AI reply and ask what it did. Not a program."""
+    text = artifact.strip("\n") + "\n"
+    lines = text.count("\n")
+    for item in questions:
+        start, end = item["focusLines"]
+        if not (1 <= start <= end <= lines):
+            raise SystemExit(f"{eid} focus {start}-{end} outside {lines} lines")
+    return {
+        "id": eid,
+        "type": "ai_interpret",
+        "prompt": prompt,
+        "difficulty": 2,
+        "xp": 16,
+        "explanation": "Leíste la respuesta como revisor: qué afirma, qué no estaba en el pedido y qué no puedes publicar.",
+        "solution": " | ".join(
+            choice["text"]
+            for item in questions
+            for choice in item["choices"]
+            if choice["id"] == item["correctChoiceId"]
+        ),
+        "starterCode": text,
+        "aiLabel": "Respuesta hecha por IA",
+        "aiQuestions": questions,
+    }
+
+
 def agentes_course() -> dict:
-    """Agentes de IA: prompts, tokens, bucle, MCP, skills y evals. Sin Python."""
+    """Agentes de IA: 4D de Anthropic, prompts, tokens, bucle, MCP, skills y evals. Sin Python."""
     ag1 = unit(
         "ag1",
         1,
-        "Prompts, tokens y agentes",
-        "Un prompt es el texto que entra al modelo. Los tokens son las piezas. Un agente usa esa lectura para actuar.",
+        "Los 4D, prompts y agentes",
+        "Anthropic llama 4D a delegar, describir, discernir y ser diligente. Después vienen el prompt, los tokens y el bucle.",
         "bot",
         [
+            lesson(
+                "ag1-4d",
+                "Los 4D",
+                "Cuatro oficios para trabajar con un modelo: delegar, describir, discernir y diligencia.",
+                [
+                    mc(
+                        "ag1-4d-e1",
+                        "¿Cuáles son los 4D de Anthropic?",
+                        [
+                            ("a", "Delegar, describir, discernir y diligencia"),
+                            ("b", "Datos, dashboard, deploy y debug"),
+                            ("c", "Prompt, token, tool y test"),
+                        ],
+                        "a",
+                        "El marco de AI Fluency son esas cuatro competencias. Sirven con un chat y con un agente.",
+                    ),
+                    matching(
+                        "ag1-4d-e2",
+                        "Empareja cada D con su oficio.",
+                        [
+                            {"id": "l1", "text": "Delegar"},
+                            {"id": "l2", "text": "Describir"},
+                            {"id": "l3", "text": "Discernir"},
+                            {"id": "l4", "text": "Diligencia"},
+                        ],
+                        [
+                            {"id": "r1", "text": "Decidir qué hace el modelo y qué te quedas tú"},
+                            {"id": "r2", "text": "Pedir con rol, tarea, formato y contexto"},
+                            {"id": "r3", "text": "Revisar la respuesta antes de usarla"},
+                            {"id": "r4", "text": "Verificar, cuidar los datos y firmar el resultado"},
+                        ],
+                        {"l1": "r1", "l2": "r2", "l3": "r3", "l4": "r4"},
+                        "Describir sin discernir publica una frase segura que nadie miró.",
+                    ),
+                    mc(
+                        "ag1-4d-e3",
+                        "En cada mensaje, el loop corto es…",
+                        [
+                            ("a", "Describir y luego discernir lo que volvió"),
+                            ("b", "Delegar y no volver a leer"),
+                            ("c", "Diligencia solo al final del año"),
+                        ],
+                        "a",
+                        "Describir y discernir se turnan en el chat. Delegar y la diligencia son la decisión grande: qué sueltas y qué firmas.",
+                        difficulty=2,
+                    ),
+                    mc(
+                        "ag1-4d-e4",
+                        "Un agente que usa herramientas y actúa por ti es, en este marco…",
+                        [
+                            ("a", "Agencia: tú orientas y el modelo trabaja con cierta independencia"),
+                            ("b", "Automatización: un botón que siempre hace el mismo paso"),
+                            ("c", "Aumentación: solo charlan y nadie actúa"),
+                        ],
+                        "a",
+                        "Automatizar es encargar un paso fijo. Aumentar es pensar juntos. Agencia es dejar que actúe, con tus límites.",
+                        difficulty=2,
+                    ),
+                ],
+            ),
+            lesson(
+                "ag1-delegar",
+                "Delegar",
+                "Antes del prompt decides el reparto: qué ve el modelo y qué no sale de tus manos.",
+                [
+                    mc(
+                        "ag1-delegar-e1",
+                        "Hay que cerrar el precio de mañana. ¿Qué te quedas tú?",
+                        [
+                            ("a", "La decisión final y los datos de clientes"),
+                            ("b", "Nada: el modelo ya sabe el negocio"),
+                            ("c", "Solo el título del mensaje"),
+                        ],
+                        "a",
+                        "Delegar no es soltar el oficio. El modelo puede ordenar opciones. El sí o el no, y los datos sensibles, siguen contigo.",
+                    ),
+                    mc(
+                        "ag1-delegar-e2",
+                        "¿Qué sí puedes encargar al modelo?",
+                        [
+                            ("a", "Un primer resumen de un informe largo, para que tú lo revises"),
+                            ("b", "Publicar el resumen sin leerlo"),
+                            ("c", "Inventar las ventas de ayer si no están en el archivo"),
+                        ],
+                        "a",
+                        "El borrador ahorra tiempo. Publicarlo o inventar cifras ya no es delegar: es soltar el criterio.",
+                        difficulty=2,
+                    ),
+                    matching(
+                        "ag1-delegar-e3",
+                        "Empareja el trabajo con quién lo hace.",
+                        [
+                            {"id": "l1", "text": "Ordenar 30 notas"},
+                            {"id": "l2", "text": "Decir si el resumen es usable"},
+                            {"id": "l3", "text": "Elegir la herramienta del inventario"},
+                        ],
+                        [
+                            {"id": "r1", "text": "El modelo, como primer paso"},
+                            {"id": "r2", "text": "Tú, con discernimiento"},
+                            {"id": "r3", "text": "El agente, dentro de lo que le permitiste"},
+                        ],
+                        {"l1": "r1", "l2": "r2", "l3": "r3"},
+                        "Si el modelo elige una herramienta, igual tú decidiste cuáles existen.",
+                    ),
+                    reorder(
+                        "ag1-delegar-e4",
+                        "Ordena una delegación.",
+                        [
+                            {"id": "a", "code": "Nombrar la meta del turno"},
+                            {"id": "b", "code": "Ver qué puede hacer el modelo y qué no"},
+                            {"id": "c", "code": "Repartir: borrador para la IA, decisión para ti"},
+                            {"id": "d", "code": "Dejar fuera los datos que no debe ver"},
+                        ],
+                        ["a", "b", "c", "d"],
+                        "Sin meta no hay reparto. Sin límite, el modelo ve de más.",
+                    ),
+                ],
+            ),
+            lesson(
+                "ag1-discernir",
+                "Discernir",
+                "La respuesta ya está. Ahora se lee: qué hizo, qué inventó y qué no puedes usar.",
+                [
+                    inspect_reply(
+                        "ag1-discernir-e1",
+                        "Una IA respondió un pedido de resumen. Léela y marca qué se sostiene.",
+                        "Pedido: resume el turno y cita cuántas filas viste.\n"
+                        "El turno vendió mucho más que ayer.\n"
+                        "El latte fue el producto estrella.\n"
+                        "Recomiendo subir el precio mañana.\n",
+                        [
+                            reply_question(
+                                "¿Qué hizo esta respuesta?",
+                                "Afirmó tres cosas y no citó cuántas filas vio",
+                                ("Contó las filas y se detuvo", "Pidió el archivo que le faltaba", "Repitió el pedido sin agregar nada"),
+                                "El pedido pedía un resumen con n. La respuesta opina y no dice n.",
+                                2,
+                                4,
+                            ),
+                            reply_question(
+                                "¿Qué problema tiene «mucho más que ayer»?",
+                                "Ayer no está en el pedido. Esa comparación se inventó",
+                                ("Es la cita de n que faltaba", "Prueba que el latte ganó", "Es el formato que pediste"),
+                                "Discernir es notar lo que no estaba en la evidencia.",
+                                2,
+                                2,
+                            ),
+                            reply_question(
+                                "¿Qué está mal si publicas la subida de precio?",
+                                "El pedido era resumir, no decidir un precio, y nadie lo verificó",
+                                ("La línea 1 ya trae el n", "Una recomendación siempre se publica", "El modelo no puede usar la palabra precio"),
+                                "Una frase segura no es una decisión. Diligencia es no firmar lo que no revisaste.",
+                                4,
+                                4,
+                            ),
+                        ],
+                    ),
+                    mc(
+                        "ag1-discernir-e2",
+                        "Viste que la respuesta inventó «ayer». ¿Qué sigue en el loop?",
+                        [
+                            ("a", "Describes de nuevo: «no compares con días que no te pasé»"),
+                            ("b", "La publicas porque suena segura"),
+                            ("c", "Borras el pedido y dejas la respuesta"),
+                        ],
+                        "a",
+                        "Discernir alimenta la siguiente descripción. El loop es pedir, leer y ajustar.",
+                        difficulty=2,
+                    ),
+                    matching(
+                        "ag1-discernir-e3",
+                        "Empareja qué estás revisando.",
+                        [
+                            {"id": "l1", "text": "Producto"},
+                            {"id": "l2", "text": "Proceso"},
+                            {"id": "l3", "text": "Desempeño"},
+                        ],
+                        [
+                            {"id": "r1", "text": "Si el resumen sirve para el pedido"},
+                            {"id": "r2", "text": "Si el camino (herramientas, pasos) tuvo sentido"},
+                            {"id": "r3", "text": "Si el tono y la conducta fueron los que pediste"},
+                        ],
+                        {"l1": "r1", "l2": "r2", "l3": "r3"},
+                        "Un resumen lindo puede venir de un proceso que se saltó el inventario.",
+                    ),
+                    mc(
+                        "ag1-discernir-e4",
+                        "La respuesta suena segura y no cita n. ¿Qué pesa más?",
+                        [
+                            ("a", "La evidencia que falta, no el tono"),
+                            ("b", "El tono: si suena segura, está bien"),
+                            ("c", "La longitud: más larga es más cierta"),
+                        ],
+                        "a",
+                        "Discernir separa el estilo de la prueba. Seguridad no es cita.",
+                        difficulty=2,
+                    ),
+                ],
+            ),
+            lesson(
+                "ag1-diligencia",
+                "Diligencia",
+                "Tú firmas el resultado: se verifica, se cuidan los datos y se dice que hubo una IA.",
+                [
+                    mc(
+                        "ag1-diligencia-e1",
+                        "El modelo redactó el resumen. ¿De quién es el resultado?",
+                        [
+                            ("a", "Tuyo: lo publicas a tu nombre y respondes por él"),
+                            ("b", "Del modelo: si falla, no es tu problema"),
+                            ("c", "De nadie, porque fue un chat"),
+                        ],
+                        "a",
+                        "Diligencia es hacerte cargo. La IA no firma el informe.",
+                    ),
+                    mc(
+                        "ag1-diligencia-e2",
+                        "Para resumir tickets, ¿qué no pegas en el pedido?",
+                        [
+                            ("a", "Nombres, correos o pagos de clientes"),
+                            ("b", "El formato que quieres de vuelta"),
+                            ("c", "Cuántas frases como máximo"),
+                        ],
+                        "a",
+                        "Delegar el resumen no incluye regalar datos sensibles. Eso se queda fuera.",
+                        difficulty=2,
+                    ),
+                    mc(
+                        "ag1-diligencia-e3",
+                        "El borrador lo escribió el modelo y tú lo corregiste. ¿Qué es diligente al entregarlo?",
+                        [
+                            ("a", "Decir que hubo una IA y qué verificaste tú"),
+                            ("b", "Borrar el historial para que parezca solo tuyo"),
+                            ("c", "Publicar el borrador tal cual, por velocidad"),
+                        ],
+                        "a",
+                        "Transparencia: se nota la ayuda y se nota tu revisión. Esconderlo no lo vuelve más cierto.",
+                        difficulty=2,
+                    ),
+                    reorder(
+                        "ag1-diligencia-e4",
+                        "Ordena antes de publicar.",
+                        [
+                            {"id": "a", "code": "Leer la respuesta contra el pedido"},
+                            {"id": "b", "code": "Verificar las cifras que sí estaban en la evidencia"},
+                            {"id": "c", "code": "Quitar lo inventado y los datos de más"},
+                            {"id": "d", "code": "Decir que una IA ayudó y firmar"},
+                        ],
+                        ["a", "b", "c", "d"],
+                        "Publicar es el último paso, no el primero.",
+                    ),
+                ],
+            ),
             lesson(
                 "ag1-prompt",
                 "Qué es un prompt",
@@ -1400,7 +1695,7 @@ def agentes_course() -> dict:
                 "id": "sag",
                 "index": 0,
                 "title": "Agentes de IA",
-                "subtitle": "Prompts, MCP, skills y harness, de cero a un eval",
+                "subtitle": "Los 4D, MCP, skills y harness, de cero a un eval",
                 "color": "#c2410c",
                 "accent": "#fdba74",
                 "units": [ag1, ag2, ag3],

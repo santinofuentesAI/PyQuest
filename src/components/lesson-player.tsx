@@ -13,7 +13,7 @@ import { Button } from "@/components/ui/button";
 import { useProgress } from "@/lib/progress-store";
 import { PythonStatus } from "@/components/python-status";
 import { Pybot, PybotCoach } from "@/components/pybot";
-import { EXERCISE_GUIDES } from "@/lib/learning-experience";
+import { exerciseGuide } from "@/lib/learning-experience";
 import { getLessonGuide } from "@/lib/lesson-guides";
 import { levelBriefing } from "@/lib/level-briefing";
 import { playTone } from "@/lib/sound";
@@ -330,7 +330,7 @@ export function LessonPlayer({
           heartsEmpty && "opacity-40"
         )}
       >
-        <div key={exercise.id + "-guide"} className="quest-enter mb-4 flex items-center gap-3"><Pybot size="sm" mood={busy ? "thinking" : "encourage"} /><div><p className="quest-kicker">{EXERCISE_GUIDES[exercise.type].label}</p><p className="mt-1 text-xs leading-relaxed text-muted-foreground">{i > 0 && i === Math.floor(total / 2) ? "¡Ya vas por la mitad! " : ""}{EXERCISE_GUIDES[exercise.type].tip}</p></div></div>
+        <div key={exercise.id + "-guide"} className="quest-enter mb-4 flex items-center gap-3"><Pybot size="sm" mood={busy ? "thinking" : "encourage"} /><div><p className="quest-kicker">{exerciseGuide(exercise).label}</p><p className="mt-1 text-xs leading-relaxed text-muted-foreground">{i > 0 && i === Math.floor(total / 2) ? "¡Ya vas por la mitad! " : ""}{exerciseGuide(exercise).tip}</p></div></div>
         {(exercise.type === "code" || exercise.type === "data") ? <PythonStatus className="mb-3" /> : null}
         <fieldset ref={challenge} tabIndex={-1} aria-label={`Reto ${i + 1}`} disabled={busy || Boolean(feedback) || heartsEmpty} className="quest-exercise min-w-0 rounded-3xl border bg-card p-4 outline-none sm:p-5">
           <ExerciseView key={exercise.id} exercise={exercise} onSubmit={submit} />

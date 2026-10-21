@@ -12,12 +12,583 @@
         {
           "id": "ag1",
           "index": 1,
-          "title": "Prompts, tokens y agentes",
-          "description": "Un prompt es el texto que entra al modelo. Los tokens son las piezas. Un agente usa esa lectura para actuar.",
+          "title": "Los 4D, prompts y agentes",
+          "description": "Anthropic llama 4D a delegar, describir, discernir y ser diligente. Después vienen el prompt, los tokens y el bucle.",
           "icon": "bot",
           "isProject": false,
           "isTemplate": false,
           "lessons": [
+            {
+              "id": "ag1-4d",
+              "title": "Los 4D",
+              "description": "Cuatro oficios para trabajar con un modelo: delegar, describir, discernir y diligencia.",
+              "xp": 42,
+              "exercises": [
+                {
+                  "id": "ag1-4d-e1",
+                  "type": "multiple_choice",
+                  "prompt": "¿Cuáles son los 4D de Anthropic?",
+                  "difficulty": 1,
+                  "xp": 10,
+                  "explanation": "El marco de AI Fluency son esas cuatro competencias. Sirven con un chat y con un agente.",
+                  "solution": "Delegar, describir, discernir y diligencia",
+                  "choices": [
+                    {
+                      "id": "a",
+                      "text": "Delegar, describir, discernir y diligencia"
+                    },
+                    {
+                      "id": "b",
+                      "text": "Datos, dashboard, deploy y debug"
+                    },
+                    {
+                      "id": "c",
+                      "text": "Prompt, token, tool y test"
+                    }
+                  ],
+                  "correctChoiceId": "a"
+                },
+                {
+                  "id": "ag1-4d-e2",
+                  "type": "matching",
+                  "prompt": "Empareja cada D con su oficio.",
+                  "difficulty": 2,
+                  "xp": 12,
+                  "explanation": "Describir sin discernir publica una frase segura que nadie miró.",
+                  "solution": "{\"l1\": \"r1\", \"l2\": \"r2\", \"l3\": \"r3\", \"l4\": \"r4\"}",
+                  "left": [
+                    {
+                      "id": "l1",
+                      "text": "Delegar"
+                    },
+                    {
+                      "id": "l2",
+                      "text": "Describir"
+                    },
+                    {
+                      "id": "l3",
+                      "text": "Discernir"
+                    },
+                    {
+                      "id": "l4",
+                      "text": "Diligencia"
+                    }
+                  ],
+                  "right": [
+                    {
+                      "id": "r1",
+                      "text": "Decidir qué hace el modelo y qué te quedas tú"
+                    },
+                    {
+                      "id": "r2",
+                      "text": "Pedir con rol, tarea, formato y contexto"
+                    },
+                    {
+                      "id": "r3",
+                      "text": "Revisar la respuesta antes de usarla"
+                    },
+                    {
+                      "id": "r4",
+                      "text": "Verificar, cuidar los datos y firmar el resultado"
+                    }
+                  ],
+                  "pairs": {
+                    "l1": "r1",
+                    "l2": "r2",
+                    "l3": "r3",
+                    "l4": "r4"
+                  }
+                },
+                {
+                  "id": "ag1-4d-e3",
+                  "type": "multiple_choice",
+                  "prompt": "En cada mensaje, el loop corto es…",
+                  "difficulty": 2,
+                  "xp": 10,
+                  "explanation": "Describir y discernir se turnan en el chat. Delegar y la diligencia son la decisión grande: qué sueltas y qué firmas.",
+                  "solution": "Describir y luego discernir lo que volvió",
+                  "choices": [
+                    {
+                      "id": "a",
+                      "text": "Describir y luego discernir lo que volvió"
+                    },
+                    {
+                      "id": "b",
+                      "text": "Delegar y no volver a leer"
+                    },
+                    {
+                      "id": "c",
+                      "text": "Diligencia solo al final del año"
+                    }
+                  ],
+                  "correctChoiceId": "a"
+                },
+                {
+                  "id": "ag1-4d-e4",
+                  "type": "multiple_choice",
+                  "prompt": "Un agente que usa herramientas y actúa por ti es, en este marco…",
+                  "difficulty": 2,
+                  "xp": 10,
+                  "explanation": "Automatizar es encargar un paso fijo. Aumentar es pensar juntos. Agencia es dejar que actúe, con tus límites.",
+                  "solution": "Agencia: tú orientas y el modelo trabaja con cierta independencia",
+                  "choices": [
+                    {
+                      "id": "a",
+                      "text": "Agencia: tú orientas y el modelo trabaja con cierta independencia"
+                    },
+                    {
+                      "id": "b",
+                      "text": "Automatización: un botón que siempre hace el mismo paso"
+                    },
+                    {
+                      "id": "c",
+                      "text": "Aumentación: solo charlan y nadie actúa"
+                    }
+                  ],
+                  "correctChoiceId": "a"
+                }
+              ],
+              "level": 1
+            },
+            {
+              "id": "ag1-delegar",
+              "title": "Delegar",
+              "description": "Antes del prompt decides el reparto: qué ve el modelo y qué no sale de tus manos.",
+              "xp": 46,
+              "exercises": [
+                {
+                  "id": "ag1-delegar-e1",
+                  "type": "multiple_choice",
+                  "prompt": "Hay que cerrar el precio de mañana. ¿Qué te quedas tú?",
+                  "difficulty": 1,
+                  "xp": 10,
+                  "explanation": "Delegar no es soltar el oficio. El modelo puede ordenar opciones. El sí o el no, y los datos sensibles, siguen contigo.",
+                  "solution": "La decisión final y los datos de clientes",
+                  "choices": [
+                    {
+                      "id": "a",
+                      "text": "La decisión final y los datos de clientes"
+                    },
+                    {
+                      "id": "b",
+                      "text": "Nada: el modelo ya sabe el negocio"
+                    },
+                    {
+                      "id": "c",
+                      "text": "Solo el título del mensaje"
+                    }
+                  ],
+                  "correctChoiceId": "a"
+                },
+                {
+                  "id": "ag1-delegar-e2",
+                  "type": "multiple_choice",
+                  "prompt": "¿Qué sí puedes encargar al modelo?",
+                  "difficulty": 2,
+                  "xp": 10,
+                  "explanation": "El borrador ahorra tiempo. Publicarlo o inventar cifras ya no es delegar: es soltar el criterio.",
+                  "solution": "Un primer resumen de un informe largo, para que tú lo revises",
+                  "choices": [
+                    {
+                      "id": "a",
+                      "text": "Un primer resumen de un informe largo, para que tú lo revises"
+                    },
+                    {
+                      "id": "b",
+                      "text": "Publicar el resumen sin leerlo"
+                    },
+                    {
+                      "id": "c",
+                      "text": "Inventar las ventas de ayer si no están en el archivo"
+                    }
+                  ],
+                  "correctChoiceId": "a"
+                },
+                {
+                  "id": "ag1-delegar-e3",
+                  "type": "matching",
+                  "prompt": "Empareja el trabajo con quién lo hace.",
+                  "difficulty": 2,
+                  "xp": 12,
+                  "explanation": "Si el modelo elige una herramienta, igual tú decidiste cuáles existen.",
+                  "solution": "{\"l1\": \"r1\", \"l2\": \"r2\", \"l3\": \"r3\"}",
+                  "left": [
+                    {
+                      "id": "l1",
+                      "text": "Ordenar 30 notas"
+                    },
+                    {
+                      "id": "l2",
+                      "text": "Decir si el resumen es usable"
+                    },
+                    {
+                      "id": "l3",
+                      "text": "Elegir la herramienta del inventario"
+                    }
+                  ],
+                  "right": [
+                    {
+                      "id": "r1",
+                      "text": "El modelo, como primer paso"
+                    },
+                    {
+                      "id": "r2",
+                      "text": "Tú, con discernimiento"
+                    },
+                    {
+                      "id": "r3",
+                      "text": "El agente, dentro de lo que le permitiste"
+                    }
+                  ],
+                  "pairs": {
+                    "l1": "r1",
+                    "l2": "r2",
+                    "l3": "r3"
+                  }
+                },
+                {
+                  "id": "ag1-delegar-e4",
+                  "type": "reorder",
+                  "prompt": "Ordena una delegación.",
+                  "difficulty": 2,
+                  "xp": 14,
+                  "explanation": "Sin meta no hay reparto. Sin límite, el modelo ve de más.",
+                  "solution": "Nombrar la meta del turno\nVer qué puede hacer el modelo y qué no\nRepartir: borrador para la IA, decisión para ti\nDejar fuera los datos que no debe ver",
+                  "blocks": [
+                    {
+                      "id": "a",
+                      "code": "Nombrar la meta del turno"
+                    },
+                    {
+                      "id": "b",
+                      "code": "Ver qué puede hacer el modelo y qué no"
+                    },
+                    {
+                      "id": "c",
+                      "code": "Repartir: borrador para la IA, decisión para ti"
+                    },
+                    {
+                      "id": "d",
+                      "code": "Dejar fuera los datos que no debe ver"
+                    }
+                  ],
+                  "correctOrder": [
+                    "a",
+                    "b",
+                    "c",
+                    "d"
+                  ]
+                }
+              ],
+              "level": 1
+            },
+            {
+              "id": "ag1-discernir",
+              "title": "Discernir",
+              "description": "La respuesta ya está. Ahora se lee: qué hizo, qué inventó y qué no puedes usar.",
+              "xp": 48,
+              "exercises": [
+                {
+                  "id": "ag1-discernir-e1",
+                  "type": "ai_interpret",
+                  "prompt": "Una IA respondió un pedido de resumen. Léela y marca qué se sostiene.",
+                  "difficulty": 2,
+                  "xp": 16,
+                  "explanation": "Leíste la respuesta como revisor: qué afirma, qué no estaba en el pedido y qué no puedes publicar.",
+                  "solution": "Afirmó tres cosas y no citó cuántas filas vio | Ayer no está en el pedido. Esa comparación se inventó | El pedido era resumir, no decidir un precio, y nadie lo verificó",
+                  "starterCode": "Pedido: resume el turno y cita cuántas filas viste.\nEl turno vendió mucho más que ayer.\nEl latte fue el producto estrella.\nRecomiendo subir el precio mañana.\n",
+                  "aiLabel": "Respuesta hecha por IA",
+                  "aiQuestions": [
+                    {
+                      "prompt": "¿Qué hizo esta respuesta?",
+                      "choices": [
+                        {
+                          "id": "a",
+                          "text": "Afirmó tres cosas y no citó cuántas filas vio"
+                        },
+                        {
+                          "id": "b",
+                          "text": "Contó las filas y se detuvo"
+                        },
+                        {
+                          "id": "c",
+                          "text": "Pidió el archivo que le faltaba"
+                        },
+                        {
+                          "id": "d",
+                          "text": "Repitió el pedido sin agregar nada"
+                        }
+                      ],
+                      "correctChoiceId": "a",
+                      "explanation": "El pedido pedía un resumen con n. La respuesta opina y no dice n.",
+                      "focusLines": [
+                        2,
+                        4
+                      ]
+                    },
+                    {
+                      "prompt": "¿Qué problema tiene «mucho más que ayer»?",
+                      "choices": [
+                        {
+                          "id": "a",
+                          "text": "Ayer no está en el pedido. Esa comparación se inventó"
+                        },
+                        {
+                          "id": "b",
+                          "text": "Es la cita de n que faltaba"
+                        },
+                        {
+                          "id": "c",
+                          "text": "Prueba que el latte ganó"
+                        },
+                        {
+                          "id": "d",
+                          "text": "Es el formato que pediste"
+                        }
+                      ],
+                      "correctChoiceId": "a",
+                      "explanation": "Discernir es notar lo que no estaba en la evidencia.",
+                      "focusLines": [
+                        2,
+                        2
+                      ]
+                    },
+                    {
+                      "prompt": "¿Qué está mal si publicas la subida de precio?",
+                      "choices": [
+                        {
+                          "id": "a",
+                          "text": "El pedido era resumir, no decidir un precio, y nadie lo verificó"
+                        },
+                        {
+                          "id": "b",
+                          "text": "La línea 1 ya trae el n"
+                        },
+                        {
+                          "id": "c",
+                          "text": "Una recomendación siempre se publica"
+                        },
+                        {
+                          "id": "d",
+                          "text": "El modelo no puede usar la palabra precio"
+                        }
+                      ],
+                      "correctChoiceId": "a",
+                      "explanation": "Una frase segura no es una decisión. Diligencia es no firmar lo que no revisaste.",
+                      "focusLines": [
+                        4,
+                        4
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "id": "ag1-discernir-e2",
+                  "type": "multiple_choice",
+                  "prompt": "Viste que la respuesta inventó «ayer». ¿Qué sigue en el loop?",
+                  "difficulty": 2,
+                  "xp": 10,
+                  "explanation": "Discernir alimenta la siguiente descripción. El loop es pedir, leer y ajustar.",
+                  "solution": "Describes de nuevo: «no compares con días que no te pasé»",
+                  "choices": [
+                    {
+                      "id": "a",
+                      "text": "Describes de nuevo: «no compares con días que no te pasé»"
+                    },
+                    {
+                      "id": "b",
+                      "text": "La publicas porque suena segura"
+                    },
+                    {
+                      "id": "c",
+                      "text": "Borras el pedido y dejas la respuesta"
+                    }
+                  ],
+                  "correctChoiceId": "a"
+                },
+                {
+                  "id": "ag1-discernir-e3",
+                  "type": "matching",
+                  "prompt": "Empareja qué estás revisando.",
+                  "difficulty": 2,
+                  "xp": 12,
+                  "explanation": "Un resumen lindo puede venir de un proceso que se saltó el inventario.",
+                  "solution": "{\"l1\": \"r1\", \"l2\": \"r2\", \"l3\": \"r3\"}",
+                  "left": [
+                    {
+                      "id": "l1",
+                      "text": "Producto"
+                    },
+                    {
+                      "id": "l2",
+                      "text": "Proceso"
+                    },
+                    {
+                      "id": "l3",
+                      "text": "Desempeño"
+                    }
+                  ],
+                  "right": [
+                    {
+                      "id": "r1",
+                      "text": "Si el resumen sirve para el pedido"
+                    },
+                    {
+                      "id": "r2",
+                      "text": "Si el camino (herramientas, pasos) tuvo sentido"
+                    },
+                    {
+                      "id": "r3",
+                      "text": "Si el tono y la conducta fueron los que pediste"
+                    }
+                  ],
+                  "pairs": {
+                    "l1": "r1",
+                    "l2": "r2",
+                    "l3": "r3"
+                  }
+                },
+                {
+                  "id": "ag1-discernir-e4",
+                  "type": "multiple_choice",
+                  "prompt": "La respuesta suena segura y no cita n. ¿Qué pesa más?",
+                  "difficulty": 2,
+                  "xp": 10,
+                  "explanation": "Discernir separa el estilo de la prueba. Seguridad no es cita.",
+                  "solution": "La evidencia que falta, no el tono",
+                  "choices": [
+                    {
+                      "id": "a",
+                      "text": "La evidencia que falta, no el tono"
+                    },
+                    {
+                      "id": "b",
+                      "text": "El tono: si suena segura, está bien"
+                    },
+                    {
+                      "id": "c",
+                      "text": "La longitud: más larga es más cierta"
+                    }
+                  ],
+                  "correctChoiceId": "a"
+                }
+              ],
+              "level": 1
+            },
+            {
+              "id": "ag1-diligencia",
+              "title": "Diligencia",
+              "description": "Tú firmas el resultado: se verifica, se cuidan los datos y se dice que hubo una IA.",
+              "xp": 44,
+              "exercises": [
+                {
+                  "id": "ag1-diligencia-e1",
+                  "type": "multiple_choice",
+                  "prompt": "El modelo redactó el resumen. ¿De quién es el resultado?",
+                  "difficulty": 1,
+                  "xp": 10,
+                  "explanation": "Diligencia es hacerte cargo. La IA no firma el informe.",
+                  "solution": "Tuyo: lo publicas a tu nombre y respondes por él",
+                  "choices": [
+                    {
+                      "id": "a",
+                      "text": "Tuyo: lo publicas a tu nombre y respondes por él"
+                    },
+                    {
+                      "id": "b",
+                      "text": "Del modelo: si falla, no es tu problema"
+                    },
+                    {
+                      "id": "c",
+                      "text": "De nadie, porque fue un chat"
+                    }
+                  ],
+                  "correctChoiceId": "a"
+                },
+                {
+                  "id": "ag1-diligencia-e2",
+                  "type": "multiple_choice",
+                  "prompt": "Para resumir tickets, ¿qué no pegas en el pedido?",
+                  "difficulty": 2,
+                  "xp": 10,
+                  "explanation": "Delegar el resumen no incluye regalar datos sensibles. Eso se queda fuera.",
+                  "solution": "Nombres, correos o pagos de clientes",
+                  "choices": [
+                    {
+                      "id": "a",
+                      "text": "Nombres, correos o pagos de clientes"
+                    },
+                    {
+                      "id": "b",
+                      "text": "El formato que quieres de vuelta"
+                    },
+                    {
+                      "id": "c",
+                      "text": "Cuántas frases como máximo"
+                    }
+                  ],
+                  "correctChoiceId": "a"
+                },
+                {
+                  "id": "ag1-diligencia-e3",
+                  "type": "multiple_choice",
+                  "prompt": "El borrador lo escribió el modelo y tú lo corregiste. ¿Qué es diligente al entregarlo?",
+                  "difficulty": 2,
+                  "xp": 10,
+                  "explanation": "Transparencia: se nota la ayuda y se nota tu revisión. Esconderlo no lo vuelve más cierto.",
+                  "solution": "Decir que hubo una IA y qué verificaste tú",
+                  "choices": [
+                    {
+                      "id": "a",
+                      "text": "Decir que hubo una IA y qué verificaste tú"
+                    },
+                    {
+                      "id": "b",
+                      "text": "Borrar el historial para que parezca solo tuyo"
+                    },
+                    {
+                      "id": "c",
+                      "text": "Publicar el borrador tal cual, por velocidad"
+                    }
+                  ],
+                  "correctChoiceId": "a"
+                },
+                {
+                  "id": "ag1-diligencia-e4",
+                  "type": "reorder",
+                  "prompt": "Ordena antes de publicar.",
+                  "difficulty": 2,
+                  "xp": 14,
+                  "explanation": "Publicar es el último paso, no el primero.",
+                  "solution": "Leer la respuesta contra el pedido\nVerificar las cifras que sí estaban en la evidencia\nQuitar lo inventado y los datos de más\nDecir que una IA ayudó y firmar",
+                  "blocks": [
+                    {
+                      "id": "a",
+                      "code": "Leer la respuesta contra el pedido"
+                    },
+                    {
+                      "id": "b",
+                      "code": "Verificar las cifras que sí estaban en la evidencia"
+                    },
+                    {
+                      "id": "c",
+                      "code": "Quitar lo inventado y los datos de más"
+                    },
+                    {
+                      "id": "d",
+                      "code": "Decir que una IA ayudó y firmar"
+                    }
+                  ],
+                  "correctOrder": [
+                    "a",
+                    "b",
+                    "c",
+                    "d"
+                  ]
+                }
+              ],
+              "level": 1
+            },
             {
               "id": "ag1-prompt",
               "title": "Qué es un prompt",
