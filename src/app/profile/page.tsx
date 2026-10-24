@@ -166,7 +166,7 @@ export default function ProfilePage() {
 
       <section className="mt-6">
         <h2 className="font-bold">Insignias</h2>
-        <p className="mt-1 text-sm text-muted-foreground">Cada medalla dice cómo se logra. Escuchar la lee en voz alta.</p>
+        <p className="mt-1 text-sm text-muted-foreground">Cada medalla dice cómo se logra.</p>
         <ul className="mt-3 grid grid-cols-2 gap-3">
           {BADGES.map((b) => {
             const earned = p.badges.includes(b.id);
@@ -179,10 +179,6 @@ export default function ProfilePage() {
                 <p className="mt-2 text-center font-extrabold">{b.title}</p>
                 <p className="mt-2 text-[10px] font-bold tracking-wider text-primary uppercase">Cómo se logra</p>
                 <p className="mt-1 flex-1 text-xs leading-relaxed text-muted-foreground">{how}</p>
-                <button type="button" className="mt-3 inline-flex h-9 items-center justify-center gap-1 rounded-xl border bg-background text-xs font-bold" onClick={() => speakSpanish(`${b.title}. Cómo se logra: ${how}`, p.voiceURI)}>
-                  <Volume2 className="size-3.5" />
-                  Escuchar
-                </button>
               </li>
             );
           })}

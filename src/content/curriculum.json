@@ -201,7 +201,7 @@
                   "prompt": "Este código falla. ¿Cuál es el error?",
                   "difficulty": 2,
                   "xp": 12,
-                  "explanation": "Sin comillas, Python busca una variable llamada Hola. Un string va entre comillas.",
+                  "explanation": "Una variable es un nombre pegado a un dato. Sin comillas, Python busca una variable llamada Hola. Un string va entre comillas.",
                   "solution": "Hola debería ir entre comillas: es un texto, no una variable",
                   "choices": [
                     {
@@ -317,7 +317,7 @@
                   "prompt": "¿Por qué falla `print(Hola)` si no existe una variable llamada Hola?",
                   "difficulty": 2,
                   "xp": 12,
-                  "explanation": "Sin comillas, Python interpreta Hola como el nombre de una variable.",
+                  "explanation": "Una variable es un nombre pegado a un dato. Sin comillas, Python interpreta Hola como el nombre de una variable. Si nadie creó ese nombre, el programa falla.",
                   "solution": "Faltan comillas para indicar que Hola es texto",
                   "choices": [
                     {
@@ -385,7 +385,7 @@
                         }
                       ],
                       "correctChoiceId": "a",
-                      "explanation": "print muestra el contenido de la variable sin comillas.",
+                      "explanation": "Una variable es un nombre pegado a un dato. print muestra el contenido de la variable sin comillas.",
                       "assert": "__stdout__.strip() == 'Listo'"
                     }
                   ]
@@ -405,7 +405,7 @@
                   "prompt": "Crea `mensaje = 'Listo'` e imprime primero `Inicio` y después el valor de `mensaje`.",
                   "difficulty": 2,
                   "xp": 18,
-                  "explanation": "Las instrucciones se ejecutan de arriba abajo y print puede recibir texto literal o variables.",
+                  "explanation": "Una variable es un nombre pegado a un dato. Las instrucciones se ejecutan de arriba abajo y print puede recibir texto literal o variables.",
                   "solution": "mensaje = 'Listo'\nprint('Inicio')\nprint(mensaje)",
                   "starterCode": "",
                   "tests": [
@@ -549,7 +549,7 @@
                   "prompt": "Ordena el programa para anunciar una tarea después de definirla.",
                   "difficulty": 2,
                   "xp": 14,
-                  "explanation": "La variable debe existir antes de usarla; el comentario puede documentar ese momento.",
+                  "explanation": "Una variable es un nombre pegado a un dato. La variable debe existir antes de usarla; el comentario puede documentar ese momento.",
                   "solution": "tarea = 'analizar datos'\n# La tarea ya está definida\nprint(tarea)",
                   "blocks": [
                     {
@@ -652,7 +652,7 @@
                   "prompt": "¿Por qué este programa no llega a imprimir `fin`?",
                   "difficulty": 2,
                   "xp": 12,
-                  "explanation": "print(hola) busca una variable. Al no existir, el programa aborta antes del último print.",
+                  "explanation": "Una variable es un nombre pegado a un dato. print(hola) busca una variable. Al no existir, el programa aborta antes del último print.",
                   "solution": "Falla en la segunda línea y Python se detiene",
                   "choices": [
                     {

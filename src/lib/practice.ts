@@ -16,6 +16,14 @@ const CODE_TYPES = new Set<ExerciseType>(["code", "data", "reorder", "token_orde
 
 export type PracticeKind = "all" | "quiz" | "code" | "interpret";
 
+const PRACTICE_COUNT_PRESETS = [8, 12, 20] as const;
+
+/** Round-size buttons that exist for a pool: presets strictly below the pool, then the pool itself. */
+export function practiceCountChoices(available: number): number[] {
+  if (available <= 0) return [];
+  return [...PRACTICE_COUNT_PRESETS.filter((preset) => preset < available), available];
+}
+
 export function shuffle<T>(arr: T[]): T[] {
   const a = [...arr];
   for (let i = a.length - 1; i > 0; i--) {
