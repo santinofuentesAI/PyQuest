@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useMemo, useState, type CSSProperties } from "react";
 import Link from "next/link";
 import { ArrowRight, BookOpen, Clock, Search, Sparkles } from "lucide-react";
 import { librarySections } from "@/lib/library";
@@ -54,7 +54,7 @@ export default function LibraryPage() {
     <div className="mx-auto max-w-6xl px-4 py-8 pb-28">
       <section
         className="quest-banner overflow-hidden rounded-3xl border p-5 shadow-sm sm:p-7"
-        style={{ "--banner": "#7c3aed" }}
+        style={{ "--banner": "#7c3aed" } as CSSProperties}
       >
         <p className="text-xs font-bold tracking-widest text-violet-700 uppercase dark:text-violet-300">Guía visual</p>
         <h1 className="font-heading mt-1 flex items-center gap-3 text-3xl font-extrabold">

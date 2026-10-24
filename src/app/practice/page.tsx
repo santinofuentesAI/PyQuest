@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useMemo, useState, type CSSProperties } from "react";
 import Link from "next/link";
 import { Code2, Dumbbell, ListChecks, RotateCcw, Sparkles, Bot, Zap } from "lucide-react";
 import { LessonPlayer } from "@/components/lesson-player";
@@ -128,7 +128,7 @@ export default function PracticePage() {
     <div className="mx-auto max-w-5xl px-4 py-8 pb-36">
       <section
         className="quest-banner overflow-hidden rounded-3xl border p-5 shadow-sm sm:p-7"
-        style={{ "--banner": "#059669" }}
+        style={{ "--banner": "#059669" } as CSSProperties}
       >
         <p className="text-xs font-bold tracking-widest text-emerald-700 uppercase dark:text-emerald-300">Sin corazones</p>
         <h1 className="font-heading mt-1 flex items-center gap-3 text-3xl font-extrabold">
