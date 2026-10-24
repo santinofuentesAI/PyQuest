@@ -2,12 +2,33 @@ import type { CourseId, Curriculum, Exercise, Lesson, Section, Unit } from "./ty
 import pythonIa from "@/content/curriculum.json";
 import datos from "@/content/datos-curriculum.json";
 import agentes from "@/content/agentes-curriculum.json";
+import aiReads from "@/content/ai-reads.json";
 
 type CurriculumFile = Curriculum & { placementUnit: Unit };
 type TrackFile = { courseId: CourseId; sections: Section[] };
 
 export const curriculum = pythonIa as unknown as CurriculumFile;
-export const SECTIONS: Section[] = curriculum.sections;
+const AI_READS = aiReads as unknown as Record<string, Exercise>;
+
+function withAiReads(sections: Section[]): Section[] {
+  return sections.map((section) => ({
+    ...section,
+    units: section.units.map((unit) => {
+      const read = AI_READS[unit.id];
+      if (!read) return unit;
+      return {
+        ...unit,
+        lessons: unit.lessons.map((lesson, index) =>
+          index === 0 && !lesson.exercises.some((exercise) => exercise.type === "ai_interpret")
+            ? { ...lesson, exercises: [...lesson.exercises, read] }
+            : lesson
+        ),
+      };
+    }),
+  }));
+}
+
+export const SECTIONS: Section[] = withAiReads(curriculum.sections);
 export const PYTHON_IA_UNITS: Unit[] = SECTIONS.flatMap((s) => s.units);
 export const BADGES = curriculum.badges;
 export const PLACEMENT_UNIT: Unit = curriculum.placementUnit;
@@ -18,8 +39,8 @@ const AGENTES = agentes as unknown as TrackFile;
 
 export const COURSE_SECTIONS: Record<CourseId, Section[]> = {
   "python-ia": SECTIONS,
-  "python-datos": DATOS.sections,
-  "agentes-ia": AGENTES.sections,
+  "python-datos": withAiReads(DATOS.sections),
+  "agentes-ia": withAiReads(AGENTES.sections),
 };
 
 export const ALL_SECTIONS: Section[] = (Object.values(COURSE_SECTIONS) as Section[][]).flat();

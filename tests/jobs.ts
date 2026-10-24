@@ -5,7 +5,7 @@ import { useProgress } from "../src/lib/progress-store";
 
 // Independent implementations of each authored brief, not copies of the assertions.
 const implementations: Record<string, string> = {
-  "job-s0-caja": "subtotal=sum(precios[item] for item in pedidos)\niva=subtotal*.08\ntotal=subtotal+iva\nprint(total)",
+  "job-s0-caja": "subtotal=sum(precios[sku]*qty for sku, qty in lineas)\nunidades=sum(qty for _, qty in lineas)\niva=subtotal*.08\ntotal=subtotal+iva",
   "job-s0-triage": "urgentes=sum(any(word in ticket.lower() for word in ['caído','down','500']) for ticket in tickets)\nnormales=len(tickets)-urgentes",
   "job-s1-sensores": "media=temps.mean()\ndesv=temps.std()\numbral=media+2*desv\nanomalias=temps[temps>umbral]",
   "job-s1-embeddings": "desvs=X.std(axis=0)\nZ=(X-X.mean(axis=0))/np.where(desvs==0,1,desvs)",

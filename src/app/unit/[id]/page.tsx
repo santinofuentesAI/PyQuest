@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useParams } from "next/navigation";
-import { BookOpen, Check, Lock, RotateCcw, Sparkles } from "lucide-react";
+import { Check, Lock, RotateCcw, Sparkles } from "lucide-react";
 import { getCourseIdForUnit, getUnit, getSectionForUnit, LEVEL_LABELS, lessonLevel } from "@/lib/curriculum";
 import { unitAccess } from "@/lib/courses";
 import { PaywallNote } from "@/components/course-picker";
@@ -128,10 +128,7 @@ export default function UnitPage() {
             Examen de {SKIP_EXAM_SIZE} para saltar aquí
           </Button>
         )}
-        <Button variant="outline" className="h-12 rounded-2xl font-bold" render={<Link href={`/library/${unit.id}`} />}>
-          <BookOpen className="size-4" />
-          Leer la guía de este tema
-        </Button>
+        <p className="px-1 text-sm leading-relaxed text-muted-foreground">La clase explica este nivel y pasas directo a practicar. La librería sigue en el menú si quieres leer más; no es obligatoria.</p>
         {(complete || weak) && (
           <Button
             variant="outline"

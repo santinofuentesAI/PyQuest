@@ -1,17 +1,21 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useProgress } from "@/lib/progress-store";
 import { levelFromXp } from "@/lib/gamification";
-import { BADGES } from "@/lib/curriculum";
+import { BADGES, getUnit } from "@/lib/curriculum";
+import { howToEarn } from "@/lib/badges";
+import { UnitIcon } from "@/components/unit-icon";
 import { PALETTES, DEFAULT_PALETTE } from "@/lib/palettes";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Switch } from "@/components/ui/switch";
 import { PortfolioSection } from "@/components/portfolio-section";
 import { toast } from "sonner";
-import { Bot } from "lucide-react";
+import { Volume2 } from "lucide-react";
+import { AiSettings } from "@/components/ai-settings";
+import { spanishVoices, speakSpanish } from "@/lib/speech";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
 import { PybotCoach } from "@/components/pybot";
@@ -21,7 +25,14 @@ export default function ProfilePage() {
   const router = useRouter();
   const lvl = levelFromXp(p.xp);
   const [code, setCode] = useState("");
+  const [voices, setVoices] = useState<SpeechSynthesisVoice[]>([]);
   const currentPalette = p.palette ?? DEFAULT_PALETTE;
+  useEffect(() => {
+    const load = () => setVoices(spanishVoices());
+    load();
+    window.speechSynthesis?.addEventListener("voiceschanged", load);
+    return () => window.speechSynthesis?.removeEventListener("voiceschanged", load);
+  }, []);
 
   return (
     <div className="mx-auto max-w-lg px-4 py-8 pb-24">
@@ -126,27 +137,48 @@ export default function ProfilePage() {
           <span className="text-sm">Sonidos de acierto</span>
           <Switch checked={p.soundEnabled !== false} onCheckedChange={(c) => p.setSound(c)} />
         </div>
-        <div className="mt-4 rounded-xl border bg-muted/30 p-3">
-          <div className="flex items-center justify-between gap-3"><p className="flex items-center gap-2 text-sm font-bold"><Bot className="size-4 text-primary" />Asistente de IA</p><span className="rounded-full bg-primary/10 px-2 py-1 text-[10px] font-bold text-primary">Próximamente</span></div>
-          <p className="mt-2 text-xs leading-relaxed text-muted-foreground">Aquí podrás conectar una IA para ayudarte con tu código. Esta opción todavía no está disponible.</p>
-          <Button disabled variant="outline" className="mt-3 h-11 w-full rounded-xl text-sm">Conectar una IA</Button>
+        <div className="mt-4 border-t pt-3">
+          <p className="text-sm font-bold">Voz</p>
+          <p className="mt-1 text-xs leading-relaxed text-muted-foreground">Pybot lee en voz alta con una voz en español de este dispositivo. Si hay una de Latinoamérica, esa queda primero.</p>
+          {voices.length === 0 ? <p className="mt-2 text-xs leading-relaxed text-muted-foreground">Aquí no apareció ninguna voz en español. En el teléfono o en la computadora sí se pueden elegir.</p> : null}
+          <select
+            className="mt-3 h-11 w-full rounded-xl border bg-background px-3 text-sm"
+            value={p.voiceURI ?? ""}
+            onChange={(e) => p.setVoice(e.target.value || null)}
+            aria-label="Voz de Pybot"
+          >
+            <option value="">La primera voz latina disponible</option>
+            {voices.map((voice) => (
+              <option key={voice.voiceURI} value={voice.voiceURI}>
+                {voice.name} · {voice.lang}
+              </option>
+            ))}
+          </select>
+          <Button type="button" variant="outline" className="mt-3 h-11 w-full rounded-xl" onClick={() => speakSpanish("Hola. Soy Pybot. Te leo las insignias cuando quieras.", p.voiceURI)}>
+            <Volume2 className="size-4" />
+            Probar voz
+          </Button>
         </div>
+        <AiSettings />
       </section>
 
       <PortfolioSection />
 
       <section className="mt-6">
         <h2 className="font-bold">Insignias</h2>
-        <ul className="mt-3 grid grid-cols-2 gap-2">
+        <p className="mt-1 text-sm text-muted-foreground">Cada medalla dice cómo se logra.</p>
+        <ul className="mt-3 grid grid-cols-2 gap-3">
           {BADGES.map((b) => {
             const earned = p.badges.includes(b.id);
+            const how = howToEarn(b, typeof b.value === "string" ? getUnit(b.value)?.title : undefined);
             return (
-              <li
-                key={b.id}
-                className={`rounded-2xl border p-3 text-sm ${earned ? "bg-amber-50 dark:bg-amber-950/40" : "opacity-50"}`}
-              >
-                <p className="font-bold">{b.title}</p>
-                <p className="text-xs text-muted-foreground">{b.description}</p>
+              <li key={b.id} className={cn("flex flex-col rounded-3xl border p-3 text-sm", earned ? "border-amber-300 bg-amber-50 dark:border-amber-800 dark:bg-amber-950/40" : "bg-card")}>
+                <span className={cn("mx-auto flex size-14 items-center justify-center rounded-full border-4", earned ? "border-amber-400 bg-amber-100 text-amber-700 dark:bg-amber-900 dark:text-amber-200" : "border-muted bg-muted text-muted-foreground")}>
+                  <UnitIcon name={b.icon} className="size-6" />
+                </span>
+                <p className="mt-2 text-center font-extrabold">{b.title}</p>
+                <p className="mt-2 text-[10px] font-bold tracking-wider text-primary uppercase">Cómo se logra</p>
+                <p className="mt-1 flex-1 text-xs leading-relaxed text-muted-foreground">{how}</p>
               </li>
             );
           })}

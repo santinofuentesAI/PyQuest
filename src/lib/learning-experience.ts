@@ -11,7 +11,22 @@ export const EXERCISE_GUIDES: Record<ExerciseType, { label: string; tip: string 
   reorder: { label: "Ordena", tip: "Mueve las líneas hasta que el programa tenga sentido." },
   token_order: { label: "Construye", tip: "Toca las piezas y ordénalas. Puedes arrastrar o usar las flechas." },
   trace: { label: "Sigue la ejecución", tip: "Observa qué cambia en cada línea y resuelve los puntos de control." },
+  ai_interpret: {
+    label: "Lee a la IA",
+    tip: "Mira cómo se escribe el código. Luego di qué hace, por qué está así y qué falla.",
+  },
 };
+
+export function exerciseGuide(exercise: { type: ExerciseType; aiLabel?: string }) {
+  const guide = EXERCISE_GUIDES[exercise.type];
+  if (exercise.type === "ai_interpret" && exercise.aiLabel) {
+    return {
+      label: guide.label,
+      tip: "Mira cómo se escribe la respuesta. Luego di qué afirma, qué no pediste y qué no puedes publicar.",
+    };
+  }
+  return guide;
+}
 
 export function lessonsToday(results: Record<string, LessonResult>, now = new Date()): number {
   const start = new Date(now.getFullYear(), now.getMonth(), now.getDate()).getTime();

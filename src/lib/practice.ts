@@ -1,5 +1,6 @@
 import type { Exercise, ExerciseType, Lesson, UserProgress } from "./types";
 import { ALL_SECTIONS, UNITS } from "./curriculum";
+import { unitAccess } from "./courses";
 import { decayStrength } from "./gamification";
 
 const QUIZ_TYPES = new Set<ExerciseType>([
@@ -13,7 +14,15 @@ const QUIZ_TYPES = new Set<ExerciseType>([
 
 const CODE_TYPES = new Set<ExerciseType>(["code", "data", "reorder", "token_order"]);
 
-export type PracticeKind = "all" | "quiz" | "code";
+export type PracticeKind = "all" | "quiz" | "code" | "interpret";
+
+const PRACTICE_COUNT_PRESETS = [8, 12, 20] as const;
+
+/** Round-size buttons that exist for a pool: presets strictly below the pool, then the pool itself. */
+export function practiceCountChoices(available: number): number[] {
+  if (available <= 0) return [];
+  return [...PRACTICE_COUNT_PRESETS.filter((preset) => preset < available), available];
+}
 
 export function shuffle<T>(arr: T[]): T[] {
   const a = [...arr];
@@ -70,13 +79,20 @@ export type PracticeUnitOption = {
   weak: boolean;
 };
 
-export function practiceUnitOptions(progress: UserProgress): PracticeUnitOption[] {
+export function practiceUnitOptions(progress: UserProgress, kind: PracticeKind = "all"): PracticeUnitOption[] {
   const lessonIds = new Set(practicedLessonIds(progress));
   const rows: PracticeUnitOption[] = [];
   for (const section of ALL_SECTIONS) {
     for (const unit of section.units) {
       const lessons = unit.lessons.filter((l) => lessonIds.has(l.id));
-      if (!lessons.length) continue;
+      const interpretCount = unit.lessons.reduce(
+        (n, lesson) => n + lesson.exercises.filter((exercise) => exercise.type === "ai_interpret").length,
+        0
+      );
+      const opened = unitAccess(unit.id, progress) === "open";
+      if (kind === "interpret") {
+        if (!interpretCount || (!opened && !lessons.length)) continue;
+      } else if (!lessons.length) continue;
       const up = progress.units[unit.id];
       const complete = isUnitComplete(unit.id, progress);
       const strength = decayStrength(up?.strength ?? (complete ? 0.7 : 0.4), up?.lastPracticedAt ?? null);
@@ -87,7 +103,7 @@ export function practiceUnitOptions(progress: UserProgress): PracticeUnitOption[
         sectionTitle: section.title,
         sectionColor: section.color,
         icon: unit.icon,
-        exerciseCount: lessons.reduce((n, l) => n + l.exercises.length, 0),
+        exerciseCount: kind === "interpret" ? interpretCount : lessons.reduce((n, l) => n + l.exercises.length, 0),
         weak: complete && strength < 0.45,
       });
     }
@@ -98,15 +114,17 @@ export function practiceUnitOptions(progress: UserProgress): PracticeUnitOption[
 export function filterExercises(exercises: Exercise[], kind: PracticeKind): Exercise[] {
   if (kind === "quiz") return exercises.filter((e) => QUIZ_TYPES.has(e.type));
   if (kind === "code") return exercises.filter((e) => CODE_TYPES.has(e.type));
-  return exercises;
+  if (kind === "interpret") return exercises.filter((e) => e.type === "ai_interpret");
+  return exercises.filter((e) => e.type !== "ai_interpret");
 }
 
 export function poolForUnits(unitIds: string[], progress: UserProgress, kind: PracticeKind): Exercise[] {
   const allowedLessons = new Set(practicedLessonIds(progress));
   const selected = new Set(unitIds);
-  const exercises = UNITS.filter((u) => selected.has(u.id)).flatMap((u) =>
-    u.lessons.filter((l) => allowedLessons.has(l.id)).flatMap((l) => l.exercises)
-  );
+  const exercises = UNITS.filter((u) => selected.has(u.id)).flatMap((u) => {
+    const opened = kind === "interpret" && unitAccess(u.id, progress) === "open";
+    return u.lessons.filter((l) => opened || allowedLessons.has(l.id)).flatMap((l) => l.exercises);
+  });
   return filterExercises(exercises, kind);
 }
 

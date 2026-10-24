@@ -1,8 +1,8 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useMemo, useState, type CSSProperties } from "react";
 import Link from "next/link";
-import { Code2, Dumbbell, ListChecks, RotateCcw, Sparkles, Zap } from "lucide-react";
+import { Code2, Dumbbell, ListChecks, RotateCcw, Sparkles, Bot, Zap } from "lucide-react";
 import { LessonPlayer } from "@/components/lesson-player";
 import { Button } from "@/components/ui/button";
 import { UnitIcon } from "@/components/unit-icon";
@@ -11,13 +11,13 @@ import { useProgress } from "@/lib/progress-store";
 import {
   buildPracticeLesson,
   poolForUnits,
+  practiceCountChoices,
   practiceUnitOptions,
   type PracticeKind,
 } from "@/lib/practice";
 import { cn } from "@/lib/utils";
 import type { Lesson } from "@/lib/types";
 
-const COUNTS = [8, 12, 20] as const;
 const KINDS: {
   id: PracticeKind;
   label: string;
@@ -28,20 +28,27 @@ const KINDS: {
   { id: "all", label: "De todo", hint: "Quiz y código mezclados", icon: Sparkles, color: "#7c3aed" },
   { id: "quiz", label: "Quiz", hint: "Opciones, huecos, emparejar", icon: ListChecks, color: "#0891b2" },
   { id: "code", label: "Código", hint: "Escribir y ejecutar Python", icon: Code2, color: "#059669" },
+  { id: "interpret", label: "Interpretar IA", hint: "Leer código que escribió una IA", icon: Bot, color: "#c2410c" },
 ];
 
 export default function PracticePage() {
   const progress = useProgress();
-  const units = useMemo(() => practiceUnitOptions(progress), [progress]);
   const [selected, setSelected] = useState<string[] | null>(null);
   const [kind, setKind] = useState<PracticeKind>("all");
-  const [count, setCount] = useState<(typeof COUNTS)[number]>(12);
+  const [count, setCount] = useState(12);
   const [session, setSession] = useState<Lesson | null>(null);
   const [run, setRun] = useState(0);
+  const units = useMemo(() => practiceUnitOptions(progress, kind), [progress, kind]);
+  const canPractice = useMemo(
+    () => practiceUnitOptions(progress, "all").length > 0 || practiceUnitOptions(progress, "interpret").length > 0,
+    [progress]
+  );
 
   const chosen = selected ?? units.map((u) => u.id);
 
   const pool = useMemo(() => poolForUnits(chosen, progress, kind), [chosen, progress, kind]);
+  const countChoices = practiceCountChoices(pool.length);
+  const selectedCount = countChoices.includes(count) ? count : (countChoices[countChoices.length - 1] ?? 0);
   const weakIds = units.filter((u) => u.weak).map((u) => u.id);
   const sections = useMemo(() => {
     const map = new Map<string, { id: string; title: string; color: string; unitIds: string[] }>();
@@ -101,7 +108,7 @@ export default function PracticePage() {
     );
   }
 
-  if (units.length === 0) {
+  if (units.length === 0 && !canPractice) {
     return (
       <div className="mx-auto max-w-md px-6 py-16 pb-24 text-center">
         <Pybot size="lg" mood="encourage" className="mx-auto" />
@@ -122,11 +129,8 @@ export default function PracticePage() {
   return (
     <div className="mx-auto max-w-5xl px-4 py-8 pb-36">
       <section
-        className="overflow-hidden rounded-3xl border p-5 shadow-sm sm:p-7"
-        style={{
-          background:
-            "linear-gradient(135deg, color-mix(in oklab, #059669 20%, var(--card)) 0%, color-mix(in oklab, #7c3aed 14%, var(--card)) 60%, var(--card) 100%)",
-        }}
+        className="quest-banner overflow-hidden rounded-3xl border p-5 shadow-sm sm:p-7"
+        style={{ "--banner": "#059669" } as CSSProperties}
       >
         <p className="text-xs font-bold tracking-widest text-emerald-700 uppercase dark:text-emerald-300">Sin corazones</p>
         <h1 className="font-heading mt-1 flex items-center gap-3 text-3xl font-extrabold">
@@ -147,17 +151,21 @@ export default function PracticePage() {
           )}
         </div>
       </section>
-      <PybotCoach className="mt-5">Una ronda corta puede ayudarte a fijar una idea. Elige tus temas y combina código con preguntas.</PybotCoach>
+      <PybotCoach className="mt-5">Una ronda corta fija una idea. Interpretar IA es el modo para leer código generado y decir qué hace, por qué está así y qué falla.</PybotCoach>
 
       <div className="mt-5 grid gap-2 sm:grid-cols-2">
         <Button
           className="h-12 rounded-2xl bg-violet-600 font-bold text-white hover:bg-violet-500"
           onClick={() => {
             const ids = units.map((u) => u.id);
+            const available = poolForUnits(ids, progress, "all").length;
+            const preferred = Math.min(12, available);
+            const mixChoices = practiceCountChoices(available);
+            const mixCount = mixChoices.includes(preferred) ? preferred : (mixChoices[mixChoices.length - 1] ?? 0);
             setSelected(ids);
             setKind("all");
-            setCount(12);
-            start(ids, "all", 12);
+            if (mixCount > 0) setCount(mixCount);
+            start(ids, "all", mixCount);
           }}
         >
           <Sparkles className="size-4" />
@@ -169,7 +177,7 @@ export default function PracticePage() {
           disabled={weakIds.length === 0}
           onClick={() => {
             setSelected(weakIds);
-            start(weakIds, kind, count);
+            start(weakIds, kind, selectedCount);
           }}
         >
           <RotateCcw className="size-4" />
@@ -182,7 +190,7 @@ export default function PracticePage() {
 
       <section className="mt-8">
         <h2 className="font-bold">Tipo</h2>
-        <div className="mt-2 grid gap-2 sm:grid-cols-3">
+        <div className="mt-2 grid gap-2 sm:grid-cols-2 lg:grid-cols-4">
           {KINDS.map((k) => {
             const Icon = k.icon;
             const on = kind === k.id;
@@ -219,25 +227,29 @@ export default function PracticePage() {
         </div>
       </section>
 
-      <section className="mt-6">
-        <h2 className="font-bold">Cuántos ejercicios</h2>
-        <div className="mt-2 flex gap-2">
-          {COUNTS.map((n) => (
-            <button
-              key={n}
-              type="button"
-              onClick={() => setCount(n)}
-              className={cn(
-                "h-12 flex-1 rounded-2xl border text-sm font-black",
-                count === n ? "text-white" : "border-border bg-card"
-              )}
-              style={count === n ? { background: activeKind.color, borderColor: activeKind.color } : undefined}
-            >
-              {n}
-            </button>
-          ))}
-        </div>
-      </section>
+      {countChoices.length > 0 ? (
+        <section className="mt-6">
+          <h2 className="font-bold">Cuántos ejercicios</h2>
+          <div className="mt-2 flex gap-2">
+            {countChoices.map((n) => (
+              <button
+                key={n}
+                type="button"
+                onClick={() => setCount(n)}
+                className={cn(
+                  "h-12 flex-1 rounded-2xl border text-sm font-black",
+                  selectedCount === n ? "text-white" : "border-border bg-card"
+                )}
+                style={selectedCount === n ? { background: activeKind.color, borderColor: activeKind.color } : undefined}
+              >
+                {n}
+              </button>
+            ))}
+          </div>
+        </section>
+      ) : (
+        <p className="mt-6 text-sm text-muted-foreground">No hay ejercicios en el filtro.</p>
+      )}
 
       <section className="mt-6">
         <div className="flex items-center justify-between gap-2">
@@ -334,10 +346,10 @@ export default function PracticePage() {
             className="h-12 w-full rounded-2xl text-base font-bold text-white"
             style={{ background: pool.length === 0 ? undefined : activeKind.color }}
             disabled={pool.length === 0}
-            onClick={() => start()}
+            onClick={() => start(chosen, kind, selectedCount)}
           >
             <Zap className="size-4" />
-            Empezar · {Math.min(count, pool.length)} ejercicios
+            Empezar · {selectedCount} ejercicios
           </Button>
           {pool.length === 0 && (
             <p className="mt-2 text-center text-xs text-muted-foreground">

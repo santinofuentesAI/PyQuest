@@ -1,15 +1,19 @@
 "use client";
 
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { ArrowRight, Code2, FileCode2, FolderOpen } from "lucide-react";
 import { Pybot } from "@/components/pybot";
 import { buttonVariants } from "@/components/ui/button";
 import { useProgress } from "@/lib/progress-store";
+import { LAB_BUILDS } from "@/lib/lab-builds";
 import { cn } from "@/lib/utils";
 
 export default function PlaygroundPage() {
-  const draft = useProgress((progress) => progress.labDraft);
-  const hydrated = useProgress((progress) => progress.hydrated);
+  const router = useRouter();
+  const progress = useProgress();
+  const draft = progress.labDraft;
+  const hydrated = progress.hydrated;
   return <div className="mx-auto max-w-3xl px-4 pt-6 pb-28 sm:px-6">
     <div className="flex items-center justify-between gap-3"><h1 className="text-2xl font-extrabold tracking-tight">Laboratorio</h1><Pybot size="xs" mood="wave" /></div>
     <section className="quest-card mt-5 overflow-hidden rounded-3xl p-5 sm:p-7" aria-labelledby="build-heading">
@@ -22,6 +26,20 @@ export default function PlaygroundPage() {
       </div>
       <Link href="/playground/editor" className={cn(buttonVariants(), "mt-5 h-12 w-full rounded-2xl font-bold sm:w-auto sm:px-7")}>Construir<ArrowRight className="size-4" /></Link>
       <p className="mt-3 text-xs text-muted-foreground">Copia el código o guárdalo en tu portafolio con un toque.</p>
+    </section>
+    <section className="mt-6" aria-labelledby="builds-heading">
+      <h2 id="builds-heading" className="text-lg font-extrabold">Qué puedes construir</h2>
+      <p className="mt-1 text-sm text-muted-foreground">Toca una idea y el editor se abre con ese Python, listo para ejecutarlo.</p>
+      <ul className="mt-3 grid gap-2 sm:grid-cols-3">
+        {LAB_BUILDS.map((build) => (
+          <li key={build.id}>
+            <button type="button" className="quest-card h-full w-full rounded-2xl p-4 text-left" onClick={() => { progress.saveLabDraft(build.code); router.push("/playground/editor"); }}>
+              <p className="font-extrabold">{build.title}</p>
+              <p className="mt-1 text-xs leading-relaxed text-muted-foreground">{build.line}</p>
+            </button>
+          </li>
+        ))}
+      </ul>
     </section>
     <Link href="/profile#portfolio" className="mt-4 inline-flex min-h-11 items-center gap-2 text-sm font-bold text-primary"><FolderOpen className="size-4" />Ver mi portafolio<ArrowRight className="size-4" /></Link>
   </div>;

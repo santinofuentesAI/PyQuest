@@ -8,11 +8,14 @@ export type ExerciseType =
   | "data"
   | "matching"
   | "token_order"
-  | "trace";
+  | "trace"
+  | "ai_interpret";
 
 export type Difficulty = 1 | 2 | 3 | 4 | 5;
 
 export type CourseId = "python-ia" | "python-datos" | "agentes-ia";
+
+export type AiProviderId = "openai" | "deepseek" | "gemini" | "openrouter" | "lmstudio";
 
 export type Choice = {
   id: string;
@@ -64,6 +67,17 @@ export type Exercise = {
   outputComparison?: "exact" | "numeric";
   /** Distractors for the optional word bank; accepted answers are included by the UI. */
   wordBank?: string[];
+  /** Header on the streamed artifact. Defaults to code written by an AI. */
+  aiLabel?: string;
+  /** Questions about an artifact an AI just wrote. Four choices each. */
+  aiQuestions?: {
+    prompt: string;
+    choices: Choice[];
+    correctChoiceId: string;
+    explanation: string;
+    /** Inclusive 1-based line range framed like a screenshot. */
+    focusLines?: [number, number];
+  }[];
   /** Trace a program through authored, independently checked checkpoints. */
   traceSteps?: {
     line: number;
@@ -195,6 +209,8 @@ export type UserProgress = {
   /** Full-app color pack. Independent of OS light/dark. */
   palette: import("./palettes").PaletteId;
   soundEnabled: boolean;
+  /** speechSynthesis voiceURI. Empty means the first Latin American Spanish voice. */
+  voiceURI?: string | null;
   redeemedCodes: string[];
   /** Every unit, lesson and office job is playable. */
   unlockAll: boolean;
@@ -209,6 +225,11 @@ export type UserProgress = {
   ownedCourseIds: CourseId[];
   /** Local interest flag for school/bootcamp licensing — not a charge. */
   schoolInterestAt?: number | null;
+  /** Which model host Pybot talks to. The key stays in this browser. */
+  aiProvider?: AiProviderId;
+  aiApiKey?: string;
+  aiBaseUrl?: string;
+  aiModel?: string;
 };
 
 export type PythonRunResult = {

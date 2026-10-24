@@ -22,15 +22,12 @@ export function Pybot({ mood = "happy", size = "md", className, decorative = tru
           <path d="M75 179H93L95 185Q95 190 88 190H75Q69 190 71 184Z" fill="#70dfba" stroke="#218b79" strokeWidth="2" />
           <path d="M107 179H125L129 184Q131 190 124 190H111Q105 190 105 185Z" fill="#70dfba" stroke="#218b79" strokeWidth="2" />
           <g className="pybot-arm-left">
-            <circle cx="135" cy="143" r="9" fill="#167d70" />
-            <path d="M141 143Q153 151 155 164L143 169Q140 157 131 151Z" fill="#67d9b7" stroke="#218b79" strokeWidth="2" strokeLinejoin="round" />
-            <path d="M146 165Q157 162 159 170L158 178Q156 185 151 180L149 175Q147 183 143 180Q138 177 141 170Z" fill="#258d7d" stroke="#166c62" strokeWidth="2" />
+            <path d="M124 134C136 138 146 144 150 152C152 160 140 162 138 154C132 144 124 138 118 134Z" fill="#67d9b7" stroke="#218b79" strokeWidth="2" strokeLinejoin="round" />
+            <circle className="pybot-hand" cx="148" cy="156" r="9" fill="#67d9b7" stroke="#218b79" strokeWidth="2" />
           </g>
           <g className="pybot-arm-right">
-            <circle cx="65" cy="143" r="9" fill="#167d70" />
-            <path d="M66 136L53 123L36 132Q41 148 57 152Z" fill="#67d9b7" stroke="#218b79" strokeWidth="2" strokeLinejoin="round" />
-            <path d="M36 132Q26 127 24 117L23 111Q23 107 27 107Q30 107 32 113L29 101Q29 97 33 97Q37 97 39 105L39 96Q39 92 43 93Q47 94 46 104L48 102Q52 100 54 104Q56 111 50 116L47 124Q43 131 36 132Z" fill="#258d7d" stroke="#166c62" strokeWidth="2" strokeLinejoin="round" />
-            <path d="M33 113L36 119M41 108L42 115" stroke="#66ceac" strokeWidth="2" strokeLinecap="round" />
+            <path d="M76 134C64 138 54 144 50 152C48 160 60 162 62 154C68 144 76 138 82 134Z" fill="#67d9b7" stroke="#218b79" strokeWidth="2" strokeLinejoin="round" />
+            <circle className="pybot-hand" cx="52" cy="156" r="9" fill="#67d9b7" stroke="#218b79" strokeWidth="2" />
           </g>
           <path d="M72 129Q100 124 128 129L136 157Q139 177 116 179H84Q61 177 64 157Z" fill="#73dfbb" stroke="#218b79" strokeWidth="2" />
           <path d="M66 164Q100 171 134 164L132 170Q126 179 112 179H87Q72 178 67 171Z" fill="#43bfa1" />
@@ -51,7 +48,7 @@ export function Pybot({ mood = "happy", size = "md", className, decorative = tru
             {mood === "celebrate" ? <path d="M72 85Q78 74 84 85M116 85Q122 74 128 85" stroke="#a5ffe1" strokeWidth="5" strokeLinecap="round" /> : <><rect x="73" y={mood === "thinking" ? 79 : 75} width="11" height={mood === "thinking" ? 14 : 20} rx="5.5" fill="#a5ffe1" /><rect x="116" y="75" width="11" height="20" rx="5.5" fill="#a5ffe1" /></>}
           </g>
           <ellipse cx="67" cy="100" rx="6" ry="3.5" fill="#ee91a5" /><ellipse cx="133" cy="100" rx="6" ry="3.5" fill="#ee91a5" />
-          <path d={mood === "thinking" ? "M95 106H105" : "M89 102Q100 115 111 102"} stroke="#a5ffe1" strokeWidth="4.5" strokeLinecap="round" />
+          <path className="pybot-mouth" d={mood === "thinking" ? "M96 107H104" : "M93 106Q100 111 107 106"} stroke="#a5ffe1" strokeWidth="3.5" strokeLinecap="round" />
           <circle cx="138" cy="126" r="4.5" fill="#ffd34f" stroke="#e5af25" strokeWidth="1.5" />
         </g>
         {mood === "celebrate" ? <g className="pybot-sparkles" stroke="#e8af26" strokeWidth="2.5" strokeLinejoin="round"><path d="M24 40L27 47L34 50L27 53L24 60L21 53L14 50L21 47ZM174 48L176 54L182 56L176 58L174 64L172 58L166 56L172 54ZM174 121L177 128L184 131L177 134L174 141L171 134L164 131L171 128Z" /></g> : null}

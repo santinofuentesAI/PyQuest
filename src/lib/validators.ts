@@ -24,7 +24,8 @@ export type UserAnswer =
   | { type: "code"; code: string }
   | { type: "order"; ids: string[] }
   | { type: "match"; pairs: Record<string, string> }
-  | { type: "text"; value: string };
+  | { type: "text"; value: string }
+  | { type: "ai_interpret"; ids: string[] };
 
 export async function checkExercise(
   exercise: Exercise,
@@ -103,6 +104,18 @@ export async function checkExercise(
         feedback: correct ? exercise.explanation : "La salida no coincide. Sigue las instrucciones de arriba abajo y comprueba los espacios y los saltos de línea.",
       };
     }
+    case "ai_interpret": {
+      const questions = exercise.aiQuestions ?? [];
+      if (answer.type !== "ai_interpret" || questions.length === 0) {
+        return { correct: false, feedback: "Responde las preguntas sobre el código." };
+      }
+      const miss = questions.findIndex((question, index) => answer.ids[index] !== question.correctChoiceId);
+      if (miss < 0) return { correct: true, feedback: exercise.explanation };
+      return {
+        correct: false,
+        feedback: `Revisa la pregunta ${miss + 1}. ${questions[miss]?.explanation ?? exercise.explanation}`,
+      };
+    }
     case "code":
     case "data": {
       if (answer.type !== "code") {
@@ -164,8 +177,10 @@ export async function checkExercise(
         images: result.images,
       };
     }
-    default:
-      return { correct: false, feedback: "Tipo de ejercicio no soportado." };
+    default: {
+      const unsupported: never = exercise.type;
+      return { correct: false, feedback: `Tipo de ejercicio no soportado (${unsupported}).` };
+    }
   }
 }
 

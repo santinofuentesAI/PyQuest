@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import type { Exercise } from "@/lib/types";
 import type { UserAnswer } from "@/lib/validators";
 import { Button } from "@/components/ui/button";
@@ -9,8 +9,10 @@ import { TraceExercise } from "@/components/trace-exercise";
 import { CodeEditor } from "@/components/code-editor";
 import { cn } from "@/lib/utils";
 import { Lightbulb } from "lucide-react";
+import { AiInterpret } from "@/components/ai-interpret";
 import { PromptText, promptAlreadyShowsCode } from "@/lib/prompt-text";
 import { shuffle } from "@/lib/practice";
+import { scrollIntoViewSoon } from "@/lib/scroll-into-view";
 
 export function ExerciseView({
   exercise,
@@ -19,6 +21,10 @@ export function ExerciseView({
   exercise: Exercise;
   onSubmit: (answer: UserAnswer) => void;
 }) {
+  if (exercise.type === "ai_interpret") {
+    return <AiInterpret exercise={exercise} onSubmit={onSubmit} />;
+  }
+
   const showStarter =
     Boolean(exercise.starterCode) &&
     (exercise.type === "find_error" || exercise.type === "predict_output") &&
@@ -300,6 +306,10 @@ function CheckButton({ disabled, label = "Comprobar" }: { disabled?: boolean; la
 
 export function Hint({ text }: { text?: string }) {
   const [open, setOpen] = useState(false);
+  const panel = useRef<HTMLParagraphElement>(null);
+  useEffect(() => {
+    if (open) scrollIntoViewSoon(panel.current);
+  }, [open]);
   if (!text) return null;
   return (
     <div>
@@ -312,7 +322,7 @@ export function Hint({ text }: { text?: string }) {
         <Lightbulb className="size-4" />
         {open ? "Ocultar pista" : "Pista"}
       </button>
-      {open && <p className="quest-enter mt-2 rounded-xl border border-amber-400/25 bg-amber-50 p-3 text-sm leading-relaxed text-amber-950 dark:bg-amber-950/40 dark:text-amber-100">{text}</p>}
+      {open && <p ref={panel} className="quest-enter mt-2 rounded-xl border border-amber-400/25 bg-amber-50 p-3 text-sm leading-relaxed text-amber-950 dark:bg-amber-950/40 dark:text-amber-100">{text}</p>}
     </div>
   );
 }

@@ -96,6 +96,6 @@ export function SkillTree({ highlight }: { highlight?: string }) {
       </ol>
     </section>
     <PybotCoach className="mt-6">Estás en {course.title}. Si quieres saltar un tema, haz el examen de 20 (fácil a difícil). Si no llegas a 16, el módulo sigue cerrado.</PybotCoach>
-    <div className="mt-5 grid grid-cols-2 gap-3"><Link href="/courses" className="quest-card rounded-2xl p-4"><Compass className="mb-3 size-5 text-primary" /><p className="text-sm font-bold">Otros cursos</p><p className="mt-1 text-xs text-muted-foreground">IA, datos o agentes. Primeros módulos gratis.</p></Link><Link href="/library" className="quest-card rounded-2xl p-4"><BookOpen className="mb-3 size-5 text-primary" /><p className="text-sm font-bold">Entender una idea</p><p className="mt-1 text-xs text-muted-foreground">Ejemplos que puedes tocar.</p></Link></div>
+    <div className="mt-5 grid grid-cols-2 gap-3"><Link href="/courses" className="quest-card rounded-2xl p-4"><Compass className="mb-3 size-5 text-primary" /><p className="text-sm font-bold">Otros cursos</p><p className="mt-1 text-xs text-muted-foreground">IA, datos o agentes. Primeros módulos gratis.</p></Link><Link href="/library" className="quest-card rounded-2xl p-4"><BookOpen className="mb-3 size-5 text-primary" /><p className="text-sm font-bold">Leer más</p><p className="mt-1 text-xs text-muted-foreground">Opcional. La clase ya explica el tema.</p></Link></div>
   </div>;
 }
